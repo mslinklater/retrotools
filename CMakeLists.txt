@@ -1,7 +1,9 @@
 project (retrotool)
 
-message(STATUS "This is BINARY dir " ${PROJECT_BINARY_DIR})
-message(STATUS "This is SOURCE dir " ${PROJECT_SOURCE_DIR})
+set(CMAKE_C_COMPILER /usr/bin/clang)
+set(CMAKE_C_FLAGS -g)
 
-add_executable(retrotool main.c config.c errorcodes.c)
+set(SOURCE_FILES main.c config.c errorcodes.c)
+
+add_executable(retrotool ${SOURCE_FILES})
 

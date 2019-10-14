@@ -14,7 +14,12 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 
-//	config_parse_command_line(argc, argv);
+	if(config_ParseCommandLine(argc, argv) != ERROR_OK)
+	{
+		printf("Error parsing command line... aborting \n");
+		exit(1);
+	}
 
+	printf("Exiting...\n");
 	return 0;
 }
