@@ -1,0 +1,5 @@
+Ideas:
+
+Interactive mode
+Use file to batch set config
+
