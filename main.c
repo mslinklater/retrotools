@@ -27,6 +27,11 @@ int main(int argc, char* argv[])
 	memory_Init();
 
 	// need to grab the ROM filename from the config settings
+	if(config_GetLoadFilename() != 0)
+	{
+		memory_Load(config_GetLoadFilename(), config_GetLoadAddress());
+		memory_DumpToTTY(config_GetLoadAddress(), 2048);
+	}
 
 	memory_Destroy();
 

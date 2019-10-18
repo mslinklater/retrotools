@@ -7,4 +7,5 @@ extern void config_Destroy(void);
 extern errorcode_t config_ParseCommandLine(int32_t argc, char* argv[]);
  
 extern char* config_GetLoadFilename(void);
+extern uint16_t config_GetLoadAddress(void);
 

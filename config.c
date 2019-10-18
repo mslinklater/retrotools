@@ -44,14 +44,20 @@ errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
 
 		if((strcmp(argv[i], "-l") == 0) || (strcmp(argv[i], "--load") == 0))
 		{
+			printf("Config:Found load command\n");
 			if(argc <= i+2)
 			{
 				printf("ERROR - not passing correct -l params\n");
 				return ERROR_COMMAND_LINE_PARSING;
 			}
-			char* filename = argv[i+1];
-			char* address = argv[i+2];
 
+			// grab the filename
+			pLoadROMFilename = argv[i+1];
+			printf("Config:load filename %s\n", pLoadROMFilename);
+
+			char* address = argv[i+2];
+			loadROMAddress = strtol(address, NULL, 16);
+			printf("Config:Address %d\n", loadROMAddress);
 		}
 
 	}
@@ -66,4 +72,8 @@ char* config_GetLoadFilename(void)
 	return pLoadROMFilename;
 }
 
+uint16_t config_GetLoadAddress(void)
+{
+	return loadROMAddress;
+}
 

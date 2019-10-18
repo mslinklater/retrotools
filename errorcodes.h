@@ -10,5 +10,7 @@ typedef uint32_t errorcode_t;
 #define ERROR_MEMORY_ALREADY_INITIALISED	2000
 #define ERROR_MEMORY_NOT_INITIALISED		2001
 
+#define ERROR_FILE_NOT_FOUND				3000
+
 extern void errorcodes_printf(errorcode_t error_code);
 
