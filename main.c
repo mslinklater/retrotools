@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "config.h"
 #include "memory.h"
+#include "cpu.h"
 
 int main(int argc, char* argv[])
 {
@@ -25,13 +26,19 @@ int main(int argc, char* argv[])
 	// initialise a simple 6502 machine
 	
 	memory_Init();
+	cpu_Init();
+	cpu_DumpInfo();
 
 	// need to grab the ROM filename from the config settings
 	if(config_GetLoadFilename() != 0)
 	{
-		memory_Load(config_GetLoadFilename(), config_GetLoadAddress());
-		memory_DumpToTTY(config_GetLoadAddress(), 2048);
+		uint16_t bytesLoaded;
+		uint16_t loadAddress = config_GetLoadAddress();
+		memory_Load(config_GetLoadFilename(), loadAddress, &bytesLoaded);
+		memory_DumpToTTY(loadAddress, bytesLoaded);
+		cpu_dumpDisassembly(loadAddress, bytesLoaded);
 	}
+
 
 	memory_Destroy();
 

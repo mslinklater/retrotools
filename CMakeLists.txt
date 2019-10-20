@@ -3,7 +3,7 @@ project (retrotool)
 set(CMAKE_C_COMPILER /usr/bin/clang)
 set(CMAKE_C_FLAGS "-g -DDEBUG")
 
-set(SOURCE_FILES main.c config.c errorcodes.c memory.c)
+set(SOURCE_FILES main.c config.c errorcodes.c memory.c cpu.c)
 
 add_executable(retrotool ${SOURCE_FILES})
 

@@ -40,7 +40,7 @@ errorcode_t memory_Destroy(void)
 	return ERROR_OK;
 }
 
-errorcode_t memory_Load(const char* filename, uint16_t address)
+errorcode_t memory_Load(const char* filename, uint16_t address, uint16_t* bytesRead)
 {
 	// TODO: Some error checking - make sure memory is there and can fit in the ROM
 
@@ -51,8 +51,9 @@ errorcode_t memory_Load(const char* filename, uint16_t address)
 		fseek(hFile, 0L, SEEK_END);
 		uint32_t fileSize = ftell(hFile);
 		fseek(hFile, 0L, SEEK_SET);
-		fread((void*)&pMemory[address], 1, fileSize, hFile);
+		*bytesRead = fread((void*)&pMemory[address], 1, fileSize, hFile);
 		fclose(hFile);
+		printf("Read %d bytes\n", *bytesRead);
 	}
 	else
 	{
@@ -73,11 +74,11 @@ void memory_Write(uint16_t address, uint8_t val)
 
 void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 {
-	uint16_t length16 = ((length + 15) % 16) * 16;
+	uint16_t length16 = ((length + 15) / 16) * 16;
 
 	uint16_t currentAddress = startAddress;
 
-	for(uint16_t currentAddress = startAddress ; currentAddress <= startAddress + length16 ; currentAddress+=16)
+	for(uint16_t currentAddress = startAddress ; currentAddress < startAddress + length16 ; currentAddress+=16)
 	{
 		printf("0x%04x", currentAddress);
 		for(int i=0 ; i<16 ; i++)
