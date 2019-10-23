@@ -86,6 +86,19 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 			printf(" %02x", pMemory[currentAddress + i]);
 		}	
 
+		printf("  ");
+		for(int i=0 ; i<16 ; i++)
+		{
+			uint8_t operand = pMemory[currentAddress + i];
+			if( cpu_IsOperandValid(operand) )
+			{
+				printf("O");
+			}
+			else
+			{
+				printf(".");
+			}
+		}
 		printf("\n");
 	}
 }

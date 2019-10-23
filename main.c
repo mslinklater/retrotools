@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 #include "config.h"
 #include "memory.h"
 #include "cpu.h"
@@ -43,5 +44,7 @@ int main(int argc, char* argv[])
 	memory_Destroy();
 
 	printf("Exiting...\n");
+	initscr();
+	endwin();
 	return 0;
 }
