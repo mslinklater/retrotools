@@ -9,7 +9,7 @@ find_library(NCURSES_LIB ncurses)
 
 message(STATUS ${NCURSES_LIB})
 
-set(SOURCE_FILES main.c config.c errorcodes.c memory.c cpu.c)
+set(SOURCE_FILES main.c config.c errorcodes.c memory.c cpu.c vcs.c)
 
 add_executable(retrotool ${SOURCE_FILES})
 target_link_libraries(retrotool "${NCURSES_LIB}")

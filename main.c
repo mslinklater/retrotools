@@ -4,6 +4,7 @@
 #include "config.h"
 #include "memory.h"
 #include "cpu.h"
+#include "vcs.h"
 
 int main(int argc, char* argv[])
 {
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
 	// initialise a simple 6502 machine
 	
 	memory_Init();
+	vcs_Init();
 	cpu_Init();
 	cpu_DumpInfo();
 
