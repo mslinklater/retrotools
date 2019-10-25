@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "cpu.h"
 #include "memory.h"
+#include "vcs.h"
 
-enum eCpuAddressingMode {
+enum eCpuAddressingMode 
+{
 	kCpuAddrModeAccumulator = 0,
 	kCpuAddrModeImmediate,
 	kCpuAddrModeZeroPage,
@@ -19,7 +21,8 @@ enum eCpuAddressingMode {
 	kCpuAddrMode_Num
 };
 
-enum eCpuMnemonic {
+enum eCpuMnemonic 
+{
 	kCpuMnemonic_ADC=0,	kCpuMnemonic_AND,	kCpuMnemonic_ASL,	kCpuMnemonic_BCC,
 	kCpuMnemonic_BCS,	kCpuMnemonic_BEQ,	kCpuMnemonic_BIT,	kCpuMnemonic_BMI,
 	kCpuMnemonic_BNE,	kCpuMnemonic_BPL,	kCpuMnemonic_BRK,	kCpuMnemonic_BVC,
@@ -83,7 +86,17 @@ uint8_t cpu_disasm_immediate(uint16_t address, char* mnemonic)
 }
 uint8_t cpu_disasm_zeropage(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x\n", address, mnemonic, memory_Read(address+1));
+	uint8_t location = memory_Read(address+1);
+	const struct vcs_info* pInfo = vcs_getInfo(location);
+	if(pInfo->writeName != 0)
+	{
+		// read or write here
+		printf("0x%04x %s %s\n", address, mnemonic, pInfo->writeName);
+	}
+	else
+	{
+		printf("0x%04x %s $%02x\n", address, mnemonic, memory_Read(address+1));
+	}
 	return 2;
 }
 uint8_t cpu_disasm_zeropagex(uint16_t address, char* mnemonic)

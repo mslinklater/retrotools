@@ -2,14 +2,6 @@
 #include <inttypes.h>
 #include "vcs.h"
 
-struct vcs_info {
-	enum eVCSMemory address;
-	char*			readName;
-	char*			readDescription;
-	char*			writeName;
-	char*			writeDescription;
-};
-
 static struct vcs_info info[VCS_NUM];
 
 static void vcs_addInfo(enum eVCSMemory mem, char* readName, char* readDescription, char* writeName, char* writeDescription)
@@ -46,7 +38,7 @@ void vcs_Init(void)
 	// clear the array
 	for(int i=0 ; i<VCS_NUM ; i++)
 	{
-		vcs_addInfo((enum eVCSMemory)i, "UNKNOWN", "Unknown register", 0, 0);
+		vcs_addInfo((enum eVCSMemory)i, 0, 0, 0, 0);
 	}
 
     // VSYNC & CXM0P
@@ -109,4 +101,27 @@ void vcs_Init(void)
 	vcs_addInfo(HMOVE, 0, 0, "HMOVE", "---- ---- Apply horizontal motion");
 	vcs_addInfo(HMCLR, 0, 0, "HMCLR", "---- ---- Clear horizontal move registers");
 	vcs_addInfo(CXCLR, 0, 0, "CXCLR", "---- ---- Clear collision latches");
+    // RIOT
+	vcs_addInfo(SWCHA, "SWCHA", "Port A data register for joysticks. 0-3 P1, 4-7 P2", 0, 0);
+	vcs_addInfo(SWACNT, "SWACNT", "Port A data direction register (DDR)", 0, 0);
+	vcs_addInfo(SWCHB, "SWCHB", "Port B DDR", 0, 0);
+	vcs_addInfo(INTIM, "INTIM", "Timer output", 0, 0);
+	vcs_addInfo(TIMINT, "TIMINT", "", 0, 0);
+	vcs_addInfo(TIM1T, "TIM1T", "Set 1 clock interval", 0, 0);
+	vcs_addInfo(TIM8T, "TIM8T", "Set 8 clock interval", 0, 0);
+	vcs_addInfo(TIM64T, "TIM64T", "Set 64 clock interval", 0, 0);
+	vcs_addInfo(T1024T, "T1024T", "Set 1024 clock interval", 0, 0);
 }
+
+const struct vcs_info* vcs_getInfo(uint16_t address)
+{
+	if(address < VCS_NUM)
+	{   
+		return &info[address];
+	}
+	else
+	{
+		return 0;
+	}
+}
+

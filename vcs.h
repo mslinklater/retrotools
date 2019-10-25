@@ -76,4 +76,14 @@ enum eVCSMemory {
 	VCS_NUM
 };
 
+struct vcs_info {
+	enum eVCSMemory address;
+	char*			readName;
+	char*			readDescription;
+	char*			writeName;
+	char*			writeDescription;
+};
+
 extern void vcs_Init(void);
+extern const struct vcs_info* vcs_getInfo(uint16_t address);
+
