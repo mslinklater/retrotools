@@ -1,7 +1,7 @@
 // Atari 2600 memory hardware mappings
 
 enum eVCSMemory {
-	VSYNC = 0,
+	VSYNC = 0,	// Write
 	VBLANK,
 	WSYNC,
 	RSYNC,
@@ -23,6 +23,7 @@ enum eVCSMemory {
 	RESM1,
 	RESBL,
 	AUDC0,
+	AUDC1,
 	AUDF0,
 	AUDF1,
 	AUDV0,
@@ -46,7 +47,7 @@ enum eVCSMemory {
 	HMCLR,
 	CXCLR,
 
-	CXM0P,
+	CXM0P = 0,	// Read
 	CXM1P,
 	CXP0FB,
 	CXP1FB,
@@ -61,8 +62,7 @@ enum eVCSMemory {
 	INPT4,
 	INPT5,
 
-	// RIOT
-	SWCHA = 0x280,
+	SWCHA = 0x280,	// RIOT
 	SWACNT,
 	SWCHB,
 	SWBCNT,

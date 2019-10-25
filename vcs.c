@@ -4,19 +4,40 @@
 
 struct vcs_info {
 	enum eVCSMemory address;
-	uint8_t			bitmask;
-	char*			name;
-	char*			description;
+	char*			readName;
+	char*			readDescription;
+	char*			writeName;
+	char*			writeDescription;
 };
 
 static struct vcs_info info[VCS_NUM];
 
-static void vcs_addInfo(enum eVCSMemory mem, uint8_t bitmask, char* name, char* description)
+static void vcs_addInfo(enum eVCSMemory mem, char* readName, char* readDescription, char* writeName, char* writeDescription)
 {
+	// NOTE - if either of the read or write name/description are null, the values should be the same as the other one
 	info[mem].address = mem;
-	info[mem].bitmask = bitmask;
-	info[mem].name = name;
-	info[mem].description = description;
+	info[mem].readName = readName;
+	info[mem].readDescription = readDescription;
+	info[mem].writeName = writeName;
+	info[mem].writeDescription = writeDescription;
+	
+	// copy of null
+	if(info[mem].readName == 0)
+	{
+		info[mem].readName = info[mem].writeName;
+	}
+	if(info[mem].readDescription == 0)
+	{
+		info[mem].readDescription = info[mem].writeDescription;
+	}
+	if(info[mem].writeName == 0)
+	{
+		info[mem].writeName = info[mem].readName;
+	}
+	if(info[mem].writeDescription == 0)
+	{
+		info[mem].writeDescription = info[mem].readDescription;
+	}
 }
 
 void vcs_Init(void)
@@ -25,74 +46,67 @@ void vcs_Init(void)
 	// clear the array
 	for(int i=0 ; i<VCS_NUM ; i++)
 	{
-		vcs_addInfo((enum eVCSMemory)i, 0, "UNKNOWN", "Unknown register");
+		vcs_addInfo((enum eVCSMemory)i, "UNKNOWN", "Unknown register", 0, 0);
 	}
 
-	vcs_addInfo(VSYNC, 0b00000010, "VSYNC", "0000 00x0 Vertical sync set-clear");
-	vcs_addInfo(VBLANK, 0b11000010, "VBLANK", "xx00 00x0 Vertical blank set-clear");
-	vcs_addInfo(WSYNC, 0, "WSYNC", "---- ---- Wait for horizontal blank");
-	vcs_addInfo(RSYNC, 0, "RSYNC", "---- ---- Reset horizontal sync counter");
-	vcs_addInfo(NUSIZ0, 0b00110111, "NUSIZ0", "00xx 0xxx Number-size player/missile 0");
-	vcs_addInfo(NUSIZ1, 0b00110111, "NUSIZ1", "00xx 0xxx Number-size player/missile 1");
-	vcs_addInfo(COLUP0, 0b11111110, "COLUP0", "xxxx xxx0 Color-luminance player 0");
-	vcs_addInfo(COLUP1, 0b11111110, "COLUP1", "xxxx xxx0 Color-luminance player 1");
-	vcs_addInfo(COLUPF, 0b11111110, "COLUPF", "xxxx xxx0 Color-luminance playfield");
-	vcs_addInfo(COLUBK, 0b11111110, "COLUBK", "xxxx xxx0 Color-luminance background");
-	vcs_addInfo(CTRLPF, 0b00110111, "CTRLPF", "00xx 0xxx Control playfield, ball, collisions");
-	vcs_addInfo(REFP0, 0b00001000, "REFP0", "0000 x000 Reflection player 0");
-	vcs_addInfo(REFP1, 0b00001000, "REFP1", "0000 x000 Reflection player 1");
-	vcs_addInfo(PF0, 0b11110000, "PF0", "xxxx 0000 Playfield register byte 0");
-	vcs_addInfo(PF1, 0b11111111, "PF1", "xxxx xxxx Playfield register byte 1");
-	vcs_addInfo(PF2, 0b11111111, "PF2", "xxxx xxxx Playfield register byte 2");
-	vcs_addInfo(RESP0, 0b00000000, "RESP0", "---- ---- Reset player 0");
-	vcs_addInfo(RESP1, 0b00000000, "RESP1", "---- ---- Reset player 1");
-	vcs_addInfo(RESM0, 0b00000000, "RESM0", "---- ---- Reset missile 0");
-	vcs_addInfo(RESM1, 0b00000000, "RESM1", "---- ---- Reset missile 1");
-	vcs_addInfo(RESBL, 0b00000000, "RESBL", "---- ---- Reset ball");
-	vcs_addInfo(AUDC0, 0b00001111, "AUDC0", "0000 xxxx Audio control 0");
-	vcs_addInfo(AUDC1, 0b00001111, "AUDC1", "0000 xxxx Audio control 1");
-	vcs_addInfo(AUDF0, 0b00011111, "AUDF0", "000x xxxx Audio frequency 0");
-	vcs_addInfo(AUDF1, 0b00011111, "AUDF1", "000x xxxx AUdio frequency 1");
-	vcs_addInfo(AUDV0, 0b00001111, "AUDV0", "0000 xxxx Audio volume 0");
-	vcs_addInfo(AUDV1, 0b00001111, "AUDV1", "0000 xxxx Audio volume 1");
-	vcs_addInfo(GRP0, 0b11111111, "GRP0", "xxxx xxxx Graphics register player 0");
-	vcs_addInfo(GRP1, 0b11111111, "GRP1", "xxxx xxxx Graphics register player 1");
-	vcs_addInfo(ENAM0, 0b00000010, "ENAM0", "0000 00x0 Graphics enable missile 0");
-	vcs_addInfo(ENAM1, 0b00000010, "ENAM1", "0000 00x0 Graphics enable missile 1");
-	vcs_addInfo(ENABL, 0b00000010, "ENABL", "0000 00x0 Graphics enable ball");
-	vcs_addInfo(HMP0, 0b11110000, "HMP0", "xxxx 0000 Horizontal motion player 0");
-	vcs_addInfo(HMP1, 0b11110000, "HMP1", "xxxx 0000 Horizontal motion player 1");
-	vcs_addInfo(HMM0, 0b11110000, "HMM0", "xxxx 0000 Horizontal motion missile 0");
-	vcs_addInfo(HMM1, 0b11110000, "HMM1", "xxxx 0000 Horizontal motion missile 1");
-	vcs_addInfo(HMBL, 0b11110000, "HMBL", "xxxx 0000 Horizontal motion ball");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
-	vcs_addInfo(, 0b, "", "");
+    // VSYNC & CXM0P
+	vcs_addInfo(VSYNC, "CXM0P", "xx00 0000 Read collision M0-P1 M0-P0", "VSYNC", "0000 00x0 Vertical sync set-clear");
+    // VBLANK & CXM1P
+	vcs_addInfo(VBLANK, "CXM1P", "xx00 0000 Read collision M1-P0 M1-P1", "VBLANK", "xx00 00x0 Vertical blank set-clear");
+    // WSYNC & CXP0FB
+	vcs_addInfo(WSYNC, "CXP0FB", "xx00 0000 Read collision P0-PF P0-BL", "WSYNC", "---- ---- Wait for horizontal blank");
+    // RSYNC & CXP1FB
+	vcs_addInfo(RSYNC, "CXP1FB", "xx00 0000 Read collision P1-PF P1-BL", "RSYNC", "---- ---- Reset horizontal sync counter");
+    // NUSIZ0 & CXM0FB
+	vcs_addInfo(NUSIZ0, "CXM0FB", "xx00 0000 Read collision M0-PF M0-BL", "NUSIZ0", "00xx 0xxx Number-size player/missile 0");
+    // NUSIZ1 & CXM1FB
+	vcs_addInfo(NUSIZ1, "CXM1FB", "xx00 0000 Read collision M1-PF M1-BL", "NUSIZ1", "00xx 0xxx Number-size player/missile 1");
+    // COLUP0 & CXBLPF
+	vcs_addInfo(COLUP0, "CXBLPF", "x000 0000 Read collision BL-PF", "COLUP0", "xxxx xxx0 Color-luminance player 0");
+    // COLUP1 & CXPPMM
+	vcs_addInfo(COLUP1, "CXPPMM", "xx00 0000 Read collision P0-P1 M0-M1", "COLUP1", "xxxx xxx0 Color-luminance player 1");
+    // COLUPF & INPT0
+	vcs_addInfo(COLUPF, "INPT0", "x000 0000 Read pot port 0", "COLUPF", "xxxx xxx0 Color-luminance playfield");
+    // COLUBK & INPT1
+	vcs_addInfo(COLUBK, "INPT1", "x000 0000 Read pot port 1", "COLUBK", "xxxx xxx0 Color-luminance background");
+    // CTRLPF & INPT2
+	vcs_addInfo(CTRLPF, "INPT2", "x000 0000 Read pot port 2", "CTRLPF", "00xx 0xxx Control playfield, ball, collisions");
+    // REFP0 & INPT3
+	vcs_addInfo(REFP0, "INPT3", "x000 0000 Read pot port 3", "REFP0", "0000 x000 Reflection player 0");
+    // REFP1 & INPT4
+	vcs_addInfo(REFP1, "INPT4", "Read input (trigger) 0", "REFP1", "0000 x000 Reflection player 1");
+    // PF0 & INPT5
+	vcs_addInfo(PF0, "INPT5", "Read input (trigger) 1", "PF0", "xxxx 0000 Playfield register byte 0");
+
+	vcs_addInfo(PF1, 0, 0, "PF1", "xxxx xxxx Playfield register byte 1");
+	vcs_addInfo(PF2, 0, 0, "PF2", "xxxx xxxx Playfield register byte 2");
+	vcs_addInfo(RESP0, 0, 0, "RESP0", "---- ---- Reset player 0");
+	vcs_addInfo(RESP1, 0, 0, "RESP1", "---- ---- Reset player 1");
+	vcs_addInfo(RESM0, 0, 0, "RESM0", "---- ---- Reset missile 0");
+	vcs_addInfo(RESM1, 0, 0, "RESM1", "---- ---- Reset missile 1");
+	vcs_addInfo(RESBL, 0, 0, "RESBL", "---- ---- Reset ball");
+	vcs_addInfo(AUDC0, 0, 0, "AUDC0", "0000 xxxx Audio control 0");
+	vcs_addInfo(AUDC1, 0, 0, "AUDC1", "0000 xxxx Audio control 1");
+	vcs_addInfo(AUDF0, 0, 0, "AUDF0", "000x xxxx Audio frequency 0");
+	vcs_addInfo(AUDF1, 0, 0, "AUDF1", "000x xxxx AUdio frequency 1");
+	vcs_addInfo(AUDV0, 0, 0, "AUDV0", "0000 xxxx Audio volume 0");
+	vcs_addInfo(AUDV1, 0, 0, "AUDV1", "0000 xxxx Audio volume 1");
+	vcs_addInfo(GRP0, 0, 0, "GRP0", "xxxx xxxx Graphics register player 0");
+	vcs_addInfo(GRP1, 0, 0, "GRP1", "xxxx xxxx Graphics register player 1");
+	vcs_addInfo(ENAM0, 0, 0, "ENAM0", "0000 00x0 Graphics enable missile 0");
+	vcs_addInfo(ENAM1, 0, 0, "ENAM1", "0000 00x0 Graphics enable missile 1");
+	vcs_addInfo(ENABL, 0, 0, "ENABL", "0000 00x0 Graphics enable ball");
+	vcs_addInfo(HMP0, 0, 0, "HMP0", "xxxx 0000 Horizontal motion player 0");
+	vcs_addInfo(HMP1, 0, 0, "HMP1", "xxxx 0000 Horizontal motion player 1");
+	vcs_addInfo(HMM0, 0, 0, "HMM0", "xxxx 0000 Horizontal motion missile 0");
+	vcs_addInfo(HMM1, 0, 0, "HMM1", "xxxx 0000 Horizontal motion missile 1");
+	vcs_addInfo(HMBL, 0, 0, "HMBL", "xxxx 0000 Horizontal motion ball");
+	vcs_addInfo(VDELP0, 0, 0, "VDELP0", "0000 000x Vertical delay player 0");
+	vcs_addInfo(VDELP1, 0, 0, "VDELP1", "0000 000x Vertical delay player 1");
+	vcs_addInfo(VDELBL, 0, 0, "VDELBL", "0000 000x Vertical delay ball");
+	vcs_addInfo(RESMP0, 0, 0, "RESMP0", "0000 00x0 Reset missile 0 to player 0");
+	vcs_addInfo(RESMP1, 0, 0, "RESMP1", "0000 00x0 Reset missile 1 to player 1");
+	vcs_addInfo(HMOVE, 0, 0, "HMOVE", "---- ---- Apply horizontal motion");
+	vcs_addInfo(HMCLR, 0, 0, "HMCLR", "---- ---- Clear horizontal move registers");
+	vcs_addInfo(CXCLR, 0, 0, "CXCLR", "---- ---- Clear collision latches");
 }
