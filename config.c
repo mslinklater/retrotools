@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "config.h"
+#include "log.h"
 
 static char* pLoadROMFilename;
 static uint16_t	loadROMAddress;
@@ -30,7 +31,7 @@ errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
 	{
 		if((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "--help") == 0))
 		{
-			printf("Printing help\n");
+			LOG("Printing help\n");
 			exit(0);
 		}
 	}
@@ -44,7 +45,7 @@ errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
 
 		if((strcmp(argv[i], "-l") == 0) || (strcmp(argv[i], "--load") == 0))
 		{
-			printf("Config:Found load command\n");
+			LOG("Config:Found load command\n");
 			if(argc <= i+2)
 			{
 				printf("ERROR - not passing correct -l params\n");

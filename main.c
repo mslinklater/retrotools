@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "cpu.h"
 #include "vcs.h"
+#include "disasm.h"
 
 int main(int argc, char* argv[])
 {
@@ -30,23 +31,28 @@ int main(int argc, char* argv[])
 	memory_Init();
 	vcs_Init();
 	cpu_Init();
-	cpu_DumpInfo();
+	//cpu_DumpInfo();
+	disasm_Init();
+
+	uint16_t bytesLoaded;
+	uint16_t loadAddress = config_GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
 	if(config_GetLoadFilename() != 0)
 	{
-		uint16_t bytesLoaded;
-		uint16_t loadAddress = config_GetLoadAddress();
 		memory_Load(config_GetLoadFilename(), loadAddress, &bytesLoaded);
-		memory_DumpToTTY(loadAddress, bytesLoaded);
-		cpu_dumpDisassembly(loadAddress, bytesLoaded);
+//		memory_DumpToTTY(loadAddress, bytesLoaded);
+//		cpu_dumpDisassembly(loadAddress, bytesLoaded);
 	}
 
+	disasm_Disassemble(loadAddress, bytesLoaded, loadAddress);
+	disasm_DumpToTTY();
 
 	memory_Destroy();
 
 	printf("Exiting...\n");
-	initscr();
-	endwin();
+
+//	initscr();
+//	endwin();
 	return 0;
 }

@@ -1,3 +1,18 @@
+// Atari 2600 info...
+/*
+TIA
+
+NTSC timings
+
+3 lines of vsync
+37 lines of vblank
+192 lines of TV picture
+30 lines of overscan
+each line 
+	68 ticks of hblank
+	160 ticks of TV picture
+	3 ticks = 1 clock
+*/
 // Atari 2600 memory hardware mappings
 
 enum eVCSMemory {

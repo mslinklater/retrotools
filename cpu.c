@@ -45,7 +45,7 @@ struct cpu_mnemonic {
 	enum eCpuMnemonic		mnemonic;
 	enum eCpuAddressingMode	addrMode;
 	bool					undocumented;
-	uint8_t (*pfDisasm)(uint16_t,char*);
+	uint8_t (*pfDisasm)(uint16_t,char*);	// To be deprecatd
 };
 
 struct cpu_registers {
