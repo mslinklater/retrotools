@@ -120,37 +120,55 @@ uint8_t cpu_disasm_zeropagey(uint16_t address, char* mnemonic)
 }
 uint8_t cpu_disasm_absolute(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x%02x\n", address, mnemonic, memory_Read(address+2), memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	uint8_t last = memory_Read(address+2);
+	printf("0x%04x %02x %02x %02x %s $%02x%02x\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 uint8_t cpu_disasm_absolutex(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x%02x,X\n", address, mnemonic, memory_Read(address+2), memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	uint8_t last = memory_Read(address+2);
+	printf("0x%04x %02x %02x %02x %s $%02x%02x,X\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 uint8_t cpu_disasm_absolutey(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x%02x,Y\n", address, mnemonic, memory_Read(address+2), memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	uint8_t last = memory_Read(address+2);
+	printf("0x%04x %02x %02x %02x %s $%02x%02x,Y\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 uint8_t cpu_disasm_indirectx(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s ($%02x,X)\n", address, mnemonic, memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s ($%02x,X)\n", address, opcode, next, mnemonic, memory_Read(address+1));
 	return 2;
 }
 uint8_t cpu_disasm_indirecty(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s ($%02x),Y\n", address, mnemonic, memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s ($%02x),Y\n", address, opcode, next, mnemonic, memory_Read(address+1));
 	return 2;
 }
 uint8_t cpu_disasm_relative(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%04x(#$%02x)\n", address, mnemonic, address+memory_Read(address+1), memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s $%04x(#$%02x)\n", address, opcode, next, mnemonic, address+memory_Read(address+1), memory_Read(address+1));
 	return 2;
 }
 uint8_t cpu_disasm_indirect(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s ($%02x%02x)\n", address, mnemonic, memory_Read(address+2), memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t next = memory_Read(address+1);
+	uint8_t last = memory_Read(address+2);
+	printf("0x%04x %02x %02x %02x %s ($%02x%02x)\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 
