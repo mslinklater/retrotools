@@ -71,42 +71,51 @@ static char* addrModeStrings[kCpuAddrMode_Num];
 
 uint8_t cpu_disasm_implied(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s\n", address, mnemonic);
+	uint8_t opcode = memory_Read(address);
+	printf("0x%04x %02x       %s\n", address, opcode, mnemonic);
 	return 1;
 }
 uint8_t cpu_disasm_accumulator(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s\n", address, mnemonic);
+	printf("0x%04x %02x       %s\n", address, memory_Read(address), mnemonic);
 	return 1;
 }
 uint8_t cpu_disasm_immediate(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s #$%02x\n", address, mnemonic, memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t val = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s #$%02x\n", address, opcode, val, mnemonic, val);
 	return 2;
 }
 uint8_t cpu_disasm_zeropage(uint16_t address, char* mnemonic)
 {
 	uint8_t location = memory_Read(address+1);
 	const struct vcs_info* pInfo = vcs_getInfo(location);
+	uint8_t opcode = memory_Read(address);
+	uint8_t val = memory_Read(address+1);
 	if(pInfo->writeName != 0)
 	{
 		// read or write here
-		printf("0x%04x %s %s\n", address, mnemonic, pInfo->writeName);
+		printf("0x%04x %02x %02x    %s %s\n", address, opcode, val, mnemonic, pInfo->writeName);
 	}
 	else
 	{
-		printf("0x%04x %s $%02x\n", address, mnemonic, memory_Read(address+1));
+		printf("0x%04x %02x %02x    %s $%02x\n", address, opcode, val, mnemonic, memory_Read(address+1));
 	}
 	return 2;
 }
 uint8_t cpu_disasm_zeropagex(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x,X\n", address, mnemonic, memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t val = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s $%02x,X\n", address, opcode, val, mnemonic, memory_Read(address+1));
 	return 2;
 }
 uint8_t cpu_disasm_zeropagey(uint16_t address, char* mnemonic)
 {
-	printf("0x%04x %s $%02x,Y\n", address, mnemonic, memory_Read(address+1));
+	uint8_t opcode = memory_Read(address);
+	uint8_t val = memory_Read(address+1);
+	printf("0x%04x %02x %02x    %s $%02x,Y\n", address, opcode, val, mnemonic, memory_Read(address+1));
 	return 2;
 }
 uint8_t cpu_disasm_absolute(uint16_t address, char* mnemonic)

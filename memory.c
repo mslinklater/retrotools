@@ -4,6 +4,7 @@
 #include "memory.h"
 #include "log.h"
 #include "errorcodes.h"
+#include "cpu.h"
 
 static uint8_t* pMemory = 0;
 static uint16_t memorySize = 0;
