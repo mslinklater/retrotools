@@ -8,12 +8,21 @@ NTSC timings
 37 lines of vblank
 192 lines of TV picture
 30 lines of overscan
+
+PAL timings
+3 lines of vsync
+45 lines of vblank
+228 lines of TV picture
+36 lines of overscan
+
 each line 
 	68 ticks of hblank
 	160 ticks of TV picture
 	3 ticks = 1 clock
 */
 // Atari 2600 memory hardware mappings
+
+#include <string>
 
 enum eVCSMemory {
 	VSYNC = 0,	// Write
@@ -93,12 +102,12 @@ enum eVCSMemory {
 
 struct vcs_info {
 	enum eVCSMemory address;
-	char*			readName;
-	char*			readDescription;
-	char*			writeName;
-	char*			writeDescription;
+	std::string		readName;
+	std::string		readDescription;
+	std::string		writeName;
+	std::string		writeDescription;
 };
 
 extern void vcs_Init(void);
-extern const struct vcs_info* vcs_getInfo(uint16_t address);
+extern const vcs_info* vcs_getInfo(uint16_t address);
 

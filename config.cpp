@@ -1,29 +1,26 @@
 // Global configuration vars
 
-#include <stdio.h>
+//#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+//#include <stdlib.h>
+#include <string>
+#include <cstdint>
+
 #include "config.h"
 #include "log.h"
 
-static char* pLoadROMFilename;
+static std::string loadROMFilename;
 static uint16_t	loadROMAddress;
 
 void config_Init(void)
 {
-	pLoadROMFilename = 0;
 }
 
 void config_Destroy(void)
 {
-	if(pLoadROMFilename != 0)
-	{
-		free(pLoadROMFilename);
-		pLoadROMFilename = 0;
-	}
 }
 
-errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
+eErrorCode config_ParseCommandLine(int32_t argc, char* argv[])
 {
 	// check for -h or --help and if found print help
 
@@ -49,12 +46,12 @@ errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
 			if(argc <= i+2)
 			{
 				printf("ERROR - not passing correct -l params\n");
-				return ERROR_COMMAND_LINE_PARSING;
+				return kError_CommandLineParsing;
 			}
 
 			// grab the filename
-			pLoadROMFilename = argv[i+1];
-			printf("Config:load filename %s\n", pLoadROMFilename);
+			loadROMFilename = argv[i+1];
+			printf("Config:load filename %s\n", loadROMFilename.c_str());
 
 			char* address = argv[i+2];
 			loadROMAddress = strtol(address, NULL, 16);
@@ -65,12 +62,12 @@ errorcode_t config_ParseCommandLine(int32_t argc, char* argv[])
 
 	// Now go through the arguments and set up the config
 
-	return ERROR_OK;
+	return kError_OK;
 }
 
-char* config_GetLoadFilename(void)
+std::string config_GetLoadFilename(void)
 {
-	return pLoadROMFilename;
+	return loadROMFilename;
 }
 
 uint16_t config_GetLoadAddress(void)

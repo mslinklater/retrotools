@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include <ncurses.h>
 #include "config.h"
 #include "memory.h"
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	}
 
 	config_Init();
-	if(config_ParseCommandLine(argc, argv) != ERROR_OK)
+	if(config_ParseCommandLine(argc, argv) != kError_OK)
 	{
 		printf("Error parsing command line... aborting \n");
 		exit(1);
@@ -30,7 +30,12 @@ int main(int argc, char* argv[])
 	
 	memory_Init();
 	vcs_Init();
-	cpu_Init();
+    
+	Cpu6502* pCpu = new Cpu6502();
+    pCpu->Init();
+
+    memory_SetCPU(pCpu);
+    
 	//cpu_DumpInfo();
 	disasm_Init();
 
@@ -38,7 +43,7 @@ int main(int argc, char* argv[])
 	uint16_t loadAddress = config_GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
-	if(config_GetLoadFilename() != 0)
+	if(!config_GetLoadFilename().empty())
 	{
 		memory_Load(config_GetLoadFilename(), loadAddress, &bytesLoaded);
 //		memory_DumpToTTY(loadAddress, bytesLoaded);

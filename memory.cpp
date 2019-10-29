@@ -1,52 +1,61 @@
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+#include <fstream>
 #include <string.h>
 #include "memory.h"
 #include "log.h"
 #include "errorcodes.h"
 #include "cpu.h"
 
-static uint8_t* pMemory = 0;
+static uint8_t memory[MEMORY_SIZE];
 static uint16_t memorySize = 0;
 
-errorcode_t memory_Init(void)
-{
-	if(pMemory != 0)
-	{
-		printf("ERROR - memory already initialised\n");
-		return ERROR_MEMORY_ALREADY_INITIALISED;
-	}
+static Cpu6502* pCpu;
 
-	pMemory = malloc(MEMORY_SIZE);
-	memset((void*)pMemory, 0xff, MEMORY_SIZE);
+eErrorCode memory_Init(void)
+{
+//	if(pMemory != 0)
+//	{
+//		printf("ERROR - memory already initialised\n");
+//		return kError_MemoryAlreadyInitialised;
+//	}
+
+//	pMemory = new uint8_t[MEMORY_SIZE];
+	memset((void*)memory, 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
 	LOG("Memory initialised\n");
 
-	return ERROR_OK;
+	return kError_OK;
 }
 
-errorcode_t memory_Destroy(void)
+void memory_SetCPU(Cpu6502* cpu)
 {
-	if(pMemory == 0)
-	{
-		printf("ERROR - memory not initialised\n");
-		return ERROR_MEMORY_NOT_INITIALISED;
-	}
-	free(pMemory);
-	pMemory = 0;
+    pCpu = cpu;
+}
+
+eErrorCode memory_Destroy(void)
+{
+//	if(pMemory == 0)
+//	{
+//		printf("ERROR - memory not initialised\n");
+//		return kError_MemoryNotInitialised;
+//	}
+//	delete [] pMemory;
+//	pMemory = 0;
 	memorySize = 0;
 	LOG("Memory destroyed\n");
 
-	return ERROR_OK;
+	return kError_OK;
 }
 
-errorcode_t memory_Load(const char* filename, uint16_t address, uint16_t* bytesRead)
+eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
 {
 	// TODO: Some error checking - make sure memory is there and can fit in the ROM
 
 	// load from file in to memory
-	FILE* hFile = fopen(filename, "r");
+	/*
+	FILE* hFile = fopen(filename.c_str(), "r");
 	if(hFile != 0)
 	{
 		fseek(hFile, 0L, SEEK_END);
@@ -58,19 +67,32 @@ errorcode_t memory_Load(const char* filename, uint16_t address, uint16_t* bytesR
 	}
 	else
 	{
-		printf("ERROR - Cannot load file %s\n", filename);
-		return ERROR_FILE_NOT_FOUND;
+		printf("ERROR - Cannot load file %s\n", filename.c_str());
+		return kError_FileNotFound;
+	}
+	*/
+	
+	std::ifstream inFile;
+	size_t size = 0;
+	inFile.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
+	
+	if(inFile.is_open())
+	{
+		inFile.seekg(0, std::ios::end);
+		size = inFile.tellg();
+		inFile.seekg(0, std::ios::beg);
+		inFile.read((char*)(&memory[address]), size);
 	}
 
-	return ERROR_OK;
+	return kError_OK;
 }
 
 void memory_Write(uint16_t address, uint8_t val)
 {
-	if(pMemory != 0)
-	{
-		pMemory[address] = val;
-	}
+//	if(pMemory != 0)
+//	{
+		memory[address] = val;
+//	}
 }
 
 void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
@@ -91,7 +113,7 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 		for(int i=0 ; i<16 ; i++)
 		{
 			uint8_t operand = pMemory[currentAddress + i];
-			if( cpu_IsOperandValid(operand) )
+			if( pCpu->IsOpcodeValid(operand) )
 			{
 				printf("O");
 			}
