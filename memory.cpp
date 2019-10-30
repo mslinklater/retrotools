@@ -14,7 +14,7 @@ static Cpu6502* pCpu;
 
 eErrorCode memory_Init(void)
 {
-	memset((void*)memory, 0xff, MEMORY_SIZE);
+	memset((void*)(&memory[0]), 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
 	LOG("Memory initialised\n");

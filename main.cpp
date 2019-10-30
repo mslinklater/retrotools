@@ -33,7 +33,6 @@ int main(int argc, char* argv[])
 	memory_Init();	
 	vcs_Init();
     
-/*	
 	Cpu6502* pCpu = new Cpu6502();
     pCpu->Init();
 
@@ -50,6 +49,7 @@ int main(int argc, char* argv[])
 	{
 		memory_Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
 	}
+/*	
 
 	disasm_Disassemble(loadAddress, bytesLoaded, loadAddress);
 	disasm_DumpToTTY();
