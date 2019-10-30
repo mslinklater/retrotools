@@ -19,8 +19,10 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 
-	config_Init();
-	if(config_ParseCommandLine(argc, argv) != kError_OK)
+	Config* pConfig = new Config();
+	pConfig->Init();
+	
+	if(pConfig->ParseCommandLine(argc, argv) != kError_OK)
 	{
 		printf("Error parsing command line... aborting \n");
 		exit(1);
@@ -28,9 +30,10 @@ int main(int argc, char* argv[])
 
 	// initialise a simple 6502 machine
 	
-	memory_Init();
+	memory_Init();	
 	vcs_Init();
     
+/*	
 	Cpu6502* pCpu = new Cpu6502();
     pCpu->Init();
 
@@ -40,14 +43,12 @@ int main(int argc, char* argv[])
 	disasm_Init();
 
 	uint16_t bytesLoaded;
-	uint16_t loadAddress = config_GetLoadAddress();
+	uint16_t loadAddress = pConfig->GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
-	if(!config_GetLoadFilename().empty())
+	if(!pConfig->GetLoadFilename().empty())
 	{
-		memory_Load(config_GetLoadFilename(), loadAddress, &bytesLoaded);
-//		memory_DumpToTTY(loadAddress, bytesLoaded);
-//		cpu_dumpDisassembly(loadAddress, bytesLoaded);
+		memory_Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
 	}
 
 	disasm_Disassemble(loadAddress, bytesLoaded, loadAddress);
@@ -56,8 +57,6 @@ int main(int argc, char* argv[])
 	memory_Destroy();
 
 	printf("Exiting...\n");
-
-//	initscr();
-//	endwin();
+*/
 	return 0;
 }

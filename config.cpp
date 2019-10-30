@@ -1,26 +1,26 @@
 // Global configuration vars
 
-//#include <stdio.h>
 #include <string.h>
-//#include <stdlib.h>
 #include <string>
 #include <cstdint>
 
 #include "config.h"
 #include "log.h"
 
-static std::string loadROMFilename;
-static uint16_t	loadROMAddress;
 
-void config_Init(void)
+Config::Config()
 {
 }
 
-void config_Destroy(void)
+void Config::Init(void)
 {
 }
 
-eErrorCode config_ParseCommandLine(int32_t argc, char* argv[])
+void Config::Destroy(void)
+{
+}
+
+eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 {
 	// check for -h or --help and if found print help
 
@@ -65,13 +65,12 @@ eErrorCode config_ParseCommandLine(int32_t argc, char* argv[])
 	return kError_OK;
 }
 
-std::string config_GetLoadFilename(void)
+std::string Config::GetLoadFilename(void)
 {
 	return loadROMFilename;
 }
 
-uint16_t config_GetLoadAddress(void)
+uint16_t Config::GetLoadAddress(void)
 {
 	return loadROMAddress;
 }
-

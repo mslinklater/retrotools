@@ -14,13 +14,6 @@ static Cpu6502* pCpu;
 
 eErrorCode memory_Init(void)
 {
-//	if(pMemory != 0)
-//	{
-//		printf("ERROR - memory already initialised\n");
-//		return kError_MemoryAlreadyInitialised;
-//	}
-
-//	pMemory = new uint8_t[MEMORY_SIZE];
 	memset((void*)memory, 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
@@ -36,13 +29,6 @@ void memory_SetCPU(Cpu6502* cpu)
 
 eErrorCode memory_Destroy(void)
 {
-//	if(pMemory == 0)
-//	{
-//		printf("ERROR - memory not initialised\n");
-//		return kError_MemoryNotInitialised;
-//	}
-//	delete [] pMemory;
-//	pMemory = 0;
 	memorySize = 0;
 	LOG("Memory destroyed\n");
 
@@ -82,6 +68,7 @@ eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* 
 		size = inFile.tellg();
 		inFile.seekg(0, std::ios::beg);
 		inFile.read((char*)(&memory[address]), size);
+        inFile.close();
 	}
 
 	return kError_OK;
@@ -106,13 +93,13 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 		printf("0x%04x", currentAddress);
 		for(int i=0 ; i<16 ; i++)
 		{
-			printf(" %02x", pMemory[currentAddress + i]);
+			printf(" %02x", memory[currentAddress + i]);
 		}	
 
 		printf("  ");
 		for(int i=0 ; i<16 ; i++)
 		{
-			uint8_t operand = pMemory[currentAddress + i];
+			uint8_t operand = memory[currentAddress + i];
 			if( pCpu->IsOpcodeValid(operand) )
 			{
 				printf("O");
@@ -128,9 +115,9 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 
 uint8_t memory_Read(uint16_t address)
 {
-	if(pMemory != 0)
-	{
-		return pMemory[address];
-	}
+//	if(pMemory != 0)
+//	{
+		return memory[address];
+//	}
 	return 0;
 }

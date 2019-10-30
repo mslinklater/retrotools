@@ -3,11 +3,20 @@
 #include <string>
 #include "errorcodes.h"
 
-extern void config_Init(void);
-extern void config_Destroy(void);
-
-extern eErrorCode config_ParseCommandLine(int32_t argc, char* argv[]);
- 
-extern std::string config_GetLoadFilename(void);
-extern uint16_t config_GetLoadAddress(void);
+class Config
+{
+public:
+    Config();
+    virtual ~Config(){}
+    
+    void Init();
+    void Destroy();
+	
+	eErrorCode 	ParseCommandLine(int32_t argc, char* argv[]);
+	std::string GetLoadFilename();
+	uint16_t 	GetLoadAddress();
+private:
+	std::string loadROMFilename;
+	uint16_t	loadROMAddress;
+};
 
