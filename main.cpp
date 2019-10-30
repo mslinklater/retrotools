@@ -34,11 +34,12 @@ int main(int argc, char* argv[])
 	vcs_Init();
     
 	Cpu6502* pCpu = new Cpu6502();
-    pCpu->Init();
+    pCpu->Init(Cpu6502::k6507);
+	pCpu->DumpInfo();
 
     memory_SetCPU(pCpu);
     
-	//cpu_DumpInfo();
+	
 	disasm_Init();
 
 	uint16_t bytesLoaded;
@@ -49,7 +50,6 @@ int main(int argc, char* argv[])
 	{
 		memory_Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
 	}
-/*	
 
 	disasm_Disassemble(loadAddress, bytesLoaded, loadAddress);
 	disasm_DumpToTTY();
@@ -57,6 +57,6 @@ int main(int argc, char* argv[])
 	memory_Destroy();
 
 	printf("Exiting...\n");
-*/
+	
 	return 0;
 }

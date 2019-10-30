@@ -1,15 +1,8 @@
-//#include <stdio.h>
-//#include <stdbool.h>
-
 #include <string>
 
 #include "disasm.h"
 #include "log.h"
 
-//#define kMaxLabelSize 20
-//#define kMaxMnemonicSize 20
-//#define kMaxAddressSize 6
-//#define kMaxBytesSize 8
 #define kMaxDisasmLines 4096
 
 struct disasm_line

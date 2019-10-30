@@ -5,6 +5,12 @@
 class Cpu6502
 {
 	public:
+		enum eVariant
+		{
+			k6502,
+			k6507
+		};
+		
 		enum eAddressingMode 
 		{
 			kCpuAddrModeAccumulator = 0,
@@ -53,10 +59,11 @@ class Cpu6502
 		Cpu6502();
 		virtual ~Cpu6502(){}
 		
-		void Init();
+		void Init(eVariant variant);
 		void DumpInfo();
 		void DumpDisassembly(uint16_t address, uint16_t size);
 		bool IsOpcodeValid(uint8_t operand);
+		
 	private:
 		uint16_t	pc;
 		uint8_t		acc;

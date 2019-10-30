@@ -7,17 +7,19 @@
 #include "errorcodes.h"
 #include "cpu.h"
 
-static uint8_t memory[MEMORY_SIZE];
-static uint16_t memorySize = 0;
+static char* pMemory;
+static uint32_t memorySize = 0;
 
 static Cpu6502* pCpu;
 
 eErrorCode memory_Init(void)
 {
-	memset((void*)(&memory[0]), 0xff, MEMORY_SIZE);
+	pMemory = new char[MEMORY_SIZE];
+	
+	memset((void*)(pMemory), 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
-	LOG("Memory initialised\n");
+	printf("Memory initialised\n");
 
 	return kError_OK;
 }
@@ -37,37 +39,16 @@ eErrorCode memory_Destroy(void)
 
 eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
 {
-	// TODO: Some error checking - make sure memory is there and can fit in the ROM
-
-	// load from file in to memory
-	/*
-	FILE* hFile = fopen(filename.c_str(), "r");
-	if(hFile != 0)
-	{
-		fseek(hFile, 0L, SEEK_END);
-		uint32_t fileSize = ftell(hFile);
-		fseek(hFile, 0L, SEEK_SET);
-		*bytesRead = fread((void*)&pMemory[address], 1, fileSize, hFile);
-		fclose(hFile);
-		printf("Read %d bytes\n", *bytesRead);
-	}
-	else
-	{
-		printf("ERROR - Cannot load file %s\n", filename.c_str());
-		return kError_FileNotFound;
-	}
-	*/
-	
 	std::ifstream inFile;
 	size_t size = 0;
-	inFile.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
+	inFile.open(filename, std::ios::in | std::ios::binary);
 	
 	if(inFile.is_open())
 	{
 		inFile.seekg(0, std::ios::end);
 		size = inFile.tellg();
-		inFile.seekg(0, std::ios::beg);
-		inFile.read((char*)(&memory[address]), size);
+		inFile.seekg(0, std::ios::beg);		
+		inFile.read((char*)(pMemory + address), size);		
         inFile.close();
 	}
 
@@ -76,10 +57,7 @@ eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* 
 
 void memory_Write(uint16_t address, uint8_t val)
 {
-//	if(pMemory != 0)
-//	{
-		memory[address] = val;
-//	}
+	pMemory[address] = val;
 }
 
 void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
@@ -93,13 +71,13 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 		printf("0x%04x", currentAddress);
 		for(int i=0 ; i<16 ; i++)
 		{
-			printf(" %02x", memory[currentAddress + i]);
+			printf(" %02x", pMemory[currentAddress + i]);
 		}	
 
 		printf("  ");
 		for(int i=0 ; i<16 ; i++)
 		{
-			uint8_t operand = memory[currentAddress + i];
+			uint8_t operand = pMemory[currentAddress + i];
 			if( pCpu->IsOpcodeValid(operand) )
 			{
 				printf("O");
@@ -117,7 +95,7 @@ uint8_t memory_Read(uint16_t address)
 {
 //	if(pMemory != 0)
 //	{
-		return memory[address];
+		return pMemory[address];
 //	}
 	return 0;
 }

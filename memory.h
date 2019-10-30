@@ -5,7 +5,7 @@
 
 #include "errorcodes.h"
 
-#define MEMORY_SIZE ((uint16_t)65536)
+#define MEMORY_SIZE 65536
 
 class Cpu6502;
 

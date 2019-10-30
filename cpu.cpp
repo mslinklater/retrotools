@@ -200,7 +200,7 @@ void Cpu6502::AddEmptyMnemonic(uint8_t value)
 }
 
 
-void Cpu6502::Init(void)
+void Cpu6502::Init(eVariant variant)
 {
 	printf("Intialising 6502 CPU\n");
 	// init mnemonics
