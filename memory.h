@@ -11,13 +11,27 @@ class Cpu6502;
 
 // This is used to classify which type of memory transaction a mnemonic performs
 // which is useful when different things happen for read/write with memory mapped hardware
-enum eMemoryTransaction {
-	kMemoryRead,
-	kMemoryWrite
+
+class Memory
+{
+public:
+	enum eTransactionType {
+		kMemoryRead,
+		kMemoryWrite
+	};
+	
+	Memory();
+	virtual ~Memory();
+	
+	eErrorCode Init();
+private:
+	char* 		pMemory;
+	uint32_t	memorySize;
 };
 
+
 // Lifecycle
-extern eErrorCode memory_Init(void);
+//extern eErrorCode memory_Init(void);
 extern eErrorCode memory_Destroy(void);
 
 extern eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);

@@ -30,7 +30,9 @@ int main(int argc, char* argv[])
 
 	// initialise a simple 6502 machine
 	
-	memory_Init();	
+	Memory* pMemory = new Memory();
+	pMemory->Init();	
+	
 	vcs_Init();
     
 	Cpu6502* pCpu = new Cpu6502();

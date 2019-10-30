@@ -7,12 +7,20 @@
 #include "errorcodes.h"
 #include "cpu.h"
 
-static char* pMemory;
-static uint32_t memorySize = 0;
+//static char* pMemory;
+//static uint32_t memorySize = 0;
 
 static Cpu6502* pCpu;
 
-eErrorCode memory_Init(void)
+Memory::Memory()
+{
+}
+
+Memory::~Memory()
+{
+}
+	
+eErrorCode Memory::Init(void)
 {
 	pMemory = new char[MEMORY_SIZE];
 	
