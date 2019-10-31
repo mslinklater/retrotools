@@ -3,7 +3,15 @@
 #include "disasm.h"
 #include "log.h"
 
-#define kMaxDisasmLines 4096
+static const uint32_t kMaxDisasmLines = 4096;
+
+Disassembler::Disassembler()
+{
+}
+
+Disassembler::~Disassembler()
+{
+}
 
 struct disasm_line
 {
@@ -16,7 +24,7 @@ struct disasm_line
 
 static struct disasm_line disasmLines[kMaxDisasmLines];
 
-void disasm_Init(void)
+void Disassembler::Init(void)
 {
 	LOG("disasm_Init()\n");
 
@@ -26,12 +34,11 @@ void disasm_Init(void)
 	}
 }
 
-eErrorCode disasm_Disassemble(uint16_t address, uint16_t size, uint16_t org)
+eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t org)
 {
 	return kError_OK;
 }
 
-void disasm_DumpToTTY(void)
+void Disassembler::DumpToTTY(void)
 {
 }
-

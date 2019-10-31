@@ -15,7 +15,7 @@
 // statics
 
 bool				Cpu6502::staticsInitialised;
-Cpu6502::Mnemonic	Cpu6502::mnemonics[256];
+Cpu6502::Opcode		Cpu6502::opcodes[256];
 std::string			Cpu6502::mnemonicStrings[kCpuMnemonic_Num];
 std::string			Cpu6502::addrModeStrings[kCpuAddrMode_Num];
 
@@ -27,176 +27,176 @@ Cpu6502::Cpu6502()
 
 uint8_t cpu_disasm_implied(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	printf("0x%04x %02x       %s\n", address, opcode, mnemonic);
+//	uint8_t opcode = memory_Read(address);
+//	printf("0x%04x %02x       %s\n", address, opcode, mnemonic);
 	return 1;
 }
 
 uint8_t cpu_disasm_accumulator(uint16_t address, const char* mnemonic)
 {
-	printf("0x%04x %02x       %s\n", address, memory_Read(address), mnemonic);
+//	printf("0x%04x %02x       %s\n", address, memory_Read(address), mnemonic);
 	return 1;
 }
 
 uint8_t cpu_disasm_immediate(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t val = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s #$%02x\n", address, opcode, val, mnemonic, val);
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t val = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s #$%02x\n", address, opcode, val, mnemonic, val);
 	return 2;
 }
 
 uint8_t cpu_disasm_zeropage(uint16_t address, const char* mnemonic)
 {
-	uint8_t location = memory_Read(address+1);
-	const struct vcs_info* pInfo = vcs_getInfo(location);
-	uint8_t opcode = memory_Read(address);
-	uint8_t val = memory_Read(address+1);
+//	uint8_t location = memory_Read(address+1);
+//	const struct vcs_info* pInfo = vcs_getInfo(location);
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t val = memory_Read(address+1);
 
-	if(pInfo->writeName.length() != 0)
-	{
-		// read or write here
-		printf("0x%04x %02x %02x    %s %s\n", address, opcode, val, mnemonic, pInfo->writeName.c_str());
-	}
-	else
-	{
-		printf("0x%04x %02x %02x    %s $%02x\n", address, opcode, val, mnemonic, memory_Read(address+1));
-	}
+//	if(pInfo->writeName.length() != 0)
+//	{
+//		// read or write here
+//		printf("0x%04x %02x %02x    %s %s\n", address, opcode, val, mnemonic, pInfo->writeName.c_str());
+//	}
+//	else
+//	{
+//		printf("0x%04x %02x %02x    %s $%02x\n", address, opcode, val, mnemonic, memory_Read(address+1));
+//	}
 	return 2;
 }
 
 uint8_t cpu_disasm_zeropagex(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t val = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s $%02x,X\n", address, opcode, val, mnemonic, memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t val = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s $%02x,X\n", address, opcode, val, mnemonic, memory_Read(address+1));
 	return 2;
 }
 
 uint8_t cpu_disasm_zeropagey(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t val = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s $%02x,Y\n", address, opcode, val, mnemonic, memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t val = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s $%02x,Y\n", address, opcode, val, mnemonic, memory_Read(address+1));
 	return 2;
 }
 
 uint8_t cpu_disasm_absolute(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	uint8_t last = memory_Read(address+2);
-	printf("0x%04x %02x %02x %02x %s $%02x%02x\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	uint8_t last = memory_Read(address+2);
+//	printf("0x%04x %02x %02x %02x %s $%02x%02x\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 
 uint8_t cpu_disasm_absolutex(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	uint8_t last = memory_Read(address+2);
-	printf("0x%04x %02x %02x %02x %s $%02x%02x,X\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	uint8_t last = memory_Read(address+2);
+//	printf("0x%04x %02x %02x %02x %s $%02x%02x,X\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
  
 uint8_t cpu_disasm_absolutey(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	uint8_t last = memory_Read(address+2);
-	printf("0x%04x %02x %02x %02x %s $%02x%02x,Y\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	uint8_t last = memory_Read(address+2);
+//	printf("0x%04x %02x %02x %02x %s $%02x%02x,Y\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
  
 uint8_t cpu_disasm_indirectx(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s ($%02x,X)\n", address, opcode, next, mnemonic, memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s ($%02x,X)\n", address, opcode, next, mnemonic, memory_Read(address+1));
 	return 2;
 }
  
 uint8_t cpu_disasm_indirecty(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s ($%02x),Y\n", address, opcode, next, mnemonic, memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s ($%02x),Y\n", address, opcode, next, mnemonic, memory_Read(address+1));
 	return 2;
 }
  
 uint8_t cpu_disasm_relative(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	printf("0x%04x %02x %02x    %s $%04x(#$%02x)\n", address, opcode, next, mnemonic, address+memory_Read(address+1), memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	printf("0x%04x %02x %02x    %s $%04x(#$%02x)\n", address, opcode, next, mnemonic, address+memory_Read(address+1), memory_Read(address+1));
 	return 2;
 }
 
 uint8_t cpu_disasm_indirect(uint16_t address, const char* mnemonic)
 {
-	uint8_t opcode = memory_Read(address);
-	uint8_t next = memory_Read(address+1);
-	uint8_t last = memory_Read(address+2);
-	printf("0x%04x %02x %02x %02x %s ($%02x%02x)\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
+//	uint8_t opcode = memory_Read(address);
+//	uint8_t next = memory_Read(address+1);
+//	uint8_t last = memory_Read(address+2);
+//	printf("0x%04x %02x %02x %02x %s ($%02x%02x)\n", address, opcode, next, last, mnemonic, memory_Read(address+2), memory_Read(address+1));
 	return 3;
 }
 
-void Cpu6502::AddMnemonic(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented)
+void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented)
 {
-	mnemonics[value].valid = true;
-	mnemonics[value].mnemonic = mnemonic;
-	mnemonics[value].addrMode = addrMode;
+	opcodes[value].valid = true;
+	opcodes[value].mnemonic = mnemonic;
+	opcodes[value].addrMode = addrMode;
 
 	switch(addrMode)
 	{
 		case kCpuAddrModeAccumulator: 
-			mnemonics[value].pfDisasm = cpu_disasm_accumulator; 
+			opcodes[value].pfDisasm = cpu_disasm_accumulator; 
 			break;
 		case kCpuAddrModeImmediate: 
-			mnemonics[value].pfDisasm = cpu_disasm_immediate; 
+			opcodes[value].pfDisasm = cpu_disasm_immediate; 
 			break;
 		case kCpuAddrModeZeroPage: 
-			mnemonics[value].pfDisasm = cpu_disasm_zeropage; 
+			opcodes[value].pfDisasm = cpu_disasm_zeropage; 
 			break;
 		case kCpuAddrModeZeroPageX: 
-			mnemonics[value].pfDisasm = cpu_disasm_zeropagex; 
+			opcodes[value].pfDisasm = cpu_disasm_zeropagex; 
 			break;
 		case kCpuAddrModeZeroPageY: 
-			mnemonics[value].pfDisasm = cpu_disasm_zeropagey; 
+			opcodes[value].pfDisasm = cpu_disasm_zeropagey; 
 			break;
 		case kCpuAddrModeAbsolute: 
-			mnemonics[value].pfDisasm = cpu_disasm_absolute; 
+			opcodes[value].pfDisasm = cpu_disasm_absolute; 
 			break;
 		case kCpuAddrModeAbsoluteX: 
-			mnemonics[value].pfDisasm = cpu_disasm_absolutex; 
+			opcodes[value].pfDisasm = cpu_disasm_absolutex; 
 			break;
 		case kCpuAddrModeAbsoluteY: 
-			mnemonics[value].pfDisasm = cpu_disasm_absolutey; 
+			opcodes[value].pfDisasm = cpu_disasm_absolutey; 
 			break;
 		case kCpuAddrModeIndirectX: 
-			mnemonics[value].pfDisasm = cpu_disasm_indirectx; 
+			opcodes[value].pfDisasm = cpu_disasm_indirectx; 
 			break;
 		case kCpuAddrModeIndirectY: 
-			mnemonics[value].pfDisasm = cpu_disasm_indirecty; 
+			opcodes[value].pfDisasm = cpu_disasm_indirecty; 
 			break;
 		case kCpuAddrModeRelative: 
-			mnemonics[value].pfDisasm = cpu_disasm_relative; 
+			opcodes[value].pfDisasm = cpu_disasm_relative; 
 			break;
 		case kCpuAddrModeImplied: 
-			mnemonics[value].pfDisasm = cpu_disasm_implied; 
+			opcodes[value].pfDisasm = cpu_disasm_implied; 
 			break;
 		case kCpuAddrModeIndirect: 
-			mnemonics[value].pfDisasm = cpu_disasm_indirect; 
+			opcodes[value].pfDisasm = cpu_disasm_indirect; 
 			break;
 		default:
 			break;
 	}
 }
 
-void Cpu6502::AddEmptyMnemonic(uint8_t value)
+void Cpu6502::AddEmptyOpcode(uint8_t value)
 {
-	mnemonics[value].valid = false;
-	mnemonics[value].pfDisasm = 0;
+	opcodes[value].valid = false;
+	opcodes[value].pfDisasm = 0;
 }
 
 
@@ -278,268 +278,268 @@ void Cpu6502::Init(eVariant variant)
 	// Lets fill it up with empty mnemonics first
 	for(int i=0 ; i<256 ; i++)
 	{
-		AddEmptyMnemonic((uint8_t)i);
+		AddEmptyOpcode((uint8_t)i);
 	}
 
 	// ADC
-	AddMnemonic(0x69, kCpuMnemonic_ADC, kCpuAddrModeImmediate, true);
-	AddMnemonic(0x65, kCpuMnemonic_ADC, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x75, kCpuMnemonic_ADC, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x6d, kCpuMnemonic_ADC, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x7d, kCpuMnemonic_ADC, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0x79, kCpuMnemonic_ADC, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0x61, kCpuMnemonic_ADC, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0x71, kCpuMnemonic_ADC, kCpuAddrModeIndirectY, true);
+	AddOpcode(0x69, kCpuMnemonic_ADC, kCpuAddrModeImmediate, true);
+	AddOpcode(0x65, kCpuMnemonic_ADC, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x75, kCpuMnemonic_ADC, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x6d, kCpuMnemonic_ADC, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x7d, kCpuMnemonic_ADC, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x79, kCpuMnemonic_ADC, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0x61, kCpuMnemonic_ADC, kCpuAddrModeIndirectX, true);
+	AddOpcode(0x71, kCpuMnemonic_ADC, kCpuAddrModeIndirectY, true);
 
 	// AND
-	AddMnemonic(0x29, kCpuMnemonic_AND, kCpuAddrModeImmediate, true);
-	AddMnemonic(0x25, kCpuMnemonic_AND, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x35, kCpuMnemonic_AND, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x2d, kCpuMnemonic_AND, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x3d, kCpuMnemonic_AND, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0x39, kCpuMnemonic_AND, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0x21, kCpuMnemonic_AND, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0x31, kCpuMnemonic_AND, kCpuAddrModeIndirectY, true);
+	AddOpcode(0x29, kCpuMnemonic_AND, kCpuAddrModeImmediate, true);
+	AddOpcode(0x25, kCpuMnemonic_AND, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x35, kCpuMnemonic_AND, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x2d, kCpuMnemonic_AND, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x3d, kCpuMnemonic_AND, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x39, kCpuMnemonic_AND, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0x21, kCpuMnemonic_AND, kCpuAddrModeIndirectX, true);
+	AddOpcode(0x31, kCpuMnemonic_AND, kCpuAddrModeIndirectY, true);
 
 	// ASL
-	AddMnemonic(0x0a, kCpuMnemonic_ASL, kCpuAddrModeAccumulator, true);
-	AddMnemonic(0x06, kCpuMnemonic_ASL, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x16, kCpuMnemonic_ASL, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x0e, kCpuMnemonic_ASL, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x1e, kCpuMnemonic_ASL, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x0a, kCpuMnemonic_ASL, kCpuAddrModeAccumulator, true);
+	AddOpcode(0x06, kCpuMnemonic_ASL, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x16, kCpuMnemonic_ASL, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x0e, kCpuMnemonic_ASL, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x1e, kCpuMnemonic_ASL, kCpuAddrModeAbsoluteX, true);
 
 	//BCC
-	AddMnemonic(0x90, kCpuMnemonic_BCC, kCpuAddrModeRelative, true);
+	AddOpcode(0x90, kCpuMnemonic_BCC, kCpuAddrModeRelative, true);
 
 	// BCS
-	AddMnemonic(0xb0, kCpuMnemonic_BCS, kCpuAddrModeRelative, true);
+	AddOpcode(0xb0, kCpuMnemonic_BCS, kCpuAddrModeRelative, true);
 
 	// BEQ
-	AddMnemonic(0xf0, kCpuMnemonic_BEQ, kCpuAddrModeRelative, true);
+	AddOpcode(0xf0, kCpuMnemonic_BEQ, kCpuAddrModeRelative, true);
 	
 	// BIT
-	AddMnemonic(0x24, kCpuMnemonic_BIT, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x2c, kCpuMnemonic_BIT, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x24, kCpuMnemonic_BIT, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x2c, kCpuMnemonic_BIT, kCpuAddrModeAbsolute, true);
 
 	// BMI
-	AddMnemonic(0x30, kCpuMnemonic_BMI, kCpuAddrModeRelative, true);
+	AddOpcode(0x30, kCpuMnemonic_BMI, kCpuAddrModeRelative, true);
 
 	// BNE
-	AddMnemonic(0xd0, kCpuMnemonic_BNE, kCpuAddrModeRelative, true);
+	AddOpcode(0xd0, kCpuMnemonic_BNE, kCpuAddrModeRelative, true);
 
 	// BPL
-	AddMnemonic(0x10, kCpuMnemonic_BPL, kCpuAddrModeRelative, true);
+	AddOpcode(0x10, kCpuMnemonic_BPL, kCpuAddrModeRelative, true);
 
 	// BRK
-	AddMnemonic(0x00, kCpuMnemonic_BRK, kCpuAddrModeImplied, true);
+	AddOpcode(0x00, kCpuMnemonic_BRK, kCpuAddrModeImplied, true);
 
 	// BVC
-	AddMnemonic(0x50, kCpuMnemonic_BVC, kCpuAddrModeRelative, true);
+	AddOpcode(0x50, kCpuMnemonic_BVC, kCpuAddrModeRelative, true);
 
 	//BVS
-	AddMnemonic(0x70, kCpuMnemonic_BVS, kCpuAddrModeRelative, true);
+	AddOpcode(0x70, kCpuMnemonic_BVS, kCpuAddrModeRelative, true);
 
 	// CLC
-	AddMnemonic(0x18, kCpuMnemonic_CLC, kCpuAddrModeRelative, true);
+	AddOpcode(0x18, kCpuMnemonic_CLC, kCpuAddrModeRelative, true);
 
 	// CLD
-	AddMnemonic(0xd8, kCpuMnemonic_CLD, kCpuAddrModeImplied, true);
+	AddOpcode(0xd8, kCpuMnemonic_CLD, kCpuAddrModeImplied, true);
 
 	// CLI
-	AddMnemonic(0x58, kCpuMnemonic_CLI, kCpuAddrModeRelative, true);
+	AddOpcode(0x58, kCpuMnemonic_CLI, kCpuAddrModeRelative, true);
 
 	// CLV
-	AddMnemonic(0xb8, kCpuMnemonic_CLV, kCpuAddrModeRelative, true);
+	AddOpcode(0xb8, kCpuMnemonic_CLV, kCpuAddrModeRelative, true);
 
 	// CMP
-	AddMnemonic(0xc9, kCpuMnemonic_CMP, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xc5, kCpuMnemonic_CMP, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xd5, kCpuMnemonic_CMP, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xcd, kCpuMnemonic_CMP, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xdd, kCpuMnemonic_CMP, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0xd9, kCpuMnemonic_CMP, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0xc1, kCpuMnemonic_CMP, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0xd1, kCpuMnemonic_CMP, kCpuAddrModeIndirectY, true);
+	AddOpcode(0xc9, kCpuMnemonic_CMP, kCpuAddrModeImmediate, true);
+	AddOpcode(0xc5, kCpuMnemonic_CMP, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xd5, kCpuMnemonic_CMP, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xcd, kCpuMnemonic_CMP, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xdd, kCpuMnemonic_CMP, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xd9, kCpuMnemonic_CMP, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0xc1, kCpuMnemonic_CMP, kCpuAddrModeIndirectX, true);
+	AddOpcode(0xd1, kCpuMnemonic_CMP, kCpuAddrModeIndirectY, true);
 
 	// CPX
-	AddMnemonic(0xe0, kCpuMnemonic_CPX, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xe4, kCpuMnemonic_CPX, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xec, kCpuMnemonic_CPX, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xe0, kCpuMnemonic_CPX, kCpuAddrModeImmediate, true);
+	AddOpcode(0xe4, kCpuMnemonic_CPX, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xec, kCpuMnemonic_CPX, kCpuAddrModeAbsolute, true);
 
 	// CPY
-	AddMnemonic(0xc0, kCpuMnemonic_CPY, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xc4, kCpuMnemonic_CPY, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xcc, kCpuMnemonic_CPY, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xc0, kCpuMnemonic_CPY, kCpuAddrModeImmediate, true);
+	AddOpcode(0xc4, kCpuMnemonic_CPY, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xcc, kCpuMnemonic_CPY, kCpuAddrModeAbsolute, true);
 
 	// DEC
-	AddMnemonic(0xc6, kCpuMnemonic_DEC, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xd6, kCpuMnemonic_DEC, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xce, kCpuMnemonic_DEC, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xde, kCpuMnemonic_DEC, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xc6, kCpuMnemonic_DEC, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xd6, kCpuMnemonic_DEC, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xce, kCpuMnemonic_DEC, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xde, kCpuMnemonic_DEC, kCpuAddrModeAbsoluteX, true);
 
 	// DEX
-	AddMnemonic(0xca, kCpuMnemonic_DEX, kCpuAddrModeImplied, true);
+	AddOpcode(0xca, kCpuMnemonic_DEX, kCpuAddrModeImplied, true);
 
 	// DEY
-	AddMnemonic(0x88, kCpuMnemonic_DEY, kCpuAddrModeImplied, true);
+	AddOpcode(0x88, kCpuMnemonic_DEY, kCpuAddrModeImplied, true);
 
 	// EOR
-	AddMnemonic(0x49, kCpuMnemonic_EOR, kCpuAddrModeImmediate, true);
-	AddMnemonic(0x45, kCpuMnemonic_EOR, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x55, kCpuMnemonic_EOR, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x4d, kCpuMnemonic_EOR, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x5d, kCpuMnemonic_EOR, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0x59, kCpuMnemonic_EOR, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0x41, kCpuMnemonic_EOR, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0x51, kCpuMnemonic_EOR, kCpuAddrModeIndirectY, true);
+	AddOpcode(0x49, kCpuMnemonic_EOR, kCpuAddrModeImmediate, true);
+	AddOpcode(0x45, kCpuMnemonic_EOR, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x55, kCpuMnemonic_EOR, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x4d, kCpuMnemonic_EOR, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x5d, kCpuMnemonic_EOR, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x59, kCpuMnemonic_EOR, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0x41, kCpuMnemonic_EOR, kCpuAddrModeIndirectX, true);
+	AddOpcode(0x51, kCpuMnemonic_EOR, kCpuAddrModeIndirectY, true);
 
 	// INC
-	AddMnemonic(0xe6, kCpuMnemonic_INC, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xf6, kCpuMnemonic_INC, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xee, kCpuMnemonic_INC, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xfe, kCpuMnemonic_INC, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xe6, kCpuMnemonic_INC, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xf6, kCpuMnemonic_INC, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xee, kCpuMnemonic_INC, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xfe, kCpuMnemonic_INC, kCpuAddrModeAbsoluteX, true);
 
 	// INX
-	AddMnemonic(0xe8, kCpuMnemonic_INX, kCpuAddrModeImplied, true);
+	AddOpcode(0xe8, kCpuMnemonic_INX, kCpuAddrModeImplied, true);
 
 	// INY
-	AddMnemonic(0xc8, kCpuMnemonic_INY, kCpuAddrModeImplied, true);
+	AddOpcode(0xc8, kCpuMnemonic_INY, kCpuAddrModeImplied, true);
 
 	// JMP
-	AddMnemonic(0x4c, kCpuMnemonic_JMP, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x2c, kCpuMnemonic_JMP, kCpuAddrModeIndirect, true);
+	AddOpcode(0x4c, kCpuMnemonic_JMP, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x2c, kCpuMnemonic_JMP, kCpuAddrModeIndirect, true);
 
 	// JSR
-	AddMnemonic(0x20, kCpuMnemonic_JSR, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x20, kCpuMnemonic_JSR, kCpuAddrModeAbsolute, true);
 
 	// LDA
-	AddMnemonic(0xa9, kCpuMnemonic_LDA, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xa5, kCpuMnemonic_LDA, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xb5, kCpuMnemonic_LDA, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xad, kCpuMnemonic_LDA, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xbd, kCpuMnemonic_LDA, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0xb9, kCpuMnemonic_LDA, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0xa1, kCpuMnemonic_LDA, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0xb1, kCpuMnemonic_LDA, kCpuAddrModeIndirectY, true);
+	AddOpcode(0xa9, kCpuMnemonic_LDA, kCpuAddrModeImmediate, true);
+	AddOpcode(0xa5, kCpuMnemonic_LDA, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xb5, kCpuMnemonic_LDA, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xad, kCpuMnemonic_LDA, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xbd, kCpuMnemonic_LDA, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xb9, kCpuMnemonic_LDA, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0xa1, kCpuMnemonic_LDA, kCpuAddrModeIndirectX, true);
+	AddOpcode(0xb1, kCpuMnemonic_LDA, kCpuAddrModeIndirectY, true);
 
 	// LDX
-	AddMnemonic(0xa2, kCpuMnemonic_LDX, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xa6, kCpuMnemonic_LDX, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xb6, kCpuMnemonic_LDX, kCpuAddrModeZeroPageY, true);
-	AddMnemonic(0xae, kCpuMnemonic_LDX, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xbe, kCpuMnemonic_LDX, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0xa2, kCpuMnemonic_LDX, kCpuAddrModeImmediate, true);
+	AddOpcode(0xa6, kCpuMnemonic_LDX, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xb6, kCpuMnemonic_LDX, kCpuAddrModeZeroPageY, true);
+	AddOpcode(0xae, kCpuMnemonic_LDX, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xbe, kCpuMnemonic_LDX, kCpuAddrModeAbsoluteY, true);
 
 	// LDY
-	AddMnemonic(0xa0, kCpuMnemonic_LDY, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xa4, kCpuMnemonic_LDY, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xb4, kCpuMnemonic_LDY, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xac, kCpuMnemonic_LDY, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xbc, kCpuMnemonic_LDY, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xa0, kCpuMnemonic_LDY, kCpuAddrModeImmediate, true);
+	AddOpcode(0xa4, kCpuMnemonic_LDY, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xb4, kCpuMnemonic_LDY, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xac, kCpuMnemonic_LDY, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xbc, kCpuMnemonic_LDY, kCpuAddrModeAbsoluteX, true);
 
 	// LSR
-	AddMnemonic(0x4a, kCpuMnemonic_LSR, kCpuAddrModeAccumulator, true);
-	AddMnemonic(0x46, kCpuMnemonic_LSR, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x56, kCpuMnemonic_LSR, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x4e, kCpuMnemonic_LSR, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x5e, kCpuMnemonic_LSR, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x4a, kCpuMnemonic_LSR, kCpuAddrModeAccumulator, true);
+	AddOpcode(0x46, kCpuMnemonic_LSR, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x56, kCpuMnemonic_LSR, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x4e, kCpuMnemonic_LSR, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x5e, kCpuMnemonic_LSR, kCpuAddrModeAbsoluteX, true);
 
 	// NOP
-	AddMnemonic(0xea, kCpuMnemonic_NOP, kCpuAddrModeImplied, true);
+	AddOpcode(0xea, kCpuMnemonic_NOP, kCpuAddrModeImplied, true);
 
 	// ORA
-	AddMnemonic(0x09, kCpuMnemonic_ORA, kCpuAddrModeImmediate, true);
-	AddMnemonic(0x05, kCpuMnemonic_ORA, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x15, kCpuMnemonic_ORA, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x0d, kCpuMnemonic_ORA, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x1d, kCpuMnemonic_ORA, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0x19, kCpuMnemonic_ORA, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0x01, kCpuMnemonic_ORA, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0x11, kCpuMnemonic_ORA, kCpuAddrModeIndirectY, true);
+	AddOpcode(0x09, kCpuMnemonic_ORA, kCpuAddrModeImmediate, true);
+	AddOpcode(0x05, kCpuMnemonic_ORA, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x15, kCpuMnemonic_ORA, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x0d, kCpuMnemonic_ORA, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x1d, kCpuMnemonic_ORA, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x19, kCpuMnemonic_ORA, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0x01, kCpuMnemonic_ORA, kCpuAddrModeIndirectX, true);
+	AddOpcode(0x11, kCpuMnemonic_ORA, kCpuAddrModeIndirectY, true);
 
 	// PHA
-	AddMnemonic(0x48, kCpuMnemonic_PHA, kCpuAddrModeImplied, true);
+	AddOpcode(0x48, kCpuMnemonic_PHA, kCpuAddrModeImplied, true);
 
 	// PHP
-	AddMnemonic(0x08, kCpuMnemonic_PHP, kCpuAddrModeImplied, true);
+	AddOpcode(0x08, kCpuMnemonic_PHP, kCpuAddrModeImplied, true);
 
 	// PLA
-	AddMnemonic(0x68, kCpuMnemonic_PLA, kCpuAddrModeImplied, true);
+	AddOpcode(0x68, kCpuMnemonic_PLA, kCpuAddrModeImplied, true);
 
 	// ROL
-	AddMnemonic(0x2a, kCpuMnemonic_ROL, kCpuAddrModeAccumulator, true);
-	AddMnemonic(0x26, kCpuMnemonic_ROL, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x36, kCpuMnemonic_ROL, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x2e, kCpuMnemonic_ROL, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x3e, kCpuMnemonic_ROL, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x2a, kCpuMnemonic_ROL, kCpuAddrModeAccumulator, true);
+	AddOpcode(0x26, kCpuMnemonic_ROL, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x36, kCpuMnemonic_ROL, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x2e, kCpuMnemonic_ROL, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x3e, kCpuMnemonic_ROL, kCpuAddrModeAbsoluteX, true);
 
 	// ROR
-	AddMnemonic(0x6a, kCpuMnemonic_ROR, kCpuAddrModeAccumulator, true);
-	AddMnemonic(0x66, kCpuMnemonic_ROR, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x76, kCpuMnemonic_ROR, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x6e, kCpuMnemonic_ROR, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x7e, kCpuMnemonic_ROR, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x6a, kCpuMnemonic_ROR, kCpuAddrModeAccumulator, true);
+	AddOpcode(0x66, kCpuMnemonic_ROR, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x76, kCpuMnemonic_ROR, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x6e, kCpuMnemonic_ROR, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x7e, kCpuMnemonic_ROR, kCpuAddrModeAbsoluteX, true);
 
 	// RTI
-	AddMnemonic(0x40, kCpuMnemonic_RTI, kCpuAddrModeImplied, true);
+	AddOpcode(0x40, kCpuMnemonic_RTI, kCpuAddrModeImplied, true);
 
 	// RTS
-	AddMnemonic(0x60, kCpuMnemonic_RTS, kCpuAddrModeImplied, true);
+	AddOpcode(0x60, kCpuMnemonic_RTS, kCpuAddrModeImplied, true);
 
 	// SBC
-	AddMnemonic(0xe9, kCpuMnemonic_SBC, kCpuAddrModeImmediate, true);
-	AddMnemonic(0xe5, kCpuMnemonic_SBC, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0xf5, kCpuMnemonic_SBC, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0xed, kCpuMnemonic_SBC, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0xfd, kCpuMnemonic_SBC, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0xf9, kCpuMnemonic_SBC, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0xe1, kCpuMnemonic_SBC, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0xf1, kCpuMnemonic_SBC, kCpuAddrModeIndirectY, true);
+	AddOpcode(0xe9, kCpuMnemonic_SBC, kCpuAddrModeImmediate, true);
+	AddOpcode(0xe5, kCpuMnemonic_SBC, kCpuAddrModeZeroPage, true);
+	AddOpcode(0xf5, kCpuMnemonic_SBC, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0xed, kCpuMnemonic_SBC, kCpuAddrModeAbsolute, true);
+	AddOpcode(0xfd, kCpuMnemonic_SBC, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0xf9, kCpuMnemonic_SBC, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0xe1, kCpuMnemonic_SBC, kCpuAddrModeIndirectX, true);
+	AddOpcode(0xf1, kCpuMnemonic_SBC, kCpuAddrModeIndirectY, true);
 
 	// SEC
-	AddMnemonic(0x38, kCpuMnemonic_SEC, kCpuAddrModeImplied, true);
+	AddOpcode(0x38, kCpuMnemonic_SEC, kCpuAddrModeImplied, true);
 
 	// SED
-	AddMnemonic(0xf8, kCpuMnemonic_SED, kCpuAddrModeImplied, true);
+	AddOpcode(0xf8, kCpuMnemonic_SED, kCpuAddrModeImplied, true);
 
 	// SEI
-	AddMnemonic(0x78, kCpuMnemonic_SEI, kCpuAddrModeImplied, true);
+	AddOpcode(0x78, kCpuMnemonic_SEI, kCpuAddrModeImplied, true);
 
 	// STA
-	AddMnemonic(0x85, kCpuMnemonic_STA, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x95, kCpuMnemonic_STA, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x8d, kCpuMnemonic_STA, kCpuAddrModeAbsolute, true);
-	AddMnemonic(0x9d, kCpuMnemonic_STA, kCpuAddrModeAbsoluteX, true);
-	AddMnemonic(0x99, kCpuMnemonic_STA, kCpuAddrModeAbsoluteY, true);
-	AddMnemonic(0x81, kCpuMnemonic_STA, kCpuAddrModeIndirectX, true);
-	AddMnemonic(0x91, kCpuMnemonic_STA, kCpuAddrModeIndirectY, true);
+	AddOpcode(0x85, kCpuMnemonic_STA, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x95, kCpuMnemonic_STA, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x8d, kCpuMnemonic_STA, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x9d, kCpuMnemonic_STA, kCpuAddrModeAbsoluteX, true);
+	AddOpcode(0x99, kCpuMnemonic_STA, kCpuAddrModeAbsoluteY, true);
+	AddOpcode(0x81, kCpuMnemonic_STA, kCpuAddrModeIndirectX, true);
+	AddOpcode(0x91, kCpuMnemonic_STA, kCpuAddrModeIndirectY, true);
 
 	// STX
-	AddMnemonic(0x86, kCpuMnemonic_STX, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x96, kCpuMnemonic_STX, kCpuAddrModeZeroPageY, true);
-	AddMnemonic(0x8e, kCpuMnemonic_STX, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x86, kCpuMnemonic_STX, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x96, kCpuMnemonic_STX, kCpuAddrModeZeroPageY, true);
+	AddOpcode(0x8e, kCpuMnemonic_STX, kCpuAddrModeAbsolute, true);
 
 	// STY
-	AddMnemonic(0x84, kCpuMnemonic_STY, kCpuAddrModeZeroPage, true);
-	AddMnemonic(0x94, kCpuMnemonic_STY, kCpuAddrModeZeroPageX, true);
-	AddMnemonic(0x8c, kCpuMnemonic_STY, kCpuAddrModeAbsolute, true);
+	AddOpcode(0x84, kCpuMnemonic_STY, kCpuAddrModeZeroPage, true);
+	AddOpcode(0x94, kCpuMnemonic_STY, kCpuAddrModeZeroPageX, true);
+	AddOpcode(0x8c, kCpuMnemonic_STY, kCpuAddrModeAbsolute, true);
 
 	// TAX
-	AddMnemonic(0xaa, kCpuMnemonic_TAX, kCpuAddrModeImplied, true);
+	AddOpcode(0xaa, kCpuMnemonic_TAX, kCpuAddrModeImplied, true);
 
 	// TAY
-	AddMnemonic(0xa8, kCpuMnemonic_TAX, kCpuAddrModeImplied, true);
+	AddOpcode(0xa8, kCpuMnemonic_TAX, kCpuAddrModeImplied, true);
 
 	// TSX
-	AddMnemonic(0xba, kCpuMnemonic_TSX, kCpuAddrModeImplied, true);
+	AddOpcode(0xba, kCpuMnemonic_TSX, kCpuAddrModeImplied, true);
 
 	// TXA
-	AddMnemonic(0x8a, kCpuMnemonic_TXA, kCpuAddrModeImplied, true);
+	AddOpcode(0x8a, kCpuMnemonic_TXA, kCpuAddrModeImplied, true);
 
 	// TXS
-	AddMnemonic(0x9a, kCpuMnemonic_TXS, kCpuAddrModeImplied, true);
+	AddOpcode(0x9a, kCpuMnemonic_TXS, kCpuAddrModeImplied, true);
 
 	// TYA
-	AddMnemonic(0x98, kCpuMnemonic_TYA, kCpuAddrModeImplied, true);
+	AddOpcode(0x98, kCpuMnemonic_TYA, kCpuAddrModeImplied, true);
 
 	printf("Intialised 6502 CPU\n");
 }
@@ -556,9 +556,9 @@ void Cpu6502::DumpInfo(void)
 		for(int col=0 ; col<16 ; col++)
 		{
 			uint8_t operand = row*16 + col;
-			if(mnemonics[operand].valid)
+			if(opcodes[operand].valid)
 			{
-				printf(" %s |", mnemonicStrings[mnemonics[operand].mnemonic].c_str());
+				printf(" %s |", mnemonicStrings[opcodes[operand].mnemonic].c_str());
 			}
 			else
 			{
@@ -570,9 +570,9 @@ void Cpu6502::DumpInfo(void)
 		for(int col=0 ; col<16 ; col++)
 		{
 			uint8_t operand = row*16 + col;
-			if(mnemonics[operand].valid)
+			if(opcodes[operand].valid)
 			{
-				printf("%s|", addrModeStrings[mnemonics[operand].addrMode].c_str());
+				printf("%s|", addrModeStrings[opcodes[operand].addrMode].c_str());
 			}
 			else
 			{
@@ -586,19 +586,20 @@ void Cpu6502::DumpInfo(void)
 
 bool Cpu6502::IsOpcodeValid(uint8_t operand)
 {
-	return mnemonics[operand].valid;
+	return opcodes[operand].valid;
 }
 
+// This needs to move to the disasm class
 void Cpu6502::DumpDisassembly(uint16_t address, uint16_t size)
 {
 	printf("Disassembling\n");
 	uint16_t pc = address;
 	while(pc < address + size)
 	{
-		uint8_t opcode = memory_Read(pc);
-		if(mnemonics[opcode].pfDisasm != 0)
+		uint8_t opcode = pMemory->Read(pc);
+		if(opcodes[opcode].pfDisasm != 0)
 		{
-			pc += (mnemonics[opcode].pfDisasm)(pc,mnemonicStrings[mnemonics[opcode].mnemonic].c_str());
+			pc += (opcodes[opcode].pfDisasm)(pc,mnemonicStrings[opcodes[opcode].mnemonic].c_str());
 		}
 		else
 		{

@@ -28,21 +28,23 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 
-	// initialise a simple 6502 machine
+	// initialise components
 	
 	Memory* pMemory = new Memory();
+	Cpu6502* pCpu = new Cpu6502();
+	Disassembler* pDisassembler = new Disassembler();
+	
 	pMemory->Init();	
 	
 	vcs_Init();
     
-	Cpu6502* pCpu = new Cpu6502();
     pCpu->Init(Cpu6502::k6507);
 	pCpu->DumpInfo();
+	pCpu->SetMemory(pMemory);
 
-    memory_SetCPU(pCpu);
-    
+    pMemory->SetCPU(pCpu);
 	
-	disasm_Init();
+	pDisassembler->Init();
 
 	uint16_t bytesLoaded;
 	uint16_t loadAddress = pConfig->GetLoadAddress();
@@ -50,13 +52,13 @@ int main(int argc, char* argv[])
 	// need to grab the ROM filename from the config settings
 	if(!pConfig->GetLoadFilename().empty())
 	{
-		memory_Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
+		pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
 	}
 
-	disasm_Disassemble(loadAddress, bytesLoaded, loadAddress);
-	disasm_DumpToTTY();
+	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
+	pDisassembler->DumpToTTY();
 
-	memory_Destroy();
+	pMemory->Destroy();
 
 	printf("Exiting...\n");
 	

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
-//#include <inttypes.h>
+
+class Memory;
 
 class Cpu6502
 {
@@ -47,7 +48,7 @@ class Cpu6502
 			kCpuMnemonic_TXA,	kCpuMnemonic_TXS,	kCpuMnemonic_TYA,	kCpuMnemonic_Num
 		};
 
-		struct Mnemonic {
+		struct Opcode {
 			bool					valid;
 			uint8_t					value;
 			enum eMnemonic			mnemonic;
@@ -61,8 +62,13 @@ class Cpu6502
 		
 		void Init(eVariant variant);
 		void DumpInfo();
-		void DumpDisassembly(uint16_t address, uint16_t size);
+		void DumpDisassembly(uint16_t address, uint16_t size);	// DEPRECATE
 		bool IsOpcodeValid(uint8_t operand);
+		
+		void SetMemory(Memory* mem)
+		{
+			pMemory = mem;
+		}
 		
 	private:
 		uint16_t	pc;
@@ -72,12 +78,14 @@ class Cpu6502
 		uint8_t		status;
 		uint8_t		sp;
 
-        void AddMnemonic(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented);
-        void AddEmptyMnemonic(uint8_t value);
+        void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented);
+        void AddEmptyOpcode(uint8_t value);
         
 		// static setup
         static bool 		staticsInitialised;
-		static Mnemonic 	mnemonics[256];
+		static Opcode	 	opcodes[256];
 		static std::string 	mnemonicStrings[kCpuMnemonic_Num];
 		static std::string 	addrModeStrings[kCpuAddrMode_Num];
+
+		Memory*	pMemory;
 };

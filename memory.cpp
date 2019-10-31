@@ -32,12 +32,12 @@ eErrorCode Memory::Init(void)
 	return kError_OK;
 }
 
-void memory_SetCPU(Cpu6502* cpu)
+void Memory::SetCPU(Cpu6502* cpu)
 {
     pCpu = cpu;
 }
 
-eErrorCode memory_Destroy(void)
+eErrorCode Memory::Destroy(void)
 {
 	memorySize = 0;
 	LOG("Memory destroyed\n");
@@ -45,7 +45,7 @@ eErrorCode memory_Destroy(void)
 	return kError_OK;
 }
 
-eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
+eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
 {
 	std::ifstream inFile;
 	size_t size = 0;
@@ -55,7 +55,7 @@ eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* 
 	{
 		inFile.seekg(0, std::ios::end);
 		size = inFile.tellg();
-		inFile.seekg(0, std::ios::beg);		
+		inFile.seekg(0, std::ios::beg);
 		inFile.read((char*)(pMemory + address), size);		
         inFile.close();
 	}
@@ -63,12 +63,12 @@ eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* 
 	return kError_OK;
 }
 
-void memory_Write(uint16_t address, uint8_t val)
+void Memory::Write(uint16_t address, uint8_t val)
 {
 	pMemory[address] = val;
 }
 
-void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
+void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 {
 	uint16_t length16 = ((length + 15) / 16) * 16;
 
@@ -99,11 +99,11 @@ void memory_DumpToTTY(uint16_t startAddress, uint16_t length)
 	}
 }
 
-uint8_t memory_Read(uint16_t address)
+uint8_t Memory::Read(uint16_t address)
 {
-//	if(pMemory != 0)
-//	{
+	if(pMemory != 0)
+	{
 		return pMemory[address];
-//	}
+	}
 	return 0;
 }
