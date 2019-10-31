@@ -29,7 +29,7 @@ public:
 	void 		SetCPU(Cpu6502* cpu);
 	eErrorCode 	Destroy(void);
 	eErrorCode 	Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
-	uint8_t 	Read(uint16_t address);
+	uint8_t 	Read(uint16_t address) const;
 	void 		Write(uint16_t address, uint8_t val);
 	void 		DumpToTTY(uint16_t startAddress, uint16_t length);
 
@@ -37,20 +37,3 @@ private:
 	char* 		pMemory;
 	uint32_t	memorySize;
 };
-
-
-// Lifecycle
-//extern eErrorCode memory_Init(void);
-extern eErrorCode memory_Destroy(void);
-
-extern eErrorCode memory_Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
-
-extern void memory_Write(uint16_t address, uint8_t val);
-extern uint8_t memory_Read(uint16_t address);
-
-// Debug stuff
-extern void memory_DumpToTTY(uint16_t startAddress, uint16_t length);
-extern void memory_SetCPU(Cpu6502* cpu);
-
-
-

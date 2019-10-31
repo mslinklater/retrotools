@@ -1,14 +1,9 @@
-//#include <stdlib.h>
-//#include <stdio.h>
 #include <fstream>
 #include <string.h>
 #include "memory.h"
 #include "log.h"
 #include "errorcodes.h"
 #include "cpu.h"
-
-//static char* pMemory;
-//static uint32_t memorySize = 0;
 
 static Cpu6502* pCpu;
 
@@ -58,6 +53,7 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 		inFile.seekg(0, std::ios::beg);
 		inFile.read((char*)(pMemory + address), size);		
         inFile.close();
+		*bytesRead = size;
 	}
 
 	return kError_OK;
@@ -85,8 +81,8 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 		printf("  ");
 		for(int i=0 ; i<16 ; i++)
 		{
-			uint8_t operand = pMemory[currentAddress + i];
-			if( pCpu->IsOpcodeValid(operand) )
+			uint8_t opcode = pMemory[currentAddress + i];
+			if( pCpu->GetOpcode(opcode)->valid )
 			{
 				printf("O");
 			}
@@ -99,7 +95,7 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 	}
 }
 
-uint8_t Memory::Read(uint16_t address)
+uint8_t Memory::Read(uint16_t address) const
 {
 	if(pMemory != 0)
 	{

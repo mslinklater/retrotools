@@ -100,14 +100,28 @@ enum eVCSMemory {
 	VCS_NUM
 };
 
-struct vcs_info {
-	enum eVCSMemory address;
-	std::string		readName;
-	std::string		readDescription;
-	std::string		writeName;
-	std::string		writeDescription;
+class Vcs
+{
+public:
+	
+	struct MemoryInfo
+	{
+		enum eVCSMemory address;
+		std::string		readName;
+		std::string		readDescription;
+		std::string		writeName;
+		std::string		writeDescription;		
+	};
+	
+	Vcs();
+	virtual ~Vcs();
+	
+	void 				Init(void);
+	void 				AddInfo(enum eVCSMemory mem, const std::string& readName, const std::string& readDescription, const std::string& writeName, const std::string& writeDescription);
+	const MemoryInfo* 	GetInfo(uint16_t address);
+
+private:	
+	MemoryInfo	info[VCS_NUM];
 };
 
-extern void vcs_Init(void);
-extern const vcs_info* vcs_getInfo(uint16_t address);
 

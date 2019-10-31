@@ -14,38 +14,38 @@ class Cpu6502
 		
 		enum eAddressingMode 
 		{
-			kCpuAddrModeAccumulator = 0,
-			kCpuAddrModeImmediate,
-			kCpuAddrModeZeroPage,
-			kCpuAddrModeZeroPageX,
-			kCpuAddrModeZeroPageY,
-			kCpuAddrModeAbsolute,
-			kCpuAddrModeAbsoluteX,
-			kCpuAddrModeAbsoluteY,
-			kCpuAddrModeIndirectX,
-			kCpuAddrModeIndirectY,
-			kCpuAddrModeRelative,
-			kCpuAddrModeImplied,
-			kCpuAddrModeIndirect,
-			kCpuAddrMode_Num
+			kAddrModeAccumulator = 0,
+			kAddrModeImmediate,
+			kAddrModeZeroPage,
+			kAddrModeZeroPageX,
+			kAddrModeZeroPageY,
+			kAddrModeAbsolute,
+			kAddrModeAbsoluteX,
+			kAddrModeAbsoluteY,
+			kAddrModeIndirectX,
+			kAddrModeIndirectY,
+			kAddrModeRelative,
+			kAddrModeImplied,
+			kAddrModeIndirect,
+			kAddrMode_Num
 		};
 
 		enum eMnemonic 
 		{
-			kCpuMnemonic_ADC=0,	kCpuMnemonic_AND,	kCpuMnemonic_ASL,	kCpuMnemonic_BCC,
-			kCpuMnemonic_BCS,	kCpuMnemonic_BEQ,	kCpuMnemonic_BIT,	kCpuMnemonic_BMI,
-			kCpuMnemonic_BNE,	kCpuMnemonic_BPL,	kCpuMnemonic_BRK,	kCpuMnemonic_BVC,
-			kCpuMnemonic_BVS,	kCpuMnemonic_CLC,	kCpuMnemonic_CLD,	kCpuMnemonic_CLI,
-			kCpuMnemonic_CLV,	kCpuMnemonic_CMP,	kCpuMnemonic_CPX,	kCpuMnemonic_CPY,
-			kCpuMnemonic_DEC,	kCpuMnemonic_DEX,	kCpuMnemonic_DEY,	kCpuMnemonic_EOR,
-			kCpuMnemonic_INC,	kCpuMnemonic_INX,	kCpuMnemonic_INY,	kCpuMnemonic_JMP,
-			kCpuMnemonic_JSR,	kCpuMnemonic_LDA,	kCpuMnemonic_LDX,	kCpuMnemonic_LDY,
-			kCpuMnemonic_LSR,	kCpuMnemonic_NOP,	kCpuMnemonic_ORA,	kCpuMnemonic_PHA,
-			kCpuMnemonic_PHP,	kCpuMnemonic_PLA,	kCpuMnemonic_ROL,	kCpuMnemonic_ROR,
-			kCpuMnemonic_RTI,	kCpuMnemonic_RTS,	kCpuMnemonic_SBC,	kCpuMnemonic_SEC,
-			kCpuMnemonic_SED,	kCpuMnemonic_SEI,	kCpuMnemonic_STA,	kCpuMnemonic_STX,
-			kCpuMnemonic_STY,	kCpuMnemonic_TAX,	kCpuMnemonic_TAY,	kCpuMnemonic_TSX,
-			kCpuMnemonic_TXA,	kCpuMnemonic_TXS,	kCpuMnemonic_TYA,	kCpuMnemonic_Num
+			kMnemonic_ADC=0,	kMnemonic_AND,	kMnemonic_ASL,	kMnemonic_BCC,
+			kMnemonic_BCS,		kMnemonic_BEQ,	kMnemonic_BIT,	kMnemonic_BMI,
+			kMnemonic_BNE,		kMnemonic_BPL,	kMnemonic_BRK,	kMnemonic_BVC,
+			kMnemonic_BVS,		kMnemonic_CLC,	kMnemonic_CLD,	kMnemonic_CLI,
+			kMnemonic_CLV,		kMnemonic_CMP,	kMnemonic_CPX,	kMnemonic_CPY,
+			kMnemonic_DEC,		kMnemonic_DEX,	kMnemonic_DEY,	kMnemonic_EOR,
+			kMnemonic_INC,		kMnemonic_INX,	kMnemonic_INY,	kMnemonic_JMP,
+			kMnemonic_JSR,		kMnemonic_LDA,	kMnemonic_LDX,	kMnemonic_LDY,
+			kMnemonic_LSR,		kMnemonic_NOP,	kMnemonic_ORA,	kMnemonic_PHA,
+			kMnemonic_PHP,		kMnemonic_PLA,	kMnemonic_ROL,	kMnemonic_ROR,
+			kMnemonic_RTI,		kMnemonic_RTS,	kMnemonic_SBC,	kMnemonic_SEC,
+			kMnemonic_SED,		kMnemonic_SEI,	kMnemonic_STA,	kMnemonic_STX,
+			kMnemonic_STY,		kMnemonic_TAX,	kMnemonic_TAY,	kMnemonic_TSX,
+			kMnemonic_TXA,		kMnemonic_TXS,	kMnemonic_TYA,	kMnemonic_Num
 		};
 
 		struct Opcode {
@@ -62,8 +62,9 @@ class Cpu6502
 		
 		void Init(eVariant variant);
 		void DumpInfo();
-		void DumpDisassembly(uint16_t address, uint16_t size);	// DEPRECATE
-		bool IsOpcodeValid(uint8_t operand);
+		const std::string& GetMnemonicString(eMnemonic mnemonic);
+		
+		const Opcode* GetOpcode(uint16_t opcode) const;
 		
 		void SetMemory(Memory* mem)
 		{
@@ -82,10 +83,10 @@ class Cpu6502
         void AddEmptyOpcode(uint8_t value);
         
 		// static setup
-        static bool 		staticsInitialised;
-		static Opcode	 	opcodes[256];
-		static std::string 	mnemonicStrings[kCpuMnemonic_Num];
-		static std::string 	addrModeStrings[kCpuAddrMode_Num];
+        bool 		staticsInitialised;
+		Opcode	 	opcodes[256];
+		std::string 	mnemonicStrings[kMnemonic_Num];
+		std::string 	addrModeStrings[kAddrMode_Num];
 
 		Memory*	pMemory;
 };

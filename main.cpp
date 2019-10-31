@@ -6,6 +6,7 @@
 #include "cpu.h"
 #include "vcs.h"
 #include "disasm.h"
+#include "symbolstore.h"
 
 int main(int argc, char* argv[])
 {
@@ -33,10 +34,12 @@ int main(int argc, char* argv[])
 	Memory* pMemory = new Memory();
 	Cpu6502* pCpu = new Cpu6502();
 	Disassembler* pDisassembler = new Disassembler();
+	Vcs* pVcs = new Vcs();
+	SymbolStore* pSymbolStore = new SymbolStore();
 	
 	pMemory->Init();	
 	
-	vcs_Init();
+	pVcs->Init();
     
     pCpu->Init(Cpu6502::k6507);
 	pCpu->DumpInfo();
@@ -45,6 +48,7 @@ int main(int argc, char* argv[])
     pMemory->SetCPU(pCpu);
 	
 	pDisassembler->Init();
+	pDisassembler->SetMemory(pMemory);
 
 	uint16_t bytesLoaded;
 	uint16_t loadAddress = pConfig->GetLoadAddress();
