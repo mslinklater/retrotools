@@ -1,5 +1,7 @@
 #include <fstream>
 #include <string.h>
+#include <iostream>
+#include <iomanip>
 #include "memory.h"
 #include "log.h"
 #include "errorcodes.h"
@@ -17,12 +19,12 @@ Memory::~Memory()
 	
 eErrorCode Memory::Init(void)
 {
-	pMemory = new char[MEMORY_SIZE];
+	pMemory = new uint8_t[MEMORY_SIZE];
 	
 	memset((void*)(pMemory), 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
-	printf("Memory initialised\n");
+	LOG("Memory initialised\n");
 
 	return kError_OK;
 }
@@ -72,26 +74,27 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 
 	for(uint16_t currentAddress = startAddress ; currentAddress < startAddress + length16 ; currentAddress+=16)
 	{
-		printf("0x%04x", currentAddress);
+		std::cout << std::hex << currentAddress;
+		
 		for(int i=0 ; i<16 ; i++)
 		{
-			printf(" %02x", pMemory[currentAddress + i]);
+			std::cout << " ";
+			std::cout << std::hex << std::setfill('0') << std::setw(2) << (unsigned int)pMemory[currentAddress+i];
 		}	
 
-		printf("  ");
+		std::cout << "  ";
 		for(int i=0 ; i<16 ; i++)
 		{
 			uint8_t opcode = pMemory[currentAddress + i];
 			if( pCpu->GetOpcode(opcode)->valid )
 			{
-				printf("O");
+				std::cout << "O";
 			}
 			else
 			{
-				printf(".");
-			}
+				std::cout << ".";			}
 		}
-		printf("\n");
+		std::cout << std::endl;
 	}
 }
 

@@ -1,4 +1,6 @@
 #include <string>
+#include <iomanip>
+#include <sstream>
 
 #include "disasm.h"
 #include "log.h"
@@ -15,25 +17,12 @@ Disassembler::~Disassembler()
 {
 }
 
-struct disasm_line
-{
-	bool used;
-	std::string label;		// max size plus null
-	std::string address;	// '0x0000' plus null
-	std::string bytes;		// '00 00 00' plus null
-	std::string mnemonic;	// max size plus null
-};
-
-static struct disasm_line disasmLines[kMaxDisasmLines];
+//static struct disasm_line disasmLines[kMaxDisasmLines];
 
 void Disassembler::Init(void)
 {
-	LOG("disasm_Init()\n");
+	LOG("Disassembler::Init()\n");
 
-	for(int i=0 ; i<kMaxDisasmLines ; i++)
-	{
-		disasmLines[i].used = false;
-	}
 }
 
 void Disassembler::SetMemory(Memory* mem)
@@ -48,13 +37,28 @@ void Disassembler::SetCpu(Cpu6502* cpu)
 
 eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t org)
 {
+	// get rid of the old disassembly
+	
+	lines.clear();
+	
 	uint32_t currentAddress = address;
-	while(currentAddress < (uint16_t)address + (uint32_t)size)
+	while(currentAddress < (uint32_t)address + (uint32_t)size)
 	{
+		Line thisLine;
+		std::stringstream ss;
+		ss << std::hex << currentAddress;
+		thisLine.address = ss.str();
+		
 		uint8_t opcode = pMemory->Read(currentAddress);
 		const Cpu6502::Opcode* opcodeInfo = pCpu->GetOpcode(opcode);
-		// HERE
-		currentAddress++;
+		
+		switch(opcodeInfo->addrMode)
+		{
+			default:
+				break;
+		}
+		
+		currentAddress+=opcodeInfo->length;
 	}
 	return kError_OK;
 }

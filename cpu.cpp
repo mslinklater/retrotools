@@ -143,43 +143,43 @@ void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressing
 	switch(addrMode)
 	{
 		case kAddrModeAccumulator: 
-			opcodes[value].pfDisasm = cpu_disasm_accumulator; 
+			opcodes[value].length = 1;
 			break;
 		case kAddrModeImmediate: 
-			opcodes[value].pfDisasm = cpu_disasm_immediate; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeZeroPage: 
-			opcodes[value].pfDisasm = cpu_disasm_zeropage; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeZeroPageX: 
-			opcodes[value].pfDisasm = cpu_disasm_zeropagex; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeZeroPageY: 
-			opcodes[value].pfDisasm = cpu_disasm_zeropagey; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeAbsolute: 
-			opcodes[value].pfDisasm = cpu_disasm_absolute; 
+			opcodes[value].length = 3;
 			break;
 		case kAddrModeAbsoluteX: 
-			opcodes[value].pfDisasm = cpu_disasm_absolutex; 
+			opcodes[value].length = 3;
 			break;
 		case kAddrModeAbsoluteY: 
-			opcodes[value].pfDisasm = cpu_disasm_absolutey; 
+			opcodes[value].length = 3;
 			break;
 		case kAddrModeIndirectX: 
-			opcodes[value].pfDisasm = cpu_disasm_indirectx; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeIndirectY: 
-			opcodes[value].pfDisasm = cpu_disasm_indirecty; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeRelative: 
-			opcodes[value].pfDisasm = cpu_disasm_relative; 
+			opcodes[value].length = 2;
 			break;
 		case kAddrModeImplied: 
-			opcodes[value].pfDisasm = cpu_disasm_implied; 
+			opcodes[value].length = 1;
 			break;
 		case kAddrModeIndirect: 
-			opcodes[value].pfDisasm = cpu_disasm_indirect; 
+			opcodes[value].length = 2;
 			break;
 		default:
 			break;
@@ -189,7 +189,6 @@ void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressing
 void Cpu6502::AddEmptyOpcode(uint8_t value)
 {
 	opcodes[value].valid = false;
-	opcodes[value].pfDisasm = 0;
 }
 
 const Cpu6502::Opcode* Cpu6502::GetOpcode(uint16_t opcode) const
@@ -579,24 +578,3 @@ void Cpu6502::DumpInfo(void)
 		printf("-----------------------------------------------------------------------------------------------------\n");
 	}
 }
-
-// This needs to move to the disasm class
-/*
-void Cpu6502::DumpDisassembly(uint16_t address, uint16_t size)
-{
-	printf("Disassembling\n");
-	uint16_t pc = address;
-	while(pc < address + size)
-	{
-		uint8_t opcode = pMemory->Read(pc);
-		if(opcodes[opcode].pfDisasm != 0)
-		{
-			pc += (opcodes[opcode].pfDisasm)(pc,mnemonicStrings[opcodes[opcode].mnemonic].c_str());
-		}
-		else
-		{
-			pc++;
-		}
-	}
-}
-*/

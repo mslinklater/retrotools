@@ -51,10 +51,11 @@ class Cpu6502
 		struct Opcode {
 			bool					valid;
 			uint8_t					value;
+			uint8_t					length;
 			enum eMnemonic			mnemonic;
 			enum eAddressingMode	addrMode;
 			bool					undocumented;
-			uint8_t (*pfDisasm)(uint16_t,const char*);	// To be deprecatd
+//			uint8_t (*pfDisasm)(uint16_t,const char*);	// To be deprecatd
 		};
 
 		Cpu6502();

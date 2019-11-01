@@ -34,6 +34,6 @@ public:
 	void 		DumpToTTY(uint16_t startAddress, uint16_t length);
 
 private:
-	char* 		pMemory;
+	uint8_t* 	pMemory;
 	uint32_t	memorySize;
 };

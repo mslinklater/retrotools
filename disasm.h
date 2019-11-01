@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <map>
+#include <vector>
 
 #include "errorcodes.h"
 
@@ -19,6 +20,15 @@ public:
 		kReadWrite
 	};
 	
+	struct Line
+	{
+		bool used;
+		std::string label;		// max size plus null
+		std::string address;	// '0x0000' plus null
+		std::string bytes;		// '00 00 00' plus null
+		std::string mnemonic;	// max size plus null
+	};
+
 	Disassembler();
 	virtual ~Disassembler();
 	
@@ -32,6 +42,6 @@ public:
 private:
 	const Memory*					pMemory;
 	const Cpu6502*					pCpu;
-	std::map<uint16_t,std::string>	readSymbolMap;
-	std::map<uint16_t,std::string>	writeSymbolMap;
+	
+	std::vector<Line>				lines;
 };

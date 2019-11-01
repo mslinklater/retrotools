@@ -1,5 +1,3 @@
-//#include <stdio.h>
-//#include <stdlib.h>
 #include <ncurses.h>
 #include "config.h"
 #include "memory.h"
@@ -7,16 +5,17 @@
 #include "vcs.h"
 #include "disasm.h"
 #include "symbolstore.h"
+#include "log.h"
 
 int main(int argc, char* argv[])
 {
-	printf("-- retrotool --\n");
+	LOG("-- retrotool --\n");
 
 	// check for command line args
 	
 	if(argc == 1)
 	{
-		printf("No command line args specified, exiting...\n");
+		LOG("No command line args specified, exiting...\n");
 		exit(0);
 	}
 
@@ -25,7 +24,7 @@ int main(int argc, char* argv[])
 	
 	if(pConfig->ParseCommandLine(argc, argv) != kError_OK)
 	{
-		printf("Error parsing command line... aborting \n");
+		LOG("Error parsing command line... aborting \n");
 		exit(1);
 	}
 
@@ -59,12 +58,14 @@ int main(int argc, char* argv[])
 		pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
 	}
 
+	pMemory->DumpToTTY(loadAddress, bytesLoaded);
+	
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	pDisassembler->DumpToTTY();
 
 	pMemory->Destroy();
 
-	printf("Exiting...\n");
+	LOG("Exiting...\n");
 	
 	return 0;
 }

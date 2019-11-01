@@ -1,5 +1,3 @@
-//#include <stdio.h>
-//#include <inttypes.h>
 #include "vcs.h"
 
 Vcs::Vcs()
