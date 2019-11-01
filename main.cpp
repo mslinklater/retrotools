@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
 	
 	pDisassembler->Init();
 	pDisassembler->SetMemory(pMemory);
+	pDisassembler->SetCpu(pCpu);
 
 	uint16_t bytesLoaded;
 	uint16_t loadAddress = pConfig->GetLoadAddress();

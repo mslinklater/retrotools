@@ -134,6 +134,11 @@ uint8_t cpu_disasm_indirect(uint16_t address, const char* mnemonic)
 	return 3;
 }
 
+const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
+{
+	return mnemonicStrings[mnemonic];
+}
+
 void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented)
 {
 	opcodes[value].valid = true;

@@ -72,27 +72,29 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 
 	uint16_t currentAddress = startAddress;
 
-	for(uint16_t currentAddress = startAddress ; currentAddress < startAddress + length16 ; currentAddress+=16)
+	for(uint16_t currentAddress = startAddress ; currentAddress < startAddress + length16 ; currentAddress += 16)
 	{
-		std::cout << std::hex << currentAddress;
+		printf("0x%04x", currentAddress);
 		
 		for(int i=0 ; i<16 ; i++)
 		{
-			std::cout << " ";
-			std::cout << std::hex << std::setfill('0') << std::setw(2) << (unsigned int)pMemory[currentAddress+i];
+			printf(" %02x", pMemory[currentAddress + i]);
 		}	
 
-		std::cout << "  ";
+		printf("  ");
+		
 		for(int i=0 ; i<16 ; i++)
 		{
 			uint8_t opcode = pMemory[currentAddress + i];
+			
 			if( pCpu->GetOpcode(opcode)->valid )
 			{
-				std::cout << "O";
+				printf("O");
 			}
 			else
 			{
-				std::cout << ".";			}
+				printf(".");
+			}
 		}
 		std::cout << std::endl;
 	}

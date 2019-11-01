@@ -55,7 +55,6 @@ class Cpu6502
 			enum eMnemonic			mnemonic;
 			enum eAddressingMode	addrMode;
 			bool					undocumented;
-//			uint8_t (*pfDisasm)(uint16_t,const char*);	// To be deprecatd
 		};
 
 		Cpu6502();
@@ -63,7 +62,7 @@ class Cpu6502
 		
 		void Init(eVariant variant);
 		void DumpInfo();
-		const std::string& GetMnemonicString(eMnemonic mnemonic);
+		const std::string& GetMnemonicString(eMnemonic mnemonic) const;
 		
 		const Opcode* GetOpcode(uint16_t opcode) const;
 		

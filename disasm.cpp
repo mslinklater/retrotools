@@ -1,7 +1,6 @@
 #include <string>
-#include <iomanip>
 #include <sstream>
-
+#include <cassert>
 #include "disasm.h"
 #include "log.h"
 #include "cpu.h"
@@ -37,6 +36,9 @@ void Disassembler::SetCpu(Cpu6502* cpu)
 
 eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t org)
 {
+	assert(pCpu != nullptr);
+	assert(pMemory != nullptr);
+	
 	// get rid of the old disassembly
 	
 	lines.clear();
@@ -44,25 +46,57 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	uint32_t currentAddress = address;
 	while(currentAddress < (uint32_t)address + (uint32_t)size)
 	{
+		char buffer[128];
 		Line thisLine;
-		std::stringstream ss;
-		ss << std::hex << currentAddress;
-		thisLine.address = ss.str();
+		
+		// address
+		sprintf(buffer, "%04x", currentAddress);
+		thisLine.address = buffer;
 		
 		uint8_t opcode = pMemory->Read(currentAddress);
 		const Cpu6502::Opcode* opcodeInfo = pCpu->GetOpcode(opcode);
-		
-		switch(opcodeInfo->addrMode)
+
+		if(opcodeInfo->valid)
 		{
-			default:
-				break;
+			// bytes
+			uint8_t plus1 = pMemory->Read(currentAddress+1);
+			uint8_t plus2 = pMemory->Read(currentAddress+2);
+			
+			switch(opcodeInfo->length)
+			{
+				case 3:
+					sprintf(buffer, "%02x %02x %02x", opcode, plus1, plus2);
+					break;
+				case 2:
+					sprintf(buffer, "%02x %02x   ", opcode, plus1);
+					break;
+				default:
+					sprintf(buffer, "%02x      ", opcode);
+					break;
+			}
+			thisLine.bytes = buffer;
+
+			// opcode
+			Cpu6502::eMnemonic mnemonic = pCpu->GetOpcode(opcode)->mnemonic;
+			sprintf(buffer, "%s", pCpu->GetMnemonicString(mnemonic).c_str());
+			thisLine.mnemonic = buffer;
+			
+			currentAddress+=opcodeInfo->length;
 		}
-		
-		currentAddress+=opcodeInfo->length;
+		else
+		{
+			currentAddress++;	  
+		}
+		lines.push_back(thisLine);
 	}
 	return kError_OK;
 }
 
 void Disassembler::DumpToTTY(void)
 {
+	// dump disassembly lines to DumpToTTY
+	for(Line line : lines)
+	{
+		printf("%s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str());
+	}
 }
