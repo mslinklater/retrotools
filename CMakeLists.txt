@@ -8,4 +8,8 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp memory.cpp cpu.cpp vcs.cpp symbolstore.cpp)
 
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 add_executable(distella ${SOURCE_FILES})
+target_link_libraries(distella ${SDL2_LIBRARIES})

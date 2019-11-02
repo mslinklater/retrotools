@@ -1,3 +1,4 @@
+#include "SDL.h"
 #include "config.h"
 #include "memory.h"
 #include "cpu.h"
@@ -27,6 +28,23 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 
+	// SDL stuff
+	
+	if(SDL_Init(SDL_INIT_VIDEO) != 0)
+	{
+		printf("Error: %s\n", SDL_GetError());
+		return -1;
+	}
+	SDL_Window* window = SDL_CreateWindow(	"Distella", 
+											SDL_WINDOWPOS_UNDEFINED, 
+											SDL_WINDOWPOS_UNDEFINED, 
+											640, 480, SDL_WINDOW_SHOWN);
+	
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
+	
 	// initialise components
 	
 	Memory* pMemory = new Memory();
@@ -68,6 +86,10 @@ int main(int argc, char* argv[])
 
 	pMemory->Destroy();
 
+	SDL_Delay(3000);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+	
 	LOG("Exiting...\n");
 	
 	return 0;
