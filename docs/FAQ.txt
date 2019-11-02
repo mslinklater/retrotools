@@ -1,0 +1,8 @@
+Frequently Asked Questions for retrotools
+=========================================
+
+Q/ Why did you code it in C++ rather than <blah> ?
+
+A/ C++ is the language I'm most familiar with. I didn't want to mix up the challenge of wiriting the application with the challenge of learning a new language. I might port it at some stage... you can port it if you like. For now it's in C++ because that's the easiest route to it working.
+
+

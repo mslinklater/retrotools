@@ -1,4 +1,10 @@
-#include "SDL.h"
+#include <SDL.h>
+#include <SDL_opengl.h>
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl2.h"
+
 #include "config.h"
 #include "memory.h"
 #include "cpu.h"
@@ -7,19 +13,17 @@
 #include "symbolstore.h"
 #include "log.h"
 
-int main(int argc, char* argv[])
-{
-	LOG("-- retrotool --\n");
+static Config* pConfig = 0;
 
-	// check for command line args
-	
+void ProcessCommandLine(int argc, char* argv[])
+{
 	if(argc == 1)
 	{
 		LOG("No command line args specified, exiting...\n");
 		exit(0);
-	}
-
-	Config* pConfig = new Config();
+	}	
+	
+	pConfig = new Config();
 	pConfig->Init();
 	
 	if(pConfig->ParseCommandLine(argc, argv) != kError_OK)
@@ -27,23 +31,88 @@ int main(int argc, char* argv[])
 		LOG("Error parsing command line... aborting \n");
 		exit(1);
 	}
+}
 
-	// SDL stuff
+int main(int argc, char* argv[])
+{
+	LOG("-- retrotool --\n");
+
+	// check for command line args
 	
-	if(SDL_Init(SDL_INIT_VIDEO) != 0)
+	ProcessCommandLine(argc, argv);
+	
+	// SDL stuff
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
 	{
 		printf("Error: %s\n", SDL_GetError());
 		return -1;
 	}
-	SDL_Window* window = SDL_CreateWindow(	"Distella", 
-											SDL_WINDOWPOS_UNDEFINED, 
-											SDL_WINDOWPOS_UNDEFINED, 
-											640, 480, SDL_WINDOW_SHOWN);
 	
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
+	// Setup window
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);	
+	SDL_Window* window = SDL_CreateWindow(	"Distella", 
+											SDL_WINDOWPOS_CENTERED, 
+											SDL_WINDOWPOS_CENTERED, 
+											640, 480, windowFlags);
+	SDL_GLContext gl_context = SDL_GL_CreateContext(window);
+	SDL_GL_MakeCurrent(window, gl_context);
+	SDL_GL_SetSwapInterval(1);
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+	
+	ImGui::StyleColorsDark();
+	ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+	ImGui_ImplOpenGL2_Init();
+	
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	
+	bool done = false;
+	bool show_demo_window = true;
+	while(!done)
+	{
+		SDL_Event event;
+		while(SDL_PollEvent(&event))
+		{
+			ImGui_ImplSDL2_ProcessEvent(&event);
+			if(event.type == SDL_QUIT)
+			{
+				done = true;
+			}
+		}
+		
+		// start ImGui frame
+		ImGui_ImplOpenGL2_NewFrame();
+		ImGui_ImplSDL2_NewFrame(window);
+		ImGui::NewFrame();
+		
+		// do stuff
+		ImGui::ShowDemoWindow(&show_demo_window);
+		
+		// rendering
+		ImGui::Render();
+		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+		glClearColor(clear_color.x, clear_color.y,clear_color.z, clear_color.w);
+		glClear(GL_COLOR_BUFFER_BIT);
+		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+		SDL_GL_SwapWindow(window);
+	}
+
+	// Cleanup
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+	
+	SDL_GL_DeleteContext(gl_context);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 	
 	// initialise components
 	
@@ -86,10 +155,6 @@ int main(int argc, char* argv[])
 
 	pMemory->Destroy();
 
-	SDL_Delay(3000);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-	
 	LOG("Exiting...\n");
 	
 	return 0;
