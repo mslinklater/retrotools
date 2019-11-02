@@ -27,6 +27,7 @@ public:
 		std::string address;	// '0x0000' plus null
 		std::string bytes;		// '00 00 00' plus null
 		std::string mnemonic;	// max size plus null
+		std::string detail;		
 	};
 
 	Disassembler();

@@ -184,7 +184,7 @@ void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressing
 			opcodes[value].length = 1;
 			break;
 		case kAddrModeIndirect: 
-			opcodes[value].length = 2;
+			opcodes[value].length = 3;
 			break;
 		default:
 			break;

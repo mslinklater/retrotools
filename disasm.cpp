@@ -81,6 +81,51 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 			sprintf(buffer, "%s", pCpu->GetMnemonicString(mnemonic).c_str());
 			thisLine.mnemonic = buffer;
 			
+			// detail
+			sprintf(buffer, " ");
+			uint16_t addr;
+			switch(opcodeInfo->addrMode)
+			{
+				case Cpu6502::eAddressingMode::kAddrModeAbsolute:
+					sprintf(buffer, "$%02x%02x", plus2, plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeAbsoluteX:
+					sprintf(buffer, "$%02x%02x,X", plus2, plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeAbsoluteY:
+					sprintf(buffer, "$%02x%02x,Y", plus2, plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeAccumulator:
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeImmediate:
+					sprintf(buffer, "#$%02x", plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeImplied:
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeIndirect:
+					sprintf(buffer, "($%02x%02x)", plus2, plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeIndirectX:
+					sprintf(buffer, "($%02x,X)", plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeIndirectY:
+					sprintf(buffer, "($%02x),Y", plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeRelative:
+					addr = currentAddress + (int8_t)plus1;
+					sprintf(buffer, "$%04x", addr);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeZeroPage:
+					sprintf(buffer, "$%02x", plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeZeroPageX:
+					sprintf(buffer, "$%02x,X", plus1);
+					break;
+				case Cpu6502::eAddressingMode::kAddrModeZeroPageY:
+					sprintf(buffer, "$%02x,Y", plus1);
+					break;
+			}
+			thisLine.detail = buffer;
 			currentAddress+=opcodeInfo->length;
 		}
 		else
@@ -97,6 +142,6 @@ void Disassembler::DumpToTTY(void)
 	// dump disassembly lines to DumpToTTY
 	for(Line line : lines)
 	{
-		printf("%s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str());
+		printf("%s %s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str(), line.detail.c_str());
 	}
 }
