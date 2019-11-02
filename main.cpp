@@ -1,4 +1,3 @@
-#include <ncurses.h>
 #include "config.h"
 #include "memory.h"
 #include "cpu.h"
@@ -56,7 +55,10 @@ int main(int argc, char* argv[])
 	// need to grab the ROM filename from the config settings
 	if(!pConfig->GetLoadFilename().empty())
 	{
-		pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded);
+		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
+		{
+			return -1;
+		}
 	}
 
 	pMemory->DumpToTTY(loadAddress, bytesLoaded);

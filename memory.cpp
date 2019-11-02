@@ -57,6 +57,12 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
         inFile.close();
 		*bytesRead = size;
 	}
+	else
+	{
+		// File load error
+		LOG("ERROR - cannot load file");
+		return kError_FileNotFound;
+	}
 
 	return kError_OK;
 }
@@ -70,11 +76,11 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 {
 	uint16_t length16 = ((length + 15) / 16) * 16;
 
-	uint16_t currentAddress = startAddress;
+	uint32_t endAddress = (uint32_t)startAddress + (uint32_t)length16;
 
-	for(uint16_t currentAddress = startAddress ; currentAddress < startAddress + length16 ; currentAddress += 16)
+	for(uint32_t currentAddress = (uint32_t)startAddress ; currentAddress < endAddress ; currentAddress += 16)
 	{
-		printf("0x%04x", currentAddress);
+		printf("0x%04x", (uint16_t)currentAddress);
 		
 		for(int i=0 ; i<16 ; i++)
 		{
