@@ -28,7 +28,7 @@ eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 	{
 		if((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "--help") == 0))
 		{
-			LOG("Printing help\n");
+			LOGINFO("Printing help\n");
 			exit(0);
 		}
 	}
@@ -42,7 +42,7 @@ eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 
 		if((strcmp(argv[i], "-l") == 0) || (strcmp(argv[i], "--load") == 0))
 		{
-			LOG("Config:Found load command\n");
+			LOGINFO("Config:Found load command\n");
 			if(argc <= i+2)
 			{
 				printf("ERROR - not passing correct -l params\n");

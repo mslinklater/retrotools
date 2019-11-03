@@ -20,7 +20,7 @@ Disassembler::~Disassembler()
 
 void Disassembler::Init(void)
 {
-	LOG("Disassembler::Init()\n");
+	LOGINFO("Disassembler::Init()\n");
 
 }
 

@@ -24,7 +24,7 @@ eErrorCode Memory::Init(void)
 	memset((void*)(pMemory), 0xff, MEMORY_SIZE);
 	memorySize = MEMORY_SIZE;
 
-	LOG("Memory initialised\n");
+	LOGINFO("Memory initialised\n");
 
 	return kError_OK;
 }
@@ -37,7 +37,7 @@ void Memory::SetCPU(Cpu6502* cpu)
 eErrorCode Memory::Destroy(void)
 {
 	memorySize = 0;
-	LOG("Memory destroyed\n");
+	LOGINFO("Memory destroyed\n");
 
 	return kError_OK;
 }
@@ -60,7 +60,7 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 	else
 	{
 		// File load error
-		LOG("ERROR - cannot load file");
+		LOGINFO("ERROR - cannot load file");
 		return kError_FileNotFound;
 	}
 

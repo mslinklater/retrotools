@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 set(OpenGL_GL_PREFERENCE LEGACY)
 
-set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp memory.cpp cpu.cpp vcs.cpp symbolstore.cpp)
+set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp memory.cpp cpu.cpp vcs.cpp log.cpp symbolstore.cpp)
 
 set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_impl_opengl2.cpp imgui/imgui_widgets.cpp)
 

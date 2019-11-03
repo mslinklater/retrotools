@@ -19,7 +19,7 @@ void ProcessCommandLine(int argc, char* argv[])
 {
 	if(argc == 1)
 	{
-		LOG("No command line args specified, exiting...\n");
+		LOGINFO("No command line args specified, exiting...\n");
 		exit(0);
 	}	
 	
@@ -28,14 +28,14 @@ void ProcessCommandLine(int argc, char* argv[])
 	
 	if(pConfig->ParseCommandLine(argc, argv) != kError_OK)
 	{
-		LOG("Error parsing command line... aborting \n");
+		LOGINFO("Error parsing command line... aborting \n");
 		exit(1);
 	}
 }
 
 int main(int argc, char* argv[])
 {
-	LOG("-- retrotool --\n");
+	LOGINFO("-- retrotool --\n");
 
 	// check for command line args
 	
@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
 
 	pMemory->Destroy();
 
-	LOG("Exiting...\n");
+	LOGINFO("Exiting...\n");
 	
 	return 0;
 }
