@@ -45,13 +45,14 @@ eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 			LOGINFO("Config:Found load command\n");
 			if(argc <= i+2)
 			{
-				printf("ERROR - not passing correct -l params\n");
+				LOGERROR("ERROR - not passing correct -l params\n");
 				return kError_CommandLineParsing;
 			}
 
 			// grab the filename
 			loadROMFilename = argv[i+1];
-			printf("Config:load filename %s\n", loadROMFilename.c_str());
+//			Log::Instance()->Infof("Plap %d", 10);
+//			LOGINFO("Config:load filename %s\n", loadROMFilename.c_str());
 
 			char* address = argv[i+2];
 			loadROMAddress = strtol(address, NULL, 16);

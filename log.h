@@ -4,6 +4,7 @@
 #include <string>
 
 #define LOGINFO(x) Log::Instance()->Info(x)
+#define LOGINFOF(x, ...) Log::Instance()->Info(x)
 #define LOGWARNING(x) Log::Instance()->Warning(x)
 #define LOGERROR(x) Log::Instance()->Error(x)
 
@@ -28,6 +29,7 @@ public:
 	static Log* Instance();
 	
 	void Info(std::string line);
+	//void Infof(std::string line, ...);
 	void Warning(std::string line);
 	void Error(std::string line);
 	

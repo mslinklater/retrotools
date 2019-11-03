@@ -80,14 +80,17 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 
 	for(uint32_t currentAddress = (uint32_t)startAddress ; currentAddress < endAddress ; currentAddress += 16)
 	{
-		printf("0x%04x", (uint16_t)currentAddress);
+		char output[80];
+		sprintf(output, "0x%04x", (uint16_t)currentAddress);
 		
 		for(int i=0 ; i<16 ; i++)
 		{
-			printf(" %02x", pMemory[currentAddress + i]);
+			char line[10];
+			sprintf(line, " %02x", pMemory[currentAddress + i]);
+			strcat(output, line);
 		}	
 
-		printf("  ");
+		strcat(output,"  ");
 		
 		for(int i=0 ; i<16 ; i++)
 		{
@@ -95,14 +98,15 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 			
 			if( pCpu->GetOpcode(opcode)->valid )
 			{
-				printf("O");
+				strcat(output,"O");
 			}
 			else
 			{
-				printf(".");
+				strcat(output,".");
 			}
 		}
-		std::cout << std::endl;
+//		std::cout << std::endl;
+		LOGINFO(output);
 	}
 }
 

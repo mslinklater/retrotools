@@ -33,6 +33,12 @@ void ProcessCommandLine(int argc, char* argv[])
 	}
 }
 
+void DoUI()
+{
+	ImGui::Begin("Log");
+	ImGui::End();
+}
+
 int main(int argc, char* argv[])
 {
 	LOGINFO("-- retrotool --\n");
@@ -94,7 +100,9 @@ int main(int argc, char* argv[])
 		ImGui::NewFrame();
 		
 		// do stuff
-		ImGui::ShowDemoWindow(&show_demo_window);
+//		ImGui::ShowDemoWindow(&show_demo_window);
+
+		DoUI();
 		
 		// rendering
 		ImGui::Render();

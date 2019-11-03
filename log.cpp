@@ -27,8 +27,13 @@ void Log::Info(std::string line)
 	
 	allLogLines.push_back(newLine);
 
-	printf("%s\n", line.c_str());
+	printf("Info:%s\n", line.c_str());
 }
+
+//void Log::Infof(std::string line, va_list)
+//{
+//	
+//}
 
 void Log::Warning(std::string line)
 {
