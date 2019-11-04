@@ -142,6 +142,9 @@ void Disassembler::DumpToTTY(void)
 	// dump disassembly lines to DumpToTTY
 	for(Line line : lines)
 	{
-		printf("%s %s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str(), line.detail.c_str());
+		char buffer[80];
+		sprintf(buffer, "%s %s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str(), line.detail.c_str());
+
+		LOGINFO(buffer);
 	}
 }

@@ -12,6 +12,8 @@
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"
+#include "windows/logwindow.h"
+#include "windows/memorywindow.h"
 
 static Config* pConfig = 0;
 
@@ -35,8 +37,6 @@ void ProcessCommandLine(int argc, char* argv[])
 
 void DoUI()
 {
-	ImGui::Begin("Log");
-	ImGui::End();
 }
 
 int main(int argc, char* argv[])
@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);	
+	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MAXIMIZED);	
 	SDL_Window* window = SDL_CreateWindow(	"Distella", 
 											SDL_WINDOWPOS_CENTERED, 
 											SDL_WINDOWPOS_CENTERED, 
@@ -80,48 +80,7 @@ int main(int argc, char* argv[])
 	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	
-	bool done = false;
-	bool show_demo_window = true;
-	while(!done)
-	{
-		SDL_Event event;
-		while(SDL_PollEvent(&event))
-		{
-			ImGui_ImplSDL2_ProcessEvent(&event);
-			if(event.type == SDL_QUIT)
-			{
-				done = true;
-			}
-		}
-		
-		// start ImGui frame
-		ImGui_ImplOpenGL2_NewFrame();
-		ImGui_ImplSDL2_NewFrame(window);
-		ImGui::NewFrame();
-		
-		// do stuff
-//		ImGui::ShowDemoWindow(&show_demo_window);
-
-		DoUI();
-		
-		// rendering
-		ImGui::Render();
-		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-		glClearColor(clear_color.x, clear_color.y,clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
-		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-		SDL_GL_SwapWindow(window);
-	}
-
-	// Cleanup
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-	
-	SDL_GL_DeleteContext(gl_context);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-	
+	// Do some 6502 stuff
 	// initialise components
 	
 	Memory* pMemory = new Memory();
@@ -160,6 +119,55 @@ int main(int argc, char* argv[])
 	
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	pDisassembler->DumpToTTY();
+	
+	// create windows
+	
+	LogWindow* pLogWindow = new LogWindow();
+	MemoryWindow* pMemoryWindow = new MemoryWindow();
+	
+	bool done = false;
+	bool show_demo_window = true;
+	while(!done)
+	{
+		SDL_Event event;
+		while(SDL_PollEvent(&event))
+		{
+			ImGui_ImplSDL2_ProcessEvent(&event);
+			if(event.type == SDL_QUIT)
+			{
+				done = true;
+			}
+		}
+		
+		// start ImGui frame
+		ImGui_ImplOpenGL2_NewFrame();
+		ImGui_ImplSDL2_NewFrame(window);
+		ImGui::NewFrame();
+		
+		// do stuff
+		ImGui::ShowDemoWindow(&show_demo_window);
+
+		pLogWindow->Draw();
+		pMemoryWindow->Draw();
+		
+		// rendering
+		ImGui::Render();
+		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+		glClearColor(clear_color.x, clear_color.y,clear_color.z, clear_color.w);
+		glClear(GL_COLOR_BUFFER_BIT);
+		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+		SDL_GL_SwapWindow(window);
+	}
+
+	// Cleanup
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+	
+	SDL_GL_DeleteContext(gl_context);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+	
 
 	pMemory->Destroy();
 

@@ -30,11 +30,6 @@ void Log::Info(std::string line)
 	printf("Info:%s\n", line.c_str());
 }
 
-//void Log::Infof(std::string line, va_list)
-//{
-//	
-//}
-
 void Log::Warning(std::string line)
 {
 	LogLine newLine;
@@ -55,4 +50,14 @@ void Log::Error(std::string line)
 	allLogLines.push_back(newLine);
 
 	printf("%s\n", line.c_str());
+}
+
+int Log::GetLineCount()
+{
+	return allLogLines.size();
+}
+
+const std::string& Log::GetLine(int number)
+{
+	return allLogLines[number].content;
 }

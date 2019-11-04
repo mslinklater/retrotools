@@ -33,6 +33,9 @@ public:
 	void Warning(std::string line);
 	void Error(std::string line);
 	
+	int GetLineCount();
+	const std::string& GetLine(int number);
+	
 private:
 	std::vector<LogLine> allLogLines;
 };
