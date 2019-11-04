@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	pMemory->DumpToTTY(loadAddress, bytesLoaded);
+//	pMemory->DumpToTTY(loadAddress, bytesLoaded);
 	
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	pDisassembler->DumpToTTY();

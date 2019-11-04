@@ -64,6 +64,7 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 		return kError_FileNotFound;
 	}
 
+	PopulateLines();
 	return kError_OK;
 }
 
@@ -72,6 +73,7 @@ void Memory::Write(uint16_t address, uint8_t val)
 	pMemory[address] = val;
 }
 
+/*
 void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 {
 	uint16_t length16 = ((length + 15) / 16) * 16;
@@ -105,10 +107,10 @@ void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
 				strcat(output,".");
 			}
 		}
-//		std::cout << std::endl;
 		LOGINFO(output);
 	}
 }
+*/
 
 uint8_t Memory::Read(uint16_t address) const
 {
@@ -117,4 +119,41 @@ uint8_t Memory::Read(uint16_t address) const
 		return pMemory[address];
 	}
 	return 0;
+}
+
+void Memory::PopulateLines()
+{
+	return;
+	lines.clear();
+	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
+	{
+		char buffer[32];
+		MemoryLine newLine;
+		
+		// Address
+		sprintf(buffer, "%04x", (uint16_t)location);
+		memcpy(&newLine.address, buffer, 4);
+		
+		// Bytes
+		for(int iByte=0 ; iByte<16 ; iByte++)
+		{
+			sprintf(buffer, "%02x", pMemory[(location*16)+iByte]);
+			memcpy(&newLine.value[iByte], buffer, 2);
+		}
+		
+		// Keys
+		for(int iByte=0 ; iByte<16 ; iByte++)
+		{
+			const Cpu6502::Opcode* opcode = pCpu->GetOpcode(pMemory[(location*16)+iByte]);
+			if(opcode->valid)
+			{
+				newLine.key[iByte] = 'O';
+			}
+			else
+			{
+				newLine.key[iByte] = '.';
+			}
+		}
+		lines.push_back(newLine);
+	}
 }
