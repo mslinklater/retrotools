@@ -73,45 +73,6 @@ void Memory::Write(uint16_t address, uint8_t val)
 	pMemory[address] = val;
 }
 
-/*
-void Memory::DumpToTTY(uint16_t startAddress, uint16_t length)
-{
-	uint16_t length16 = ((length + 15) / 16) * 16;
-
-	uint32_t endAddress = (uint32_t)startAddress + (uint32_t)length16;
-
-	for(uint32_t currentAddress = (uint32_t)startAddress ; currentAddress < endAddress ; currentAddress += 16)
-	{
-		char output[80];
-		sprintf(output, "0x%04x", (uint16_t)currentAddress);
-		
-		for(int i=0 ; i<16 ; i++)
-		{
-			char line[10];
-			sprintf(line, " %02x", pMemory[currentAddress + i]);
-			strcat(output, line);
-		}	
-
-		strcat(output,"  ");
-		
-		for(int i=0 ; i<16 ; i++)
-		{
-			uint8_t opcode = pMemory[currentAddress + i];
-			
-			if( pCpu->GetOpcode(opcode)->valid )
-			{
-				strcat(output,"O");
-			}
-			else
-			{
-				strcat(output,".");
-			}
-		}
-		LOGINFO(output);
-	}
-}
-*/
-
 uint8_t Memory::Read(uint16_t address) const
 {
 	if(pMemory != 0)
@@ -123,7 +84,6 @@ uint8_t Memory::Read(uint16_t address) const
 
 void Memory::PopulateLines()
 {
-	return;
 	lines.clear();
 	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
 	{
@@ -145,6 +105,7 @@ void Memory::PopulateLines()
 		for(int iByte=0 ; iByte<16 ; iByte++)
 		{
 			const Cpu6502::Opcode* opcode = pCpu->GetOpcode(pMemory[(location*16)+iByte]);
+
 			if(opcode->valid)
 			{
 				newLine.key[iByte] = 'O';
@@ -156,4 +117,10 @@ void Memory::PopulateLines()
 		}
 		lines.push_back(newLine);
 	}
+}
+
+const Memory::MemoryLine& Memory::GetLineForAddress(uint16_t address)
+{
+	int whichLine = address / 16;
+	return lines[whichLine];
 }

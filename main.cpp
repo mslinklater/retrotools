@@ -42,6 +42,9 @@ void DoUI()
 int main(int argc, char* argv[])
 {
 	LOGINFO("-- retrotool --\n");
+	LOGINFO("Test Info");
+	LOGWARNING("Test Warning");
+	LOGERROR("Test Error");
 
 	// check for command line args
 	
@@ -115,8 +118,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-//	pMemory->DumpToTTY(loadAddress, bytesLoaded);
-	
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	pDisassembler->DumpToTTY();
 	
@@ -124,6 +125,7 @@ int main(int argc, char* argv[])
 	
 	LogWindow* pLogWindow = new LogWindow();
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
+	pMemoryWindow->SetMemory(pMemory);
 	
 	bool done = false;
 	bool show_demo_window = true;

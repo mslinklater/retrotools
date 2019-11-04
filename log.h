@@ -29,12 +29,11 @@ public:
 	static Log* Instance();
 	
 	void Info(std::string line);
-	//void Infof(std::string line, ...);
 	void Warning(std::string line);
 	void Error(std::string line);
 	
 	int GetLineCount();
-	const std::string& GetLine(int number);
+	const LogLine& GetLine(int number);
 	
 private:
 	std::vector<LogLine> allLogLines;

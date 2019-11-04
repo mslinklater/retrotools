@@ -26,8 +26,6 @@ void Log::Info(std::string line)
 	newLine.type = kInfo;
 	
 	allLogLines.push_back(newLine);
-
-	printf("Info:%s\n", line.c_str());
 }
 
 void Log::Warning(std::string line)
@@ -37,8 +35,6 @@ void Log::Warning(std::string line)
 	newLine.type = kWarning;
 	
 	allLogLines.push_back(newLine);
-
-	printf("%s\n", line.c_str());
 }
 
 void Log::Error(std::string line)
@@ -48,8 +44,6 @@ void Log::Error(std::string line)
 	newLine.type = kError;
 	
 	allLogLines.push_back(newLine);
-
-	printf("%s\n", line.c_str());
 }
 
 int Log::GetLineCount()
@@ -57,7 +51,7 @@ int Log::GetLineCount()
 	return allLogLines.size();
 }
 
-const std::string& Log::GetLine(int number)
+const Log::LogLine& Log::GetLine(int number)
 {
-	return allLogLines[number].content;
+	return allLogLines[number];
 }

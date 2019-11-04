@@ -30,7 +30,19 @@ void LogWindow::Draw()
 	int numLines = Log::Instance()->GetLineCount();
 	for(int iLine = 0 ; iLine < numLines ; iLine++)
 	{
-		ImGui::TextUnformatted(Log::Instance()->GetLine(iLine).c_str());
+		Log::LogLine line = Log::Instance()->GetLine(iLine);
+		switch(line.type)
+		{
+			case Log::eLogType::kInfo:
+				ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),line.content.c_str());
+				break;
+			case Log::eLogType::kWarning:
+				ImGui::TextColored(ImVec4(1.0,1.0,0.0,1.0),line.content.c_str());
+				break;
+			case Log::eLogType::kError:
+				ImGui::TextColored(ImVec4(1.0,0.0,0.0,1.0),line.content.c_str());
+				break;
+		}
 	}
 	
 	ImGui::EndChild();

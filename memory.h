@@ -37,8 +37,9 @@ public:
 	eErrorCode 	Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
 	uint8_t 	Read(uint16_t address) const;
 	void 		Write(uint16_t address, uint8_t val);
-//	void 		DumpToTTY(uint16_t startAddress, uint16_t length);	// TO DEPRECATE
 
+	const MemoryLine& GetLineForAddress(uint16_t address);
+	
 private:
 	void		PopulateLines();
 	
