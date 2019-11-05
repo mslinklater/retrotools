@@ -23,9 +23,9 @@ public:
 	};
 	
 	struct MemoryLine {
-		char	address[4];		// memory address of line
-		char	value[16][2];	// the 16 memory location values
-		char	key[16];		// representative figure for each byte
+		char	address[5];		// memory address of line
+		char	value[16][3];	// the 16 memory location values
+		char	key[17];		// representative figure for each byte
 	};
 	
 	Memory();

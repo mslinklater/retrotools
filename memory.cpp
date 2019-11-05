@@ -87,24 +87,21 @@ void Memory::PopulateLines()
 	lines.clear();
 	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
 	{
-		char buffer[32];
 		MemoryLine newLine;
 		
 		// Address
-		sprintf(buffer, "%04x", (uint16_t)location);
-		memcpy(&newLine.address, buffer, 4);
+		sprintf(&(newLine.address[0]), "%04x", (uint16_t)location);
 		
 		// Bytes
 		for(int iByte=0 ; iByte<16 ; iByte++)
 		{
-			sprintf(buffer, "%02x", pMemory[(location*16)+iByte]);
-			memcpy(&newLine.value[iByte], buffer, 2);
+			sprintf(&(newLine.value[iByte][0]), "%02x", pMemory[location+iByte]);
 		}
 		
 		// Keys
 		for(int iByte=0 ; iByte<16 ; iByte++)
 		{
-			const Cpu6502::Opcode* opcode = pCpu->GetOpcode(pMemory[(location*16)+iByte]);
+			const Cpu6502::Opcode* opcode = pCpu->GetOpcode(pMemory[location+iByte]);
 
 			if(opcode->valid)
 			{
@@ -115,6 +112,7 @@ void Memory::PopulateLines()
 				newLine.key[iByte] = '.';
 			}
 		}
+		newLine.key[16] = 0;
 		lines.push_back(newLine);
 	}
 }

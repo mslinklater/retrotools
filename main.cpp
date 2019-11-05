@@ -14,6 +14,7 @@
 #include "log.h"
 #include "windows/logwindow.h"
 #include "windows/memorywindow.h"
+#include "windows/disasmwindow.h"
 
 static Config* pConfig = 0;
 
@@ -126,6 +127,7 @@ int main(int argc, char* argv[])
 	LogWindow* pLogWindow = new LogWindow();
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
+	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	
 	bool done = false;
 	bool show_demo_window = true;
@@ -151,6 +153,7 @@ int main(int argc, char* argv[])
 
 		pLogWindow->Draw();
 		pMemoryWindow->Draw();
+		pDisasmWindow->Draw();
 		
 		// rendering
 		ImGui::Render();

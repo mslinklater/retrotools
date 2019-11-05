@@ -16,6 +16,12 @@ Q/ Why use Dear ImGui
 
 A/ Because it is cross platform, lightweight and performant. Ideal for this type of application.
 
+Q/ What is the code architecture ?
+
+A/ The following patterns are followed:
+
+MVC - Model, view, controller. All UI logic is contained in the Window classes. The model classes are as light as possible and just contain the raw state of the emulated objects. All the glue code is contained in controller classes.
+
 Features
 --------
 
