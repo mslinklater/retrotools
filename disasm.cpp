@@ -124,6 +124,8 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 				case Cpu6502::eAddressingMode::kAddrModeZeroPageY:
 					sprintf(buffer, "$%02x,Y", plus1);
 					break;
+				default:
+					break;
 			}
 			thisLine.detail = buffer;
 			currentAddress+=opcodeInfo->length;

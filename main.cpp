@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 	Cpu6502* pCpu = new Cpu6502();
 	Disassembler* pDisassembler = new Disassembler();
 	Vcs* pVcs = new Vcs();
-	SymbolStore* pSymbolStore = new SymbolStore();
+//	SymbolStore* pSymbolStore = new SymbolStore();
 	
 	pMemory->Init();	
 	
@@ -142,6 +142,8 @@ int main(int argc, char* argv[])
 				done = true;
 			}
 		}
+		
+		pMemoryWindow->Update();
 		
 		// start ImGui frame
 		ImGui_ImplOpenGL2_NewFrame();
