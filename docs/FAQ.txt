@@ -12,9 +12,9 @@ Q/ Why use cmake ?
 
 A/ Cross platform, wide industry support, I wanted to learn it.
 
-Q/ Why use Dear ImGui
+Q/ Why use Dear ImGui ?
 
-A/ Because it is cross platform, lightweight and performant. Ideal for this type of application.
+A/ Because it is cross platform, lightweight and performant. Ideal for this type of application. It's also got a vibrant community behind it and lots of support.
 
 Q/ What is the code architecture ?
 

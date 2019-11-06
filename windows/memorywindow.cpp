@@ -6,7 +6,7 @@ MemoryWindow::MemoryWindow()
 : startAddress(0)
 , length(1024)
 , startAddressText("0000")
-, lengthText("1000")
+, lengthText("0400")
 {
 }
 
@@ -19,31 +19,6 @@ void MemoryWindow::SetMemory(Memory* mem)
 	pMemory = mem;
 }
 
-void MemoryWindow::Update()
-{
-	/*
-	// Keep start and length values valid
-	for(int i=0 ; i<4 ; i++)
-	{
-		bool valid = false;
-		if(startAddressText[i] >= '0' && startAddressText[i] <= '9')
-			valid = true;
-		if(startAddressText[i] >= 'a' && startAddressText[i] <= 'f')
-			valid = true;
-		
-		if(!valid)
-			startAddressText[i] = '0';
-	}
-	*/
-}
-/*
-static int StartAddressTextCallback(ImGuiInputTextCallbackData* pData)
-{
-//	((MemoryWindow*)pData)
-	printf("Callback!\n");
-	return 0;
-}
-*/
 void MemoryWindow::Draw()
 {
 	ImGui::Begin("Memory");
@@ -73,19 +48,53 @@ void MemoryWindow::Draw()
 		ImGui::Separator();
 	}
 	
-	for(int address = startAddress ; (address < startAddress+length) && (address<0x0000f7ff) ; address+=16)
+	ImGui::BeginChild("ScrollArea");
 	{
-		char buffer[128];
-		Memory::MemoryLine line = pMemory->GetLineForAddress((uint16_t)address);
-		sprintf(buffer, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
-				line.address,
-				line.value[0], line.value[1], line.value[2], line.value[3],
-				line.value[4], line.value[5], line.value[6], line.value[7],
-				line.value[8], line.value[9], line.value[10], line.value[11],
-				line.value[12], line.value[13], line.value[14], line.value[15],
-				line.key);
-		ImGui::Text("%s", buffer);
+		for(int address = startAddress ; (address < startAddress+length) && (address<0x0000ffff) ; address+=16)
+		{
+			ImGui::Text("%04x", address);
+
+			for(int i=0 ; i<16 ; i++)
+			{
+				ImGui::SameLine();
+				ImGui::Text("%02x", pMemory->Read(address+i));
+			}
+			for(int i=0 ; i<16 ; i++)
+			{
+				ImGui::SameLine();
+				ImGui::Text("%c", pMemory->Read(address+i));
+			}			
+		}
 	}
+	ImGui::EndChild();
 	
 	ImGui::End();
 }
+
+/*
+void Memory::PopulateLines()
+{
+	lines.clear();
+	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
+	{
+		MemoryLine newLine;
+		
+		// Address
+		sprintf(&(newLine.address[0]), "%04x", (uint16_t)location);
+		
+		// Bytes
+		for(int iByte=0 ; iByte<16 ; iByte++)
+		{
+			sprintf(&(newLine.value[iByte][0]), "%02x", pMemory[location+iByte]);
+		}
+		
+		// Keys
+		for(int iByte=0 ; iByte<16 ; iByte++)
+		{
+			newLine.key[iByte] = pMemory[location+iByte];
+		}
+		newLine.key[16] = 0;
+		lines.push_back(newLine);
+	}
+}
+*/

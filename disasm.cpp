@@ -48,6 +48,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	{
 		char buffer[128];
 		Line thisLine;
+		thisLine.used = true;
 		
 		// address
 		sprintf(buffer, "%04x", currentAddress);

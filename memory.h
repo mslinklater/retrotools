@@ -5,10 +5,6 @@
 #include <vector>
 #include "errorcodes.h"
 
-#define MEMORY_SIZE 65536
-
-class Cpu6502;
-
 // This is used to classify which type of memory transaction a mnemonic performs
 // which is useful when different things happen for read/write with memory mapped hardware
 
@@ -17,15 +13,11 @@ class Cpu6502;
 class Memory
 {
 public:
+	static const int kMemorySize = 65536;
+	
 	enum eTransactionType {
 		kMemoryRead,
 		kMemoryWrite
-	};
-	
-	struct MemoryLine {
-		char	address[5];		// memory address of line
-		char	value[16][3];	// the 16 memory location values
-		char	key[17];		// representative figure for each byte
 	};
 	
 	Memory();
@@ -38,12 +30,7 @@ public:
 	uint8_t 	Read(uint16_t address) const;
 	void 		Write(uint16_t address, uint8_t val);
 
-	const MemoryLine& GetLineForAddress(uint16_t address);
-	
 private:
-	void		PopulateLines();
-	
-	uint8_t* 				pMemory;
-	uint32_t				memorySize;
-	std::vector<MemoryLine>	lines;
+	uint8_t* 	pMemory;
+	uint32_t	memorySize;
 };

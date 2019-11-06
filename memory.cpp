@@ -19,10 +19,10 @@ Memory::~Memory()
 	
 eErrorCode Memory::Init(void)
 {
-	pMemory = new uint8_t[MEMORY_SIZE];
+	pMemory = new uint8_t[kMemorySize];
 	
-	memset((void*)(pMemory), 0xff, MEMORY_SIZE);
-	memorySize = MEMORY_SIZE;
+	memset((void*)(pMemory), 0xff, kMemorySize);
+	memorySize = kMemorySize;
 
 	LOGINFO("Memory initialised\n");
 
@@ -64,13 +64,19 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 		return kError_FileNotFound;
 	}
 
-	PopulateLines();
 	return kError_OK;
 }
 
 void Memory::Write(uint16_t address, uint8_t val)
 {
-	pMemory[address] = val;
+	if(pMemory != 0)
+	{
+		pMemory[address] = val;
+	}
+	else
+	{
+		LOGERROR("Memory not initialised");
+	}
 }
 
 uint8_t Memory::Read(uint16_t address) const
@@ -79,46 +85,10 @@ uint8_t Memory::Read(uint16_t address) const
 	{
 		return pMemory[address];
 	}
+	else
+	{
+		LOGERROR("Memory not initialised");
+	}
 	return 0;
 }
 
-void Memory::PopulateLines()
-{
-	lines.clear();
-	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
-	{
-		MemoryLine newLine;
-		
-		// Address
-		sprintf(&(newLine.address[0]), "%04x", (uint16_t)location);
-		
-		// Bytes
-		for(int iByte=0 ; iByte<16 ; iByte++)
-		{
-			sprintf(&(newLine.value[iByte][0]), "%02x", pMemory[location+iByte]);
-		}
-		
-		// Keys
-		for(int iByte=0 ; iByte<16 ; iByte++)
-		{
-			const Cpu6502::Opcode* opcode = pCpu->GetOpcode(pMemory[location+iByte]);
-
-			if(opcode->valid)
-			{
-				newLine.key[iByte] = 'O';
-			}
-			else
-			{
-				newLine.key[iByte] = '.';
-			}
-		}
-		newLine.key[16] = 0;
-		lines.push_back(newLine);
-	}
-}
-
-const Memory::MemoryLine& Memory::GetLineForAddress(uint16_t address)
-{
-	int whichLine = address / 16;
-	return lines[whichLine];
-}

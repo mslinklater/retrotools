@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 	pDisassembler->SetMemory(pMemory);
 	pDisassembler->SetCpu(pCpu);
 
-	uint16_t bytesLoaded;
+	uint16_t bytesLoaded = 0;
 	uint16_t loadAddress = pConfig->GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
@@ -142,8 +142,6 @@ int main(int argc, char* argv[])
 				done = true;
 			}
 		}
-		
-		pMemoryWindow->Update();
 		
 		// start ImGui frame
 		ImGui_ImplOpenGL2_NewFrame();
