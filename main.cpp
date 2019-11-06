@@ -6,8 +6,8 @@
 #include "imgui/imgui_impl_opengl2.h"
 
 #include "config.h"
-#include "memory.h"
-#include "cpu.h"
+#include "components/memory.h"
+#include "components/cpu6502.h"
 #include "vcs.h"
 #include "disasm.h"
 #include "symbolstore.h"
@@ -120,7 +120,6 @@ int main(int argc, char* argv[])
 	}
 
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
-	pDisassembler->DumpToTTY();
 	
 	// create windows
 	
@@ -128,6 +127,7 @@ int main(int argc, char* argv[])
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
+	pDisasmWindow->SetDisassembler(pDisassembler);
 	
 	bool done = false;
 	bool show_demo_window = true;

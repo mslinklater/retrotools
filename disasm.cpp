@@ -3,8 +3,8 @@
 #include <cassert>
 #include "disasm.h"
 #include "log.h"
-#include "cpu.h"
-#include "memory.h"
+#include "components/cpu6502.h"
+#include "components/memory.h"
 
 static const uint32_t kMaxDisasmLines = 4096;
 
@@ -140,14 +140,13 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	return kError_OK;
 }
 
-void Disassembler::DumpToTTY(void)
+int Disassembler::GetNumLines()
 {
-	// dump disassembly lines to DumpToTTY
-	for(Line line : lines)
-	{
-		char buffer[80];
-		sprintf(buffer, "%s %s %s %s\n", line.address.c_str(), line.bytes.c_str(), line.mnemonic.c_str(), line.detail.c_str());
-
-		LOGINFO(buffer);
-	}
+	return lines.size();
 }
+
+const Disassembler::Line & Disassembler::GetLine(int num)
+{
+	return lines[num];
+}
+

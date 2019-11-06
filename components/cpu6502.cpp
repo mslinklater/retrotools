@@ -1,7 +1,6 @@
-//#include <stdio.h>
-#include "cpu.h"
+#include "cpu6502.h"
 #include "memory.h"
-#include "vcs.h"
+#include "../vcs.h"
 
 
 #define CPU_STATUS_MASK_CARRY		0x01

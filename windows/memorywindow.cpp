@@ -1,6 +1,6 @@
 #include "memorywindow.h"
 #include "../imgui/imgui.h"
-#include "../memory.h"
+#include "../components/memory.h"
 
 MemoryWindow::MemoryWindow()
 : startAddress(0)

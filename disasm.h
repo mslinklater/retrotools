@@ -35,14 +35,16 @@ public:
 	
 	void 		Init();
 	eErrorCode	Disassemble(uint16_t address, uint16_t size, uint16_t org);
-	void		DumpToTTY(void);
 
+	int			GetNumLines();
+	const Line& GetLine(int num);
+	
 	void		SetMemory(Memory* mem);
 	void		SetCpu(Cpu6502* cpu);
 	
 private:
-	const Memory*					pMemory;
-	const Cpu6502*					pCpu;
+	const Memory*		pMemory;
+	const Cpu6502*		pCpu;
 	
-	std::vector<Line>				lines;
+	std::vector<Line>	lines;
 };

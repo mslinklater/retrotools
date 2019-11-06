@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "errorcodes.h"
+#include "../errorcodes.h"
 
 // This is used to classify which type of memory transaction a mnemonic performs
 // which is useful when different things happen for read/write with memory mapped hardware
@@ -33,4 +33,5 @@ public:
 private:
 	uint8_t* 	pMemory;
 	uint32_t	memorySize;
+	uint16_t	addressMask;
 };

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <iomanip>
 #include "memory.h"
-#include "log.h"
-#include "errorcodes.h"
-#include "cpu.h"
+#include "../log.h"
+#include "../errorcodes.h"
+#include "cpu6502.h"
 
 static Cpu6502* pCpu;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+class Disassembler;
+
 class DisassemblyWindow
 {
 public:
@@ -13,5 +15,7 @@ public:
 	virtual ~DisassemblyWindow();
 	
 	void Draw();
+	void SetDisassembler(Disassembler* pDisasm);
 private:
+	Disassembler* pDisasm;
 };
