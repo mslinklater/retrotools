@@ -44,6 +44,7 @@ void Log::Error(std::string line)
 	newLine.type = kError;
 	
 	allLogLines.push_back(newLine);
+	printf("%s", line.c_str());
 }
 
 int Log::GetLineCount()

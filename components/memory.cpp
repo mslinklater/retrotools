@@ -60,7 +60,7 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 	else
 	{
 		// File load error
-		LOGINFO("ERROR - cannot load file");
+		LOGERROR("ERROR - cannot load file");
 		return kError_FileNotFound;
 	}
 

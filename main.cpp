@@ -13,8 +13,8 @@
 #include "symbolstore.h"
 #include "log.h"
 #include "windows/logwindow.h"
-//#include "windows/memorywindow.h"
-//#include "windows/disasmwindow.h"
+#include "windows/memorywindow.h"
+#include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
 
 static Config* pConfig = 0;
@@ -39,6 +39,7 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+	// TODO: Output the command line to stdout
 	LOGINFO("-- retrotool --\n");
 	LOGINFO("Test Info");
 	LOGWARNING("Test Warning");
@@ -62,7 +63,7 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MAXIMIZED);	
-	SDL_Window* window = SDL_CreateWindow(	"Distella", 
+	SDL_Window* window = SDL_CreateWindow(	"Vistella", 
 											SDL_WINDOWPOS_CENTERED, 
 											SDL_WINDOWPOS_CENTERED, 
 											640, 480, windowFlags);
@@ -84,44 +85,44 @@ int main(int argc, char* argv[])
 	// Do some 6502 stuff
 	// initialise components
 	
-//	Memory* pMemory = new Memory();
-//	Cpu6502* pCpu = new Cpu6502();
-//	Disassembler* pDisassembler = new Disassembler();
-//	Vcs* pVcs = new Vcs();
+	Memory* pMemory = new Memory();
+	Cpu6502* pCpu = new Cpu6502();
+	Disassembler* pDisassembler = new Disassembler();
+	Vcs* pVcs = new Vcs();
 	
-//	pMemory->Init();	
+	pMemory->Init();	
 	
-//	pVcs->Init();
+	pVcs->Init();
     
-//    pCpu->Init(Cpu6502::k6507);
-//	pCpu->DumpInfo();
-//	pCpu->SetMemory(pMemory);
-//  pMemory->SetCPU(pCpu);
+    pCpu->Init(Cpu6502::k6507);
+	pCpu->DumpInfo();
+	pCpu->SetMemory(pMemory);
+	pMemory->SetCPU(pCpu);
 	
-//	pDisassembler->Init();
-//	pDisassembler->SetMemory(pMemory);
-//	pDisassembler->SetCpu(pCpu);
+	pDisassembler->Init();
+	pDisassembler->SetMemory(pMemory);
+	pDisassembler->SetCpu(pCpu);
 
-//	uint16_t bytesLoaded = 0;
-//	uint16_t loadAddress = pConfig->GetLoadAddress();
+	uint16_t bytesLoaded = 0;
+	uint16_t loadAddress = pConfig->GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
-//	if(!pConfig->GetLoadFilename().empty())
-//	{
-//		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
-//		{
-//			return -1;
-//		}
-//	}
+	if(!pConfig->GetLoadFilename().empty())
+	{
+		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
+		{
+			return -1;
+		}
+	}
 
-//	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
+	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	
 	// create windows
 	
-//	MemoryWindow* pMemoryWindow = new MemoryWindow();
-//	pMemoryWindow->SetMemory(pMemory);
-//	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
-//	pDisasmWindow->SetDisassembler(pDisassembler);
+	MemoryWindow* pMemoryWindow = new MemoryWindow();
+	pMemoryWindow->SetMemory(pMemory);
+	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
+	pDisasmWindow->SetDisassembler(pDisassembler);
 
 	MainWindow* pMainWindow = new MainWindow();
 	LogWindow* pLogWindow = new LogWindow();
@@ -151,8 +152,8 @@ int main(int argc, char* argv[])
 		pMainWindow->Draw();		
 		pLogWindow->Draw();
 		
-//		pMemoryWindow->Draw();
-//		pDisasmWindow->Draw();
+		pMemoryWindow->Draw();
+		pDisasmWindow->Draw();
 		
 		// rendering
 		ImGui::Render();
@@ -172,7 +173,7 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	
-//	pMemory->Destroy();
+	pMemory->Destroy();
 
 	LOGINFO("Exiting...\n");
 	
