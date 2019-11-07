@@ -71,30 +71,3 @@ void MemoryWindow::Draw()
 	ImGui::End();
 }
 
-/*
-void Memory::PopulateLines()
-{
-	lines.clear();
-	for(int location = 0 ; location < MEMORY_SIZE ; location += 16)
-	{
-		MemoryLine newLine;
-		
-		// Address
-		sprintf(&(newLine.address[0]), "%04x", (uint16_t)location);
-		
-		// Bytes
-		for(int iByte=0 ; iByte<16 ; iByte++)
-		{
-			sprintf(&(newLine.value[iByte][0]), "%02x", pMemory[location+iByte]);
-		}
-		
-		// Keys
-		for(int iByte=0 ; iByte<16 ; iByte++)
-		{
-			newLine.key[iByte] = pMemory[location+iByte];
-		}
-		newLine.key[16] = 0;
-		lines.push_back(newLine);
-	}
-}
-*/

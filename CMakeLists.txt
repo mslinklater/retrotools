@@ -11,14 +11,14 @@ set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp)
 
 set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_impl_opengl2.cpp imgui/imgui_widgets.cpp)
 
-set(LOGWINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp)
+set(LOGWINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp)
 
 find_package(SDL2 REQUIRED)
 find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-project (distella)
-add_executable(distella ${SOURCE_FILES} ${IMGUI_FILES} ${LOGWINDOW_FILES} ${COMPONENT_FILES})
-target_link_libraries(distella ${SDL2_LIBRARIES} ${OPENGL_gl_LIBRARY})
-target_compile_options(distella PRIVATE -Wall -Werror)
+project (vistella)
+add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${LOGWINDOW_FILES} ${COMPONENT_FILES})
+target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_gl_LIBRARY})
+target_compile_options(vistella PRIVATE -Wall -Werror)

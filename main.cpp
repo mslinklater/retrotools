@@ -13,8 +13,9 @@
 #include "symbolstore.h"
 #include "log.h"
 #include "windows/logwindow.h"
-#include "windows/memorywindow.h"
-#include "windows/disasmwindow.h"
+//#include "windows/memorywindow.h"
+//#include "windows/disasmwindow.h"
+#include "windows/mainwindow.h"
 
 static Config* pConfig = 0;
 
@@ -34,10 +35,6 @@ void ProcessCommandLine(int argc, char* argv[])
 		LOGINFO("Error parsing command line... aborting \n");
 		exit(1);
 	}
-}
-
-void DoUI()
-{
 }
 
 int main(int argc, char* argv[])
@@ -87,47 +84,47 @@ int main(int argc, char* argv[])
 	// Do some 6502 stuff
 	// initialise components
 	
-	Memory* pMemory = new Memory();
-	Cpu6502* pCpu = new Cpu6502();
-	Disassembler* pDisassembler = new Disassembler();
-	Vcs* pVcs = new Vcs();
-//	SymbolStore* pSymbolStore = new SymbolStore();
+//	Memory* pMemory = new Memory();
+//	Cpu6502* pCpu = new Cpu6502();
+//	Disassembler* pDisassembler = new Disassembler();
+//	Vcs* pVcs = new Vcs();
 	
-	pMemory->Init();	
+//	pMemory->Init();	
 	
-	pVcs->Init();
+//	pVcs->Init();
     
-    pCpu->Init(Cpu6502::k6507);
-	pCpu->DumpInfo();
-	pCpu->SetMemory(pMemory);
-
-    pMemory->SetCPU(pCpu);
+//    pCpu->Init(Cpu6502::k6507);
+//	pCpu->DumpInfo();
+//	pCpu->SetMemory(pMemory);
+//  pMemory->SetCPU(pCpu);
 	
-	pDisassembler->Init();
-	pDisassembler->SetMemory(pMemory);
-	pDisassembler->SetCpu(pCpu);
+//	pDisassembler->Init();
+//	pDisassembler->SetMemory(pMemory);
+//	pDisassembler->SetCpu(pCpu);
 
-	uint16_t bytesLoaded = 0;
-	uint16_t loadAddress = pConfig->GetLoadAddress();
+//	uint16_t bytesLoaded = 0;
+//	uint16_t loadAddress = pConfig->GetLoadAddress();
 
 	// need to grab the ROM filename from the config settings
-	if(!pConfig->GetLoadFilename().empty())
-	{
-		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
-		{
-			return -1;
-		}
-	}
+//	if(!pConfig->GetLoadFilename().empty())
+//	{
+//		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
+//		{
+//			return -1;
+//		}
+//	}
 
-	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
+//	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	
 	// create windows
 	
+//	MemoryWindow* pMemoryWindow = new MemoryWindow();
+//	pMemoryWindow->SetMemory(pMemory);
+//	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
+//	pDisasmWindow->SetDisassembler(pDisassembler);
+
+	MainWindow* pMainWindow = new MainWindow();
 	LogWindow* pLogWindow = new LogWindow();
-	MemoryWindow* pMemoryWindow = new MemoryWindow();
-	pMemoryWindow->SetMemory(pMemory);
-	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
-	pDisasmWindow->SetDisassembler(pDisassembler);
 	
 	bool done = false;
 	bool show_demo_window = true;
@@ -151,9 +148,11 @@ int main(int argc, char* argv[])
 		// do stuff
 		ImGui::ShowDemoWindow(&show_demo_window);
 
+		pMainWindow->Draw();		
 		pLogWindow->Draw();
-		pMemoryWindow->Draw();
-		pDisasmWindow->Draw();
+		
+//		pMemoryWindow->Draw();
+//		pDisasmWindow->Draw();
 		
 		// rendering
 		ImGui::Render();
@@ -173,8 +172,7 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	
-
-	pMemory->Destroy();
+//	pMemory->Destroy();
 
 	LOGINFO("Exiting...\n");
 	
