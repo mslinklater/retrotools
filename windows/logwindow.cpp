@@ -13,9 +13,9 @@ LogWindow::~LogWindow()
 {
 }
 
-void LogWindow::Draw()
+void LogWindow::Draw(bool* pOpen)
 {
-	ImGui::Begin("Log");
+	ImGui::Begin("Log", pOpen);
 	
 	ImGui::Checkbox("Info", &showInfo);
 	ImGui::SameLine();

@@ -6,7 +6,7 @@ public:
 	LogWindow();
 	virtual ~LogWindow();
 	
-	void Draw();
+	void Draw(bool* pOpen);
 private:
 	bool showInfo;
 	bool showWarnings;

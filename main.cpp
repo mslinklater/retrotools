@@ -16,6 +16,7 @@
 #include "windows/memorywindow.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
+#include "system/command.h"
 
 static Config* pConfig = 0;
 
@@ -39,6 +40,8 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+	bool showLog = true;
+	
 	// TODO: Output the command line to stdout
 	LOGINFO("-- retrotool --\n");
 	LOGINFO("Test Info");
@@ -81,7 +84,7 @@ int main(int argc, char* argv[])
 	ImGui_ImplOpenGL2_Init();
 	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	
+
 	// Do some 6502 stuff
 	// initialise components
 	
@@ -140,6 +143,8 @@ int main(int argc, char* argv[])
 				done = true;
 			}
 		}
+
+		CommandCenter::Instance()->Update();
 		
 		// start ImGui frame
 		ImGui_ImplOpenGL2_NewFrame();
@@ -149,8 +154,11 @@ int main(int argc, char* argv[])
 		// do stuff
 		ImGui::ShowDemoWindow(&show_demo_window);
 
-		pMainWindow->Draw();		
-		pLogWindow->Draw();
+		pMainWindow->Draw();
+		if(showLog)
+		{
+			pLogWindow->Draw(&showLog);
+		}
 		
 		pMemoryWindow->Draw();
 		pDisasmWindow->Draw();
