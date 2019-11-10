@@ -3,6 +3,7 @@
 #include <cassert>
 #include "disasm.h"
 #include "log.h"
+#include "symbolstore.h"
 #include "components/cpu6502.h"
 #include "components/memory.h"
 
@@ -32,6 +33,11 @@ void Disassembler::SetMemory(Memory* mem)
 void Disassembler::SetCpu(Cpu6502* cpu)
 {
 	pCpu = cpu;
+}
+
+void Disassembler::SetSymbolStore(SymbolStore* store)
+{
+	pSymbolStore = store;
 }
 
 eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t org)
@@ -117,7 +123,32 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 					sprintf(buffer, "$%04x", addr);
 					break;
 				case Cpu6502::eAddressingMode::kAddrModeZeroPage:
-					sprintf(buffer, "$%02x", plus1);
+					if(opcodeInfo->memoryOp == Cpu6502::eMemoryOp::kRead)
+					{
+						if(pSymbolStore->HasReadSymbol(plus1))
+						{
+							sprintf(buffer, "%s", pSymbolStore->GetReadSymbol(plus1).c_str());
+						}
+						else
+						{	
+							sprintf(buffer, "$%02x", plus1);		  
+						}
+					}
+					else if(opcodeInfo->memoryOp == Cpu6502::eMemoryOp::kWrite)
+					{
+						if(pSymbolStore->HasWriteSymbol(plus1))
+						{
+							sprintf(buffer, "%s", pSymbolStore->GetWriteSymbol(plus1).c_str());
+						}
+						else
+						{	
+							sprintf(buffer, "$%02x", plus1);		  
+						}
+					}
+					else
+					{
+						sprintf(buffer, "$%02x", plus1);						
+					}
 					break;
 				case Cpu6502::eAddressingMode::kAddrModeZeroPageX:
 					sprintf(buffer, "$%02x,X", plus1);

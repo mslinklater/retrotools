@@ -12,6 +12,14 @@ class Cpu6502
 			k6507
 		};
 		
+		enum eMemoryOp
+		{
+			kRead,
+			kWrite,
+			kReadWrite,
+			kNone
+		};
+		
 		enum eAddressingMode 
 		{
 			kAddrModeAccumulator = 0,
@@ -49,12 +57,12 @@ class Cpu6502
 		};
 
 		struct Opcode {
-			bool					valid;
-			uint8_t					value;
-			uint8_t					length;
-			enum eMnemonic			mnemonic;
-			enum eAddressingMode	addrMode;
-			bool					undocumented;
+			bool			valid;
+			uint8_t			value;
+			uint8_t			length;
+			eMnemonic		mnemonic;
+			eAddressingMode	addrMode;
+			eMemoryOp		memoryOp;
 		};
 
 		Cpu6502();
@@ -79,7 +87,7 @@ class Cpu6502
 		uint8_t		status;
 		uint8_t		sp;
 
-        void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented);
+        void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
         void AddEmptyOpcode(uint8_t value);
         
 		// static setup

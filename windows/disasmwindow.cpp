@@ -24,6 +24,9 @@ void DisassemblyWindow::Draw()
 		for(int i=0 ; i<numLines ; i++)
 		{
 			Disassembler::Line line = pDisasm->GetLine(i);
+//			ImGui::SetNextItemWidth(100);
+//			ImGui::Text("plap");
+//			ImGui::SameLine();
 			ImGui::Text("%s", line.address.c_str());
 			ImGui::SameLine();
 			ImGui::Text("%s", line.bytes.c_str());

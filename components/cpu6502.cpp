@@ -21,11 +21,12 @@ const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
 	return mnemonicStrings[mnemonic];
 }
 
-void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, bool documented)
+void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp)
 {
 	opcodes[value].valid = true;
 	opcodes[value].mnemonic = mnemonic;
 	opcodes[value].addrMode = addrMode;
+	opcodes[value].memoryOp = memoryOp;
 
 	switch(addrMode)
 	{
@@ -165,263 +166,264 @@ void Cpu6502::Init(eVariant variant)
 	}
 
 	// ADC
-	AddOpcode(0x69, kMnemonic_ADC, kAddrModeImmediate, true);
-	AddOpcode(0x65, kMnemonic_ADC, kAddrModeZeroPage, true);
-	AddOpcode(0x75, kMnemonic_ADC, kAddrModeZeroPageX, true);
-	AddOpcode(0x6d, kMnemonic_ADC, kAddrModeAbsolute, true);
-	AddOpcode(0x7d, kMnemonic_ADC, kAddrModeAbsoluteX, true);
-	AddOpcode(0x79, kMnemonic_ADC, kAddrModeAbsoluteY, true);
-	AddOpcode(0x61, kMnemonic_ADC, kAddrModeIndirectX, true);
-	AddOpcode(0x71, kMnemonic_ADC, kAddrModeIndirectY, true);
+	AddOpcode(0x69, kMnemonic_ADC, kAddrModeImmediate, kNone);
+	AddOpcode(0x65, kMnemonic_ADC, kAddrModeZeroPage, kRead);
+	AddOpcode(0x75, kMnemonic_ADC, kAddrModeZeroPageX, kRead);
+	AddOpcode(0x6d, kMnemonic_ADC, kAddrModeAbsolute, kRead);
+	AddOpcode(0x7d, kMnemonic_ADC, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0x79, kMnemonic_ADC, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0x61, kMnemonic_ADC, kAddrModeIndirectX, kRead);
+	AddOpcode(0x71, kMnemonic_ADC, kAddrModeIndirectY, kRead);
 
 	// AND
-	AddOpcode(0x29, kMnemonic_AND, kAddrModeImmediate, true);
-	AddOpcode(0x25, kMnemonic_AND, kAddrModeZeroPage, true);
-	AddOpcode(0x35, kMnemonic_AND, kAddrModeZeroPageX, true);
-	AddOpcode(0x2d, kMnemonic_AND, kAddrModeAbsolute, true);
-	AddOpcode(0x3d, kMnemonic_AND, kAddrModeAbsoluteX, true);
-	AddOpcode(0x39, kMnemonic_AND, kAddrModeAbsoluteY, true);
-	AddOpcode(0x21, kMnemonic_AND, kAddrModeIndirectX, true);
-	AddOpcode(0x31, kMnemonic_AND, kAddrModeIndirectY, true);
+	AddOpcode(0x29, kMnemonic_AND, kAddrModeImmediate, kNone);
+	AddOpcode(0x25, kMnemonic_AND, kAddrModeZeroPage, kRead);
+	AddOpcode(0x35, kMnemonic_AND, kAddrModeZeroPageX, kRead);
+	AddOpcode(0x2d, kMnemonic_AND, kAddrModeAbsolute, kRead);
+	AddOpcode(0x3d, kMnemonic_AND, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0x39, kMnemonic_AND, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0x21, kMnemonic_AND, kAddrModeIndirectX, kRead);
+	AddOpcode(0x31, kMnemonic_AND, kAddrModeIndirectY, kRead);
 
 	// ASL
-	AddOpcode(0x0a, kMnemonic_ASL, kAddrModeAccumulator, true);
-	AddOpcode(0x06, kMnemonic_ASL, kAddrModeZeroPage, true);
-	AddOpcode(0x16, kMnemonic_ASL, kAddrModeZeroPageX, true);
-	AddOpcode(0x0e, kMnemonic_ASL, kAddrModeAbsolute, true);
-	AddOpcode(0x1e, kMnemonic_ASL, kAddrModeAbsoluteX, true);
+	AddOpcode(0x0a, kMnemonic_ASL, kAddrModeAccumulator, kNone);
+	AddOpcode(0x06, kMnemonic_ASL, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0x16, kMnemonic_ASL, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0x0e, kMnemonic_ASL, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0x1e, kMnemonic_ASL, kAddrModeAbsoluteX, kReadWrite);
 
 	//BCC
-	AddOpcode(0x90, kMnemonic_BCC, kAddrModeRelative, true);
+	AddOpcode(0x90, kMnemonic_BCC, kAddrModeRelative, kNone);
 
 	// BCS
-	AddOpcode(0xb0, kMnemonic_BCS, kAddrModeRelative, true);
+	AddOpcode(0xb0, kMnemonic_BCS, kAddrModeRelative, kNone);
 
 	// BEQ
-	AddOpcode(0xf0, kMnemonic_BEQ, kAddrModeRelative, true);
+	AddOpcode(0xf0, kMnemonic_BEQ, kAddrModeRelative, kNone);
 	
 	// BIT
-	AddOpcode(0x24, kMnemonic_BIT, kAddrModeZeroPage, true);
-	AddOpcode(0x2c, kMnemonic_BIT, kAddrModeAbsolute, true);
+	AddOpcode(0x24, kMnemonic_BIT, kAddrModeZeroPage, kRead);
+	AddOpcode(0x2c, kMnemonic_BIT, kAddrModeAbsolute, kNone);
 
 	// BMI
-	AddOpcode(0x30, kMnemonic_BMI, kAddrModeRelative, true);
+	AddOpcode(0x30, kMnemonic_BMI, kAddrModeRelative, kNone);
 
 	// BNE
-	AddOpcode(0xd0, kMnemonic_BNE, kAddrModeRelative, true);
+	AddOpcode(0xd0, kMnemonic_BNE, kAddrModeRelative, kNone);
 
 	// BPL
-	AddOpcode(0x10, kMnemonic_BPL, kAddrModeRelative, true);
+	AddOpcode(0x10, kMnemonic_BPL, kAddrModeRelative, kNone);
 
 	// BRK
-	AddOpcode(0x00, kMnemonic_BRK, kAddrModeImplied, true);
+	AddOpcode(0x00, kMnemonic_BRK, kAddrModeImplied, kNone);
 
 	// BVC
-	AddOpcode(0x50, kMnemonic_BVC, kAddrModeRelative, true);
+	AddOpcode(0x50, kMnemonic_BVC, kAddrModeRelative, kNone);
 
 	//BVS
-	AddOpcode(0x70, kMnemonic_BVS, kAddrModeRelative, true);
+	AddOpcode(0x70, kMnemonic_BVS, kAddrModeRelative, kNone);
 
 	// CLC
-	AddOpcode(0x18, kMnemonic_CLC, kAddrModeRelative, true);
+	AddOpcode(0x18, kMnemonic_CLC, kAddrModeImplied, kNone);
 
 	// CLD
-	AddOpcode(0xd8, kMnemonic_CLD, kAddrModeImplied, true);
+	AddOpcode(0xd8, kMnemonic_CLD, kAddrModeImplied, kNone);
 
 	// CLI
-	AddOpcode(0x58, kMnemonic_CLI, kAddrModeRelative, true);
+	AddOpcode(0x58, kMnemonic_CLI, kAddrModeRelative, kNone);
 
 	// CLV
-	AddOpcode(0xb8, kMnemonic_CLV, kAddrModeRelative, true);
+	AddOpcode(0xb8, kMnemonic_CLV, kAddrModeRelative, kNone);
 
 	// CMP
-	AddOpcode(0xc9, kMnemonic_CMP, kAddrModeImmediate, true);
-	AddOpcode(0xc5, kMnemonic_CMP, kAddrModeZeroPage, true);
-	AddOpcode(0xd5, kMnemonic_CMP, kAddrModeZeroPageX, true);
-	AddOpcode(0xcd, kMnemonic_CMP, kAddrModeAbsolute, true);
-	AddOpcode(0xdd, kMnemonic_CMP, kAddrModeAbsoluteX, true);
-	AddOpcode(0xd9, kMnemonic_CMP, kAddrModeAbsoluteY, true);
-	AddOpcode(0xc1, kMnemonic_CMP, kAddrModeIndirectX, true);
-	AddOpcode(0xd1, kMnemonic_CMP, kAddrModeIndirectY, true);
+	AddOpcode(0xc9, kMnemonic_CMP, kAddrModeImmediate, kNone);
+	AddOpcode(0xc5, kMnemonic_CMP, kAddrModeZeroPage, kRead);
+	AddOpcode(0xd5, kMnemonic_CMP, kAddrModeZeroPageX, kRead);
+	AddOpcode(0xcd, kMnemonic_CMP, kAddrModeAbsolute, kRead);
+	AddOpcode(0xdd, kMnemonic_CMP, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0xd9, kMnemonic_CMP, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0xc1, kMnemonic_CMP, kAddrModeIndirectX, kRead);
+	AddOpcode(0xd1, kMnemonic_CMP, kAddrModeIndirectY, kRead);
 
 	// CPX
-	AddOpcode(0xe0, kMnemonic_CPX, kAddrModeImmediate, true);
-	AddOpcode(0xe4, kMnemonic_CPX, kAddrModeZeroPage, true);
-	AddOpcode(0xec, kMnemonic_CPX, kAddrModeAbsolute, true);
+	AddOpcode(0xe0, kMnemonic_CPX, kAddrModeImmediate, kNone);
+	AddOpcode(0xe4, kMnemonic_CPX, kAddrModeZeroPage, kRead);
+	AddOpcode(0xec, kMnemonic_CPX, kAddrModeAbsolute, kRead);
+	
 	// CPY
-	AddOpcode(0xc0, kMnemonic_CPY, kAddrModeImmediate, true);
-	AddOpcode(0xc4, kMnemonic_CPY, kAddrModeZeroPage, true);
-	AddOpcode(0xcc, kMnemonic_CPY, kAddrModeAbsolute, true);
+	AddOpcode(0xc0, kMnemonic_CPY, kAddrModeImmediate, kNone);
+	AddOpcode(0xc4, kMnemonic_CPY, kAddrModeZeroPage, kRead);
+	AddOpcode(0xcc, kMnemonic_CPY, kAddrModeAbsolute, kRead);
 
 	// DEC
-	AddOpcode(0xc6, kMnemonic_DEC, kAddrModeZeroPage, true);
-	AddOpcode(0xd6, kMnemonic_DEC, kAddrModeZeroPageX, true);
-	AddOpcode(0xce, kMnemonic_DEC, kAddrModeAbsolute, true);
-	AddOpcode(0xde, kMnemonic_DEC, kAddrModeAbsoluteX, true);
+	AddOpcode(0xc6, kMnemonic_DEC, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0xd6, kMnemonic_DEC, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0xce, kMnemonic_DEC, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0xde, kMnemonic_DEC, kAddrModeAbsoluteX, kReadWrite);
 
 	// DEX
-	AddOpcode(0xca, kMnemonic_DEX, kAddrModeImplied, true);
+	AddOpcode(0xca, kMnemonic_DEX, kAddrModeImplied, kNone);
 
 	// DEY
-	AddOpcode(0x88, kMnemonic_DEY, kAddrModeImplied, true);
+	AddOpcode(0x88, kMnemonic_DEY, kAddrModeImplied, kNone);
 
 	// EOR
-	AddOpcode(0x49, kMnemonic_EOR, kAddrModeImmediate, true);
-	AddOpcode(0x45, kMnemonic_EOR, kAddrModeZeroPage, true);
-	AddOpcode(0x55, kMnemonic_EOR, kAddrModeZeroPageX, true);
-	AddOpcode(0x4d, kMnemonic_EOR, kAddrModeAbsolute, true);
-	AddOpcode(0x5d, kMnemonic_EOR, kAddrModeAbsoluteX, true);
-	AddOpcode(0x59, kMnemonic_EOR, kAddrModeAbsoluteY, true);
-	AddOpcode(0x41, kMnemonic_EOR, kAddrModeIndirectX, true);
-	AddOpcode(0x51, kMnemonic_EOR, kAddrModeIndirectY, true);
+	AddOpcode(0x49, kMnemonic_EOR, kAddrModeImmediate, kNone);
+	AddOpcode(0x45, kMnemonic_EOR, kAddrModeZeroPage, kRead);
+	AddOpcode(0x55, kMnemonic_EOR, kAddrModeZeroPageX, kRead);
+	AddOpcode(0x4d, kMnemonic_EOR, kAddrModeAbsolute, kRead);
+	AddOpcode(0x5d, kMnemonic_EOR, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0x59, kMnemonic_EOR, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0x41, kMnemonic_EOR, kAddrModeIndirectX, kRead);
+	AddOpcode(0x51, kMnemonic_EOR, kAddrModeIndirectY, kRead);
 
 	// INC
-	AddOpcode(0xe6, kMnemonic_INC, kAddrModeZeroPage, true);
-	AddOpcode(0xf6, kMnemonic_INC, kAddrModeZeroPageX, true);
-	AddOpcode(0xee, kMnemonic_INC, kAddrModeAbsolute, true);
-	AddOpcode(0xfe, kMnemonic_INC, kAddrModeAbsoluteX, true);
+	AddOpcode(0xe6, kMnemonic_INC, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0xf6, kMnemonic_INC, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0xee, kMnemonic_INC, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0xfe, kMnemonic_INC, kAddrModeAbsoluteX, kReadWrite);
 
 	// INX
-	AddOpcode(0xe8, kMnemonic_INX, kAddrModeImplied, true);
+	AddOpcode(0xe8, kMnemonic_INX, kAddrModeImplied, kNone);
 
 	// INY
-	AddOpcode(0xc8, kMnemonic_INY, kAddrModeImplied, true);
+	AddOpcode(0xc8, kMnemonic_INY, kAddrModeImplied, kNone);
 
 	// JMP
-	AddOpcode(0x4c, kMnemonic_JMP, kAddrModeAbsolute, true);
-	AddOpcode(0x2c, kMnemonic_JMP, kAddrModeIndirect, true);
+	AddOpcode(0x4c, kMnemonic_JMP, kAddrModeAbsolute, kNone);
+	AddOpcode(0x2c, kMnemonic_JMP, kAddrModeIndirect, kRead);
 
 	// JSR
-	AddOpcode(0x20, kMnemonic_JSR, kAddrModeAbsolute, true);
+	AddOpcode(0x20, kMnemonic_JSR, kAddrModeAbsolute, kNone);
 
 	// LDA
-	AddOpcode(0xa9, kMnemonic_LDA, kAddrModeImmediate, true);
-	AddOpcode(0xa5, kMnemonic_LDA, kAddrModeZeroPage, true);
-	AddOpcode(0xb5, kMnemonic_LDA, kAddrModeZeroPageX, true);
-	AddOpcode(0xad, kMnemonic_LDA, kAddrModeAbsolute, true);
-	AddOpcode(0xbd, kMnemonic_LDA, kAddrModeAbsoluteX, true);
-	AddOpcode(0xb9, kMnemonic_LDA, kAddrModeAbsoluteY, true);
-	AddOpcode(0xa1, kMnemonic_LDA, kAddrModeIndirectX, true);
-	AddOpcode(0xb1, kMnemonic_LDA, kAddrModeIndirectY, true);
+	AddOpcode(0xa9, kMnemonic_LDA, kAddrModeImmediate, kNone);
+	AddOpcode(0xa5, kMnemonic_LDA, kAddrModeZeroPage, kRead);
+	AddOpcode(0xb5, kMnemonic_LDA, kAddrModeZeroPageX, kRead);
+	AddOpcode(0xad, kMnemonic_LDA, kAddrModeAbsolute, kRead);
+	AddOpcode(0xbd, kMnemonic_LDA, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0xb9, kMnemonic_LDA, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0xa1, kMnemonic_LDA, kAddrModeIndirectX, kRead);
+	AddOpcode(0xb1, kMnemonic_LDA, kAddrModeIndirectY, kRead);
 
 	// LDX
-	AddOpcode(0xa2, kMnemonic_LDX, kAddrModeImmediate, true);
-	AddOpcode(0xa6, kMnemonic_LDX, kAddrModeZeroPage, true);
-	AddOpcode(0xb6, kMnemonic_LDX, kAddrModeZeroPageY, true);
-	AddOpcode(0xae, kMnemonic_LDX, kAddrModeAbsolute, true);
-	AddOpcode(0xbe, kMnemonic_LDX, kAddrModeAbsoluteY, true);
+	AddOpcode(0xa2, kMnemonic_LDX, kAddrModeImmediate, kNone);
+	AddOpcode(0xa6, kMnemonic_LDX, kAddrModeZeroPage, kRead);
+	AddOpcode(0xb6, kMnemonic_LDX, kAddrModeZeroPageY, kRead);
+	AddOpcode(0xae, kMnemonic_LDX, kAddrModeAbsolute, kRead);
+	AddOpcode(0xbe, kMnemonic_LDX, kAddrModeAbsoluteY, kRead);
 
 	// LDY
-	AddOpcode(0xa0, kMnemonic_LDY, kAddrModeImmediate, true);
-	AddOpcode(0xa4, kMnemonic_LDY, kAddrModeZeroPage, true);
-	AddOpcode(0xb4, kMnemonic_LDY, kAddrModeZeroPageX, true);
-	AddOpcode(0xac, kMnemonic_LDY, kAddrModeAbsolute, true);
-	AddOpcode(0xbc, kMnemonic_LDY, kAddrModeAbsoluteX, true);
+	AddOpcode(0xa0, kMnemonic_LDY, kAddrModeImmediate, kNone);
+	AddOpcode(0xa4, kMnemonic_LDY, kAddrModeZeroPage, kRead);
+	AddOpcode(0xb4, kMnemonic_LDY, kAddrModeZeroPageX, kRead);
+	AddOpcode(0xac, kMnemonic_LDY, kAddrModeAbsolute, kRead);
+	AddOpcode(0xbc, kMnemonic_LDY, kAddrModeAbsoluteX, kRead);
 
 	// LSR
-	AddOpcode(0x4a, kMnemonic_LSR, kAddrModeAccumulator, true);
-	AddOpcode(0x46, kMnemonic_LSR, kAddrModeZeroPage, true);
-	AddOpcode(0x56, kMnemonic_LSR, kAddrModeZeroPageX, true);
-	AddOpcode(0x4e, kMnemonic_LSR, kAddrModeAbsolute, true);
-	AddOpcode(0x5e, kMnemonic_LSR, kAddrModeAbsoluteX, true);
+	AddOpcode(0x4a, kMnemonic_LSR, kAddrModeAccumulator, kNone);
+	AddOpcode(0x46, kMnemonic_LSR, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0x56, kMnemonic_LSR, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0x4e, kMnemonic_LSR, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0x5e, kMnemonic_LSR, kAddrModeAbsoluteX, kReadWrite);
 
 	// NOP
-	AddOpcode(0xea, kMnemonic_NOP, kAddrModeImplied, true);
+	AddOpcode(0xea, kMnemonic_NOP, kAddrModeImplied, kNone);
 
 	// ORA
-	AddOpcode(0x09, kMnemonic_ORA, kAddrModeImmediate, true);
-	AddOpcode(0x05, kMnemonic_ORA, kAddrModeZeroPage, true);
-	AddOpcode(0x15, kMnemonic_ORA, kAddrModeZeroPageX, true);
-	AddOpcode(0x0d, kMnemonic_ORA, kAddrModeAbsolute, true);
-	AddOpcode(0x1d, kMnemonic_ORA, kAddrModeAbsoluteX, true);
-	AddOpcode(0x19, kMnemonic_ORA, kAddrModeAbsoluteY, true);
-	AddOpcode(0x01, kMnemonic_ORA, kAddrModeIndirectX, true);
-	AddOpcode(0x11, kMnemonic_ORA, kAddrModeIndirectY, true);
+	AddOpcode(0x09, kMnemonic_ORA, kAddrModeImmediate, kNone);
+	AddOpcode(0x05, kMnemonic_ORA, kAddrModeZeroPage, kRead);
+	AddOpcode(0x15, kMnemonic_ORA, kAddrModeZeroPageX, kRead);
+	AddOpcode(0x0d, kMnemonic_ORA, kAddrModeAbsolute, kRead);
+	AddOpcode(0x1d, kMnemonic_ORA, kAddrModeAbsoluteX, kRead);
+	AddOpcode(0x19, kMnemonic_ORA, kAddrModeAbsoluteY, kRead);
+	AddOpcode(0x01, kMnemonic_ORA, kAddrModeIndirectX, kRead);
+	AddOpcode(0x11, kMnemonic_ORA, kAddrModeIndirectY, kRead);
 
 	// PHA
-	AddOpcode(0x48, kMnemonic_PHA, kAddrModeImplied, true);
+	AddOpcode(0x48, kMnemonic_PHA, kAddrModeImplied, kWrite);
 
 	// PHP
-	AddOpcode(0x08, kMnemonic_PHP, kAddrModeImplied, true);
+	AddOpcode(0x08, kMnemonic_PHP, kAddrModeImplied, kWrite);
 
 	// PLA
-	AddOpcode(0x68, kMnemonic_PLA, kAddrModeImplied, true);
+	AddOpcode(0x68, kMnemonic_PLA, kAddrModeImplied, kRead);
 
 	// ROL
-	AddOpcode(0x2a, kMnemonic_ROL, kAddrModeAccumulator, true);
-	AddOpcode(0x26, kMnemonic_ROL, kAddrModeZeroPage, true);
-	AddOpcode(0x36, kMnemonic_ROL, kAddrModeZeroPageX, true);
-	AddOpcode(0x2e, kMnemonic_ROL, kAddrModeAbsolute, true);
-	AddOpcode(0x3e, kMnemonic_ROL, kAddrModeAbsoluteX, true);
+	AddOpcode(0x2a, kMnemonic_ROL, kAddrModeAccumulator, kNone);
+	AddOpcode(0x26, kMnemonic_ROL, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0x36, kMnemonic_ROL, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0x2e, kMnemonic_ROL, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0x3e, kMnemonic_ROL, kAddrModeAbsoluteX, kReadWrite);
 
 	// ROR
-	AddOpcode(0x6a, kMnemonic_ROR, kAddrModeAccumulator, true);
-	AddOpcode(0x66, kMnemonic_ROR, kAddrModeZeroPage, true);
-	AddOpcode(0x76, kMnemonic_ROR, kAddrModeZeroPageX, true);
-	AddOpcode(0x6e, kMnemonic_ROR, kAddrModeAbsolute, true);
-	AddOpcode(0x7e, kMnemonic_ROR, kAddrModeAbsoluteX, true);
+	AddOpcode(0x6a, kMnemonic_ROR, kAddrModeAccumulator, kNone);
+	AddOpcode(0x66, kMnemonic_ROR, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0x76, kMnemonic_ROR, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0x6e, kMnemonic_ROR, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0x7e, kMnemonic_ROR, kAddrModeAbsoluteX, kReadWrite);
 
 	// RTI
-	AddOpcode(0x40, kMnemonic_RTI, kAddrModeImplied, true);
+	AddOpcode(0x40, kMnemonic_RTI, kAddrModeImplied, kNone);
 
 	// RTS
-	AddOpcode(0x60, kMnemonic_RTS, kAddrModeImplied, true);
+	AddOpcode(0x60, kMnemonic_RTS, kAddrModeImplied, kNone);
 
 	// SBC
-	AddOpcode(0xe9, kMnemonic_SBC, kAddrModeImmediate, true);
-	AddOpcode(0xe5, kMnemonic_SBC, kAddrModeZeroPage, true);
-	AddOpcode(0xf5, kMnemonic_SBC, kAddrModeZeroPageX, true);
-	AddOpcode(0xed, kMnemonic_SBC, kAddrModeAbsolute, true);
-	AddOpcode(0xfd, kMnemonic_SBC, kAddrModeAbsoluteX, true);
-	AddOpcode(0xf9, kMnemonic_SBC, kAddrModeAbsoluteY, true);
-	AddOpcode(0xe1, kMnemonic_SBC, kAddrModeIndirectX, true);
-	AddOpcode(0xf1, kMnemonic_SBC, kAddrModeIndirectY, true);
+	AddOpcode(0xe9, kMnemonic_SBC, kAddrModeImmediate, kNone);
+	AddOpcode(0xe5, kMnemonic_SBC, kAddrModeZeroPage, kReadWrite);
+	AddOpcode(0xf5, kMnemonic_SBC, kAddrModeZeroPageX, kReadWrite);
+	AddOpcode(0xed, kMnemonic_SBC, kAddrModeAbsolute, kReadWrite);
+	AddOpcode(0xfd, kMnemonic_SBC, kAddrModeAbsoluteX, kReadWrite);
+	AddOpcode(0xf9, kMnemonic_SBC, kAddrModeAbsoluteY, kReadWrite);
+	AddOpcode(0xe1, kMnemonic_SBC, kAddrModeIndirectX, kReadWrite);
+	AddOpcode(0xf1, kMnemonic_SBC, kAddrModeIndirectY, kReadWrite);
 
 	// SEC
-	AddOpcode(0x38, kMnemonic_SEC, kAddrModeImplied, true);
+	AddOpcode(0x38, kMnemonic_SEC, kAddrModeImplied, kNone);
 
 	// SED
-	AddOpcode(0xf8, kMnemonic_SED, kAddrModeImplied, true);
+	AddOpcode(0xf8, kMnemonic_SED, kAddrModeImplied, kNone);
 
 	// SEI
-	AddOpcode(0x78, kMnemonic_SEI, kAddrModeImplied, true);
+	AddOpcode(0x78, kMnemonic_SEI, kAddrModeImplied, kNone);
 
 	// STA
-	AddOpcode(0x85, kMnemonic_STA, kAddrModeZeroPage, true);
-	AddOpcode(0x95, kMnemonic_STA, kAddrModeZeroPageX, true);
-	AddOpcode(0x8d, kMnemonic_STA, kAddrModeAbsolute, true);
-	AddOpcode(0x9d, kMnemonic_STA, kAddrModeAbsoluteX, true);
-	AddOpcode(0x99, kMnemonic_STA, kAddrModeAbsoluteY, true);
-	AddOpcode(0x81, kMnemonic_STA, kAddrModeIndirectX, true);
-	AddOpcode(0x91, kMnemonic_STA, kAddrModeIndirectY, true);
+	AddOpcode(0x85, kMnemonic_STA, kAddrModeZeroPage, kWrite);
+	AddOpcode(0x95, kMnemonic_STA, kAddrModeZeroPageX, kWrite);
+	AddOpcode(0x8d, kMnemonic_STA, kAddrModeAbsolute, kWrite);
+	AddOpcode(0x9d, kMnemonic_STA, kAddrModeAbsoluteX, kWrite);
+	AddOpcode(0x99, kMnemonic_STA, kAddrModeAbsoluteY, kWrite);
+	AddOpcode(0x81, kMnemonic_STA, kAddrModeIndirectX, kWrite);
+	AddOpcode(0x91, kMnemonic_STA, kAddrModeIndirectY, kWrite);
 
 	// STX
-	AddOpcode(0x86, kMnemonic_STX, kAddrModeZeroPage, true);
-	AddOpcode(0x96, kMnemonic_STX, kAddrModeZeroPageY, true);
-	AddOpcode(0x8e, kMnemonic_STX, kAddrModeAbsolute, true);
+	AddOpcode(0x86, kMnemonic_STX, kAddrModeZeroPage, kWrite);
+	AddOpcode(0x96, kMnemonic_STX, kAddrModeZeroPageY, kWrite);
+	AddOpcode(0x8e, kMnemonic_STX, kAddrModeAbsolute, kWrite);
 
 	// STY
-	AddOpcode(0x84, kMnemonic_STY, kAddrModeZeroPage, true);
-	AddOpcode(0x94, kMnemonic_STY, kAddrModeZeroPageX, true);
-	AddOpcode(0x8c, kMnemonic_STY, kAddrModeAbsolute, true);
+	AddOpcode(0x84, kMnemonic_STY, kAddrModeZeroPage, kWrite);
+	AddOpcode(0x94, kMnemonic_STY, kAddrModeZeroPageX, kWrite);
+	AddOpcode(0x8c, kMnemonic_STY, kAddrModeAbsolute, kWrite);
 
 	// TAX
-	AddOpcode(0xaa, kMnemonic_TAX, kAddrModeImplied, true);
+	AddOpcode(0xaa, kMnemonic_TAX, kAddrModeImplied, kNone);
 
 	// TAY
-	AddOpcode(0xa8, kMnemonic_TAX, kAddrModeImplied, true);
+	AddOpcode(0xa8, kMnemonic_TAX, kAddrModeImplied, kNone);
 
 	// TSX
-	AddOpcode(0xba, kMnemonic_TSX, kAddrModeImplied, true);
+	AddOpcode(0xba, kMnemonic_TSX, kAddrModeImplied, kNone);
 
 	// TXA
-	AddOpcode(0x8a, kMnemonic_TXA, kAddrModeImplied, true);
+	AddOpcode(0x8a, kMnemonic_TXA, kAddrModeImplied, kNone);
 
 	// TXS
-	AddOpcode(0x9a, kMnemonic_TXS, kAddrModeImplied, true);
+	AddOpcode(0x9a, kMnemonic_TXS, kAddrModeImplied, kNone);
 
 	// TYA
-	AddOpcode(0x98, kMnemonic_TYA, kAddrModeImplied, true);
+	AddOpcode(0x98, kMnemonic_TYA, kAddrModeImplied, kNone);
 
 	printf("Intialised 6502 CPU\n");
 }

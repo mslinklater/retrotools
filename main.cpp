@@ -91,12 +91,11 @@ int main(int argc, char* argv[])
 	Memory* pMemory = new Memory();
 	Cpu6502* pCpu = new Cpu6502();
 	Disassembler* pDisassembler = new Disassembler();
-	Vcs* pVcs = new Vcs();
+	SymbolStore* pSymbolStore = new SymbolStore();
+	pSymbolStore->LoadFromCSV("vcs.csv");
 	
 	pMemory->Init();	
 	
-	pVcs->Init();
-    
     pCpu->Init(Cpu6502::k6507);
 	pCpu->DumpInfo();
 	pCpu->SetMemory(pMemory);
@@ -105,6 +104,7 @@ int main(int argc, char* argv[])
 	pDisassembler->Init();
 	pDisassembler->SetMemory(pMemory);
 	pDisassembler->SetCpu(pCpu);
+	pDisassembler->SetSymbolStore(pSymbolStore);
 
 	uint16_t bytesLoaded = 0;
 	uint16_t loadAddress = pConfig->GetLoadAddress();

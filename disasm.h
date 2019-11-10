@@ -8,6 +8,7 @@
 
 class Memory;
 class Cpu6502;
+class SymbolStore;
 
 class Disassembler
 {
@@ -41,10 +42,12 @@ public:
 	
 	void		SetMemory(Memory* mem);
 	void		SetCpu(Cpu6502* cpu);
+	void		SetSymbolStore(SymbolStore* store);
 	
 private:
 	const Memory*		pMemory;
 	const Cpu6502*		pCpu;
+	SymbolStore*	pSymbolStore;
 	
 	std::vector<Line>	lines;
 };
