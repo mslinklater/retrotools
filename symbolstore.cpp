@@ -28,6 +28,18 @@ std::string SymbolStore::GetWriteSymbol(uint16_t address)
 {
 	return writeMap.find(address)->second;
 }
+bool SymbolStore::HasLabelSymbol(uint16_t address)
+{
+	return labelMap.find(address) != labelMap.end();
+}
+std::string SymbolStore::GetLabelSymbol(uint16_t address)
+{
+	return labelMap.find(address)->second;
+}
+void SymbolStore::AddLabel(uint16_t address, std::string label)
+{
+	labelMap[address] = label;
+}
 
 eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 {

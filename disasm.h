@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "errorcodes.h"
+#include "components/cpu6502.h"
 
 class Memory;
 class Cpu6502;
@@ -20,15 +21,21 @@ public:
 		kWrite,
 		kReadWrite
 	};
+
+	static const uint32_t kFlagSymbol = 1 << 0;
 	
 	struct Line
 	{
 		bool used;
+		Cpu6502::eMnemonic	mnemonic;
+		uint16_t	address;
 		std::string label;		// max size plus null
-		std::string address;	// '0x0000' plus null
+		std::string addressString;	// '0x0000' plus null
 		std::string bytes;		// '00 00 00' plus null
-		std::string mnemonic;	// max size plus null
-		std::string detail;		
+		std::string mnemonicString;	// max size plus null
+		std::string detail;
+		std::vector<std::string>	hints;
+		uint32_t	flags;		// contenx of the instruction - to help visualisation
 	};
 
 	Disassembler();
@@ -45,9 +52,13 @@ public:
 	void		SetSymbolStore(SymbolStore* store);
 	
 private:
+	
+	void AddPostRTSLabels();
+	
 	const Memory*		pMemory;
 	const Cpu6502*		pCpu;
 	SymbolStore*	pSymbolStore;
 	
 	std::vector<Line>	lines;
+	uint32_t			anonLabelCount;
 };

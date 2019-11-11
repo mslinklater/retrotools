@@ -48,6 +48,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	// get rid of the old disassembly
 	
 	lines.clear();
+	anonLabelCount = 0;
 	
 	uint32_t currentAddress = address;
 	while(currentAddress < (uint32_t)address + (uint32_t)size)
@@ -55,10 +56,13 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		char buffer[128];
 		Line thisLine;
 		thisLine.used = true;
+		thisLine.flags = 0;
+		thisLine.hints.clear();
 		
 		// address
 		sprintf(buffer, "%04x", currentAddress);
-		thisLine.address = buffer;
+		thisLine.addressString = buffer;
+		thisLine.address = currentAddress;
 		
 		uint8_t opcode = pMemory->Read(currentAddress);
 		const Cpu6502::Opcode* opcodeInfo = pCpu->GetOpcode(opcode);
@@ -86,7 +90,8 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 			// opcode
 			Cpu6502::eMnemonic mnemonic = pCpu->GetOpcode(opcode)->mnemonic;
 			sprintf(buffer, "%s", pCpu->GetMnemonicString(mnemonic).c_str());
-			thisLine.mnemonic = buffer;
+			thisLine.mnemonicString = buffer;
+			thisLine.mnemonic = mnemonic;
 			
 			// detail
 			sprintf(buffer, " ");
@@ -128,6 +133,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 						if(pSymbolStore->HasReadSymbol(plus1))
 						{
 							sprintf(buffer, "%s", pSymbolStore->GetReadSymbol(plus1).c_str());
+							thisLine.flags |= kFlagSymbol;
 						}
 						else
 						{	
@@ -139,6 +145,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 						if(pSymbolStore->HasWriteSymbol(plus1))
 						{
 							sprintf(buffer, "%s", pSymbolStore->GetWriteSymbol(plus1).c_str());
+							thisLine.flags |= kFlagSymbol;
 						}
 						else
 						{	
@@ -160,6 +167,8 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 					break;
 			}
 			thisLine.detail = buffer;
+			
+			// Move to the next instruction
 			currentAddress+=opcodeInfo->length;
 		}
 		else
@@ -168,8 +177,31 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		}
 		lines.push_back(thisLine);
 	}
+
+	AddPostRTSLabels();
+	
 	return kError_OK;
 }
+
+void Disassembler::AddPostRTSLabels()
+{
+	for(uint32_t iLine=0 ; iLine<lines.size() ; iLine++)
+	{
+		switch(lines[iLine].mnemonic)
+		{
+			char buffer[128];
+			
+			case Cpu6502::kMnemonic_RTS:
+				sprintf(buffer, "<label%d>", anonLabelCount++);
+				lines[iLine+1].label = buffer;
+				pSymbolStore->AddLabel(lines[iLine].address, buffer);
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 
 int Disassembler::GetNumLines()
 {

@@ -24,16 +24,27 @@ void DisassemblyWindow::Draw()
 		for(int i=0 ; i<numLines ; i++)
 		{
 			Disassembler::Line line = pDisasm->GetLine(i);
+			if(line.label.length() > 0)
+			{
+				ImGui::Text("%s:", line.label.c_str());
+			}
 //			ImGui::SetNextItemWidth(100);
 //			ImGui::Text("plap");
 //			ImGui::SameLine();
-			ImGui::Text("%s", line.address.c_str());
+			ImGui::Text("    %s", line.addressString.c_str());
 			ImGui::SameLine();
 			ImGui::Text("%s", line.bytes.c_str());
 			ImGui::SameLine();
-			ImGui::Text("%s", line.mnemonic.c_str());
+			ImGui::Text("%s", line.mnemonicString.c_str());
 			ImGui::SameLine();
-			ImGui::Text("%s", line.detail.c_str());
+			if(line.flags & Disassembler::kFlagSymbol)
+			{
+				ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
+			}
+			else
+			{
+				ImGui::Text("%s", line.detail.c_str());
+			}
 		}
 	}
 	ImGui::End();
