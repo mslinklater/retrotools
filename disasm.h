@@ -23,11 +23,17 @@ public:
 	};
 
 	static const uint32_t kFlagSymbol = 1 << 0;
+	static const uint32_t kFlagLabel = 	1 << 1;
 	
 	struct Line
 	{
 		bool used;
 		Cpu6502::eMnemonic	mnemonic;
+		Cpu6502::eAddressingMode addressingMode;
+		Cpu6502::eMemoryOp memoryOp;
+		uint8_t		opcode;
+		uint8_t		param1;
+		uint8_t		param2;
 		uint16_t	address;
 		std::string label;		// max size plus null
 		std::string addressString;	// '0x0000' plus null
@@ -53,7 +59,9 @@ public:
 	
 private:
 	
-	void AddPostRTSLabels();
+	void AddObviousLabels();
+	void UpdateDetailLines();
+	void UpdateLineLabels();
 	
 	const Memory*		pMemory;
 	const Cpu6502*		pCpu;

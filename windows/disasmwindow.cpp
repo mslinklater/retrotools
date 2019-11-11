@@ -26,11 +26,8 @@ void DisassemblyWindow::Draw()
 			Disassembler::Line line = pDisasm->GetLine(i);
 			if(line.label.length() > 0)
 			{
-				ImGui::Text("%s:", line.label.c_str());
+				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.label.c_str());
 			}
-//			ImGui::SetNextItemWidth(100);
-//			ImGui::Text("plap");
-//			ImGui::SameLine();
 			ImGui::Text("    %s", line.addressString.c_str());
 			ImGui::SameLine();
 			ImGui::Text("%s", line.bytes.c_str());
@@ -40,6 +37,10 @@ void DisassemblyWindow::Draw()
 			if(line.flags & Disassembler::kFlagSymbol)
 			{
 				ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
+			}
+			else if(line.flags & Disassembler::kFlagLabel)
+			{
+				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());	   
 			}
 			else
 			{

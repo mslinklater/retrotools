@@ -38,7 +38,13 @@ std::string SymbolStore::GetLabelSymbol(uint16_t address)
 }
 void SymbolStore::AddLabel(uint16_t address, std::string label)
 {
-	labelMap[address] = label;
+	if(!HasLabelSymbol(address))
+	{	 
+		char buffer[64];
+		sprintf(buffer, "label%04x", address);
+		labelMap[address] = buffer;
+		printf("Label symbol %04x set to %s\n", address, label.c_str());
+	}
 }
 
 eErrorCode SymbolStore::LoadFromCSV(std::string filename)
