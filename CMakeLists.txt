@@ -7,13 +7,13 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp vcs.cpp log.cpp symbolstore.cpp)
 
-set(SYSTEM_FILES system/command.cpp)
+set(SYSTEM_FILES system/command.cpp system/memoryutils.cpp)
 
 set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp)
 
 set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_impl_opengl2.cpp imgui/imgui_widgets.cpp)
 
-set(LOGWINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp)
+set(LOGWINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp windows/symbolwindow.cpp)
 
 find_package(SDL2 REQUIRED)
 find_package(OpenGL)

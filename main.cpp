@@ -16,7 +16,9 @@
 #include "windows/memorywindow.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
+#include "windows/symbolwindow.h"
 #include "system/command.h"
+#include "system/memoryutils.h"
 
 static Config* pConfig = 0;
 
@@ -112,7 +114,7 @@ int main(int argc, char* argv[])
 	// need to grab the ROM filename from the config settings
 	if(!pConfig->GetLoadFilename().empty())
 	{
-		if (pMemory->Load(pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
+		if (MemoryUtils::LoadFileToMemory(pMemory, pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
 		{
 			return -1;
 		}
@@ -129,6 +131,8 @@ int main(int argc, char* argv[])
 
 	MainWindow* pMainWindow = new MainWindow();
 	LogWindow* pLogWindow = new LogWindow();
+	SymbolWindow* pSymbolWindow = new SymbolWindow();
+	pSymbolWindow->SetSymbolStore(pSymbolStore);
 	
 	bool done = false;
 	bool show_demo_window = true;
@@ -162,6 +166,7 @@ int main(int argc, char* argv[])
 		
 		pMemoryWindow->Draw();
 		pDisasmWindow->Draw();
+		pSymbolWindow->Draw();
 		
 		// rendering
 		ImGui::Render();

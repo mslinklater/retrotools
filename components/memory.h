@@ -26,7 +26,7 @@ public:
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
 	eErrorCode 	Destroy(void);
-	eErrorCode 	Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
+//	eErrorCode 	Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
 	uint8_t 	Read(uint16_t address) const;
 	void 		Write(uint16_t address, uint8_t val);
 

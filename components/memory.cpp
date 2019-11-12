@@ -1,7 +1,7 @@
-#include <fstream>
+//#include <fstream>
 #include <string.h>
-#include <iostream>
-#include <iomanip>
+//#include <iostream>
+//#include <iomanip>
 #include "memory.h"
 #include "../log.h"
 #include "../errorcodes.h"
@@ -42,6 +42,7 @@ eErrorCode Memory::Destroy(void)
 	return kError_OK;
 }
 
+/*
 eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
 {
 	std::ifstream inFile;
@@ -66,6 +67,7 @@ eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t*
 
 	return kError_OK;
 }
+*/
 
 void Memory::Write(uint16_t address, uint8_t val)
 {

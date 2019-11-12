@@ -47,6 +47,41 @@ void SymbolStore::AddLabel(uint16_t address, std::string label)
 	}
 }
 
+std::vector<SymbolStore::Symbol> SymbolStore::GetAll()
+{
+	std::vector<Symbol> ret;
+
+	Symbol symbol;
+	
+	for(LabelMapIterator iter = labelMap.begin() ; iter != labelMap.end() ; iter++)
+	{
+		symbol.type = kSymbolTypeLabel;
+		symbol.address = iter->first;
+		symbol.name = iter->second;
+		
+		ret.push_back(symbol);
+	}
+	for(ReadMapIterator iter = readMap.begin() ; iter != readMap.end() ; iter++)
+	{
+		symbol.type = kSymbolTypeRead;
+		symbol.address = iter->first;
+		symbol.name = iter->second;
+		
+		ret.push_back(symbol);
+	}
+	for(WriteMapIterator iter = writeMap.begin() ; iter != writeMap.end() ; iter++)
+	{
+		symbol.type = kSymbolTypeWrite;
+		symbol.address = iter->first;
+		symbol.name = iter->second;
+		
+		ret.push_back(symbol);
+	}
+
+	// sort ret
+	return ret;
+}
+
 eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 {
 	std::ifstream inFile;
