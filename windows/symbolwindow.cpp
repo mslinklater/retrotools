@@ -11,11 +11,11 @@ SymbolWindow::~SymbolWindow()
 {
 }
 
-void SymbolWindow::Draw()
+void SymbolWindow::Draw(bool* pShow)
 {
 	std::vector<SymbolStore::Symbol> symbols = pStore->GetAll();
 	
-	ImGui::Begin("Symbols");
+	ImGui::Begin("Symbols", pShow);
 	for(size_t i=0 ; i<symbols.size() ; i++)
 	{
 		ImGui::Text("%04x", symbols[i].address);

@@ -8,7 +8,7 @@ public:
 	SymbolWindow();
 	virtual ~SymbolWindow();
 	
-	void Draw();
+	void Draw(bool* pShow);
 	void SetSymbolStore(SymbolStore* p);
 private:
 	SymbolStore* pStore;

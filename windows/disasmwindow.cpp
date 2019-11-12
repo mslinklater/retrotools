@@ -11,9 +11,9 @@ DisassemblyWindow::~DisassemblyWindow()
 {
 }
 
-void DisassemblyWindow::Draw()
+void DisassemblyWindow::Draw(bool* pShow)
 {
-	ImGui::Begin("Disassembly");
+	ImGui::Begin("Disassembly", pShow);
 	if(pDisasm == nullptr)
 	{
 		ImGui::Text("ERROR - Disasm not set");

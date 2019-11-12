@@ -29,5 +29,19 @@ void MainWindow::Draw()
 		msg.payload = "Memory";
 		CommandCenter::Instance()->Broadcast(msg);
 	}
+	if(ImGui::Button("Disassembly"))
+	{
+		Command msg;
+		msg.name = "ToggleWindow";
+		msg.payload = "Disassembly";
+		CommandCenter::Instance()->Broadcast(msg);
+	}
+	if(ImGui::Button("Symbols"))
+	{
+		Command msg;
+		msg.name = "ToggleWindow";
+		msg.payload = "Symbols";
+		CommandCenter::Instance()->Broadcast(msg);
+	}
 	ImGui::End();
 }

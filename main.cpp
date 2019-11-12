@@ -22,6 +22,8 @@
 
 static bool showLog = false;
 static bool showMemory = false;
+static bool showDisassembly = false;
+static bool showSymbols = false;
 
 void ToggleLogWindow(void)
 {
@@ -30,6 +32,14 @@ void ToggleLogWindow(void)
 void ToggleMemoryWindow(void)
 {
 	showMemory = !showMemory;
+}
+void ToggleDisassemblyWindow(void)
+{
+	showDisassembly = !showDisassembly;
+}
+void ToggleSymbolsWindow(void)
+{
+	showSymbols = !showSymbols;
 }
 
 class MainCommandProcessor : public ICommandProcessor
@@ -46,6 +56,14 @@ public:
 			if(command.payload == "Memory")
 			{
 				ToggleMemoryWindow();
+			}
+			if(command.payload == "Disassembly")
+			{
+				ToggleDisassemblyWindow();
+			}
+			if(command.payload == "Symbols")
+			{
+				ToggleSymbolsWindow();
 			}
 		}
 		return true;
@@ -203,9 +221,14 @@ int main(int argc, char* argv[])
 		{
 			pMemoryWindow->Draw(&showMemory);	  
 		}
-		
-		pDisasmWindow->Draw();
-		pSymbolWindow->Draw();
+		if(showDisassembly)
+		{
+			pDisasmWindow->Draw(&showDisassembly);
+		}
+		if(showSymbols)
+		{
+			pSymbolWindow->Draw(&showSymbols);
+		}
 		
 		// rendering
 		ImGui::Render();

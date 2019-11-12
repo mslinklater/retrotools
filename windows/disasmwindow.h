@@ -14,7 +14,7 @@ public:
 	DisassemblyWindow();
 	virtual ~DisassemblyWindow();
 	
-	void Draw();
+	void Draw(bool* pShow);
 	void SetDisassembler(Disassembler* pDisasm);
 private:
 	Disassembler* pDisasm;
