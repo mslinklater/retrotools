@@ -19,7 +19,7 @@ public:
 
 	void SetMemory(Memory* mem);
 	
-	void Draw();
+	void Draw(bool* open);
 	
 private:
 	uint16_t	startAddress;

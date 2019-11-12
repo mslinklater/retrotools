@@ -20,6 +20,38 @@
 #include "system/command.h"
 #include "system/memoryutils.h"
 
+static bool showLog = false;
+static bool showMemory = false;
+
+void ToggleLogWindow(void)
+{
+	showLog = !showLog;
+}
+void ToggleMemoryWindow(void)
+{
+	showMemory = !showMemory;
+}
+
+class MainCommandProcessor : public ICommandProcessor
+{
+public:
+	bool HandleCommand(const Command& command)
+	{
+		if(command.name == "ToggleWindow")
+		{
+			if(command.payload == "Log")
+			{
+				ToggleLogWindow();
+			}
+			if(command.payload == "Memory")
+			{
+				ToggleMemoryWindow();
+			}
+		}
+		return true;
+	}
+};
+
 static Config* pConfig = 0;
 
 void ProcessCommandLine(int argc, char* argv[])
@@ -42,7 +74,8 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	bool showLog = true;
+	MainCommandProcessor commandProcessor;
+	
 	
 	// TODO: Output the command line to stdout
 	LOGINFO("-- retrotool --\n");
@@ -53,6 +86,8 @@ int main(int argc, char* argv[])
 	// check for command line args
 	
 	ProcessCommandLine(argc, argv);
+	
+	CommandCenter::Instance()->Subscribe("ToggleWindow", &commandProcessor);
 	
 	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -120,6 +155,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	
 	// create windows
@@ -163,8 +199,11 @@ int main(int argc, char* argv[])
 		{
 			pLogWindow->Draw(&showLog);
 		}
+		if(showMemory)
+		{
+			pMemoryWindow->Draw(&showMemory);	  
+		}
 		
-		pMemoryWindow->Draw();
 		pDisasmWindow->Draw();
 		pSymbolWindow->Draw();
 		

@@ -13,11 +13,20 @@ MainWindow::~MainWindow()
 void MainWindow::Draw()
 {
 	ImGui::Begin("Vistella");
-	if(ImGui::Button("Log Button"))
+	ImGui::Text("Windows");
+	ImGui::Separator();
+	if(ImGui::Button("Log"))
 	{
 		Command msg;
-		msg.name = "Test";
-		
+		msg.name = "ToggleWindow";
+		msg.payload = "Log";
+		CommandCenter::Instance()->Broadcast(msg);
+	}
+	if(ImGui::Button("Memory"))
+	{
+		Command msg;
+		msg.name = "ToggleWindow";
+		msg.payload = "Memory";
 		CommandCenter::Instance()->Broadcast(msg);
 	}
 	ImGui::End();

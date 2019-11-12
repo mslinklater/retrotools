@@ -1,4 +1,5 @@
 #include "command.h"
+#include "../log.h"
 
 CommandCenter* CommandCenter::pInstance = 0;
 
@@ -12,8 +13,6 @@ CommandCenter::~CommandCenter()
 {
 }
 
-
-
 void CommandCenter::Update()
 {
 	// toggle queue indexes
@@ -26,7 +25,14 @@ void CommandCenter::Update()
 		Command thisCommand = commandList[readQueueIndex].front();
 		commandList[readQueueIndex].pop();
 		
-		printf("Processing command %s\n", thisCommand.name.c_str());
+		if(dispatchMap.find(thisCommand.name) != dispatchMap.end())
+		{
+			std::vector<ICommandProcessor*> handlers = dispatchMap[thisCommand.name];
+			for( ICommandProcessor* handler : handlers)
+			{
+				handler->HandleCommand(thisCommand);
+			}
+		}
 	}
 }
 
@@ -42,4 +48,9 @@ CommandCenter * CommandCenter::Instance()
 		pInstance = new CommandCenter();
 	}
 	return pInstance;
+}
+
+void CommandCenter::Subscribe(std::string commandName, ICommandProcessor* handler)
+{
+	dispatchMap[commandName].push_back(handler);
 }

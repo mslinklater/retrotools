@@ -7,13 +7,13 @@
 struct Command
 {
 	std::string	name;
-	std::map<std::string, std::string> payload;
+	std::string payload;
 };
 
 class ICommandProcessor
 {
 public:
-	bool HandleCommand(const Command& command);
+	virtual bool HandleCommand(const Command& command) = 0;
 };
 
 class CommandCenter
@@ -24,6 +24,9 @@ public:
 	void Update();
 	
 	void Broadcast(Command& command);
+	
+	void Subscribe(std::string commandName, ICommandProcessor* handler);
+	
 private:
 	CommandCenter();
 	virtual ~CommandCenter();

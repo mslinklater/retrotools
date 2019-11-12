@@ -19,9 +19,9 @@ void MemoryWindow::SetMemory(Memory* mem)
 	pMemory = mem;
 }
 
-void MemoryWindow::Draw()
+void MemoryWindow::Draw(bool* pOpen)
 {
-	ImGui::Begin("Memory");
+	ImGui::Begin("Memory", pOpen);
 	
 	if(pMemory == nullptr)
 	{
