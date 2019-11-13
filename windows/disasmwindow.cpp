@@ -1,9 +1,15 @@
+// Copyright (c) 2019, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include "disasmwindow.h"
 #include "../imgui/imgui.h"
 #include "../disasm.h"
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)
+, showTIAHints(false)
 {
 }
 
@@ -11,42 +17,73 @@ DisassemblyWindow::~DisassemblyWindow()
 {
 }
 
+void DisassemblyWindow::DrawHeader(void)
+{
+	if(ImGui::Button("TIA"))
+	{
+		showTIAHints = !showTIAHints;
+	}
+}
+
+void DisassemblyWindow::DrawMainSubWindow(void)
+{
+	ImGui::BeginChild("MainSub");
+	int numLines = pDisasm->GetNumLines();
+	for(int i=0 ; i<numLines ; i++)
+	{
+		Disassembler::Line line = pDisasm->GetLine(i);
+		
+		if(line.label.length() > 0)
+		{
+			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.label.c_str());
+		}
+		if(showTIAHints)
+		{
+			ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), " TIA ");
+		}
+		else
+		{	
+			ImGui::Text("     ");
+		}
+		ImGui::SameLine();
+		ImGui::Text("    %s", line.addressString.c_str());
+		ImGui::SameLine();
+		ImGui::Text("%s", line.bytes.c_str());
+		ImGui::SameLine();
+		ImGui::Text("%s", line.mnemonicString.c_str());
+		ImGui::SameLine();
+		if(line.flags & Disassembler::kFlagSymbol)
+		{
+			ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
+		}
+		else if(line.flags & Disassembler::kFlagLabel)
+		{
+			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());	   
+		}
+		else
+		{
+			ImGui::Text("%s", line.detail.c_str());
+		}
+	}
+	ImGui::EndChild();
+}
+
+
 void DisassemblyWindow::Draw(bool* pShow)
 {
 	ImGui::Begin("Disassembly", pShow);
+
+	DrawHeader();
+	
+	ImGui::Separator();
+	
 	if(pDisasm == nullptr)
 	{
 		ImGui::Text("ERROR - Disasm not set");
 	}
 	else
 	{
-		int numLines = pDisasm->GetNumLines();
-		for(int i=0 ; i<numLines ; i++)
-		{
-			Disassembler::Line line = pDisasm->GetLine(i);
-			if(line.label.length() > 0)
-			{
-				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.label.c_str());
-			}
-			ImGui::Text("    %s", line.addressString.c_str());
-			ImGui::SameLine();
-			ImGui::Text("%s", line.bytes.c_str());
-			ImGui::SameLine();
-			ImGui::Text("%s", line.mnemonicString.c_str());
-			ImGui::SameLine();
-			if(line.flags & Disassembler::kFlagSymbol)
-			{
-				ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
-			}
-			else if(line.flags & Disassembler::kFlagLabel)
-			{
-				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());	   
-			}
-			else
-			{
-				ImGui::Text("%s", line.detail.c_str());
-			}
-		}
+		DrawMainSubWindow();
 	}
 	ImGui::End();
 }

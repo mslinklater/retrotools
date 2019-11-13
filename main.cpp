@@ -1,3 +1,8 @@
+// Copyright (c) 2019, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -8,7 +13,6 @@
 #include "config.h"
 #include "components/memory.h"
 #include "components/cpu6502.h"
-#include "vcs.h"
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"

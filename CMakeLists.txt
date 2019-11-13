@@ -5,7 +5,7 @@ set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 set(OpenGL_GL_PREFERENCE LEGACY)
 
-set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp vcs.cpp log.cpp symbolstore.cpp)
+set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp)
 
 set(SYSTEM_FILES system/command.cpp system/memoryutils.cpp)
 

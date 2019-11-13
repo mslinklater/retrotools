@@ -1,3 +1,8 @@
+// Copyright (c) 2019, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include <vector>
 #include "symbolwindow.h"
 #include "../imgui/imgui.h"

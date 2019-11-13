@@ -1,7 +1,9 @@
-//#include <fstream>
+// Copyright (c) 2019, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include <string.h>
-//#include <iostream>
-//#include <iomanip>
 #include "memory.h"
 #include "../log.h"
 #include "../errorcodes.h"
