@@ -38,7 +38,7 @@ void Vcs::AddInfo(enum eVCSMemory mem, const std::string& readName, const std::s
 
 void Vcs::Init(void)
 {
-	printf("vcs_Init()\n");
+	LOGINFO("vcs_Init()\n");
 
 	// clear the array
 	for(int i=0 ; i<VCS_NUM ; i++)

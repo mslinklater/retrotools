@@ -98,13 +98,16 @@ int main(int argc, char* argv[])
 {
 	MainCommandProcessor commandProcessor;
 	
-	
 	// TODO: Output the command line to stdout
 	LOGINFO("-- retrotool --\n");
 	LOGINFO("Test Info");
 	LOGWARNING("Test Warning");
 	LOGERROR("Test Error");
 
+	LOGINFOF("Test Info variadic %d", 999);
+	LOGWARNINGF("Test Warning variadic %d", 999);
+	LOGERRORF("Test Error variadic %d", 999);
+	
 	// check for command line args
 	
 	ProcessCommandLine(argc, argv);
@@ -114,7 +117,7 @@ int main(int argc, char* argv[])
 	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
 	{
-		printf("Error: %s\n", SDL_GetError());
+		LOGERRORF("%s\n", SDL_GetError());
 		return -1;
 	}
 	

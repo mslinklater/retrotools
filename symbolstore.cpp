@@ -48,7 +48,7 @@ void SymbolStore::AddLabel(uint16_t address, std::string label)
 		char buffer[64];
 		sprintf(buffer, "label%04x", address);
 		labelMap[address] = buffer;
-		printf("Label symbol %04x set to %s\n", address, label.c_str());
+		LOGINFOF("Label symbol %04x set to %s\n", address, label.c_str());
 	}
 }
 
@@ -140,7 +140,7 @@ eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 		{
 			std::string readSymbol(pBuffer+startReadSymbol, readPtr-startReadSymbol);
 			readMap[address] = readSymbol;
-			printf("Read symbol %04x set to %s\n", address, readSymbol.c_str());
+			LOGINFOF("Read symbol %04x set to %s\n", address, readSymbol.c_str());
 		}
 		readPtr++;
 		uint16_t startWriteSymbol = readPtr;
@@ -153,7 +153,7 @@ eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 		{
 			std::string writeSymbol(pBuffer+startWriteSymbol, readPtr-startWriteSymbol);
 			writeMap[address] = writeSymbol;
-			printf("Write symbol %04x set to %s\n", address, writeSymbol.c_str());
+			LOGINFOF("Write symbol %04x set to %s\n", address, writeSymbol.c_str());
 		}
 	}
 	

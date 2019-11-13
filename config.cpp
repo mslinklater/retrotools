@@ -61,7 +61,7 @@ eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 
 			char* address = argv[i+2];
 			loadROMAddress = strtol(address, NULL, 16);
-			printf("Config:Address %d\n", loadROMAddress);
+			LOGINFOF("Config:Address %d\n", loadROMAddress);
 		}
 
 	}

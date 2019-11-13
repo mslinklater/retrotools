@@ -7,7 +7,7 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp)
 
-set(SYSTEM_FILES system/command.cpp system/memoryutils.cpp)
+set(SYSTEM_FILES system/command.cpp system/memoryutils.cpp system/windowbase.cpp system/windowmanager.cpp)
 
 set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp)
 
@@ -15,12 +15,14 @@ set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/
 
 set(LOGWINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp windows/symbolwindow.cpp)
 
+set(JSON11_FILES json11/json11.cpp)
+
 find_package(SDL2 REQUIRED)
 find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
 project (vistella)
-add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${LOGWINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES})
+add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${LOGWINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES} ${JSON11_FILES})
 target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_gl_LIBRARY})
 target_compile_options(vistella PRIVATE -Wall -Werror)
