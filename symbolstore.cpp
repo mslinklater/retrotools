@@ -8,6 +8,7 @@
 #include <iomanip>
 #include "symbolstore.h"
 #include "log.h"
+#include "json11/json11.hpp"
 
 SymbolStore::SymbolStore()
 {
@@ -19,36 +20,62 @@ SymbolStore::~SymbolStore()
 
 bool SymbolStore::HasReadSymbol(uint16_t address)
 {
-	return readMap.find(address) != readMap.end();
-}
-std::string SymbolStore::GetReadSymbol(uint16_t address)
-{
-	return readMap.find(address)->second;
+	SymbolMapIterator iter = symbolMap.find(address);
+	if(iter == symbolMap.end())
+	{
+		return false;
+	}
+	return iter->second.flags & kSymbolFlag_MemoryRead;
 }
 bool SymbolStore::HasWriteSymbol(uint16_t address)
 {
-	return writeMap.find(address) != writeMap.end();
-}
-std::string SymbolStore::GetWriteSymbol(uint16_t address)
-{
-	return writeMap.find(address)->second;
+	SymbolMapIterator iter = symbolMap.find(address);
+	if(iter == symbolMap.end())
+	{
+		return false;
+	}
+	return iter->second.flags & kSymbolFlag_MemoryWrite;
 }
 bool SymbolStore::HasLabelSymbol(uint16_t address)
 {
-	return labelMap.find(address) != labelMap.end();
+	SymbolMapIterator iter = symbolMap.find(address);
+	if(iter == symbolMap.end())
+	{
+		return false;
+	}
+	return iter->second.flags & kSymbolFlag_AddressLabel;
+}
+
+std::string SymbolStore::GetReadSymbol(uint16_t address)
+{
+	return symbolMap.find(address)->second.readName;
+}
+std::string SymbolStore::GetWriteSymbol(uint16_t address)
+{
+	return symbolMap.find(address)->second.writeName;
 }
 std::string SymbolStore::GetLabelSymbol(uint16_t address)
 {
-	return labelMap.find(address)->second;
+	return symbolMap.find(address)->second.labelName;
 }
+
 void SymbolStore::AddLabel(uint16_t address, std::string label)
 {
-	if(!HasLabelSymbol(address))
-	{	 
-		char buffer[64];
-		sprintf(buffer, "label%04x", address);
-		labelMap[address] = buffer;
-		LOGINFOF("Label symbol %04x set to %s\n", address, label.c_str());
+	SymbolMapIterator iter = symbolMap.find(address);
+	
+	if(iter == symbolMap.end())
+	{
+		// new item
+		Symbol newSymbol;
+		newSymbol.flags |= kSymbolFlag_AddressLabel;
+		newSymbol.address = address;
+		newSymbol.labelName = label;
+		symbolMap[address] = newSymbol;
+	}
+	else
+	{
+		iter->second.flags |= kSymbolFlag_MemoryRead;
+		iter->second.labelName = label;
 	}
 }
 
@@ -58,37 +85,34 @@ std::vector<SymbolStore::Symbol> SymbolStore::GetAll()
 
 	Symbol symbol;
 	
-	for(LabelMapIterator iter = labelMap.begin() ; iter != labelMap.end() ; iter++)
+	for(SymbolMapIterator iter = symbolMap.begin() ; iter != symbolMap.end() ; iter++)
 	{
-		symbol.type = kSymbolTypeLabel;
-		symbol.address = iter->first;
-		symbol.name = iter->second;
-		
-		ret.push_back(symbol);
-	}
-	for(ReadMapIterator iter = readMap.begin() ; iter != readMap.end() ; iter++)
-	{
-		symbol.type = kSymbolTypeRead;
-		symbol.address = iter->first;
-		symbol.name = iter->second;
-		
-		ret.push_back(symbol);
-	}
-	for(WriteMapIterator iter = writeMap.begin() ; iter != writeMap.end() ; iter++)
-	{
-		symbol.type = kSymbolTypeWrite;
-		symbol.address = iter->first;
-		symbol.name = iter->second;
-		
-		ret.push_back(symbol);
+		ret.push_back(iter->second);
 	}
 
-	// sort ret
 	return ret;
 }
 
+eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
+{
+	FILE* hFile;
+	hFile = fopen(filename.c_str(), "r");
+	if(hFile != nullptr)
+	{
+		fseek(hFile, 0, SEEK_END);
+		uint32_t fileSize = ftell(hFile);
+		fseek(hFile, 0, SEEK_SET);
+		char* readBuffer = new char[fileSize];
+		fread(readBuffer, fileSize, 1, hFile);
+		delete [] readBuffer;
+	}
+	return kError_OK;
+}
+
+
 eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 {
+	/*
 	std::ifstream inFile;
 	size_t size = 0;
 	inFile.open(filename, std::ios::in);
@@ -158,5 +182,6 @@ eErrorCode SymbolStore::LoadFromCSV(std::string filename)
 	}
 	
 	delete [] pBuffer;
+	*/
 	return kError_OK;
 }

@@ -18,6 +18,7 @@ SymbolWindow::~SymbolWindow()
 
 void SymbolWindow::Draw(bool* pShow)
 {
+	/*
 	std::vector<SymbolStore::Symbol> symbols = pStore->GetAll();
 	
 	ImGui::Begin("Symbols", pShow);
@@ -25,9 +26,10 @@ void SymbolWindow::Draw(bool* pShow)
 	{
 		ImGui::Text("%04x", symbols[i].address);
 		ImGui::SameLine();
-		ImGui::Text("%s ", symbols[i].name.c_str());
+		ImGui::Text("%s ", symbols[i].readName.c_str());
 	}
 	ImGui::End();
+	*/
 }
 
 void SymbolWindow::SetSymbolStore(SymbolStore* p)

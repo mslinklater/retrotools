@@ -154,7 +154,9 @@ int main(int argc, char* argv[])
 	Cpu6502* pCpu = new Cpu6502();
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
-	pSymbolStore->LoadFromCSV("vcs.csv");
+	//pSymbolStore->LoadFromCSV("vcs.csv");
+	
+	pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json");
 	
 	pMemory->Init();	
 	
