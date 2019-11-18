@@ -16,13 +16,12 @@ static const uint32_t kMaxDisasmLines = 4096;
 
 Disassembler::Disassembler()
 {
+	CommandCenter::Instance()->Subscribe("refreshDisassembly", this);
 }
 
 Disassembler::~Disassembler()
 {
 }
-
-//static struct disasm_line disasmLines[kMaxDisasmLines];
 
 void Disassembler::Init(void)
 {
@@ -110,6 +109,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	}
 
 	AddObviousLabels();
+	
 	UpdateDetailLines();
 	UpdateLineLabels();
 
@@ -172,9 +172,11 @@ void Disassembler::UpdateDetailLines()
 				}
 				break;
 			case Cpu6502::eAddressingMode::kAddrModeAbsoluteX:
+				// TODO: need some symbol output here
 				sprintf(buffer, "$%02x%02x,X", pLine->param2, pLine->param1);
 				break;
 			case Cpu6502::eAddressingMode::kAddrModeAbsoluteY:
+				// TODO: need some symbol output here
 				sprintf(buffer, "$%02x%02x,Y", pLine->param2, pLine->param1);
 				break;
 			case Cpu6502::eAddressingMode::kAddrModeAccumulator:
@@ -199,7 +201,7 @@ void Disassembler::UpdateDetailLines()
 				if(!pSymbolStore->HasLabelSymbol(addr))
 				{
 					sprintf(buffer, "<label%d>", anonLabelCount++);
-					pSymbolStore->AddLabel(addr, buffer);
+					pSymbolStore->AddAutoLabel(addr, buffer);
 				}
 
 				if(pLine->memoryOp == Cpu6502::eMemoryOp::kNone)
@@ -267,23 +269,39 @@ void Disassembler::AddObviousLabels()
 	uint16_t addr;
 	for(uint32_t iLine=0 ; iLine<lines.size() ; iLine++)
 	{
+		char buffer[128];
+			
+		// Based on mnemonic
 		switch(lines[iLine].mnemonic)
 		{
-			char buffer[128];
 			
 			case Cpu6502::kMnemonic_RTS:
-				sprintf(buffer, "<label%d>", anonLabelCount++);
-				pSymbolStore->AddLabel(lines[iLine].address+1, buffer);
+				sprintf(buffer, "<label%04x>", lines[iLine].address+1);
+				pSymbolStore->AddAutoLabel(lines[iLine].address+1, buffer);
 				break;
 			case Cpu6502::kMnemonic_JMP:
 				// add label after a jump
-				sprintf(buffer, "<label%d>", anonLabelCount++);
-				pSymbolStore->AddLabel(lines[iLine].address+3, buffer);
+				sprintf(buffer, "<label%04x>", lines[iLine].address+3);
+				pSymbolStore->AddAutoLabel(lines[iLine].address+3, buffer);
 				
 				// add a label to the jump location
 				addr = lines[iLine].param2 << 8 | lines[iLine].param1;
-				sprintf(buffer, "<label%d>", anonLabelCount++);
-				pSymbolStore->AddLabel(addr, buffer);
+				sprintf(buffer, "<label%04x>", addr);
+				pSymbolStore->AddAutoLabel(addr, buffer);
+				break;
+			default:
+				break;
+		}
+		
+		// based on addressing addressingMode
+		switch(lines[iLine].addressingMode)
+		{
+			case Cpu6502::eAddressingMode::kAddrModeAbsolute:
+			case Cpu6502::eAddressingMode::kAddrModeAbsoluteX:
+			case Cpu6502::eAddressingMode::kAddrModeAbsoluteY:
+				addr = lines[iLine].param2 << 8 | lines[iLine].param1;
+				sprintf(buffer, "<label%04x>", addr);
+				pSymbolStore->AddAutoLabel(addr, buffer);
 				break;
 			default:
 				break;
@@ -302,6 +320,12 @@ void Disassembler::UpdateLineLabels()
 	}
 }
 
+bool Disassembler::HandleCommand(const Command& command)
+{
+	UpdateLineLabels();
+	UpdateDetailLines();
+	return true;
+}
 
 int Disassembler::GetNumLines()
 {

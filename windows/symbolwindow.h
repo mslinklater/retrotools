@@ -4,8 +4,8 @@
 // See file 'LICENSE' for license details
 
 #pragma once
-
-class SymbolStore;
+#include <string>
+#include "../symbolstore.h"
 
 class SymbolWindow
 {
@@ -17,4 +17,6 @@ public:
 	void SetSymbolStore(SymbolStore* p);
 private:
 	SymbolStore* pStore;
+	bool editingSymbol;
+	SymbolStore::Symbol symbolBeingEdited;
 };

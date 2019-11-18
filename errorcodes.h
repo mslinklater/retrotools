@@ -24,5 +24,6 @@ enum eErrorCode {
 	kError_CommandLineParsing,
 	kError_MemoryAlreadyInitialised,
 	kError_MemoryNotInitialised,
-	kError_FileNotFound
+	kError_FileNotFound,
+	kError_JSONParse
 };

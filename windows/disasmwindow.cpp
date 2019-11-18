@@ -35,7 +35,7 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 		
 		if(line.label.length() > 0)
 		{
-			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.label.c_str());
+			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s:", line.label.c_str());
 		}
 		if(showTIAHints)
 		{

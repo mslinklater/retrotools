@@ -1,9 +1,422 @@
 {
-	"symbols" : [
-	{
-		"address" : "0xf000",
-		"label" : "org"
-	}
-	
+	"symbols": [
+		{
+			"address": "0xf000",
+			"label": "org"
+		},
+		{
+			"address": "0x0000",
+			"write": "VSYNC",
+			"bitmask": "000000x0",
+			"description": "Vertical sync set-clear"
+		},
+		{
+			"address": "0x0000",
+			"read": "CXM0P",
+			"bitmask": "xx000000",
+			"description": "Read collision M0-P1 M0-P0"
+		},
+		{
+			"address": "0x0001",
+			"write": "VBLANK",
+			"bitmask": "xx0000x0",
+			"description": "Vertical blank set-clear"
+		},
+		{
+			"address": "0x0001",
+			"read": "CXM1P",
+			"bitmask": "xx000000",
+			"description": "Read collision M1-P0 M1-P1"
+		},
+		{
+			"address": "0x0002",
+			"write": "WSYNC",
+			"bitmask": "--------",
+			"description": "Wait for horizontal sync"
+		},
+		{
+			"address": "0x0002",
+			"read": "CXP0FB",
+			"bitmask": "xx000000",
+			"description": "Read collision P0-PF P0-BL"
+		},
+		{
+			"address": "0x0003",
+			"write": "RSYNC",
+			"bitmask": "--------",
+			"description": "Reset horizontal sync counter"
+		},
+		{
+			"address": "0x0003",
+			"read": "CXP1FB",
+			"bitmask": "xx000000",
+			"description": "Read collision P1-PF P1-BL"
+		},
+		{
+			"address": "0x0004",
+			"write": "NUSIZ0",
+			"bitmask": "00xx0xxx",
+			"description": "Number-size player/missile 0"
+		},
+		{
+			"address": "0x0004",
+			"read": "CXM0FB",
+			"bitmask": "xx000000",
+			"description": "Read collision M0-PF M0-BL"
+		},
+		{
+			"address": "0x0005",
+			"write": "NUSIZ1",
+			"bitmask": "00xx0xxx",
+			"description": "Number-size player/missile 1"
+		},
+		{
+			"address": "0x0005",
+			"read": "CXM1FB",
+			"bitmask": "xx000000",
+			"description": "Read collision M1-PF M1-BL"
+		},
+		{
+			"address": "0x0006",
+			"write": "COLUP0",
+			"bitmask": "xxxxxxx0",
+			"description": "Color-luminance player 0"
+		},
+		{
+			"address": "0x0006",
+			"read": "CXBLPF",
+			"bitmask": "x0000000",
+			"description": "Read collision BL-PF"
+		},
+		{
+			"address": "0x0007",
+			"write": "COLUP1",
+			"bitmask": "xxxxxxx0",
+			"description": "Color-luminance player 1"
+		},
+		{
+			"address": "0x0007",
+			"read": "CXPPMM",
+			"bitmask": "xx000000",
+			"description": "Read collision P0-P1 M0-M1"
+		},
+		{
+			"address": "0x0008",
+			"write": "COLUPF",
+			"bitmask": "xxxxxxx0",
+			"description": "Color-luminance playfield"
+		},
+		{
+			"address": "0x0008",
+			"read": "INPT0",
+			"bitmask": "x0000000",
+			"description": "Read pot port 0"
+		},
+		{
+			"address": "0x0009",
+			"write": "COLUBK",
+			"bitmask": "xxxxxxx0",
+			"description": "Color-luminance background"
+		},
+		{
+			"address": "0x0009",
+			"read": "INPT1",
+			"bitmask": "x0000000",
+			"description": "Read pot port 1"
+		},
+		{
+			"address": "0x000a",
+			"write": "CTRLPF",
+			"bitmask": "00xx0xxx",
+			"description": "Control playfield, ball, collisions"
+		},
+		{
+			"address": "0x000a",
+			"read": "INPT2",
+			"bitmask": "x0000000",
+			"description": "Read pot port 2"
+		},
+		{
+			"address": "0x000b",
+			"write": "REFP0",
+			"bitmask": "000x000",
+			"description": "Reflection player 0"
+		},
+		{
+			"address": "0x000b",
+			"read": "INPT3",
+			"bitmask": "x0000000",
+			"description": "Read pot port 3"
+		},
+		{
+			"address": "0x000c",
+			"write": "REFP1",
+			"bitmask": "0000x000",
+			"description": "Reflection player 1"
+		},
+		{
+			"address": "0x000c",
+			"read": "INPT4",
+			"bitmask": "x0000000",
+			"description": "Read input trigger 0"
+		},
+		{
+			"address": "0x000d",
+			"write": "PF0",
+			"bitmask": "xxxx0000",
+			"description": "Playfield register byte 0"
+		},
+		{
+			"address": "0x000d",
+			"read": "INPT5",
+			"bitmask": "x0000000",
+			"description": "Read input trigger 1"
+		},
+		{
+			"address": "0x000e",
+			"write": "PF1",
+			"bitmask": "xxxxxxxx",
+			"description": "Playfield register byte 1"
+		},
+		{
+			"address": "0x000f",
+			"write": "PF2",
+			"bitmask": "xxxxxxxx",
+			"description": "Playfield register byte 2"
+		},
+		{
+			"address": "0x0010",
+			"write": "RESP0",
+			"bitmask": "--------",
+			"description": "Reset player 0"
+		},
+		{
+			"address": "0x0011",
+			"write": "RESP1",
+			"bitmask": "--------",
+			"description": "Reset player 1"
+		},
+		{
+			"address": "0x0012",
+			"write": "RESM0",
+			"bitmask": "--------",
+			"description": "Reset missile 0"
+		},
+		{
+			"address": "0x0013",
+			"write": "RESM1",
+			"bitmask": "--------",
+			"description": "Reset missile 1"
+		},
+		{
+			"address": "0x0014",
+			"write": "RESBL",
+			"bitmask": "--------",
+			"description": "Reset ball"
+		},
+		{
+			"address": "0x0015",
+			"write": "AUDC0",
+			"bitmask": "0000xxxx",
+			"description": "Audio control 0"
+		},
+		{
+			"address": "0x0016",
+			"write": "AUDC1",
+			"bitmask": "0000xxxx",
+			"description": "Audio contol 1"
+		},
+		{
+			"address": "0x0017",
+			"write": "AUDF0",
+			"bitmask": "000xxxxx",
+			"description": "Audio frequency 0"
+		},
+		{
+			"address": "0x0018",
+			"write": "AUDF1",
+			"bitmask": "000xxxxx",
+			"description": "Audio frequency 1"
+		},
+		{
+			"address": "0x0019",
+			"write": "AUDV0",
+			"bitmask": "0000xxxx",
+			"description": "Audio volume 0"
+		},
+		{
+			"address": "0x001a",
+			"write": "AUDV1",
+			"bitmask": "0000xxxx",
+			"description": "Audio volume 1"
+		},
+		{
+			"address": "0x001b",
+			"write": "GRP0",
+			"bitmask": "xxxxxxxx",
+			"description": "Graphics register player 0"
+		},
+		{
+			"address": "0x001c",
+			"write": "GRP1",
+			"bitmask": "xxxxxxxx",
+			"description": "Graphics register player 1"
+		},
+		{
+			"address": "0x001d",
+			"write": "ENAM0",
+			"bitmask": "000000x0",
+			"description": "Graphics enable missile 0"
+		},
+		{
+			"address": "0x001e",
+			"write": "ENAM1",
+			"bitmask": "000000x0",
+			"description": "Graphics enable missile 1"
+		},
+		{
+			"address": "0x001f",
+			"write": "ENABL",
+			"bitmask": "000000x0",
+			"description": "Graphics enable ball"
+		},
+		{
+			"address": "0x0020",
+			"write": "HMP0",
+			"bitmask": "xxxx0000",
+			"description": "Horizontal motion player 0"
+		},
+		{
+			"address": "0x0021",
+			"write": "HMP1",
+			"bitmask": "xxxx0000",
+			"description": "Horizontal motion player 1"
+		},
+		{
+			"address": "0x0022",
+			"write": "HMM0",
+			"bitmask": "xxxx0000",
+			"description": "Horizontal motion missile 0"
+		},
+		{
+			"address": "0x0023",
+			"write": "HMM1",
+			"bitmask": "xxxx0000",
+			"description": "Horizontal motion missile 1"
+		},
+		{
+			"address": "0x0024",
+			"write": "HMBL",
+			"bitmask": "xxxx0000",
+			"description": "Horizontal motion ball"
+		},
+		{
+			"address": "0x0025",
+			"write": "VDELP0",
+			"bitmask": "0000000x",
+			"description": "Vertical delay player 0"
+		},
+		{
+			"address": "0x0026",
+			"write": "VDELP1",
+			"bitmask": "0000000x",
+			"description": "Vertical delay player 1"
+		},
+		{
+			"address": "0x0027",
+			"write": "VDELBL",
+			"bitmask": "0000000x",
+			"description": "Vertical delay ball"
+		},
+		{
+			"address": "0x0028",
+			"write": "RESMP0",
+			"bitmask": "000000x0",
+			"description": "Reset missile 0 to player 0"
+		},
+		{
+			"address": "0x0029",
+			"write": "RESMP1",
+			"bitmask": "000000x0",
+			"description": "Reset missile 1 to player 1"
+		},
+		{
+			"address": "0x002a",
+			"write": "HMOVE",
+			"bitmask": "--------",
+			"description": "Apply horizontal motion"
+		},
+		{
+			"address": "0x002b",
+			"write": "HMCLR",
+			"bitmask": "--------",
+			"description": "Clear horizontal move registers"
+		},
+		{
+			"address": "0x002c",
+			"write": "CXCLR",
+			"bitmask": "--------",
+			"description": "Clear collision latches"
+		},
+		{
+			"address": "0x0280",
+			"read": "SWCHA",
+			"bitmask": "--------",
+			"description": "Port A data register for joysticks"
+		},
+		{
+			"address": "0x0281",
+			"read": "SWACNT",
+			"bitmask": "--------",
+			"description": "Port A data direction register"
+		},
+		{
+			"address": "0x0282",
+			"read": "SWCHB",
+			"bitmask": "--------",
+			"description": "Port B data console switches"
+		},
+		{
+			"address": "0x0283",
+			"read": "SWBCNT",
+			"bitmask": "--------",
+			"description": "Port B DDR"
+		},
+		{
+			"address": "0x0284",
+			"read": "INTIM",
+			"bitmask": "--------",
+			"description": "Clear collision latches"
+		},
+		{
+			"address": "0x0285",
+			"read": "TIMINT",
+			"bitmask": "--------",
+			"description": ""
+		},
+		{
+			"address": "0x0294",
+			"write": "TIM1T",
+			"bitmask": "--------",
+			"description": "Set 1 clock interval"
+		},
+		{
+			"address": "0x0295",
+			"write": "TIM8T",
+			"bitmask": "--------",
+			"description": "Set 8 clock interval"
+		},
+		{
+			"address": "0x0296",
+			"write": "TIM64T",
+			"bitmask": "--------",
+			"description": "Set 64 clock interval"
+		},
+		{
+			"address": "0x0297",
+			"write": "T1024T",
+			"bitmask": "--------",
+			"description": "Set 1024 clock interval"
+		}
 	]
 }

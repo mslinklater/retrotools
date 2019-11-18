@@ -35,6 +35,7 @@ void Log::Info(std::string line)
 	newLine.type = kInfo;
 	
 	allLogLines.push_back(newLine);
+	printf("Info:%s\n", line.c_str());
 }
 
 void Log::Infof(const char* fmt, ...)
@@ -49,6 +50,7 @@ void Log::Infof(const char* fmt, ...)
 	newLine.type = kInfo;
 	
 	allLogLines.push_back(newLine);
+	printf("Info:%s\n", newLine.content.c_str());
 }
 
 void Log::Warning(std::string line)
@@ -58,6 +60,7 @@ void Log::Warning(std::string line)
 	newLine.type = kWarning;
 	
 	allLogLines.push_back(newLine);
+	printf("Warning:%s\n", line.c_str());
 }
 
 void Log::Warningf(const char* fmt, ...)
@@ -72,6 +75,7 @@ void Log::Warningf(const char* fmt, ...)
 	newLine.type = kWarning;
 	
 	allLogLines.push_back(newLine);
+	printf("Warning:%s\n", newLine.content.c_str());
 }
 
 void Log::Error(std::string line)
@@ -81,7 +85,7 @@ void Log::Error(std::string line)
 	newLine.type = kError;
 	
 	allLogLines.push_back(newLine);
-	printf("%s", line.c_str());
+	printf("Error:%s\n", line.c_str());
 }
 
 void Log::Errorf(const char* fmt, ...)
@@ -96,6 +100,7 @@ void Log::Errorf(const char* fmt, ...)
 	newLine.type = kError;
 	
 	allLogLines.push_back(newLine);
+	printf("Error:%s\n", newLine.content.c_str());
 }
 
 int Log::GetLineCount()

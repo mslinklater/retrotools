@@ -156,7 +156,10 @@ int main(int argc, char* argv[])
 	SymbolStore* pSymbolStore = new SymbolStore();
 	//pSymbolStore->LoadFromCSV("vcs.csv");
 	
-	pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json");
+	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
+	{
+		return -1;
+	}
 	
 	pMemory->Init();	
 	

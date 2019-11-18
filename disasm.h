@@ -11,12 +11,13 @@
 
 #include "errorcodes.h"
 #include "components/cpu6502.h"
+#include "system/command.h"
 
 class Memory;
 class Cpu6502;
 class SymbolStore;
 
-class Disassembler
+class Disassembler : public ICommandProcessor
 {
 public:
 	
@@ -63,6 +64,8 @@ public:
 	void		SetSymbolStore(SymbolStore* store);
 	
 private:
+	
+	virtual bool HandleCommand(const Command & command) override;
 	
 	void AddObviousLabels();
 	void UpdateDetailLines();
