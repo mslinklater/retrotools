@@ -21,7 +21,7 @@ SymbolWindow::~SymbolWindow()
 
 void SymbolWindow::Draw(bool* pShow)
 {
-	std::vector<SymbolStore::Symbol> symbols = pStore->GetAll();
+	std::vector<Symbol> symbols = pStore->GetAll();
 	
 	ImGui::Begin("Symbols", pShow);
 	

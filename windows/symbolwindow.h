@@ -18,5 +18,5 @@ public:
 private:
 	SymbolStore* pStore;
 	bool editingSymbol;
-	SymbolStore::Symbol symbolBeingEdited;
+	Symbol symbolBeingEdited;
 };

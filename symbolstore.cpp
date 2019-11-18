@@ -64,7 +64,7 @@ std::string SymbolStore::GetLabelSymbol(uint16_t address)
 	return symbolMap.find(address)->second.labelName;
 }
 
-void SymbolStore::UpdateSymbol(SymbolStore::Symbol update)
+void SymbolStore::UpdateSymbol(Symbol update)
 {
 	symbolMap[update.address] = update;
 }
@@ -89,7 +89,7 @@ void SymbolStore::AddAutoLabel(uint16_t address, std::string label)
 	}
 }
 
-std::vector<SymbolStore::Symbol> SymbolStore::GetAll()
+std::vector<Symbol> SymbolStore::GetAll()
 {
 	std::vector<Symbol> ret;
 

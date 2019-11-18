@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include "errorcodes.h"
+#include "symbol.h"
 
 class SymbolStore
 {
@@ -21,28 +22,7 @@ public:
 	const static uint32_t kSymbolFlag_Auto		 	= 1 << 5;
 	const static uint32_t kSymbolFlag_JumpLabel	 	= 1 << 6;
 	const static uint32_t kSymbolFlag_BranchLabel 	= 1 << 7;
-		
-	class Symbol
-	{
-	public:
-		uint32_t	flags;
-		uint16_t 	address;
-		
-//		virtual std::string GetName();
-		
-		std::string readName;
-		std::string writeName;
-		std::string labelName;
-		
-		std::string readDescription;
-		std::string writeDescription;
-	};
-	
-	class LabelSymbol : public Symbol
-	{
-	public:	
-	};
-	
+
 	SymbolStore();
 	virtual ~SymbolStore();
 

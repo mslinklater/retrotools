@@ -1,5 +1,6 @@
 *.swp
 CMakeFiles/
+build/
 CMakeCache.txt
 Makefile
 cmake_install.cmake
@@ -7,3 +8,4 @@ retrotool
 *.bin
 .anjuta*
 *.anjuta
+imgui.ini
