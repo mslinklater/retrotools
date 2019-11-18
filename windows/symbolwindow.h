@@ -19,4 +19,15 @@ private:
 	SymbolStore* pStore;
 	bool editingSymbol;
 	Symbol symbolBeingEdited;
+	
+	uint32_t	filterFlags;
+	
+	bool		filterMemoryRead;
+	bool		filterMemoryWrite;
+	bool		filterAddressLabel;
+	bool		filterHardware;
+	bool		filterUser;
+	bool		filterAuto;
+	bool		filterJumpLabel;
+	bool		filterBranchLabel;	
 };

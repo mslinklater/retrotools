@@ -12,6 +12,15 @@
 #include "../system/command.h"
 
 SymbolWindow::SymbolWindow()
+: filterFlags(0)
+, filterMemoryRead(false)
+, filterMemoryWrite(false)
+, filterAddressLabel(false)
+, filterHardware(false)
+, filterUser(false)
+, filterAuto(false)
+, filterJumpLabel(false)
+, filterBranchLabel(false)
 {
 }
 
@@ -24,6 +33,31 @@ void SymbolWindow::Draw(bool* pShow)
 	std::vector<Symbol> symbols = pStore->GetAll();
 	
 	ImGui::Begin("Symbols", pShow);
+
+	// filter
+
+	ImGui::Text("Filters");
+	ImGui::Checkbox("Label", &filterAddressLabel);
+	ImGui::Checkbox("Auto", &filterAuto);
+	ImGui::Checkbox("Branch Label", &filterBranchLabel);
+	ImGui::Checkbox("Hardware", &filterHardware);
+	ImGui::Checkbox("Jump Label", &filterJumpLabel);
+	ImGui::Checkbox("Memory Read", &filterMemoryRead);
+	ImGui::Checkbox("Memory Write", &filterMemoryWrite);
+	ImGui::Checkbox("User", &filterUser);
+	
+	// build the flags filter
+	filterFlags = 0;
+	if(filterAddressLabel) filterFlags |= Symbol::kSymbolFlag_AddressLabel;
+	if(filterAuto) filterFlags |= Symbol::kSymbolFlag_Auto;
+	if(filterBranchLabel) filterFlags |= Symbol::kSymbolFlag_BranchLabel;
+	if(filterHardware) filterFlags |= Symbol::kSymbolFlag_Hardware;
+	if(filterJumpLabel) filterFlags |= Symbol::kSymbolFlag_JumpLabel;
+	if(filterMemoryRead) filterFlags |= Symbol::kSymbolFlag_MemoryRead;
+	if(filterMemoryWrite) filterFlags |= Symbol::kSymbolFlag_MemoryWrite;
+	if(filterUser) filterFlags |= Symbol::kSymbolFlag_User;
+	
+	ImGui::Separator();
 	
 	// edit subwindow
 
@@ -42,46 +76,49 @@ void SymbolWindow::Draw(bool* pShow)
 			refreshCmd.name = "refreshDisassembly";
 			CommandCenter::Instance()->Broadcast(refreshCmd);
 		}
+		ImGui::Separator();
 	}
 
-	ImGui::Separator();
 	
 	// end edit subwindow
 	ImGui::BeginChild("SymbolsChild");
 	int id = 0;
 	for(auto symbol : symbols)
 	{
-		ImGui::PushID(id++);
-		if(ImGui::Button("Edit"))
+		if(symbol.flags & filterFlags)
 		{
-			editingSymbol = true;
-			symbolBeingEdited = symbol;
+			ImGui::PushID(id++);
+			if(ImGui::Button("Edit"))
+			{
+				editingSymbol = true;
+				symbolBeingEdited = symbol;
+			}
+			ImGui::SameLine();
+			
+			ImGui::Text("%04x", symbol.address);
+			if(symbol.flags & Symbol::kSymbolFlag_AddressLabel)
+			{
+				ImGui::SameLine();
+				ImGui::Text("LABEL:");	  
+				ImGui::SameLine();
+				ImGui::TextColored(kColourLabel, "%s", symbol.labelName.c_str());	  
+			}
+			if(symbol.flags & Symbol::kSymbolFlag_MemoryRead)
+			{
+				ImGui::SameLine();
+				ImGui::Text("READ:");	  
+				ImGui::SameLine();
+				ImGuiHelpers::TextTooltip(symbol.readName, symbol.readDescription, kColourMemoryRead);
+			}
+			if(symbol.flags & Symbol::kSymbolFlag_MemoryWrite)
+			{
+				ImGui::SameLine();
+				ImGui::Text("WRITE:");	  
+				ImGui::SameLine();
+				ImGuiHelpers::TextTooltip(symbol.writeName, symbol.writeDescription, kColourMemoryWrite);
+			}
+			ImGui::PopID();
 		}
-		ImGui::SameLine();
-		
-		ImGui::Text("%04x", symbol.address);
-		if(symbol.flags & SymbolStore::kSymbolFlag_AddressLabel)
-		{
-			ImGui::SameLine();
-			ImGui::Text("LABEL:");	  
-			ImGui::SameLine();
-			ImGui::TextColored(kColourLabel, "%s", symbol.labelName.c_str());	  
-		}
-		if(symbol.flags & SymbolStore::kSymbolFlag_MemoryRead)
-		{
-			ImGui::SameLine();
-			ImGui::Text("READ:");	  
-			ImGui::SameLine();
-			ImGuiHelpers::TextTooltip(symbol.readName, symbol.readDescription, kColourMemoryRead);
-		}
-		if(symbol.flags & SymbolStore::kSymbolFlag_MemoryWrite)
-		{
-			ImGui::SameLine();
-			ImGui::Text("WRITE:");	  
-			ImGui::SameLine();
-			ImGuiHelpers::TextTooltip(symbol.writeName, symbol.writeDescription, kColourMemoryWrite);
-		}
-		ImGui::PopID();
 	}
 	ImGui::EndChild();
 	ImGui::End();

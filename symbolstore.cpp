@@ -26,7 +26,7 @@ bool SymbolStore::HasReadSymbol(uint16_t address)
 	{
 		return false;
 	}
-	return iter->second.flags & kSymbolFlag_MemoryRead;
+	return iter->second.flags & Symbol::kSymbolFlag_MemoryRead;
 }
 
 bool SymbolStore::HasWriteSymbol(uint16_t address)
@@ -36,7 +36,7 @@ bool SymbolStore::HasWriteSymbol(uint16_t address)
 	{
 		return false;
 	}
-	return iter->second.flags & kSymbolFlag_MemoryWrite;
+	return iter->second.flags & Symbol::kSymbolFlag_MemoryWrite;
 }
 
 bool SymbolStore::HasLabelSymbol(uint16_t address)
@@ -46,7 +46,7 @@ bool SymbolStore::HasLabelSymbol(uint16_t address)
 	{
 		return false;
 	}
-	return iter->second.flags & kSymbolFlag_AddressLabel;
+	return iter->second.flags & Symbol::kSymbolFlag_AddressLabel;
 }
 
 std::string SymbolStore::GetReadSymbol(uint16_t address)
@@ -77,14 +77,14 @@ void SymbolStore::AddAutoLabel(uint16_t address, std::string label)
 	{
 		// new item
 		Symbol newSymbol;
-		newSymbol.flags |= kSymbolFlag_AddressLabel;
+		newSymbol.flags |= Symbol::kSymbolFlag_AddressLabel;
 		newSymbol.address = address;
 		newSymbol.labelName = label;
 		symbolMap[address] = newSymbol;
 	}
 	else
 	{
-		iter->second.flags |= kSymbolFlag_MemoryRead;
+		iter->second.flags |= Symbol::kSymbolFlag_MemoryRead;
 		iter->second.labelName = label;
 	}
 }
@@ -149,12 +149,12 @@ eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 				if(symbol["label"].is_string())
 				{
 					newSymbol.labelName = symbol["label"].string_value();
-					newSymbol.flags |= kSymbolFlag_AddressLabel;
+					newSymbol.flags |= Symbol::kSymbolFlag_AddressLabel;
 				}
 				if(symbol["read"].is_string())
 				{
 					newSymbol.readName = symbol["read"].string_value();
-					newSymbol.flags |= kSymbolFlag_MemoryRead;
+					newSymbol.flags |= Symbol::kSymbolFlag_MemoryRead;
 					if(symbol["description"].is_string())
 					{
 						newSymbol.readDescription = symbol["description"].string_value();
@@ -163,14 +163,14 @@ eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 				if(symbol["write"].is_string())
 				{
 					newSymbol.writeName = symbol["write"].string_value();
-					newSymbol.flags |= kSymbolFlag_MemoryWrite;
+					newSymbol.flags |= Symbol::kSymbolFlag_MemoryWrite;
 					if(symbol["description"].is_string())
 					{
 						newSymbol.writeDescription = symbol["description"].string_value();
 					}
 				}
 				
-				newSymbol.flags |= kSymbolFlag_Hardware;
+				newSymbol.flags |= Symbol::kSymbolFlag_Hardware;
 				symbolMap[newSymbol.address] = newSymbol;
 			}
 		}
