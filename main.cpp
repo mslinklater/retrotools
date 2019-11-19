@@ -99,14 +99,6 @@ int main(int argc, char* argv[])
 	MainCommandProcessor commandProcessor;
 	
 	// TODO: Output the command line to stdout
-	LOGINFO("-- retrotool --\n");
-	LOGINFO("Test Info");
-	LOGWARNING("Test Warning");
-	LOGERROR("Test Error");
-
-	LOGINFOF("Test Info variadic %d", 999);
-	LOGWARNINGF("Test Warning variadic %d", 999);
-	LOGERRORF("Test Error variadic %d", 999);
 	
 	// check for command line args
 	
@@ -154,7 +146,6 @@ int main(int argc, char* argv[])
 	Cpu6502* pCpu = new Cpu6502();
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
-	//pSymbolStore->LoadFromCSV("vcs.csv");
 	
 	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
 	{

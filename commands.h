@@ -5,13 +5,10 @@
 
 #pragma once
 
-class MainWindow
+#include <string>
+
+namespace Commands
 {
-public:
-	MainWindow();
-	virtual ~MainWindow();
-	
-	void Draw();
-private:
-	bool open;
+	void NewProject(void);
+	static const std::string kNewProjectCommand("NewProject");
 };

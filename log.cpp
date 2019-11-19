@@ -38,6 +38,18 @@ void Log::Info(std::string line)
 	printf("Info:%s\n", line.c_str());
 }
 
+void Log::Test()
+{
+	LOGINFO("-- retrotool --\n");
+	LOGINFO("Test Info");
+	LOGWARNING("Test Warning");
+	LOGERROR("Test Error");
+
+	LOGINFOF("Test Info variadic %d", 999);
+	LOGWARNINGF("Test Warning variadic %d", 999);
+	LOGERRORF("Test Error variadic %d", 999);	
+}
+
 void Log::Infof(const char* fmt, ...)
 {
     va_list args;

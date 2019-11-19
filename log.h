@@ -38,6 +38,8 @@ public:
 	virtual ~Log();
 	static Log* Instance();
 	
+	void Test();
+	
 	void Info(std::string line);
 	void Infof(const char* fmt, ...);
 	

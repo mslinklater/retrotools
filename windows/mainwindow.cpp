@@ -8,6 +8,7 @@
 #include "../system/command.h"
 
 MainWindow::MainWindow()
+:open(true)
 {
 }
 
@@ -17,9 +18,47 @@ MainWindow::~MainWindow()
 
 void MainWindow::Draw()
 {
-	ImGui::Begin("Vistella");
-	ImGui::Text("Windows");
-	ImGui::Separator();
+	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
+	
+	// Main Menu Bar
+	if(ImGui::BeginMenuBar())
+	{
+		if(ImGui::BeginMenu("Session"))
+		{
+			if(ImGui::MenuItem("New"))
+			{
+				// new session
+			}
+			if(ImGui::MenuItem("Open..."))
+			{
+				// open session
+			}
+			if(ImGui::MenuItem("Save"))
+			{
+				// save session
+			}
+			if(ImGui::MenuItem("Save & Quit"))
+			{
+				// save & quit session
+			}
+			if(ImGui::MenuItem("Quit"))
+			{
+				// quit session
+			}
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Export"))
+		{
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Help"))
+		{
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}		
+	
+	
 	if(ImGui::Button("Log"))
 	{
 		Command msg;
