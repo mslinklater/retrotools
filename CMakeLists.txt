@@ -5,11 +5,11 @@ set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 set(OpenGL_GL_PREFERENCE LEGACY)
 
-set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp symbol.cpp commands.cpp)
+set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp symbol.cpp commands.cpp vcs.cpp)
 
 set(SYSTEM_FILES system/command.cpp system/memoryutils.cpp system/windowbase.cpp system/windowmanager.cpp)
 
-set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp)
+set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp components/via.cpp)
 
 set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_impl_opengl2.cpp imgui/imgui_widgets.cpp)
 

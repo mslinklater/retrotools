@@ -51,41 +51,43 @@ void MainWindow::Draw()
 		{
 			ImGui::EndMenu();
 		}
+		if(ImGui::BeginMenu("Windows"))
+		{
+			if(ImGui::MenuItem("Log"))
+			{
+				Command msg;
+				msg.name = "ToggleWindow";
+				msg.payload = "Log";
+				CommandCenter::Instance()->Broadcast(msg);
+			}
+			if(ImGui::MenuItem("Memory"))
+			{
+				Command msg;
+				msg.name = "ToggleWindow";
+				msg.payload = "Memory";
+				CommandCenter::Instance()->Broadcast(msg);
+			}
+			if(ImGui::MenuItem("Disassembly"))
+			{
+				Command msg;
+				msg.name = "ToggleWindow";
+				msg.payload = "Disassembly";
+				CommandCenter::Instance()->Broadcast(msg);
+			}
+			if(ImGui::MenuItem("Symbols"))
+			{
+				Command msg;
+				msg.name = "ToggleWindow";
+				msg.payload = "Symbols";
+				CommandCenter::Instance()->Broadcast(msg);
+			}
+			ImGui::EndMenu();
+		}
 		if(ImGui::BeginMenu("Help"))
 		{
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
 	}		
-	
-	
-	if(ImGui::Button("Log"))
-	{
-		Command msg;
-		msg.name = "ToggleWindow";
-		msg.payload = "Log";
-		CommandCenter::Instance()->Broadcast(msg);
-	}
-	if(ImGui::Button("Memory"))
-	{
-		Command msg;
-		msg.name = "ToggleWindow";
-		msg.payload = "Memory";
-		CommandCenter::Instance()->Broadcast(msg);
-	}
-	if(ImGui::Button("Disassembly"))
-	{
-		Command msg;
-		msg.name = "ToggleWindow";
-		msg.payload = "Disassembly";
-		CommandCenter::Instance()->Broadcast(msg);
-	}
-	if(ImGui::Button("Symbols"))
-	{
-		Command msg;
-		msg.name = "ToggleWindow";
-		msg.payload = "Symbols";
-		CommandCenter::Instance()->Broadcast(msg);
-	}
 	ImGui::End();
 }

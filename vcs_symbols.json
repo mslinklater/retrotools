@@ -1,10 +1,6 @@
 {
 	"symbols": [
 		{
-			"address": "0xf000",
-			"label": "org"
-		},
-		{
 			"address": "0x0000",
 			"write": "VSYNC",
 			"bitmask": "000000x0",
