@@ -16,6 +16,7 @@
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"
+#include "commands.h"
 #include "windows/logwindow.h"
 #include "windows/memorywindow.h"
 #include "windows/disasmwindow.h"
@@ -23,6 +24,7 @@
 #include "windows/symbolwindow.h"
 #include "system/command.h"
 #include "system/memoryutils.h"
+#include "system/windowmanager.h"
 
 static bool showLog = false;
 static bool showMemory = false;
@@ -51,7 +53,7 @@ class MainCommandProcessor : public ICommandProcessor
 public:
 	bool HandleCommand(const Command& command)
 	{
-		if(command.name == "ToggleWindow")
+		if(command.name == Commands::kToggleWindowCommand)
 		{
 			if(command.payload == "Log")
 			{
@@ -104,7 +106,7 @@ int main(int argc, char* argv[])
 	
 	ProcessCommandLine(argc, argv);
 	
-	CommandCenter::Instance()->Subscribe("ToggleWindow", &commandProcessor);
+	CommandCenter::Instance()->Subscribe(Commands::kToggleWindowCommand, &commandProcessor);
 	
 	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -139,6 +141,11 @@ int main(int argc, char* argv[])
 	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+	// Initialise window manager
+
+	WindowManager* pWindowManager = new WindowManager();
+	pWindowManager->Init();
+	
 	// Do some 6502 stuff
 	// initialise components
 	
@@ -183,6 +190,8 @@ int main(int argc, char* argv[])
 	
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
+	pWindowManager->AddWindow(pMemoryWindow, "Memory");
+	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
 

@@ -11,4 +11,8 @@ namespace Commands
 {
 	void NewProject(void);
 	static const std::string kNewProjectCommand("NewProject");
+
+	void ToggleWindow(std::string windowName);
+	static const std::string kToggleWindowCommand("ToggleWindow");
+
 };

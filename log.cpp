@@ -28,9 +28,23 @@ Log * Log::Instance()
 	return pInstance;
 }
 
+void Log::RecalculateDisplayedLines()
+{
+}
+
+bool Log::SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut)
+{
+	
+	return true;
+}
+
+
 void Log::Info(std::string line)
 {
 	LogLine newLine;
+	
+	SplitCategory(line, newLine.category, newLine.content);
+	
 	newLine.content = line;
 	newLine.type = kInfo;
 	

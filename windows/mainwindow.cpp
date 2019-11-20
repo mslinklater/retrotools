@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "../imgui/imgui.h"
 #include "../system/command.h"
+#include "../commands.h"
 
 MainWindow::MainWindow()
 :open(true)
@@ -27,7 +28,7 @@ void MainWindow::Draw()
 		{
 			if(ImGui::MenuItem("New"))
 			{
-				// new session
+				Commands::NewProject();
 			}
 			if(ImGui::MenuItem("Open..."))
 			{
@@ -55,31 +56,19 @@ void MainWindow::Draw()
 		{
 			if(ImGui::MenuItem("Log"))
 			{
-				Command msg;
-				msg.name = "ToggleWindow";
-				msg.payload = "Log";
-				CommandCenter::Instance()->Broadcast(msg);
+				Commands::ToggleWindow("Log");
 			}
 			if(ImGui::MenuItem("Memory"))
 			{
-				Command msg;
-				msg.name = "ToggleWindow";
-				msg.payload = "Memory";
-				CommandCenter::Instance()->Broadcast(msg);
+				Commands::ToggleWindow("Memory");
 			}
 			if(ImGui::MenuItem("Disassembly"))
 			{
-				Command msg;
-				msg.name = "ToggleWindow";
-				msg.payload = "Disassembly";
-				CommandCenter::Instance()->Broadcast(msg);
+				Commands::ToggleWindow("Disassembly");
 			}
 			if(ImGui::MenuItem("Symbols"))
 			{
-				Command msg;
-				msg.name = "ToggleWindow";
-				msg.payload = "Symbols";
-				CommandCenter::Instance()->Broadcast(msg);
+				Commands::ToggleWindow("Symbols");
 			}
 			ImGui::EndMenu();
 		}

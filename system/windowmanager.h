@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "command.h"
+#include "../errorcodes.h"
 
 class WindowBase;
 
@@ -16,8 +17,16 @@ public:
 	WindowManager();
 	virtual ~WindowManager();
 	
+	eErrorCode AddWindow(WindowBase* pWindow, std::string name);
+	
 	void Init();
 	void Draw();
 private:
+	
+	// ICommandProcessor
+	virtual bool HandleCommand(const Command& command);
+	// ~ICommandProcessor
+	
+	bool initialised;
 	std::vector<WindowBase*> windows;
 };

@@ -7,7 +7,8 @@
 
 #include <vector>
 #include <string>
-#include <stdarg.h>                 // va_list, va_start, va_end
+#include <map>
+#include <stdarg.h>
 
 #define LOGINFO(x) Log::Instance()->Info(x)
 #define LOGINFOF(x, ...) Log::Instance()->Infof(x, __VA_ARGS__)
@@ -31,6 +32,7 @@ public:
 	struct LogLine
 	{
 		eLogType 	type;
+		std::string category;
 		std::string content;
 	};
 	
@@ -53,5 +55,13 @@ public:
 	const LogLine& GetLine(int number);
 	
 private:
+	
+	bool SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut);
+	
+	void RecalculateDisplayedLines();
+	
 	std::vector<LogLine> allLogLines;
+	std::vector<LogLine> displayedLines;
+	std::vector<std::string> categories;
+	std::map<std::string, bool> categoryFilter;
 };

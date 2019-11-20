@@ -6,10 +6,11 @@
 #pragma once
 
 #include <inttypes.h>
+#include "../system/windowbase.h"
 
 class Memory;
 
-class MemoryWindow
+class MemoryWindow : public WindowBase
 {
 public:
 	
