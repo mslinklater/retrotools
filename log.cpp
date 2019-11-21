@@ -32,20 +32,26 @@ void Log::RecalculateDisplayedLines()
 {
 }
 
-bool Log::SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut)
+void Log::SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut)
 {
-	
-	return true;
+	size_t findPos = line.find("::");
+	if(findPos == std::string::npos)
+	{
+		lineOut = line;
+		categoryOut = "";
+	}
+	else
+	{
+		categoryOut = line.substr(0, findPos);
+		lineOut = line.substr(findPos+2);
+	}
 }
-
 
 void Log::Info(std::string line)
 {
 	LogLine newLine;
 	
-	SplitCategory(line, newLine.category, newLine.content);
-	
-	newLine.content = line;
+	SplitCategory(line, newLine.category, newLine.content);	
 	newLine.type = kInfo;
 	
 	allLogLines.push_back(newLine);
@@ -127,6 +133,11 @@ void Log::Errorf(const char* fmt, ...)
 	
 	allLogLines.push_back(newLine);
 	printf("Error:%s\n", newLine.content.c_str());
+}
+
+void Log::AddLine(Log::LogLine line)
+{
+	
 }
 
 int Log::GetLineCount()

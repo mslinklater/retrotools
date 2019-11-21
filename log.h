@@ -56,7 +56,8 @@ public:
 	
 private:
 	
-	bool SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut);
+	void SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut);
+	void AddLine(LogLine line);
 	
 	void RecalculateDisplayedLines();
 	
