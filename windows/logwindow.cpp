@@ -22,6 +22,18 @@ void LogWindow::Draw(bool* pOpen)
 {
 	ImGui::Begin("Log", pOpen);
 	
+	// Menu
+	if(ImGui::BeginMenuBar())
+	{
+		if(ImGui::BeginMenu("Categories"))
+		{
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}		
+	
+	// Filter tick boxes
+	
 	ImGui::Checkbox("Info", &showInfo);
 	ImGui::SameLine();
 	ImGui::Checkbox("Warnings", &showWarnings);
@@ -58,6 +70,13 @@ void LogWindow::Draw(bool* pOpen)
 		for(int iLine = clipper.DisplayStart ; iLine < clipper.DisplayEnd ; iLine++)
 		{
 			Log::LogLine line = Log::Instance()->GetLine(lineNumbers[iLine]);
+			
+			if(!line.category.empty())
+			{
+				ImGui::TextColored(ImVec4(0.0,1.0,0.0,1.0),"%s:", line.category.c_str());
+				ImGui::SameLine();
+			}
+			
 			switch(line.type)
 			{
 				case Log::eLogType::kInfo:

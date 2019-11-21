@@ -54,6 +54,8 @@ public:
 	int GetLineCount();
 	const LogLine& GetLine(int number);
 	
+	const std::vector<std::string>& GetCategories();
+	
 private:
 	
 	void SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut);

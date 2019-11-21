@@ -98,6 +98,7 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+	
 	MainCommandProcessor commandProcessor;
 	
 	// TODO: Output the command line to stdout

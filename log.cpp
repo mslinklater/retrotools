@@ -24,6 +24,7 @@ Log * Log::Instance()
 	if(pInstance == nullptr)
 	{
 		pInstance = new Log();
+		pInstance->Test();
 	}
 	return pInstance;
 }
@@ -53,21 +54,21 @@ void Log::Info(std::string line)
 	
 	SplitCategory(line, newLine.category, newLine.content);	
 	newLine.type = kInfo;
-	
-	allLogLines.push_back(newLine);
+
+	AddLine(newLine);
 	printf("Info:%s\n", line.c_str());
 }
 
 void Log::Test()
 {
 	LOGINFO("-- retrotool --\n");
-	LOGINFO("Test Info");
-	LOGWARNING("Test Warning");
-	LOGERROR("Test Error");
+	LOGINFO("Test::Info");
+	LOGWARNING("Test::Warning");
+	LOGERROR("Test::Error");
 
-	LOGINFOF("Test Info variadic %d", 999);
-	LOGWARNINGF("Test Warning variadic %d", 999);
-	LOGERRORF("Test Error variadic %d", 999);	
+	LOGINFOF("Test::Info variadic %d", 999);
+	LOGWARNINGF("Test::Warning variadic %d", 999);
+	LOGERRORF("Test::Error variadic %d", 999);	
 }
 
 void Log::Infof(const char* fmt, ...)
@@ -78,20 +79,20 @@ void Log::Infof(const char* fmt, ...)
     va_end(args);
 	
 	LogLine newLine;
-	newLine.content = std::string(buffer);
+	SplitCategory(buffer, newLine.category, newLine.content);	
 	newLine.type = kInfo;
 	
-	allLogLines.push_back(newLine);
+	AddLine(newLine);
 	printf("Info:%s\n", newLine.content.c_str());
 }
 
 void Log::Warning(std::string line)
 {
 	LogLine newLine;
-	newLine.content = line;
+	SplitCategory(line, newLine.category, newLine.content);	
 	newLine.type = kWarning;
 	
-	allLogLines.push_back(newLine);
+	AddLine(newLine);
 	printf("Warning:%s\n", line.c_str());
 }
 
@@ -103,20 +104,20 @@ void Log::Warningf(const char* fmt, ...)
     va_end(args);
 	
 	LogLine newLine;
-	newLine.content = std::string(buffer);
+	SplitCategory(buffer, newLine.category, newLine.content);	
 	newLine.type = kWarning;
 	
-	allLogLines.push_back(newLine);
+	AddLine(newLine);
 	printf("Warning:%s\n", newLine.content.c_str());
 }
 
 void Log::Error(std::string line)
 {
 	LogLine newLine;
-	newLine.content = line;
+	SplitCategory(line, newLine.category, newLine.content);	
 	newLine.type = kError;
 	
-	allLogLines.push_back(newLine);
+	AddLine(newLine);
 	printf("Error:%s\n", line.c_str());
 }
 
@@ -128,16 +129,16 @@ void Log::Errorf(const char* fmt, ...)
     va_end(args);
 	
 	LogLine newLine;
-	newLine.content = std::string(buffer);
+	SplitCategory(buffer, newLine.category, newLine.content);	
 	newLine.type = kError;
 	
-	allLogLines.push_back(newLine);
+	AddLine(newLine);
 	printf("Error:%s\n", newLine.content.c_str());
 }
 
 void Log::AddLine(Log::LogLine line)
 {
-	
+	allLogLines.push_back(line);	
 }
 
 int Log::GetLineCount()
