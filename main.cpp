@@ -80,12 +80,6 @@ static Config* pConfig = 0;
 
 void ProcessCommandLine(int argc, char* argv[])
 {
-	if(argc == 1)
-	{
-		LOGINFO("No command line args specified, exiting...\n");
-		exit(0);
-	}	
-	
 	pConfig = new Config();
 	pConfig->Init();
 	

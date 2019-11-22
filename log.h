@@ -56,6 +56,9 @@ public:
 	const LogLine& GetLine(int number);
 	
 	const std::set<std::string>& GetCategories();
+
+	bool GetCategoryEnabled(std::string category);
+	void SetCategoryEnabled(std::string category, bool enabled);
 	
 private:
 	
@@ -65,7 +68,7 @@ private:
 	void RecalculateDisplayedLines();
 	
 	std::vector<LogLine> allLogLines;
-	std::vector<LogLine> displayedLines;
+	std::vector<LogLine> filteredLogLines;
 	std::set<std::string> categories;
 	std::map<std::string, bool> categoryFilter;
 };

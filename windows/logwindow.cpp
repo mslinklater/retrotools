@@ -26,7 +26,9 @@ void LogWindow::Draw(bool* pOpen)
 	const std::set<std::string>& categories = Log::Instance()->GetCategories();
 	for(std::string category : categories)
 	{
-		ImGui::Text("%s", category.c_str());
+		bool enabled = Log::Instance()->GetCategoryEnabled(category);
+		ImGui::Checkbox(category.c_str(), &enabled);
+		Log::Instance()->SetCategoryEnabled(category, enabled);
 	}
 	ImGui::Separator();
 	

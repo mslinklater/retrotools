@@ -24,13 +24,27 @@ Log * Log::Instance()
 	if(pInstance == nullptr)
 	{
 		pInstance = new Log();
-		pInstance->Test();
 	}
 	return pInstance;
 }
 
 void Log::RecalculateDisplayedLines()
 {
+	filteredLogLines.clear();
+	for(LogLine line : allLogLines)
+	{
+		if(line.category.size() > 0)
+		{
+			if(categoryFilter[line.category])
+			{
+				filteredLogLines.push_back(line);
+			}
+		}
+		else
+		{
+			filteredLogLines.push_back(line);
+		}
+	}
 }
 
 void Log::SplitCategory(std::string line, std::string& categoryOut, std::string& lineOut)
@@ -143,9 +157,11 @@ void Log::AddLine(Log::LogLine line)
 		if(categories.find(line.category) == categories.end())
 		{
 			categories.insert(line.category);
+			categoryFilter[line.category] = true;
 		}
 	}
 	allLogLines.push_back(line);	
+	RecalculateDisplayedLines();
 }
 
 const std::set<std::string> & Log::GetCategories()
@@ -153,12 +169,27 @@ const std::set<std::string> & Log::GetCategories()
 	return categories;
 }
 
+bool Log::GetCategoryEnabled(std::string category)
+{
+	return categoryFilter[category];
+}
+
+void Log::SetCategoryEnabled(std::string category, bool enabled)
+{
+	if(enabled != categoryFilter[category])
+	{
+		// changed
+		categoryFilter[category] = enabled;
+		RecalculateDisplayedLines();
+	}
+}
+
 int Log::GetLineCount()
 {
-	return allLogLines.size();
+	return filteredLogLines.size();
 }
 
 const Log::LogLine& Log::GetLine(int number)
 {
-	return allLogLines[number];
+	return filteredLogLines[number];
 }
