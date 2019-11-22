@@ -22,17 +22,13 @@ void LogWindow::Draw(bool* pOpen)
 {
 	ImGui::Begin("Log", pOpen);
 	
-	// Menu
-	if(ImGui::BeginMenuBar())
-	{
-		if(ImGui::BeginMenu("Categories"))
-		{
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}		
-	
 	// Filter tick boxes
+	const std::set<std::string>& categories = Log::Instance()->GetCategories();
+	for(std::string category : categories)
+	{
+		ImGui::Text("%s", category.c_str());
+	}
+	ImGui::Separator();
 	
 	ImGui::Checkbox("Info", &showInfo);
 	ImGui::SameLine();

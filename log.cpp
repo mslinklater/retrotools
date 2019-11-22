@@ -138,7 +138,19 @@ void Log::Errorf(const char* fmt, ...)
 
 void Log::AddLine(Log::LogLine line)
 {
+	if(line.category.size() > 0)
+	{
+		if(categories.find(line.category) == categories.end())
+		{
+			categories.insert(line.category);
+		}
+	}
 	allLogLines.push_back(line);	
+}
+
+const std::set<std::string> & Log::GetCategories()
+{
+	return categories;
 }
 
 int Log::GetLineCount()

@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 #include <stdarg.h>
 
 #define LOGINFO(x) Log::Instance()->Info(x)
@@ -54,7 +55,7 @@ public:
 	int GetLineCount();
 	const LogLine& GetLine(int number);
 	
-	const std::vector<std::string>& GetCategories();
+	const std::set<std::string>& GetCategories();
 	
 private:
 	
@@ -65,6 +66,6 @@ private:
 	
 	std::vector<LogLine> allLogLines;
 	std::vector<LogLine> displayedLines;
-	std::vector<std::string> categories;
+	std::set<std::string> categories;
 	std::map<std::string, bool> categoryFilter;
 };
