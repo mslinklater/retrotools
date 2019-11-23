@@ -92,7 +92,7 @@ const Cpu6502::Opcode* Cpu6502::GetOpcode(uint16_t opcode) const
 
 void Cpu6502::Init(eVariant variant)
 {
-	LOGINFO("Intialising 6502 CPU\n");
+	LOGINFO("CPU6502::Intialising\n");
 	// init mnemonics
 
 	mnemonicStrings[kMnemonic_ADC] = "ADC";
@@ -431,7 +431,7 @@ void Cpu6502::Init(eVariant variant)
 	// TYA
 	AddOpcode(0x98, kMnemonic_TYA, kAddrModeImplied, kNone);
 
-	LOGINFO("Intialised 6502 CPU\n");
+	LOGINFO("CPU6502::Intialised\n");
 }
 
 void Cpu6502::DumpInfo(void)

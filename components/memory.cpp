@@ -26,7 +26,7 @@ eErrorCode Memory::Init(void)
 	memset((void*)(pMemory), 0xff, kMemorySize);
 	memorySize = kMemorySize;
 
-	LOGINFO("Memory initialised\n");
+	LOGINFO("Memory::Initialised\n");
 
 	return kError_OK;
 }
@@ -39,37 +39,10 @@ void Memory::SetCPU(Cpu6502* cpu)
 eErrorCode Memory::Destroy(void)
 {
 	memorySize = 0;
-	LOGINFO("Memory destroyed\n");
+	LOGINFO("Memory::Destroyed\n");
 
 	return kError_OK;
 }
-
-/*
-eErrorCode Memory::Load(const std::string& filename, uint16_t address, uint16_t* bytesRead)
-{
-	std::ifstream inFile;
-	size_t size = 0;
-	inFile.open(filename, std::ios::in | std::ios::binary);
-	
-	if(inFile.is_open())
-	{
-		inFile.seekg(0, std::ios::end);
-		size = inFile.tellg();
-		inFile.seekg(0, std::ios::beg);
-		inFile.read((char*)(pMemory + address), size);		
-        inFile.close();
-		*bytesRead = size;
-	}
-	else
-	{
-		// File load error
-		LOGERROR("ERROR - cannot load file");
-		return kError_FileNotFound;
-	}
-
-	return kError_OK;
-}
-*/
 
 void Memory::Write(uint16_t address, uint8_t val)
 {

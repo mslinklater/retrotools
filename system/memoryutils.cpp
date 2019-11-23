@@ -13,6 +13,22 @@
 
 eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead)
 {
+	// work out what type of file it is
+	
+	eFileType fileType = kBinary;
+	
+	// file ends in '.bin' is a binary
+	if(filename.find(".bin") == filename.size() - 4)
+	{
+		LOGINFO("MemoryUtils::Found binary file");
+		fileType = kBinary;
+	}
+	else if(filename.find(".prg") == filename.size() - 4)
+	{
+		LOGINFO("MemoryUtils::Found PRG file");
+		fileType = kPrg;
+	}
+	
 	char* pLoadBuffer = 0;
 	
 	std::ifstream inFile;
@@ -29,9 +45,26 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
         inFile.close();
 		*bytesRead = fileSize;
 
-		for(size_t i=0 ; i<fileSize ; i++)
+		// file now read in...
+		
+		switch(fileType)
 		{
-			pMemory->Write(location + i, pLoadBuffer[i]);
+			case kBinary:
+				LOGINFOF("MemoryUtils::Loading file %s to 0x%04x - size 0x%04x", filename.c_str(), location, fileSize);
+				// straight copy to memory
+				for(size_t i=0 ; i<fileSize ; i++)
+				{
+					pMemory->Write(location + i, pLoadBuffer[i]);
+				}
+				break;
+			case kPrg:
+				location = (pLoadBuffer[1] << 8) + pLoadBuffer[0];
+				LOGINFOF("MemoryUtils::Loading file %s to 0x%04x - size 0x%04x", filename.c_str(), location, fileSize-2);
+				for(size_t i=0 ; i<fileSize-2 ; i++)
+				{
+					pMemory->Write(location + i, pLoadBuffer[i+2]);
+				}
+				break;
 		}
 	}
 	else

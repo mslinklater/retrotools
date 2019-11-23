@@ -13,5 +13,12 @@ class Memory;
 class MemoryUtils
 {
 public:
+	
+	enum eFileType
+	{
+		kBinary,
+		kPrg
+	};
+	
 	static eErrorCode LoadFileToMemory(Memory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead);
 };

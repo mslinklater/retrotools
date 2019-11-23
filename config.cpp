@@ -27,7 +27,7 @@ void Config::Destroy(void)
 
 eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 {
-	LOGINFO("Config::ParseCommandLine");
+	LOGINFO("Config::Parsing command line...");
 	
 	// check for -h or --help and if found print help
 
@@ -49,20 +49,15 @@ eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 
 		if((strcmp(argv[i], "-l") == 0) || (strcmp(argv[i], "--load") == 0))
 		{
-			LOGINFO("Config:Found load command\n");
-			
-			if(argc <= i+2)
-			{
-				LOGERROR("ERROR - not passing correct -l params\n");
-				return kError_CommandLineParsing;
-			}
-
 			// grab the filename
 			loadROMFilename = argv[i+1];
-
-			char* address = argv[i+2];
+			LOGINFOF("Config::Load filename %s\n", loadROMFilename.c_str());
+		}
+		if((strcmp(argv[i], "-a") == 0) || (strcmp(argv[i], "--address") == 0))
+		{
+			char* address = argv[i+1];
 			loadROMAddress = strtol(address, NULL, 16);
-			LOGINFOF("Config:Address %d\n", loadROMAddress);
+			LOGINFOF("Config::Address 0x%04x\n", loadROMAddress);	  
 		}
 
 	}

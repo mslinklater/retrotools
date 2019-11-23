@@ -26,8 +26,6 @@ void MemoryWindow::SetMemory(Memory* mem)
 
 void MemoryWindow::Draw(void)
 {
-//	ImGui::Begin("Memory", pOpen);
-	
 	if(pMemory == nullptr)
 	{
 		ImGui::Text("ERROR - Memory not set");
@@ -55,24 +53,37 @@ void MemoryWindow::Draw(void)
 	
 	ImGui::BeginChild("ScrollArea");
 	{
-		for(int address = startAddress ; (address < startAddress+length) && (address<0x0000ffff) ; address+=16)
-		{
-			ImGui::Text("%04x", address);
+		// num lines of memory
+		uint16_t numLines = (length + 15) / 16;
 
-			for(int i=0 ; i<16 ; i++)
+		ImGuiListClipper clipper;
+		clipper.Begin(numLines);
+		while(clipper.Step())
+		{
+			for(int iLine = clipper.DisplayStart ; iLine < clipper.DisplayEnd ; iLine++)
 			{
-				ImGui::SameLine();
-				ImGui::Text("%02x", pMemory->Read(address+i));
+				int address = startAddress + (iLine * 16);
+				
+				ImGui::Text("%04x", address);
+
+				for(int i=0 ; i<16 ; i++)
+				{
+					ImGui::SameLine();
+					ImGui::Text("%02x", pMemory->Read(address+i));
+				}
+				for(int i=0 ; i<16 ; i++)
+				{
+					ImGui::SameLine();
+					ImGui::Text("%c", pMemory->Read(address+i));
+				}			
 			}
-			for(int i=0 ; i<16 ; i++)
-			{
-				ImGui::SameLine();
-				ImGui::Text("%c", pMemory->Read(address+i));
-			}			
 		}
+
+		
+//		for(int address = startAddress ; (address < startAddress+length) && (address<0x0000ffff) ; address+=16)
+//		{
+//		}
 	}
 	ImGui::EndChild();
-	
-//	ImGui::End();
 }
 

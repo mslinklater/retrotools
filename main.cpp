@@ -123,8 +123,8 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	
-	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
+	// TODO: Handle loaded address better
+	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
 	
 	// create windows
 
