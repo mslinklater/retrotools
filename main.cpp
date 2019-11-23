@@ -26,56 +26,6 @@
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
 
-static bool showLog = false;
-static bool showMemory = false;
-static bool showDisassembly = false;
-static bool showSymbols = false;
-
-void ToggleLogWindow(void)
-{
-	showLog = !showLog;
-}
-void ToggleMemoryWindow(void)
-{
-	showMemory = !showMemory;
-}
-void ToggleDisassemblyWindow(void)
-{
-	showDisassembly = !showDisassembly;
-}
-void ToggleSymbolsWindow(void)
-{
-	showSymbols = !showSymbols;
-}
-
-class MainCommandProcessor : public ICommandProcessor
-{
-public:
-	bool HandleCommand(const Command& command)
-	{
-		if(command.name == Commands::kToggleWindowCommand)
-		{
-			if(command.payload == "Log")
-			{
-				ToggleLogWindow();
-			}
-			if(command.payload == "Memory")
-			{
-				ToggleMemoryWindow();
-			}
-			if(command.payload == "Disassembly")
-			{
-				ToggleDisassemblyWindow();
-			}
-			if(command.payload == "Symbols")
-			{
-				ToggleSymbolsWindow();
-			}
-		}
-		return true;
-	}
-};
-
 static Config* pConfig = 0;
 
 void ProcessCommandLine(int argc, char* argv[])
@@ -92,16 +42,11 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	
-	MainCommandProcessor commandProcessor;
-	
 	// TODO: Output the command line to stdout
 	
 	// check for command line args
 	
 	ProcessCommandLine(argc, argv);
-	
-	CommandCenter::Instance()->Subscribe(Commands::kToggleWindowCommand, &commandProcessor);
 	
 	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -182,6 +127,10 @@ int main(int argc, char* argv[])
 	pDisassembler->Disassemble(loadAddress, bytesLoaded, loadAddress);
 	
 	// create windows
+
+	// Log Window
+	LogWindow* pLogWindow = new LogWindow();
+	pWindowManager->AddWindow(pLogWindow, "Log");
 	
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
@@ -189,11 +138,14 @@ int main(int argc, char* argv[])
 	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
+	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
 
 	MainWindow* pMainWindow = new MainWindow();
-	LogWindow* pLogWindow = new LogWindow();
+	pMainWindow->SetWindowManager(pWindowManager);
+	
 	SymbolWindow* pSymbolWindow = new SymbolWindow();
 	pSymbolWindow->SetSymbolStore(pSymbolStore);
+	pWindowManager->AddWindow(pSymbolWindow, "Symbols");
 	
 	bool done = false;
 	bool show_demo_window = true;
@@ -219,23 +171,9 @@ int main(int argc, char* argv[])
 		// do stuff
 		ImGui::ShowDemoWindow(&show_demo_window);
 
+		pWindowManager->Draw();	// draw all managed windows
+		
 		pMainWindow->Draw();
-		if(showLog)
-		{
-			pLogWindow->Draw(&showLog);
-		}
-		if(showMemory)
-		{
-			pMemoryWindow->Draw(&showMemory);	  
-		}
-		if(showDisassembly)
-		{
-			pDisasmWindow->Draw(&showDisassembly);
-		}
-		if(showSymbols)
-		{
-			pSymbolWindow->Draw(&showSymbols);
-		}
 		
 		// rendering
 		ImGui::Render();

@@ -13,10 +13,3 @@ WindowBase::~WindowBase()
 {
 }
 
-void WindowBase::BeginDraw()
-{
-}
-
-void WindowBase::EndDraw()
-{
-}

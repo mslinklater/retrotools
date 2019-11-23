@@ -24,9 +24,9 @@ void MemoryWindow::SetMemory(Memory* mem)
 	pMemory = mem;
 }
 
-void MemoryWindow::Draw(bool* pOpen)
+void MemoryWindow::Draw(void)
 {
-	ImGui::Begin("Memory", pOpen);
+//	ImGui::Begin("Memory", pOpen);
 	
 	if(pMemory == nullptr)
 	{
@@ -73,6 +73,6 @@ void MemoryWindow::Draw(bool* pOpen)
 	}
 	ImGui::EndChild();
 	
-	ImGui::End();
+//	ImGui::End();
 }
 

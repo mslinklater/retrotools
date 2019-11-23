@@ -6,14 +6,16 @@
 #pragma once
 #include <string>
 #include "../symbolstore.h"
+#include "../system/windowbase.h"
 
-class SymbolWindow
+class SymbolWindow : public WindowBase
 {
 public:
 	SymbolWindow();
 	virtual ~SymbolWindow();
 	
-	void Draw(bool* pShow);
+	virtual void Draw(void);
+	
 	void SetSymbolStore(SymbolStore* p);
 private:
 	SymbolStore* pStore;

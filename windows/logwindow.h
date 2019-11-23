@@ -5,13 +5,20 @@
 
 #pragma once
 
-class LogWindow
+#include "../system/windowmanager.h"
+#include "../system/windowbase.h"
+
+class LogWindow : public WindowBase
 {
 public:
 	LogWindow();
 	virtual ~LogWindow();
 	
-	void Draw(bool* pOpen);
+//	void Draw(bool* pOpen);
+	
+	// WindowBase
+	virtual void Draw();
+	// ~WindowBase
 private:
 	bool showInfo;
 	bool showWarnings;

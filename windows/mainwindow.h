@@ -5,6 +5,8 @@
 
 #pragma once
 
+class WindowManager;
+
 class MainWindow
 {
 public:
@@ -12,6 +14,8 @@ public:
 	virtual ~MainWindow();
 	
 	void Draw();
+	void SetWindowManager(WindowManager* wm){ pWindowManager = wm; }
 private:
 	bool open;
+	WindowManager* pWindowManager;
 };

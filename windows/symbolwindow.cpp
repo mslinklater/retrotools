@@ -28,12 +28,10 @@ SymbolWindow::~SymbolWindow()
 {
 }
 
-void SymbolWindow::Draw(bool* pShow)
+void SymbolWindow::Draw()
 {
 	std::vector<Symbol> symbols = pStore->GetAll();
 	
-	ImGui::Begin("Symbols", pShow);
-
 	// filter
 
 	ImGui::Text("Filters");
@@ -121,7 +119,6 @@ void SymbolWindow::Draw(bool* pShow)
 		}
 	}
 	ImGui::EndChild();
-	ImGui::End();
 }
 
 void SymbolWindow::SetSymbolStore(SymbolStore* p)

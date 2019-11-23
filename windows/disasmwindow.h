@@ -5,9 +5,11 @@
 
 #pragma once
 
+#include "../system/windowbase.h"
+
 class Disassembler;
 
-class DisassemblyWindow
+class DisassemblyWindow : public WindowBase
 {
 public:
 	
@@ -19,7 +21,8 @@ public:
 	DisassemblyWindow();
 	virtual ~DisassemblyWindow();
 	
-	void Draw(bool* pShow);
+	virtual void Draw(void);
+	
 	void SetDisassembler(Disassembler* pDisasm);
 private:
 	

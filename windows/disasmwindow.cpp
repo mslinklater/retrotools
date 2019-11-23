@@ -69,10 +69,8 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 }
 
 
-void DisassemblyWindow::Draw(bool* pShow)
+void DisassemblyWindow::Draw()
 {
-	ImGui::Begin("Disassembly", pShow);
-
 	DrawHeader();
 	
 	ImGui::Separator();
@@ -85,7 +83,6 @@ void DisassemblyWindow::Draw(bool* pShow)
 	{
 		DrawMainSubWindow();
 	}
-	ImGui::End();
 }
 
 void DisassemblyWindow::SetDisassembler(Disassembler* pDisasmIn)

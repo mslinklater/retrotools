@@ -13,7 +13,6 @@ public:
 	WindowBase();
 	virtual ~WindowBase();
 	
-	virtual void BeginDraw();
-	virtual void EndDraw();
+	virtual void Draw(void) = 0;
 private:	
 };

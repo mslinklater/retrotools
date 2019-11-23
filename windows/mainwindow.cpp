@@ -7,6 +7,7 @@
 #include "../imgui/imgui.h"
 #include "../system/command.h"
 #include "../commands.h"
+#include "../system/windowmanager.h"
 
 MainWindow::MainWindow()
 :open(true)
@@ -54,21 +55,12 @@ void MainWindow::Draw()
 		}
 		if(ImGui::BeginMenu("Windows"))
 		{
-			if(ImGui::MenuItem("Log"))
+			for(std::string name : pWindowManager->GetWindows())
 			{
-				Commands::ToggleWindow("Log");
-			}
-			if(ImGui::MenuItem("Memory"))
-			{
-				Commands::ToggleWindow("Memory");
-			}
-			if(ImGui::MenuItem("Disassembly"))
-			{
-				Commands::ToggleWindow("Disassembly");
-			}
-			if(ImGui::MenuItem("Symbols"))
-			{
-				Commands::ToggleWindow("Symbols");
+				if(ImGui::MenuItem(name.c_str()))
+				{
+					Commands::ToggleWindow(name);
+				}	   
 			}
 			ImGui::EndMenu();
 		}

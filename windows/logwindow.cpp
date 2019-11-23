@@ -18,10 +18,8 @@ LogWindow::~LogWindow()
 {
 }
 
-void LogWindow::Draw(bool* pOpen)
+void LogWindow::Draw(void)
 {
-	ImGui::Begin("Log", pOpen);
-	
 	// Filter tick boxes
 	const std::set<std::string>& categories = Log::Instance()->GetCategories();
 	for(std::string category : categories)
@@ -101,6 +99,14 @@ void LogWindow::Draw(bool* pOpen)
 	clipper.End();
 	
 	ImGui::EndChild();
+}
+
+/*
+void LogWindow::Draw(bool* pOpen)
+{
+	ImGui::Begin("Log", pOpen);
+	
 	
 	ImGui::End();
 }
+*/

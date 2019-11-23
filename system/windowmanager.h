@@ -6,6 +6,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include "command.h"
 #include "../errorcodes.h"
 
@@ -19,6 +20,8 @@ public:
 	
 	eErrorCode AddWindow(WindowBase* pWindow, std::string name);
 	
+	const std::vector<std::string> GetWindows();
+	
 	void Init();
 	void Draw();
 private:
@@ -28,5 +31,7 @@ private:
 	// ~ICommandProcessor
 	
 	bool initialised;
-	std::vector<WindowBase*> windows;
+	std::map<std::string,WindowBase*> windows;
+	std::map<std::string,bool> windowActive;
+	std::vector<std::string> windowNames;
 };
