@@ -533,3 +533,97 @@ void Cpu6502::SetY(uint8_t y)
 {
 	reg_y = y;
 }
+
+void Cpu6502::ProcessInstruction()
+{
+	uint8_t opcode = pMemory->Read(reg_pc);
+	Opcode* pOpcode = &opcodes[opcode];
+	
+	// Get fetched value, if we need one
+	uint8_t fetchedValue = 0;
+	uint16_t addr = 0;
+	switch(pOpcode->addrMode)
+	{
+//		case kAddrModeAccumulator:
+//			break;
+		case kAddrModeImmediate:
+			fetchedValue = pMemory->Read(reg_pc+1);
+			break;
+//		case kAddrModeZeroPage:
+//			break;
+		case kAddrModeZeroPageX:
+			{
+				addr = reg_x + pMemory->Read(reg_pc+1);
+				fetchedValue = pMemory->Read(addr);
+			}
+			break;
+//		case kAddrModeZeroPageY:
+//			break;
+//		case kAddrModeAbsolute:
+//			break;
+//		case kAddrModeAbsoluteX:
+//			break;
+//		case kAddrModeAbsoluteY:
+//			break;
+//		case kAddrModeIndirectX:
+//			break;
+//		case kAddrModeIndirectY:
+//			break;
+		case kAddrModeRelative:
+			addr = reg_pc + (int8_t)pMemory->Read(reg_pc+1);
+			break;
+		case kAddrModeImplied:
+			break;
+//		case kAddrModeIndirect:
+//			break;
+		default:
+			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
+			break;
+	}
+
+	// need flags stuff here too
+	switch(pOpcode->mnemonic)
+	{
+		case kMnemonic_BNE:
+			if(GetZeroFlag())
+			{
+				reg_pc = addr;
+			}
+			reg_pc += pOpcode->length;				
+			break;
+		case kMnemonic_CLD:
+			reg_status &= kDecimalClearMask;
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_DEX:	// complete
+			reg_x--;
+			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_LDA:
+			reg_acc = fetchedValue;
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_LDX:
+			reg_x = fetchedValue;
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_SEI:
+			reg_status |= kInterruptSetMask;
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_STA:
+			pMemory->Write(addr, reg_acc);
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_TXS:
+			reg_sp = reg_x;
+			reg_pc += pOpcode->length;
+			break;
+		default:
+			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
+			break;
+	}
+
+}

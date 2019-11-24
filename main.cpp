@@ -22,6 +22,7 @@
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
 #include "windows/symbolwindow.h"
+#include "windows/cpu6502window.h"
 #include "system/command.h"
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
@@ -43,6 +44,7 @@ void ProcessCommandLine(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	// TODO: Output the command line to stdout
+	
 	
 	// check for command line args
 	
@@ -102,8 +104,8 @@ int main(int argc, char* argv[])
 	pMemory->Init();	
 	
     pCpu->Init(Cpu6502::k6507);
-	pCpu->DumpInfo();
 	pCpu->SetMemory(pMemory);
+	pCpu->SetPC(0xf000);
 	pMemory->SetCPU(pCpu);
 	
 	pDisassembler->Init();
@@ -138,6 +140,7 @@ int main(int argc, char* argv[])
 	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
+	pDisasmWindow->SetCPU(pCpu);
 	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
 
 	MainWindow* pMainWindow = new MainWindow();
@@ -146,6 +149,10 @@ int main(int argc, char* argv[])
 	SymbolWindow* pSymbolWindow = new SymbolWindow();
 	pSymbolWindow->SetSymbolStore(pSymbolStore);
 	pWindowManager->AddWindow(pSymbolWindow, "Symbols");
+	
+	Cpu6502Window* pCpu6502Window = new Cpu6502Window();
+	pCpu6502Window->SetCpu(pCpu);
+	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
 	
 	bool done = false;
 	bool show_demo_window = true;
@@ -182,6 +189,11 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 		SDL_GL_SwapWindow(window);
+		
+		if(pWindowManager->ReceivedQuit())
+		{
+			done = true;
+		}
 	}
 
 	// Cleanup

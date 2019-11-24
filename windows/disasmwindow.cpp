@@ -6,6 +6,7 @@
 #include "disasmwindow.h"
 #include "../imgui/imgui.h"
 #include "../disasm.h"
+#include "../components/cpu6502.h"
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)
@@ -43,7 +44,14 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 		}
 		else
 		{	
-			ImGui::Text("     ");
+			if(pCpu->GetPC() == line.address)
+			{
+				ImGui::Text("==>  ");	   
+			}
+			else
+			{
+				ImGui::Text("     ");
+			}
 		}
 		ImGui::SameLine();
 		ImGui::Text("    %s", line.addressString.c_str());
@@ -68,6 +76,10 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 	ImGui::EndChild();
 }
 
+void DisassemblyWindow::SetCPU(Cpu6502* cpu)
+{
+	pCpu = cpu;
+}
 
 void DisassemblyWindow::Draw()
 {

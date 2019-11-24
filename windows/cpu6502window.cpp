@@ -66,19 +66,24 @@ void Cpu6502Window::Draw()
 	ImGui::Text("C");
 	
 	uint8_t status = pCpu->GetStatus();
-	ImGui::Text(status & Cpu6502::kNegativeFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kNegativeSetMask ? "1" : "0");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kOverflowFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kOverflowSetMask ? "1" : "0");
 	ImGui::SameLine();
 	ImGui::Text("-");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kBreakFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kBreakSetMask ? "1" : "0");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kDecimalFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kDecimalSetMask ? "1" : "0");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kInterruptFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kInterruptSetMask ? "1" : "0");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kZeroFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kZeroSetMask ? "1" : "0");
 	ImGui::SameLine();
-	ImGui::Text(status & Cpu6502::kCarryFlagMask ? "1" : "0");
+	ImGui::Text(status & Cpu6502::kCarrySetMask ? "1" : "0");
+	
+	if(ImGui::Button("Next"))
+	{
+		pCpu->ProcessInstruction();
+	}
 }

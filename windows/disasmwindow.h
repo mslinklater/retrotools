@@ -8,6 +8,7 @@
 #include "../system/windowbase.h"
 
 class Disassembler;
+class Cpu6502;
 
 class DisassemblyWindow : public WindowBase
 {
@@ -24,12 +25,14 @@ public:
 	virtual void Draw(void);
 	
 	void SetDisassembler(Disassembler* pDisasm);
+	void SetCPU(Cpu6502* pCpu);
 private:
 	
 	void DrawHeader(void);
 	void DrawMainSubWindow(void);
 	
-	Disassembler* pDisasm;
+	Disassembler* 	pDisasm;
+	Cpu6502*		pCpu;
 	
 	bool showTIAHints;
 };

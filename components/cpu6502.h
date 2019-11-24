@@ -11,13 +11,26 @@ class Memory;
 class Cpu6502
 {
 	public:
-		static const uint8_t kNegativeFlagMask = 0x80;
-		static const uint8_t kOverflowFlagMask = 0x40;
-		static const uint8_t kBreakFlagMask = 0x10;
-		static const uint8_t kDecimalFlagMask = 0x08;
-		static const uint8_t kInterruptFlagMask = 0x04;
-		static const uint8_t kZeroFlagMask = 0x02;
-		static const uint8_t kCarryFlagMask = 0x01;
+		static const uint8_t kNegativeSetMask = 0x80;
+		static const uint8_t kNegativeClearMask = 0x7f;
+		
+		static const uint8_t kOverflowSetMask = 0x40;
+		static const uint8_t kOverflowClearMask = 0xbf;
+		
+		static const uint8_t kBreakSetMask = 0x10;
+		static const uint8_t kBreakClearMask = 0xef;
+		
+		static const uint8_t kDecimalSetMask = 0x08;
+		static const uint8_t kDecimalClearMask = 0xf7;
+		
+		static const uint8_t kInterruptSetMask = 0x04;
+		static const uint8_t kInterruptClearMask = 0xfb;
+		
+		static const uint8_t kZeroSetMask = 0x02;
+		static const uint8_t kZeroClearMask = 0xfd;
+		
+		static const uint8_t kCarrySetMask = 0x01;
+		static const uint8_t kCarryClearMask = 0xfe;
 		
 		enum eVariant
 		{
@@ -112,6 +125,9 @@ class Cpu6502
 		uint8_t	GetSP();
 		void SetSP(uint8_t sp);
 		
+		void ProcessInstruction(void);
+//		void Tick(void);
+		
 	private:
 		uint16_t	reg_pc;
 		uint8_t		reg_acc;
@@ -128,6 +144,14 @@ class Cpu6502
 		Opcode	 	opcodes[256];
 		std::string mnemonicStrings[kMnemonic_Num];
 		std::string addrModeStrings[kAddrMode_Num];
+
+		inline void SetZeroFlag(){reg_status |= kZeroSetMask;}
+		inline void ClearZeroFlag(){reg_status &= kZeroClearMask;}
+		inline bool GetZeroFlag(){return reg_status | kZeroSetMask;}
+
+		inline void SetNegativeFlag(){reg_status |= kNegativeSetMask;}
+		inline void ClearNegativeFlag(){reg_status &= kNegativeClearMask;}
+		inline bool GetNegativeFlag(){return reg_status | kNegativeSetMask;}
 
 		Memory*	pMemory;
 };
