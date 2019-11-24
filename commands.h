@@ -17,4 +17,8 @@ namespace Commands
 
 	void Quit(void);
 	static const std::string kQuitCommand("Quit");
+
+	void Break(void);
+	static const std::string kBreakCommand("Break");
+
 };

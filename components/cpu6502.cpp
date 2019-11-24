@@ -7,7 +7,7 @@
 #include "memory.h"
 #include "../vcs.h"
 #include "../log.h"
-
+#include "../commands.h"
 
 #define CPU_STATUS_MASK_CARRY		0x01
 #define CPU_STATUS_MASK_ZERO		0x02
@@ -21,7 +21,9 @@
 
 Cpu6502::Cpu6502()
 {
+	CommandCenter::Instance()->Subscribe(Commands::kBreakCommand, this);
 }
+
 const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
 {
 	return mnemonicStrings[mnemonic];
@@ -625,5 +627,14 @@ void Cpu6502::ProcessInstruction()
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
 			break;
 	}
+}
 
+bool Cpu6502::HandleCommand(const Command& command)
+{
+	if(command.name == Commands::kBreakCommand)
+	{
+		autoRun = false;
+	}
+	
+	return false;
 }

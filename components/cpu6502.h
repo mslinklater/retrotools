@@ -6,9 +6,11 @@
 #pragma once
 #include <string>
 
+#include "../system/command.h"
+
 class Memory;
 
-class Cpu6502
+class Cpu6502 : public ICommandProcessor
 {
 	public:
 		static const uint8_t kNegativeSetMask = 0x80;
@@ -126,7 +128,8 @@ class Cpu6502
 		void SetSP(uint8_t sp);
 		
 		void ProcessInstruction(void);
-//		void Tick(void);
+
+		void Autorun();
 		
 	private:
 		uint16_t	reg_pc;
@@ -136,9 +139,15 @@ class Cpu6502
 		uint8_t		reg_status;
 		uint8_t		reg_sp;
 
+		bool autoRun;	// lets the CPU run by itself... needs removing 
+		
         void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
         void AddEmptyOpcode(uint8_t value);
         
+		// ICommandProcessor
+		bool HandleCommand(const Command &command) override;
+		// ~ICommandProcessor
+		
 		// static setup
         bool 		staticsInitialised;
 		Opcode	 	opcodes[256];
