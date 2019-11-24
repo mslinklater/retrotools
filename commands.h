@@ -15,4 +15,6 @@ namespace Commands
 	void ToggleWindow(std::string windowName);
 	static const std::string kToggleWindowCommand("ToggleWindow");
 
+	void Quit(void);
+	static const std::string kQuitCommand("Quit");
 };

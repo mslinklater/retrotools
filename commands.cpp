@@ -24,3 +24,10 @@ void Commands::ToggleWindow(std::string windowName)
 	CommandCenter::Instance()->Broadcast(cmd);
 }
 
+void Commands::Quit(void)
+{
+	LOGINFO("Commands::Quit");
+	Command cmd;
+	cmd.name = kQuitCommand;
+	CommandCenter::Instance()->Broadcast(cmd);
+}

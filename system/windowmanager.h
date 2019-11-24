@@ -24,6 +24,7 @@ public:
 	
 	void Init();
 	void Draw();
+	bool ReceivedQuit();
 private:
 	
 	// ICommandProcessor
@@ -34,4 +35,5 @@ private:
 	std::map<std::string,WindowBase*> windows;
 	std::map<std::string,bool> windowActive;
 	std::vector<std::string> windowNames;
+	bool receivedQuit;
 };

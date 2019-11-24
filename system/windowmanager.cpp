@@ -8,9 +8,11 @@
 #include "windowbase.h"
 #include "../log.h"
 #include "../imgui/imgui.h"
+#include "../commands.h"
 
 WindowManager::WindowManager()
 : initialised(false)
+, receivedQuit(false)
 {
 }
 
@@ -24,6 +26,7 @@ void WindowManager::Init()
 	
 	// Subscribe to all ToggleWindow commands
 	CommandCenter::Instance()->Subscribe("ToggleWindow", this);
+	CommandCenter::Instance()->Subscribe("Quit", this);
 	initialised = true;
 }
 
@@ -48,9 +51,22 @@ void WindowManager::Draw()
 
 bool WindowManager::HandleCommand(const Command& command)
 {
-	windowActive[command.payload] = !windowActive[command.payload];
+	if(command.name == Commands::kToggleWindowCommand)
+	{
+		windowActive[command.payload] = !windowActive[command.payload];
+	}
+	if(command.name == Commands::kQuitCommand)
+	{
+		// save the state of the windows
+		receivedQuit = true;
+	}
 	
 	return false;
+}
+
+bool WindowManager::ReceivedQuit()
+{
+	return receivedQuit;
 }
 
 eErrorCode WindowManager::AddWindow(WindowBase* pWindow, std::string name)

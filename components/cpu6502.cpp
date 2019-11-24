@@ -473,3 +473,63 @@ void Cpu6502::DumpInfo(void)
 		printf("-----------------------------------------------------------------------------------------------------\n");
 	}
 }
+
+uint16_t Cpu6502::GetPC()
+{
+	return reg_pc;
+}
+
+uint8_t Cpu6502::GetAcc()
+{
+	return reg_acc;
+}
+
+uint8_t Cpu6502::GetSP()
+{
+	return reg_sp;
+}
+
+uint8_t Cpu6502::GetStatus()
+{
+	return reg_status;
+}
+
+uint8_t Cpu6502::GetX()
+{
+	return reg_x;
+}
+
+uint8_t Cpu6502::GetY()
+{
+	return reg_y;
+}
+
+void Cpu6502::SetAcc(uint8_t acc)
+{
+	reg_acc = acc;
+}
+
+void Cpu6502::SetPC(uint16_t pc)
+{
+	reg_pc = pc;
+}
+
+void Cpu6502::SetSP(uint8_t sp)
+{
+	reg_sp = sp;
+}
+
+void Cpu6502::SetStatus(uint8_t status)
+{
+	reg_status = status;
+}
+
+void Cpu6502::SetX(uint8_t x)
+{
+	reg_x = x;
+}
+
+void Cpu6502::SetY(uint8_t y)
+{
+	reg_y = y;
+}

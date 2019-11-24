@@ -25,6 +25,10 @@ void Config::Destroy(void)
 {
 }
 
+void Config::LoadAppConfig()
+{
+}
+
 eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 {
 	LOGINFO("Config::Parsing command line...");

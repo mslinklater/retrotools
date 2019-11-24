@@ -107,6 +107,7 @@ eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 {
 	FILE* hFile;
 	hFile = fopen(filename.c_str(), "r");
+	
 	if(hFile != nullptr)
 	{
 		fseek(hFile, 0, SEEK_END);

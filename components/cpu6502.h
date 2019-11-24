@@ -11,6 +11,14 @@ class Memory;
 class Cpu6502
 {
 	public:
+		static const uint8_t kNegativeFlagMask = 0x80;
+		static const uint8_t kOverflowFlagMask = 0x40;
+		static const uint8_t kBreakFlagMask = 0x10;
+		static const uint8_t kDecimalFlagMask = 0x08;
+		static const uint8_t kInterruptFlagMask = 0x04;
+		static const uint8_t kZeroFlagMask = 0x02;
+		static const uint8_t kCarryFlagMask = 0x01;
+		
 		enum eVariant
 		{
 			k6502,
@@ -83,14 +91,34 @@ class Cpu6502
 		{
 			pMemory = mem;
 		}
+
+		// Register access
+		
+		uint16_t GetPC();
+		void SetPC(uint16_t pc);
+
+		uint8_t	GetAcc();
+		void SetAcc(uint8_t acc);
+
+		uint8_t	GetX();
+		void SetX(uint8_t x);
+
+		uint8_t	GetY();
+		void SetY(uint8_t y);
+
+		uint8_t	GetStatus();
+		void SetStatus(uint8_t status);
+
+		uint8_t	GetSP();
+		void SetSP(uint8_t sp);
 		
 	private:
-		uint16_t	pc;
-		uint8_t		acc;
-		uint8_t		x;
-		uint8_t		y;
-		uint8_t		status;
-		uint8_t		sp;
+		uint16_t	reg_pc;
+		uint8_t		reg_acc;
+		uint8_t		reg_x;
+		uint8_t		reg_y;
+		uint8_t		reg_status;
+		uint8_t		reg_sp;
 
         void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
         void AddEmptyOpcode(uint8_t value);
@@ -98,8 +126,8 @@ class Cpu6502
 		// static setup
         bool 		staticsInitialised;
 		Opcode	 	opcodes[256];
-		std::string 	mnemonicStrings[kMnemonic_Num];
-		std::string 	addrModeStrings[kAddrMode_Num];
+		std::string mnemonicStrings[kMnemonic_Num];
+		std::string addrModeStrings[kAddrMode_Num];
 
 		Memory*	pMemory;
 };

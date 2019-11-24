@@ -78,11 +78,6 @@ void MemoryWindow::Draw(void)
 				}			
 			}
 		}
-
-		
-//		for(int address = startAddress ; (address < startAddress+length) && (address<0x0000ffff) ; address+=16)
-//		{
-//		}
 	}
 	ImGui::EndChild();
 }

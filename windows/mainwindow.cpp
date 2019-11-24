@@ -46,6 +46,7 @@ void MainWindow::Draw()
 			if(ImGui::MenuItem("Quit"))
 			{
 				// quit session
+				Commands::Quit();
 			}
 			ImGui::EndMenu();
 		}

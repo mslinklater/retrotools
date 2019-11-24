@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include "errorcodes.h"
+#include "json11/json11.hpp"
 
 class Config
 {
@@ -21,8 +22,12 @@ public:
 	std::string GetLoadFilename();
 	uint16_t 	GetLoadAddress();
 	
+	void LoadAppConfig();
+	
 private:
 	std::string loadROMFilename;
 	uint16_t	loadROMAddress;
+	
+	json11::Json	appConfig;
 };
 
