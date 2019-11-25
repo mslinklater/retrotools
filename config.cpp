@@ -25,7 +25,11 @@ void Config::Destroy(void)
 {
 }
 
-void Config::LoadAppConfig()
+void Config::SerialiseAppConfig()
+{
+}
+
+void Config::DeserialiseAppConfig()
 {
 }
 

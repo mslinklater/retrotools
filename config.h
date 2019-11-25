@@ -9,6 +9,13 @@
 #include "errorcodes.h"
 #include "json11/json11.hpp"
 
+class IConfigSerialisation
+{
+public:
+	virtual void SerialiseState(json11::Json object) = 0;
+	virtual void DeserialiseState(json11::Json object) = 0;
+};
+
 class Config
 {
 public:
@@ -22,7 +29,8 @@ public:
 	std::string GetLoadFilename();
 	uint16_t 	GetLoadAddress();
 	
-	void LoadAppConfig();
+	void SerialiseAppConfig();
+	void DeserialiseAppConfig();
 	
 private:
 	std::string loadROMFilename;

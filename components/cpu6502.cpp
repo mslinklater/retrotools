@@ -5,7 +5,7 @@
 
 #include "cpu6502.h"
 #include "memory.h"
-#include "../vcs.h"
+#include "../machine/vcs.h"
 #include "../log.h"
 #include "../commands.h"
 
