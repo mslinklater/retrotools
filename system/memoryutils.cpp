@@ -17,17 +17,6 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
 	
 	eFileType fileType = kBinary;
 	
-	// file ends in '.bin' is a binary
-	if(filename.find(".bin") == filename.size() - 4)
-	{
-		LOGINFO("MemoryUtils::Found binary file");
-		fileType = kBinary;
-	}
-	else if(filename.find(".prg") == filename.size() - 4)
-	{
-		LOGINFO("MemoryUtils::Found PRG file");
-		fileType = kPrg;
-	}
 	
 	char* pLoadBuffer = 0;
 	
@@ -37,6 +26,19 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
 	
 	if(inFile.is_open())
 	{
+		// Now we know the file exists lets try to work out what format it is
+		if(filename.find(".bin") == filename.size() - 4)
+		{
+			LOGINFO("MemoryUtils::Found binary file");
+			fileType = kBinary;
+		}
+		else if(filename.find(".prg") == filename.size() - 4)
+		{
+			LOGINFO("MemoryUtils::Found PRG file");
+			fileType = kPrg;
+		}
+
+		// Now load the fecker
 		inFile.seekg(0, std::ios::end);
 		fileSize = inFile.tellg();
 		pLoadBuffer = new char[fileSize];
@@ -70,7 +72,7 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
 	else
 	{
 		// File load error
-		LOGERROR("ERROR - cannot load file");
+		LOGERRORF("ERROR - file not found (%s)", filename.c_str());
 		return kError_FileNotFound;
 	}
 	
