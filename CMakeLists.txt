@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_C_COMPILER /usr/bin/clang)
 set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
+set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
 set(OpenGL_GL_PREFERENCE LEGACY)
+set(CMAKE_FIND_LIBRARY_PREFIXES lib)
+set(CMAKE_FIND_LIBRARY_SUFFIXES lib)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp symbol.cpp commands.cpp machine/vcs.cpp)
 
