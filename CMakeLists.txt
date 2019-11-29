@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_C_COMPILER /usr/bin/clang)
+#set(CMAKE_C_COMPILER /usr/bin/clang)
 set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
-set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
-set(OpenGL_GL_PREFERENCE LEGACY)
+set(CMAKE_LIBRARY_PREFIXES lib)
+set(CMAKE_LIBRARY_SUFFIXES a)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
-set(CMAKE_FIND_LIBRARY_SUFFIXES lib)
+set(CMAKE_FIND_LIBRARY_SUFFIXES a)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp symbol.cpp commands.cpp machine/vcs.cpp)
 
@@ -20,6 +20,14 @@ set(WINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwi
 
 set(JSON11_FILES json11/json11.cpp)
 
+# libraries
+set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
+set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/)
+set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
+
+# headers
+set(OPENGL_INCLUDE_DIR /usr/include/GL/)
+
 find_package(SDL2 REQUIRED)
 find_package(OpenGL)
 
@@ -27,5 +35,5 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 project (vistella)
 add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${WINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES} ${JSON11_FILES})
-target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_gl_LIBRARY})
+target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(vistella PRIVATE -Wall -Werror)
