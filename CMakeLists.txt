@@ -22,7 +22,7 @@ set(JSON11_FILES json11/json11.cpp)
 
 # libraries
 set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
-set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/)
+set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
 set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
 
 # headers

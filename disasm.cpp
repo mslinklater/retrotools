@@ -12,7 +12,7 @@
 #include "components/cpu6502.h"
 #include "components/memory.h"
 
-static const uint32_t kMaxDisasmLines = 4096;
+//static const uint32_t kMaxDisasmLines = 4096;
 
 Disassembler::Disassembler()
 {

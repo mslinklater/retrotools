@@ -38,5 +38,5 @@ public:
 private:
 	uint8_t* 	pMemory;
 	uint32_t	memorySize;
-	uint16_t	addressMask;
+	//uint16_t	addressMask;
 };
