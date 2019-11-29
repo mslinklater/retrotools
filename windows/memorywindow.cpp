@@ -68,26 +68,25 @@ void MemoryWindow::Draw(void)
 
 				for(int i=0 ; i<16 ; i++)
 				{
-					ImVec4 col(0.75, 0.75, 0.75, 1.0);
+					ImVec4 col(0.5, 0.5, 0.5, 1.0);
 					uint8_t flags = pMemory->GetFlag(address+i);
 
 					if(flags & Memory::kMemoryFlagReadFrom)
 					{
-						col.y += 0.25f;
+						col.y = 1.0f;
 					}
 					if(flags & Memory::kMemoryFlagWrittenTo)
 					{
-						col.x += 0.25f;
+						col.z += 1.0f;
+					}
+					if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
+					{
+						col.x += 1.0f;
 					}
 
 					ImGui::SameLine();
 					ImGui::TextColored(col, "%02x", pMemory->Read(address+i, false));
 				}
-				for(int i=0 ; i<16 ; i++)
-				{
-					ImGui::SameLine();
-					ImGui::Text("%c", pMemory->Read(address+i, false));
-				}			
 			}
 		}
 	}

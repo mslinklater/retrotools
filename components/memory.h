@@ -22,12 +22,12 @@ public:
 	
 	static const uint8_t kMemoryFlagReadFrom = 1 << 0;
 	static const uint8_t kMemoryFlagWrittenTo = 1 << 1;
+	static const uint8_t kMemoryFlagWriteBreakpoint = 1 << 2;
+	static const uint8_t kMemoryFlagReadBreakpoint = 1 << 3;
 
 	enum eTransactionType {
 		kMemoryRead,
-		kMemoryWrite,
-		kMemoryReadBreakpoint,
-		kMemoryWriteBreakpoint
+		kMemoryWrite
 	};
 	
 	struct MemoryByte

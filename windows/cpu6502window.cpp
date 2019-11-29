@@ -86,4 +86,12 @@ void Cpu6502Window::Draw()
 	{
 		pCpu->ProcessInstruction();
 	}
+
+	if(ImGui::Button("Next 100"))
+	{
+		for(int i=0 ; i<100 ; i++)
+		{
+			pCpu->ProcessInstruction();
+		}
+	}
 }

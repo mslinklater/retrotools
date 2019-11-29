@@ -551,8 +551,9 @@ void Cpu6502::ProcessInstruction()
 		case kAddrModeImmediate:
 			fetchedValue = pMemory->Read(reg_pc+1);
 			break;
-//		case kAddrModeZeroPage:
-//			break;
+		case kAddrModeZeroPage:
+			addr = pMemory->Read(reg_pc+1);
+			break;
 		case kAddrModeZeroPageX:
 			{
 				addr = reg_x + pMemory->Read(reg_pc+1);
@@ -561,8 +562,9 @@ void Cpu6502::ProcessInstruction()
 			break;
 //		case kAddrModeZeroPageY:
 //			break;
-//		case kAddrModeAbsolute:
-//			break;
+		case kAddrModeAbsolute:
+			addr = (pMemory->Read(reg_pc+2) << 8) | pMemory->Read(reg_pc+1);
+			break;
 //		case kAddrModeAbsoluteX:
 //			break;
 //		case kAddrModeAbsoluteY:
@@ -587,7 +589,7 @@ void Cpu6502::ProcessInstruction()
 	switch(pOpcode->mnemonic)
 	{
 		case kMnemonic_BNE:
-			if(GetZeroFlag())
+			if(!GetZeroFlag())
 			{
 				reg_pc = addr;
 			}
@@ -622,6 +624,9 @@ void Cpu6502::ProcessInstruction()
 		case kMnemonic_TXS:
 			reg_sp = reg_x;
 			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_JMP:
+			reg_pc = addr;
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());

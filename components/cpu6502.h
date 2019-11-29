@@ -156,11 +156,11 @@ class Cpu6502 : public ICommandProcessor
 
 		inline void SetZeroFlag(){reg_status |= kZeroSetMask;}
 		inline void ClearZeroFlag(){reg_status &= kZeroClearMask;}
-		inline bool GetZeroFlag(){return reg_status | kZeroSetMask;}
+		inline bool GetZeroFlag(){return reg_status & kZeroSetMask;}
 
 		inline void SetNegativeFlag(){reg_status |= kNegativeSetMask;}
 		inline void ClearNegativeFlag(){reg_status &= kNegativeClearMask;}
-		inline bool GetNegativeFlag(){return reg_status | kNegativeSetMask;}
+		inline bool GetNegativeFlag(){return reg_status & kNegativeSetMask;}
 
 		Memory*	pMemory;
 };

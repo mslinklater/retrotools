@@ -91,20 +91,20 @@ uint8_t Memory::GetFlag(uint16_t address)
 
 void Memory::SetReadBreakpoint(uint16_t address)
 {
-	pMemory[address].flags |= kMemoryReadBreakpoint;
+	pMemory[address].flags |= kMemoryFlagReadBreakpoint;
 }
 
 void Memory::SetWriteBreakpoint(uint16_t address)
 {
-	pMemory[address].flags |= kMemoryWriteBreakpoint;
+	pMemory[address].flags |= kMemoryFlagWriteBreakpoint;
 }
 
 void Memory::ClearReadBreakpoint(uint16_t address)
 {
-	pMemory[address].flags &= 0xff ^ kMemoryReadBreakpoint;
+	pMemory[address].flags &= 0xff ^ kMemoryFlagReadBreakpoint;
 }
 
 void Memory::ClearWriteBreakpoint(uint16_t address)
 {
-	pMemory[address].flags &= 0xff ^ kMemoryWriteBreakpoint;
+	pMemory[address].flags &= 0xff ^ kMemoryFlagWriteBreakpoint;
 }
