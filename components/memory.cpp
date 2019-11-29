@@ -21,7 +21,7 @@ Memory::~Memory()
 	
 eErrorCode Memory::Init(void)
 {
-	pMemory = new uint8_t[kMemorySize];
+	pMemory = new MemoryByte[kMemorySize];
 	
 	memset((void*)(pMemory), 0xff, kMemorySize);
 	memorySize = kMemorySize;
@@ -48,7 +48,8 @@ void Memory::Write(uint16_t address, uint8_t val)
 {
 	if(pMemory != 0)
 	{
-		pMemory[address] = val;
+		pMemory[address].value = val;
+		pMemory[address].flags |= kMemoryFlagWrittenTo;
 	}
 	else
 	{
@@ -60,7 +61,8 @@ uint8_t Memory::Read(uint16_t address) const
 {
 	if(pMemory != 0)
 	{
-		return pMemory[address];
+		return pMemory[address].value;
+		pMemory[address].flags |= kMemoryFlagReadFrom;
 	}
 	else
 	{

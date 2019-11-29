@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": [],
+            "args": ["-l", "~/Code/retrotools/one.prg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

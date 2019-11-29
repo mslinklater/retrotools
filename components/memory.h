@@ -20,23 +20,35 @@ class Memory
 public:
 	static const int kMemorySize = 65536;
 	
+	static const uint8_t kMemoryFlagReadFrom = 1 << 0;
+	static const uint8_t kMemoryFlagWrittenTo = 1 << 1;
+
 	enum eTransactionType {
 		kMemoryRead,
 		kMemoryWrite
 	};
 	
+	struct MemoryByte
+	{
+		MemoryByte()
+		: flags(0)
+		{}
+
+		uint8_t	value;
+		uint8_t flags;
+	};
+
 	Memory();
 	virtual ~Memory();
 	
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
 	eErrorCode 	Destroy(void);
-//	eErrorCode 	Load(const std::string& filename, uint16_t address, uint16_t* bytesRead);
 	uint8_t 	Read(uint16_t address) const;
 	void 		Write(uint16_t address, uint8_t val);
 
 private:
-	uint8_t* 	pMemory;
+	MemoryByte* pMemory;
 	uint32_t	memorySize;
 	//uint16_t	addressMask;
 };
