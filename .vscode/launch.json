@@ -5,11 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) Launch one.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
             "args": ["-l", "~/Code/retrotools/one.prg"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch two.prg",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/two.prg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

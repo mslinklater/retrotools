@@ -621,6 +621,14 @@ void Cpu6502::ProcessInstruction()
 			pMemory->Write(addr, reg_acc);
 			reg_pc += pOpcode->length;
 			break;
+		case kMnemonic_TAX:
+			reg_x = reg_acc;
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_TXA:
+			reg_acc = reg_x;
+			reg_pc += pOpcode->length;
+			break;
 		case kMnemonic_TXS:
 			reg_sp = reg_x;
 			reg_pc += pOpcode->length;
