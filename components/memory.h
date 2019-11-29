@@ -25,7 +25,9 @@ public:
 
 	enum eTransactionType {
 		kMemoryRead,
-		kMemoryWrite
+		kMemoryWrite,
+		kMemoryReadBreakpoint,
+		kMemoryWriteBreakpoint
 	};
 	
 	struct MemoryByte
@@ -44,8 +46,14 @@ public:
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
 	eErrorCode 	Destroy(void);
-	uint8_t 	Read(uint16_t address) const;
-	void 		Write(uint16_t address, uint8_t val);
+	uint8_t 	Read(uint16_t address, bool affectFlags = true) const;
+	void 		Write(uint16_t address, uint8_t val, bool affectFlags = true);
+	uint8_t		GetFlag(uint16_t address);
+
+	void	SetReadBreakpoint(uint16_t address);
+	void	SetWriteBreakpoint(uint16_t address);
+	void	ClearReadBreakpoint(uint16_t address);
+	void	ClearWriteBreakpoint(uint16_t address);
 
 private:
 	MemoryByte* pMemory;

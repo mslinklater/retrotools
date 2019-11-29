@@ -68,14 +68,14 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		thisLine.addressString = buffer;
 		thisLine.address = currentAddress;
 		
-		uint8_t opcode = pMemory->Read(currentAddress);
+		uint8_t opcode = pMemory->Read(currentAddress, false);
 		const Cpu6502::Opcode* opcodeInfo = pCpu->GetOpcode(opcode);
 
 		if(opcodeInfo->valid)
 		{
 			// bytes
-			thisLine.param1 = pMemory->Read(currentAddress+1);
-			thisLine.param2 = pMemory->Read(currentAddress+2);
+			thisLine.param1 = pMemory->Read(currentAddress+1, false);
+			thisLine.param2 = pMemory->Read(currentAddress+2, false);
 			
 			switch(opcodeInfo->length)
 			{

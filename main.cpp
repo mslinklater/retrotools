@@ -124,6 +124,7 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 	}
+	pMemory->SetReadBreakpoint(0xf00c);
 
 	// TODO: Handle loaded address better
 	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
