@@ -124,7 +124,6 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 	}
-	pMemory->SetReadBreakpoint(0xf00c);
 
 	// TODO: Handle loaded address better
 	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
@@ -139,6 +138,8 @@ int main(int argc, char* argv[])
 	pMemoryWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pMemoryWindow, "Memory");
 	
+	pConfig->AddStateSerialiser(pWindowManager);
+
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
 	pDisasmWindow->SetCPU(pCpu);
@@ -155,6 +156,8 @@ int main(int argc, char* argv[])
 	pCpu6502Window->SetCpu(pCpu);
 	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
 	
+	pConfig->DeserialiseAppConfig();
+
 	bool done = false;
 	bool show_demo_window = true;
 	while(!done)
@@ -196,6 +199,9 @@ int main(int argc, char* argv[])
 			done = true;
 		}
 	}
+
+	// Save the state of the windows
+	pConfig->SerialiseAppConfig();
 
 	// Cleanup
 	ImGui_ImplOpenGL2_Shutdown();

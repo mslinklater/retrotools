@@ -162,5 +162,17 @@ class Cpu6502 : public ICommandProcessor
 		inline void ClearNegativeFlag(){reg_status &= kNegativeClearMask;}
 		inline bool GetNegativeFlag(){return reg_status & kNegativeSetMask;}
 
+		inline void SetDecimalFlag(){reg_status |= kDecimalSetMask;}
+		inline void ClearDecimalFlag(){reg_status &= kDecimalClearMask;}
+		inline bool GetDecimalFlag(){return reg_status & kDecimalSetMask;}
+
+		inline void SetInterruptFlag(){reg_status |= kInterruptSetMask;}
+		inline void ClearInterruptFlag(){reg_status &= kInterruptClearMask;}
+		inline bool GetInterruptFlag(){return reg_status & kInterruptSetMask;}
+
+		inline void SetCarryFlag(){reg_status |= kCarrySetMask;}
+		inline void ClearCarryFlag(){reg_status &= kCarryClearMask;}
+		inline bool GetCarryFlag(){return reg_status & kCarrySetMask;}
+
 		Memory*	pMemory;
 };

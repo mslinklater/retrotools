@@ -27,10 +27,17 @@ void Config::Destroy(void)
 
 void Config::SerialiseAppConfig()
 {
+	LOGINFO("Config::SerialiseAppConfig");
 }
 
 void Config::DeserialiseAppConfig()
 {
+	LOGINFO("Config::DeserialiseAppConfig");
+}
+
+void Config::AddStateSerialiser(IConfigSerialisation* serialiser)
+{
+	serialisers.push_back(serialiser);
 }
 
 eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])

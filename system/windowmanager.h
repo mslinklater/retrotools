@@ -9,10 +9,11 @@
 #include <map>
 #include "command.h"
 #include "../errorcodes.h"
+#include "../config.h"
 
 class WindowBase;
 
-class WindowManager : public ICommandProcessor
+class WindowManager : public ICommandProcessor, public IConfigSerialisation
 {
 public:
 	WindowManager();
@@ -31,6 +32,11 @@ private:
 	virtual bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 	
+	// IConfigSerialisation
+	virtual void SerialiseState(json11::Json object);
+	virtual void DeserialiseState(json11::Json object);
+	// ~IConfigSerialisation
+
 	bool initialised;
 	std::map<std::string,WindowBase*> windows;
 	std::map<std::string,bool> windowActive;

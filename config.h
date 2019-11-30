@@ -29,6 +29,8 @@ public:
 	std::string GetLoadFilename();
 	uint16_t 	GetLoadAddress();
 	
+	void AddStateSerialiser(IConfigSerialisation* serialiser);
+
 	void SerialiseAppConfig();
 	void DeserialiseAppConfig();
 	
@@ -37,5 +39,7 @@ private:
 	uint16_t	loadROMAddress;
 	
 	json11::Json	appConfig;
+
+	std::vector<IConfigSerialisation*> serialisers;
 };
 

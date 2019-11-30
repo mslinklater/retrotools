@@ -588,6 +588,21 @@ void Cpu6502::ProcessInstruction()
 	// need flags stuff here too
 	switch(pOpcode->mnemonic)
 	{
+		case kMnemonic_ADC:
+			{
+//				uint8_t old_acc = reg_acc;
+				if(GetDecimalFlag())
+				{
+					// BCD ADC
+					LOGERROR("ADC BCD mode not implemented.");
+				}
+				else
+				{
+					reg_acc += fetchedValue + (GetCarryFlag() ? 1 : 0);
+					// flags
+				}
+			}
+			break;
 		case kMnemonic_BNE:
 			if(!GetZeroFlag())
 			{
@@ -596,7 +611,7 @@ void Cpu6502::ProcessInstruction()
 			reg_pc += pOpcode->length;				
 			break;
 		case kMnemonic_CLD:
-			reg_status &= kDecimalClearMask;
+			ClearDecimalFlag();
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_DEX:	// complete
@@ -607,10 +622,19 @@ void Cpu6502::ProcessInstruction()
 			break;
 		case kMnemonic_LDA:
 			reg_acc = fetchedValue;
+			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_LDX:
 			reg_x = fetchedValue;
+			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_PHA:
+			addr = 0x0100 | reg_sp--;
+			pMemory->Write(addr, reg_acc);
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_SEI:
@@ -623,10 +647,14 @@ void Cpu6502::ProcessInstruction()
 			break;
 		case kMnemonic_TAX:
 			reg_x = reg_acc;
+			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_TXA:
 			reg_acc = reg_x;
+			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_TXS:
