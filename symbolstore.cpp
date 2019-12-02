@@ -134,7 +134,6 @@ eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 		json symbolsJSON = inputJson["symbols"];
 		if(symbolsJSON.is_array())
 		{
-//			std::vector<json> symbolsArray = symbolsJSON.array();
 			for(auto symbol : symbolsJSON)
 			{
 				Symbol newSymbol;

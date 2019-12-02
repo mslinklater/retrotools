@@ -18,8 +18,6 @@ set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/
 
 set(WINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp windows/symbolwindow.cpp windows/cpu6502window.cpp)
 
-set(JSON11_FILES json11/json11.cpp)
-
 # libraries
 set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
 set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
@@ -34,6 +32,6 @@ find_package(OpenGL)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 project (vistella)
-add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${WINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES} ${JSON11_FILES})
+add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${WINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES})
 target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(vistella PRIVATE -Wall -Werror)

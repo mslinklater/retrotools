@@ -32,10 +32,10 @@ void Config::SerialiseAppConfig()
 
 	// grab info
 
-//	for(auto serialiser : serialisers)
-//	{
-//		serialiser->SerialiseState(outputJson);
-//	}
+	for(auto serialiser : serialisers)
+	{
+		serialiser->SerialiseState(outputJson);
+	}
 
 	std::string outputString = outputJson.dump();
 	FILE* outputFile = fopen("config.json", "w");
@@ -55,10 +55,10 @@ void Config::DeserialiseAppConfig()
 	// Load from file.
 
 	// distribute info
-//	for(auto serialiser : serialisers)
-//	{
-//		serialiser->DeserialiseState(outputJson);
-//	}
+	for(auto serialiser : serialisers)
+	{
+		serialiser->DeserialiseState(inputJson);
+	}
 }
 
 void Config::AddStateSerialiser(IConfigSerialisation* serialiser)

@@ -7,15 +7,14 @@
 #include <cstdint>
 #include <string>
 #include "errorcodes.h"
-//#include "json11/json11.hpp"
 #include "json.hpp"
 using json = nlohmann::json;
 
 class IConfigSerialisation
 {
 public:
-//	virtual void SerialiseState(json11::Json& object) = 0;
-//	virtual void DeserialiseState(json11::Json& object) = 0;
+	virtual void SerialiseState(json& object) = 0;
+	virtual void DeserialiseState(json& object) = 0;
 };
 
 class Config

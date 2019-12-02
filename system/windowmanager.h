@@ -28,8 +28,8 @@ public:
 	bool ReceivedQuit();
 
 	// IConfigSerialisation
-//	virtual void SerialiseState(json11::Json& object);
-//	virtual void DeserialiseState(json11::Json& object);
+	virtual void SerialiseState(json& object);
+	virtual void DeserialiseState(json& object);
 	// ~IConfigSerialisation
 
 private:
