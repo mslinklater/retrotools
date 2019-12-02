@@ -20,6 +20,7 @@
 // Constructor
 
 Cpu6502::Cpu6502()
+: reg_status(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kBreakCommand, this);
 }
@@ -601,6 +602,7 @@ void Cpu6502::ProcessInstruction()
 					reg_acc += fetchedValue + (GetCarryFlag() ? 1 : 0);
 					// flags
 				}
+				reg_pc += pOpcode->length;				
 			}
 			break;
 		case kMnemonic_BNE:

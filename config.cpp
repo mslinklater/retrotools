@@ -28,11 +28,37 @@ void Config::Destroy(void)
 void Config::SerialiseAppConfig()
 {
 	LOGINFO("Config::SerialiseAppConfig");
+	json outputJson;
+
+	// grab info
+
+//	for(auto serialiser : serialisers)
+//	{
+//		serialiser->SerialiseState(outputJson);
+//	}
+
+	std::string outputString = outputJson.dump();
+	FILE* outputFile = fopen("config.json", "w");
+	if(outputFile)
+	{
+		fwrite(outputString.c_str(), outputString.size(), 1, outputFile);
+		fclose(outputFile);
+	}
 }
 
 void Config::DeserialiseAppConfig()
 {
 	LOGINFO("Config::DeserialiseAppConfig");
+
+	json inputJson;
+
+	// Load from file.
+
+	// distribute info
+//	for(auto serialiser : serialisers)
+//	{
+//		serialiser->DeserialiseState(outputJson);
+//	}
 }
 
 void Config::AddStateSerialiser(IConfigSerialisation* serialiser)

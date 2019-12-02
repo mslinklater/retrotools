@@ -26,16 +26,18 @@ public:
 	void Init();
 	void Draw();
 	bool ReceivedQuit();
+
+	// IConfigSerialisation
+//	virtual void SerialiseState(json11::Json& object);
+//	virtual void DeserialiseState(json11::Json& object);
+	// ~IConfigSerialisation
+
 private:
 	
 	// ICommandProcessor
 	virtual bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 	
-	// IConfigSerialisation
-	virtual void SerialiseState(json11::Json object);
-	virtual void DeserialiseState(json11::Json object);
-	// ~IConfigSerialisation
 
 	bool initialised;
 	std::map<std::string,WindowBase*> windows;

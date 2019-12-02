@@ -33,8 +33,8 @@ Zero    sta  $00,X	; store A register at address ($0 + X)
         sta  $00	; the loop doesn't cover address 0
 
 ; Set background color
-	lda #$30	;load value into A ($30 is deep red on NTSC)
-	sta COLUBK	;put the value of A into the background color register
+;	lda #$30	;load value into A ($30 is deep red on NTSC)
+;	sta COLUBK	;put the value of A into the background color register
 
 ; Nothing else to do, so let's start over.
 ; There's no vertical sync logic, and the zero-page clearing routine 
@@ -44,6 +44,6 @@ Zero    sta  $00,X	; store A register at address ($0 + X)
 ; Here we skip to address $FFFC and define a word with the
 ; address of where the CPU should start fetching instructions.
 ; This also fills out the ROM size to $1000 (4k) bytes
-	org $fffc
-	.word Start
-	.word Start
+;	org $fffc
+;	.word Start
+;	.word Start

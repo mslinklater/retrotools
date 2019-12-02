@@ -88,13 +88,17 @@ const std::vector<std::string> WindowManager::GetWindows()
 {
 	return windowNames;
 }
-
-void WindowManager::SerialiseState(json11::Json object)
+/*
+void WindowManager::SerialiseState(json11::Json& object)
 {
+	LOGINFO("WindowManager::SerialiseState");
 
+	json11::Json::array windowJson;
+	object["window_manager"] = json11::JsonValue("plap");
 }
 
-void WindowManager::DeserialiseState(json11::Json object)
+void WindowManager::DeserialiseState(json11::Json& object)
 {
-	
+	LOGINFO("WindowManager::DeserialiseState");
 }
+*/
