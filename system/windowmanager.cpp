@@ -93,8 +93,14 @@ void WindowManager::SerialiseState(json& object)
 {
 	LOGINFO("WindowManager::SerialiseState");
 
-//	json windowJson;
-//	object["window_manager"] = json11::JsonValue("plap");
+	json windowsJson = json::array();
+	for(auto window : windows)
+	{
+		json windowJson = json::object();
+		windowJson["name"] = window.first.c_str();
+		windowsJson.push_back( windowJson );
+	}
+	object["window_manager"] = windowsJson;
 }
 
 void WindowManager::DeserialiseState(json& object)
