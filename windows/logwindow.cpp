@@ -101,12 +101,25 @@ void LogWindow::Draw(void)
 	ImGui::EndChild();
 }
 
-/*
-void LogWindow::Draw(bool* pOpen)
+void LogWindow::SerialiseState(json& object)
 {
-	ImGui::Begin("Log", pOpen);
-	
-	
-	ImGui::End();
+	LOGINFO("LogWindow::SerialiseState");
+/*
+	json windowsJson = json::array();
+	for(auto window : windows)
+	{
+		json windowJson = json::object();
+		windowJson["name"] = window.first.c_str();
+		bool active = windowActive[window.first];
+		windowJson["active"] = active;
+		windowsJson.push_back( windowJson );
+	}
+	object["log_window"] = windowsJson;
+	*/
 }
-*/
+
+void LogWindow::DeserialiseState(json& object)
+{
+
+}
+

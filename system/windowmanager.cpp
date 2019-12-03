@@ -98,6 +98,8 @@ void WindowManager::SerialiseState(json& object)
 	{
 		json windowJson = json::object();
 		windowJson["name"] = window.first.c_str();
+		bool active = windowActive[window.first];
+		windowJson["active"] = active;
 		windowsJson.push_back( windowJson );
 	}
 	object["window_manager"] = windowsJson;
@@ -106,4 +108,14 @@ void WindowManager::SerialiseState(json& object)
 void WindowManager::DeserialiseState(json& object)
 {
 	LOGINFO("WindowManager::DeserialiseState");
+
+	json windowsJson = object["window_manager"];
+	if(windowsJson.is_array())
+	{
+		for(auto window : windowsJson)
+		{
+			std::string windowName = window["name"].get<std::string>();
+			windowActive[windowName] = window["active"].get<bool>();
+		}
+	}
 }

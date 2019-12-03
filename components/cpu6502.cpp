@@ -616,6 +616,16 @@ void Cpu6502::ProcessInstruction()
 			ClearDecimalFlag();
 			reg_pc += pOpcode->length;
 			break;
+		case kMnemonic_DEC: // complete
+			{
+				uint8_t value = pMemory->Read(addr);
+				value--;
+				pMemory->Write(addr, value);
+				(value == 0) ? SetZeroFlag() : ClearZeroFlag();
+				(value & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			}
+			reg_pc += pOpcode->length;
+			break;
 		case kMnemonic_DEX:	// complete
 			reg_x--;
 			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();

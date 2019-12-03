@@ -53,6 +53,17 @@ void Config::DeserialiseAppConfig()
 	json inputJson;
 
 	// Load from file.
+	FILE* hFile = fopen("config.json", "r");
+	if(hFile != 0)
+	{
+		fseek(hFile, 0, SEEK_END);
+		size_t fileSize = ftell(hFile);
+		fseek(hFile, 0, SEEK_SET);
+		char* pBuffer = new char[fileSize];
+		fread(pBuffer, 1, fileSize, hFile);
+
+		inputJson = json::parse(pBuffer);
+	}
 
 	// distribute info
 	for(auto serialiser : serialisers)
