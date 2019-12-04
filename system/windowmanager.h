@@ -23,7 +23,7 @@ public:
 	
 	const std::vector<std::string> GetWindows();
 	
-	void Init();
+	void Init(Config* pConfig);
 	void Draw();
 	bool ReceivedQuit();
 

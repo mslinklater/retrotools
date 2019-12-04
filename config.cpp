@@ -59,16 +59,17 @@ void Config::DeserialiseAppConfig()
 		fseek(hFile, 0, SEEK_END);
 		size_t fileSize = ftell(hFile);
 		fseek(hFile, 0, SEEK_SET);
-		char* pBuffer = new char[fileSize];
+		char* pBuffer = new char[fileSize+1];
 		fread(pBuffer, 1, fileSize, hFile);
+		pBuffer[fileSize] = 0;
 
 		inputJson = json::parse(pBuffer);
-	}
 
-	// distribute info
-	for(auto serialiser : serialisers)
-	{
-		serialiser->DeserialiseState(inputJson);
+		// distribute info
+		for(auto serialiser : serialisers)
+		{
+			serialiser->DeserialiseState(inputJson);
+		}
 	}
 }
 

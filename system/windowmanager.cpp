@@ -9,6 +9,8 @@
 #include "../log.h"
 #include "../imgui/imgui.h"
 #include "../commands.h"
+#include "../config.h"
+
 
 WindowManager::WindowManager()
 : initialised(false)
@@ -20,13 +22,15 @@ WindowManager::~WindowManager()
 {
 }
 
-void WindowManager::Init()
+void WindowManager::Init(Config* pConfig)
 {
 	LOGINFO("WindowManager::Init");
 	
 	// Subscribe to all ToggleWindow commands
 	CommandCenter::Instance()->Subscribe("ToggleWindow", this);
 	CommandCenter::Instance()->Subscribe("Quit", this);
+
+	pConfig->AddStateSerialiser(this);
 	initialised = true;
 }
 

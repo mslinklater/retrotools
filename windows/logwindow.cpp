@@ -12,6 +12,7 @@ LogWindow::LogWindow()
 , showWarnings(true)
 , showErrors(true)
 {
+
 }
 
 LogWindow::~LogWindow()
@@ -104,22 +105,43 @@ void LogWindow::Draw(void)
 void LogWindow::SerialiseState(json& object)
 {
 	LOGINFO("LogWindow::SerialiseState");
-/*
-	json windowsJson = json::array();
-	for(auto window : windows)
+
+	json logWindowObject = json::object();
+	logWindowObject["info"] = showInfo;
+	logWindowObject["warnings"] = showWarnings;
+	logWindowObject["errors"] = showErrors;
+	object["logwindow"] = logWindowObject;
+
+	// let the logwindow deal with serialising the log category states
+	std::set<std::string> categories = Log::Instance()->GetCategories();
+
+	json logCategoryArray = json::array();
+	for(auto category : categories)
 	{
-		json windowJson = json::object();
-		windowJson["name"] = window.first.c_str();
-		bool active = windowActive[window.first];
-		windowJson["active"] = active;
-		windowsJson.push_back( windowJson );
+		json categoryJson = json::object();
+		categoryJson["name"] = category.c_str();
+		categoryJson["enabled"] = Log::Instance()->GetCategoryEnabled(category);
+		logCategoryArray.push_back(categoryJson);
 	}
-	object["log_window"] = windowsJson;
-	*/
+	object["logcategories"] = logCategoryArray;
 }
 
 void LogWindow::DeserialiseState(json& object)
 {
+	LOGINFO("LogWindow::DeserialiseState");
 
+	json logWindowObject = object["logwindow"];
+	if(logWindowObject.is_object())
+	{
+		showInfo = logWindowObject["info"];
+		showWarnings = logWindowObject["warnings"];
+		showErrors = logWindowObject["errors"];
+	}
+
+//	json logObject = object["logcategories"];
+//	if(logObject.is_object())
+//	{
+
+//	}
 }
 

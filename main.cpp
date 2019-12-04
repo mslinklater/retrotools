@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 	// Initialise window manager
 
 	WindowManager* pWindowManager = new WindowManager();
-	pWindowManager->Init();
+	pWindowManager->Init(pConfig);
 	
 	// Do some 6502 stuff
 	// initialise components
@@ -133,13 +133,12 @@ int main(int argc, char* argv[])
 	// Log Window
 	LogWindow* pLogWindow = new LogWindow();
 	pWindowManager->AddWindow(pLogWindow, "Log");
+	pConfig->AddStateSerialiser(pLogWindow);
 	
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pMemoryWindow, "Memory");
 	
-	pConfig->AddStateSerialiser(pWindowManager);
-
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
 	pDisasmWindow->SetCPU(pCpu);
