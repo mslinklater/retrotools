@@ -138,10 +138,16 @@ void LogWindow::DeserialiseState(json& object)
 		showErrors = logWindowObject["errors"];
 	}
 
-//	json logObject = object["logcategories"];
-//	if(logObject.is_object())
-//	{
+	json categoriesArray = object["logcategories"];
+	if(categoriesArray.is_array())
+	{
+		for(auto categoryObject : categoriesArray)
+		{
+			std::string categoryName = categoryObject["name"].get<std::string>();
+			bool categoryEnabled = categoryObject["enabled"].get<bool>();
 
-//	}
+			Log::Instance()->SetCategoryEnabled(categoryName, categoryEnabled);
+		}
+	}
 }
 
