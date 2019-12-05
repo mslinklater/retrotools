@@ -143,6 +143,7 @@ int main(int argc, char* argv[])
 	pDisasmWindow->SetDisassembler(pDisassembler);
 	pDisasmWindow->SetCPU(pCpu);
 	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
+	pConfig->AddStateSerialiser(pDisasmWindow);
 
 	MainWindow* pMainWindow = new MainWindow();
 	pMainWindow->SetWindowManager(pWindowManager);

@@ -6,11 +6,12 @@
 #pragma once
 
 #include "../system/windowbase.h"
+#include "../config.h"
 
 class Disassembler;
 class Cpu6502;
 
-class DisassemblyWindow : public WindowBase
+class DisassemblyWindow : public WindowBase, public IConfigSerialisation
 {
 public:
 	
@@ -26,6 +27,11 @@ public:
 	
 	void SetDisassembler(Disassembler* pDisasm);
 	void SetCPU(Cpu6502* pCpu);
+
+	// IConfigSerialisation
+	virtual void SerialiseState(json& object);
+	virtual void DeserialiseState(json& object);
+	// ~IConfigSerialisation
 private:
 	
 	void DrawHeader(void);
@@ -35,4 +41,5 @@ private:
 	Cpu6502*		pCpu;
 	
 	bool showTIAHints;
+	bool followPC;
 };

@@ -7,6 +7,7 @@
 #include "../imgui/imgui.h"
 #include "../disasm.h"
 #include "../components/cpu6502.h"
+#include "../log.h"
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)
@@ -100,4 +101,14 @@ void DisassemblyWindow::Draw()
 void DisassemblyWindow::SetDisassembler(Disassembler* pDisasmIn)
 {
 	pDisasm = pDisasmIn;
+}
+
+void DisassemblyWindow::SerialiseState(json& object)
+{
+	LOGINFO("DisassemblyWindow::SerialiseState");
+}
+
+void DisassemblyWindow::DeserialiseState(json& object)
+{
+	LOGINFO("DisassemblyWindow::DeserialiseState");
 }

@@ -632,6 +632,14 @@ void Cpu6502::ProcessInstruction()
 			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
+		case kMnemonic_JSR:
+			{
+				uint16_t returnAddress = reg_pc + 2;	// next instruction - 1
+				pMemory->Write(reg_sp--, (uint8_t)(returnAddress & 0x00ff));
+				pMemory->Write(reg_sp--, (uint8_t)((returnAddress & 0xff00) >> 8));
+				reg_pc = addr;
+			}
+			break;
 		case kMnemonic_LDA:
 			reg_acc = fetchedValue;
 			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
