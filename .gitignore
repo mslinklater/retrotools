@@ -9,3 +9,4 @@ retrotool
 .anjuta*
 *.anjuta
 imgui.ini
+c_cpp_properties.json

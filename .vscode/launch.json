@@ -47,7 +47,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/combaat.bin", "-a", "f000"],
+            "args": ["-l", "~/Code/retrotools/combat.bin", "-a", "f000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

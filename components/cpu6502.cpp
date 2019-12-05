@@ -543,14 +543,15 @@ void Cpu6502::ProcessInstruction()
 	Opcode* pOpcode = &opcodes[opcode];
 	
 	// Get fetched value, if we need one
-	uint8_t fetchedValue = 0;
+//	uint8_t fetchedValue = 0;
 	uint16_t addr = 0;
 	switch(pOpcode->addrMode)
 	{
 //		case kAddrModeAccumulator:
 //			break;
 		case kAddrModeImmediate:
-			fetchedValue = pMemory->Read(reg_pc+1);
+//			fetchedValue = pMemory->Read(reg_pc+1);
+			addr = reg_pc + 1;
 			break;
 		case kAddrModeZeroPage:
 			addr = pMemory->Read(reg_pc+1);
@@ -558,7 +559,8 @@ void Cpu6502::ProcessInstruction()
 		case kAddrModeZeroPageX:
 			{
 				addr = reg_x + pMemory->Read(reg_pc+1);
-				fetchedValue = pMemory->Read(addr);
+				addr &= 0x00ff;	// keep it in the zero page
+//				fetchedValue = pMemory->Read(addr);
 			}
 			break;
 //		case kAddrModeZeroPageY:
@@ -599,7 +601,7 @@ void Cpu6502::ProcessInstruction()
 				}
 				else
 				{
-					reg_acc += fetchedValue + (GetCarryFlag() ? 1 : 0);
+					reg_acc += pMemory->Read(addr) + (GetCarryFlag() ? 1 : 0);
 					// flags
 				}
 				reg_pc += pOpcode->length;				
@@ -632,6 +634,15 @@ void Cpu6502::ProcessInstruction()
 			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
+		case kMnemonic_INX:	// complete
+			reg_x++;
+			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_JMP:
+			reg_pc = addr;
+			break;
 		case kMnemonic_JSR:
 			{
 				uint16_t returnAddress = reg_pc + 2;	// next instruction - 1
@@ -641,13 +652,13 @@ void Cpu6502::ProcessInstruction()
 			}
 			break;
 		case kMnemonic_LDA:
-			reg_acc = fetchedValue;
+			reg_acc = pMemory->Read(addr);
 			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_LDX:
-			reg_x = fetchedValue;
+			reg_x = pMemory->Read(addr);
 			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg_pc += pOpcode->length;
@@ -655,6 +666,11 @@ void Cpu6502::ProcessInstruction()
 		case kMnemonic_PHA:
 			addr = 0x0100 | reg_sp--;
 			pMemory->Write(addr, reg_acc);
+			reg_pc += pOpcode->length;
+			break;
+		case kMnemonic_RTS:
+			reg_pc = ((uint16_t)pMemory->Read(++reg_sp)) << 8;
+			reg_pc |= (uint16_t)pMemory->Read(++reg_sp);
 			reg_pc += pOpcode->length;
 			break;
 		case kMnemonic_SEI:
@@ -680,9 +696,6 @@ void Cpu6502::ProcessInstruction()
 		case kMnemonic_TXS:
 			reg_sp = reg_x;
 			reg_pc += pOpcode->length;
-			break;
-		case kMnemonic_JMP:
-			reg_pc = addr;
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());

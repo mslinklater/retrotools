@@ -12,6 +12,7 @@
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)
 , showTIAHints(false)
+, followPC(false)
 {
 }
 
@@ -21,10 +22,8 @@ DisassemblyWindow::~DisassemblyWindow()
 
 void DisassemblyWindow::DrawHeader(void)
 {
-	if(ImGui::Button("TIA"))
-	{
-		showTIAHints = !showTIAHints;
-	}
+	ImGui::Checkbox("TIA hints", &showTIAHints);
+	ImGui::Checkbox("Follow PC", &followPC);
 }
 
 void DisassemblyWindow::DrawMainSubWindow(void)

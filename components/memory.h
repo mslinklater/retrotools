@@ -58,5 +58,4 @@ public:
 private:
 	MemoryByte* pMemory;
 	uint32_t	memorySize;
-	//uint16_t	addressMask;
 };
