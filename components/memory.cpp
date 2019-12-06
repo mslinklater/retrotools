@@ -22,8 +22,10 @@ Memory::~Memory()
 eErrorCode Memory::Init(void)
 {
 	pMemory = new MemoryByte[kMemorySize];
-	
 	memorySize = kMemorySize;
+
+	pRam = new MemoryByte[kRamSize];
+	ramSize = kRamSize;
 
 	LOGINFO("Memory::Initialised\n");
 
@@ -61,6 +63,8 @@ void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 
 uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 {
+//	uint16_t phsicalAddress = address & kAddressMask;
+
 	if(pMemory != 0)
 	{
 		if(affectFlags)
