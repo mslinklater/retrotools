@@ -1,6 +1,6 @@
 #pragma once
 
-class VIA
+class Via
 {
 public:
 private:

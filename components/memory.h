@@ -42,14 +42,26 @@ class Memory
 {
 public:
 
+	// Limit caused by 6507 only having 13 address bus lines
 	static const uint16_t kAddressMask = 0x1fff;
 
-	static const uint16_t kRamAddressMask = 0x007f;
-//	static const uint16_t kRamXorFilter = 0b
+	// VIA
+	static const uint16_t kViaStart = 0x0000;
+	static const uint16_t kViaSize = 0x002d;
 
-	static const int kMemorySize = 65536;
-	static const int kRamSize = 128;
-	
+	// ROM
+	static const uint16_t kRamStart = 0x0080;
+	static const uint16_t kRamSize = 0x0080;
+
+	// RIOT
+	static const uint16_t kRiotStart = 0x0280;
+	static const uint16_t kRiotSize = 0x0018;
+
+	// ROM
+	static const uint16_t kRomStart = 0x1000;
+	static const uint16_t kRomSize = 0x1000;
+
+	// Memory Byte flags
 	static const uint8_t kMemoryFlagReadFrom = 1 << 0;
 	static const uint8_t kMemoryFlagWrittenTo = 1 << 1;
 	static const uint8_t kMemoryFlagWriteBreakpoint = 1 << 2;
@@ -63,7 +75,8 @@ public:
 	struct MemoryByte
 	{
 		MemoryByte()
-		: flags(0)
+		: value(0)
+		, flags(0)
 		{}
 
 		uint8_t	value;
@@ -86,8 +99,8 @@ public:
 	void	ClearWriteBreakpoint(uint16_t address);
 
 private:
-	MemoryByte* pMemory;
-	uint32_t	memorySize;
+	MemoryByte* pRom;
+	uint32_t	romSize;
 
 	MemoryByte* pRam;
 	uint32_t	ramSize;

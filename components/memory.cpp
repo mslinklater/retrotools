@@ -21,11 +21,11 @@ Memory::~Memory()
 	
 eErrorCode Memory::Init(void)
 {
-	pMemory = new MemoryByte[kMemorySize];
-	memorySize = kMemorySize;
-
 	pRam = new MemoryByte[kRamSize];
 	ramSize = kRamSize;
+
+	pRom = new MemoryByte[kRomSize];
+	romSize = kRomSize;
 
 	LOGINFO("Memory::Initialised\n");
 
@@ -39,76 +39,123 @@ void Memory::SetCPU(Cpu6502* cpu)
 
 eErrorCode Memory::Destroy(void)
 {
-	memorySize = 0;
 	LOGINFO("Memory::Destroyed\n");
+
+	delete [] pRam;
+	pRam = 0;
+
+	delete [] pRom;
+	pRom = 0;
 
 	return kError_OK;
 }
 
 void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 {
-	if(pMemory != 0)
+	uint16_t physicalAddress = address & kAddressMask;
+
+	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
-		pMemory[address].value = val;
+		// VIA write
+		LOGINFOF("Memory::VIA Write 0x%04x", physicalAddress);
+	}
+	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	{
+		// RAM write
+		uint16_t ramAddress = physicalAddress - kRamStart;
+		pRam[ramAddress].value = val;
 		if(affectFlags)
 		{
-			pMemory[address].flags |= kMemoryFlagWrittenTo;
+			pRam[ramAddress].flags |= kMemoryFlagWrittenTo;
 		}
 	}
-	else
+	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
-		LOGERROR("Memory not initialised");
+		// RIOT write
+		LOGINFOF("Memory::RIOT Write 0x%04x", physicalAddress);
+	}
+	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
+	{
+		// ROM write - not really possible - fix this !
+		uint16_t romAddress = physicalAddress - kRomStart;
+		pRom[romAddress].value = val;
+		pRom[romAddress].flags = 0;
 	}
 }
 
 uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 {
-//	uint16_t phsicalAddress = address & kAddressMask;
+	uint16_t physicalAddress = address & kAddressMask;
 
-	if(pMemory != 0)
+	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
+		// VIA read
+		LOGINFOF("Memory::VIA Read 0x%04x", physicalAddress);
+	}
+	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	{
+		uint16_t ramAddress = physicalAddress - kRamStart;
 		if(affectFlags)
 		{
-			pMemory[address].flags |= kMemoryFlagReadFrom;
+			pRam[ramAddress].flags |= kMemoryFlagReadFrom;
 		}
-		return pMemory[address].value;
+		return pRam[ramAddress].value;
 	}
-	else
+	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
-		LOGERROR("Memory not initialised");
+		// RIOT read
+		LOGINFOF("Memory::RIOT Read 0x%04x", physicalAddress);
 	}
+	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
+	{
+		uint16_t romAddress = physicalAddress - kRomStart;
+		if(affectFlags)
+		{
+			pRom[romAddress].flags |= kMemoryFlagReadFrom;
+		}
+		return pRom[romAddress].value;
+	}
+
 	return 0;
 }
 
 uint8_t Memory::GetFlag(uint16_t address)
 {
-	if(pMemory != 0)
+	uint16_t physicalAddress = address & kAddressMask;
+
+	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
-		return pMemory[address].flags;
+		// VIA read
 	}
-	else
+	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
 	{
-		LOGERROR("Memory not initialised");
+		uint16_t ramAddress = physicalAddress - kRamStart;
+		return pRam[ramAddress].flags;
+	}
+	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
+	{
+		// RIOT read
+	}
+	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
+	{
+		uint16_t romAddress = physicalAddress - kRomStart;
+		return pRom[romAddress].flags;
 	}
 	return 0;	
 }
 
 void Memory::SetReadBreakpoint(uint16_t address)
 {
-	pMemory[address].flags |= kMemoryFlagReadBreakpoint;
 }
 
 void Memory::SetWriteBreakpoint(uint16_t address)
 {
-	pMemory[address].flags |= kMemoryFlagWriteBreakpoint;
 }
 
 void Memory::ClearReadBreakpoint(uint16_t address)
 {
-	pMemory[address].flags &= 0xff ^ kMemoryFlagReadBreakpoint;
 }
 
 void Memory::ClearWriteBreakpoint(uint16_t address)
 {
-	pMemory[address].flags &= 0xff ^ kMemoryFlagWriteBreakpoint;
 }

@@ -8,10 +8,6 @@
 #include "../components/memory.h"
 
 MemoryWindow::MemoryWindow()
-: startAddress(0)
-, length(1024)
-, startAddressText("0000")
-, lengthText("0400")
 {
 }
 
@@ -24,6 +20,33 @@ void MemoryWindow::SetMemory(Memory* mem)
 	pMemory = mem;
 }
 
+void MemoryWindow::DrawLine(uint16_t startAddress)
+{
+	ImGui::Text("%04x", startAddress);
+
+	for(int i=0 ; i<16 ; i++)
+	{
+		ImVec4 col(0.5, 0.5, 0.5, 1.0);
+		uint8_t flags = pMemory->GetFlag(startAddress+i);
+
+		if(flags & Memory::kMemoryFlagReadFrom)
+		{
+			col.y = 1.0f;
+		}
+		if(flags & Memory::kMemoryFlagWrittenTo)
+		{
+			col.z += 1.0f;
+		}
+		if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
+		{
+			col.x += 1.0f;
+		}
+
+		ImGui::SameLine();
+		ImGui::TextColored(col, "%02x", pMemory->Read(startAddress+i, false));
+	}
+}
+
 void MemoryWindow::Draw(void)
 {
 	if(pMemory == nullptr)
@@ -32,29 +55,24 @@ void MemoryWindow::Draw(void)
 		ImGui::End();
 		return;
 	}
-	
+
+	// RAM 0x80-0xff
 	{
-		ImGui::PushItemWidth(40);
-		ImGui::InputText("Start", startAddressText, 5, ImGuiInputTextFlags_CharsHexadecimal);
-		ImGui::SameLine();
-		ImGui::InputText("Length", lengthText, 5, ImGuiInputTextFlags_CharsHexadecimal);
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-		
-		if(ImGui::Button("Update"))
+		for(int iLine = 0; iLine < 8 ; iLine++)
 		{
-			// update 
-			startAddress = (int)strtol(startAddressText, NULL, 16);
-			length = (int)strtol(lengthText, NULL, 16);
+			int address = 0x0080 + (iLine * 16);
+
+			DrawLine(address);
 		}
-		
-		ImGui::Separator();
 	}
-	
+
+	ImGui::Separator();
+
+	// ROM 0xf000 - 0xffff
 	ImGui::BeginChild("ScrollArea");
 	{
 		// num lines of memory
-		uint16_t numLines = (length + 15) / 16;
+		uint16_t numLines = (0x1000 + 15) / 16;
 
 		ImGuiListClipper clipper;
 		clipper.Begin(numLines);
@@ -62,31 +80,9 @@ void MemoryWindow::Draw(void)
 		{
 			for(int iLine = clipper.DisplayStart ; iLine < clipper.DisplayEnd ; iLine++)
 			{
-				int address = startAddress + (iLine * 16);
-				
-				ImGui::Text("%04x", address);
+				int address = 0xf000 + (iLine * 16);
 
-				for(int i=0 ; i<16 ; i++)
-				{
-					ImVec4 col(0.5, 0.5, 0.5, 1.0);
-					uint8_t flags = pMemory->GetFlag(address+i);
-
-					if(flags & Memory::kMemoryFlagReadFrom)
-					{
-						col.y = 1.0f;
-					}
-					if(flags & Memory::kMemoryFlagWrittenTo)
-					{
-						col.z += 1.0f;
-					}
-					if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
-					{
-						col.x += 1.0f;
-					}
-
-					ImGui::SameLine();
-					ImGui::TextColored(col, "%02x", pMemory->Read(address+i, false));
-				}
+				DrawLine(address);
 			}
 		}
 	}

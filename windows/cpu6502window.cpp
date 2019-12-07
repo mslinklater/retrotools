@@ -82,9 +82,14 @@ void Cpu6502Window::Draw()
 	ImGui::SameLine();
 	ImGui::Text(status & Cpu6502::kCarrySetMask ? "1" : "0");
 	
-	if(ImGui::Button("Next"))
+	if(ImGui::Button("Step"))
 	{
 		pCpu->ProcessInstruction();
+	}
+
+	if(ImGui::Button("Out"))
+	{
+//		pCpu->ProcessInstruction();
 	}
 
 	if(ImGui::Button("Next 100"))

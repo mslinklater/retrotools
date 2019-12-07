@@ -28,10 +28,12 @@ public:
 	virtual void Draw(void);
 	
 private:
-	uint16_t	startAddress;
-	uint16_t	length;
+	void DrawLine(uint16_t startAddress);
+	
+//	uint16_t	startAddress;
+//	uint16_t	length;
 	Memory*		pMemory;
 	
-	char		startAddressText[5];
-	char		lengthText[5];
+//	char		startAddressText[5];
+//	char		lengthText[5];
 };

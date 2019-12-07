@@ -703,6 +703,11 @@ void Cpu6502::ProcessInstruction()
 	}
 }
 
+const Cpu6502::Opcode* Cpu6502::GetNextInstruction()
+{
+	return nullptr;
+}
+
 bool Cpu6502::HandleCommand(const Command& command)
 {
 	if(command.name == Commands::kBreakCommand)

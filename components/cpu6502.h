@@ -129,6 +129,8 @@ class Cpu6502 : public ICommandProcessor
 		
 		void ProcessInstruction(void);
 
+		const Opcode* GetNextInstruction();
+
 		void Autorun();
 		
 	private:
