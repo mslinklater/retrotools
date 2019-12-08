@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "../errorcodes.h"
+#include "../config.h"
 
 /*
 2600 memory layout
@@ -38,7 +39,7 @@ XOR	& RAM Mask	= 0b000000010000000	NO - non zero answer
 
 class Cpu6502;
 
-class Memory
+class Memory : public IConfigSerialisation
 {
 public:
 
@@ -97,6 +98,11 @@ public:
 	void	SetWriteBreakpoint(uint16_t address);
 	void	ClearReadBreakpoint(uint16_t address);
 	void	ClearWriteBreakpoint(uint16_t address);
+
+	// IConfigSerialisation
+	void SerialiseState(json& object);
+	void DeserialiseState(json& object);
+	// ~IConfigSerialisation
 
 private:
 	MemoryByte* pRom;

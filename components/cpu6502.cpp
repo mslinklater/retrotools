@@ -20,7 +20,7 @@
 // Constructor
 
 Cpu6502::Cpu6502()
-: reg_status(0)
+: halted(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kBreakCommand, this);
 }
@@ -479,105 +479,123 @@ void Cpu6502::DumpInfo(void)
 
 uint16_t Cpu6502::GetPC()
 {
-	return reg_pc;
+	return reg.pc;
 }
 
 uint8_t Cpu6502::GetAcc()
 {
-	return reg_acc;
+	return reg.acc;
 }
 
 uint8_t Cpu6502::GetSP()
 {
-	return reg_sp;
+	return reg.sp;
 }
 
 uint8_t Cpu6502::GetStatus()
 {
-	return reg_status;
+	return reg.status;
 }
 
 uint8_t Cpu6502::GetX()
 {
-	return reg_x;
+	return reg.x;
 }
 
 uint8_t Cpu6502::GetY()
 {
-	return reg_y;
+	return reg.y;
 }
 
 void Cpu6502::SetAcc(uint8_t acc)
 {
-	reg_acc = acc;
+	reg.acc = acc;
 }
 
 void Cpu6502::SetPC(uint16_t pc)
 {
-	reg_pc = pc;
+	reg.pc = pc;
 }
 
 void Cpu6502::SetSP(uint8_t sp)
 {
-	reg_sp = sp;
+	reg.sp = sp;
 }
 
 void Cpu6502::SetStatus(uint8_t status)
 {
-	reg_status = status;
+	reg.status = status;
 }
 
 void Cpu6502::SetX(uint8_t x)
 {
-	reg_x = x;
+	reg.x = x;
 }
 
 void Cpu6502::SetY(uint8_t y)
 {
-	reg_y = y;
+	reg.y = y;
 }
 
-void Cpu6502::ProcessInstruction()
+void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 {
-	uint8_t opcode = pMemory->Read(reg_pc);
+	// check for breakpoints
+	if(!ignoreBreakpoints)
+	{
+		if(breakpoints.find(reg.pc) != breakpoints.end())
+		{
+			SetHalted(true);
+		}
+	}
+
+	if(halted)
+	{
+		return;
+	}
+
+	uint8_t opcode = pMemory->Read(reg.pc);
 	Opcode* pOpcode = &opcodes[opcode];
 	
-	// Get fetched value, if we need one
-//	uint8_t fetchedValue = 0;
 	uint16_t addr = 0;
 	switch(pOpcode->addrMode)
 	{
 //		case kAddrModeAccumulator:
 //			break;
 		case kAddrModeImmediate:
-//			fetchedValue = pMemory->Read(reg_pc+1);
-			addr = reg_pc + 1;
+			addr = reg.pc + 1;
 			break;
 		case kAddrModeZeroPage:
-			addr = pMemory->Read(reg_pc+1);
+			addr = pMemory->Read(reg.pc+1);
 			break;
 		case kAddrModeZeroPageX:
 			{
-				addr = reg_x + pMemory->Read(reg_pc+1);
+				addr = reg.x + pMemory->Read(reg.pc+1);
 				addr &= 0x00ff;	// keep it in the zero page
-//				fetchedValue = pMemory->Read(addr);
 			}
 			break;
-//		case kAddrModeZeroPageY:
-//			break;
-		case kAddrModeAbsolute:
-			addr = (pMemory->Read(reg_pc+2) << 8) | pMemory->Read(reg_pc+1);
+		case kAddrModeZeroPageY:
+			{
+				addr = reg.y + pMemory->Read(reg.pc+1);
+				addr &= 0x00ff;	// keep it in the zero page
+			}
 			break;
-//		case kAddrModeAbsoluteX:
-//			break;
-//		case kAddrModeAbsoluteY:
-//			break;
+		case kAddrModeAbsolute:
+			addr = (pMemory->Read(reg.pc+2) << 8) | pMemory->Read(reg.pc+1);
+			break;
+		case kAddrModeAbsoluteX:
+			addr = (pMemory->Read(reg.pc+2) << 8) | pMemory->Read(reg.pc+1);
+			addr += reg.x;
+			break;
+		case kAddrModeAbsoluteY:
+			addr = (pMemory->Read(reg.pc+2) << 8) | pMemory->Read(reg.pc+1);
+			addr += reg.y;
+			break;
 //		case kAddrModeIndirectX:
 //			break;
 //		case kAddrModeIndirectY:
 //			break;
 		case kAddrModeRelative:
-			addr = reg_pc + (int8_t)pMemory->Read(reg_pc+1);
+			addr = reg.pc + (int8_t)pMemory->Read(reg.pc+1);
 			break;
 		case kAddrModeImplied:
 			break;
@@ -585,6 +603,8 @@ void Cpu6502::ProcessInstruction()
 //			break;
 		default:
 			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
+			SetHalted(true);
+			return;
 			break;
 	}
 
@@ -593,30 +613,51 @@ void Cpu6502::ProcessInstruction()
 	{
 		case kMnemonic_ADC:
 			{
-//				uint8_t old_acc = reg_acc;
 				if(GetDecimalFlag())
 				{
-					// BCD ADC
-					LOGERROR("ADC BCD mode not implemented.");
+					uint8_t val = pMemory->Read(addr);
+					uint8_t valLo = val & 0x0f;
+					uint8_t valHi = (val & 0xf0) >> 4;
+					uint8_t accLo = reg.acc & 0x0f;
+					uint8_t accHi = (reg.acc & 0xf0) >> 4;
+
+					uint8_t resLo = valLo + accLo + (GetCarryFlag() ? 1 : 0);
+					bool loCarry = resLo >= 10;
+					if(resLo > 10) resLo -= 10;
+					uint8_t resHi = valHi + accHi + (loCarry ? 1 : 0);
+					if(resHi > 10)
+					{
+						SetCarryFlag();
+					}
+					else
+					{
+						ClearCarryFlag();
+					}
+					if(resHi > 10) resHi -= 10;
+					reg.acc = (resHi << 4) | resLo;
 				}
 				else
 				{
-					reg_acc += pMemory->Read(addr) + (GetCarryFlag() ? 1 : 0);
+					reg.acc += pMemory->Read(addr) + (GetCarryFlag() ? 1 : 0);
 					// flags
 				}
-				reg_pc += pOpcode->length;				
+				reg.pc += pOpcode->length;				
 			}
 			break;
 		case kMnemonic_BNE:
 			if(!GetZeroFlag())
 			{
-				reg_pc = addr;
+				reg.pc = addr;
 			}
-			reg_pc += pOpcode->length;				
+			reg.pc += pOpcode->length;				
+			break;
+		case kMnemonic_CLC:
+			ClearCarryFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_CLD:
 			ClearDecimalFlag();
-			reg_pc += pOpcode->length;
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_DEC: // complete
 			{
@@ -626,81 +667,141 @@ void Cpu6502::ProcessInstruction()
 				(value == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(value & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			}
-			reg_pc += pOpcode->length;
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_DEX:	// complete
-			reg_x--;
-			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.x--;
+			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
+			break;
+		case kMnemonic_EOR:	// complete
+			{
+				uint8_t val = pMemory->Read(addr);
+				reg.acc ^= val;
+				(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+				(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+				reg.pc += pOpcode->length;
+			}
 			break;
 		case kMnemonic_INX:	// complete
-			reg_x++;
-			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.x++;
+			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_JMP:
-			reg_pc = addr;
+			reg.pc = addr;
 			break;
 		case kMnemonic_JSR:
 			{
-				uint16_t returnAddress = reg_pc + 2;	// next instruction - 1
-				pMemory->Write(reg_sp--, (uint8_t)(returnAddress & 0x00ff));
-				pMemory->Write(reg_sp--, (uint8_t)((returnAddress & 0xff00) >> 8));
-				reg_pc = addr;
+				uint16_t returnAddress = reg.pc + 2;	// next instruction - 1
+				pMemory->Write(reg.sp--, (uint8_t)(returnAddress & 0x00ff));
+				pMemory->Write(reg.sp--, (uint8_t)((returnAddress & 0xff00) >> 8));
+				reg.pc = addr;
 			}
 			break;
 		case kMnemonic_LDA:
-			reg_acc = pMemory->Read(addr);
-			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.acc = pMemory->Read(addr);
+			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_LDX:
-			reg_x = pMemory->Read(addr);
-			(reg_x == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.x = pMemory->Read(addr);
+			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
+			break;
+		case kMnemonic_LDY:
+			reg.y = pMemory->Read(addr);
+			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_PHA:
-			addr = 0x0100 | reg_sp--;
-			pMemory->Write(addr, reg_acc);
-			reg_pc += pOpcode->length;
+			addr = 0x0100 | reg.sp--;
+			pMemory->Write(addr, reg.acc);
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_RTS:
-			reg_pc = ((uint16_t)pMemory->Read(++reg_sp)) << 8;
-			reg_pc |= (uint16_t)pMemory->Read(++reg_sp);
-			reg_pc += pOpcode->length;
+			reg.pc = ((uint16_t)pMemory->Read(++reg.sp)) << 8;
+			reg.pc |= (uint16_t)pMemory->Read(++reg.sp);
+			reg.pc += pOpcode->length;
+			break;
+		case kMnemonic_SED:
+			SetDecimalFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_SEI:
-			reg_status |= kInterruptSetMask;
-			reg_pc += pOpcode->length;
+			SetInterruptFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_STA:
-			pMemory->Write(addr, reg_acc);
-			reg_pc += pOpcode->length;
+			pMemory->Write(addr, reg.acc);
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_TAX:
-			reg_x = reg_acc;
-			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.x = reg.acc;
+			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_TXA:
-			reg_acc = reg_x;
-			(reg_acc == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg_acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg_pc += pOpcode->length;
+			reg.acc = reg.x;
+			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_TXS:
-			reg_sp = reg_x;
-			reg_pc += pOpcode->length;
+			reg.sp = reg.x;
+			reg.pc += pOpcode->length;
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
+			SetHalted(true);
 			break;
 	}
+}
+
+void Cpu6502::SerialiseState(json& object)
+{
+	LOGINFO("Cpu6502::SerialiseState");
+}
+
+void Cpu6502::DeserialiseState(json& object)
+{
+	LOGINFO("Cpu6502::DeserialiseState");
+}
+
+bool Cpu6502::GetHalted()
+{
+	return halted;
+}
+
+void Cpu6502::SetHalted(bool state)
+{
+	halted = state;
+}
+
+const std::set<uint16_t>&	Cpu6502::GetBreakpoints()
+{
+	return breakpoints;
+}
+
+void Cpu6502::SetBreakpoint(uint16_t addr)
+{
+	breakpoints.insert(addr);
+}
+
+void Cpu6502::ClearBreakpoint(uint16_t addr)
+{
+	breakpoints.erase(addr);
+}
+
+bool Cpu6502::IsBreakpoint(uint16_t addr)
+{
+	return breakpoints.find(addr) != breakpoints.end();
 }
 
 const Cpu6502::Opcode* Cpu6502::GetNextInstruction()

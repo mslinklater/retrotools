@@ -5,12 +5,14 @@
 
 #pragma once
 #include <string>
+#include <set>
 
 #include "../system/command.h"
+#include "../config.h"
 
 class Memory;
 
-class Cpu6502 : public ICommandProcessor
+class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 {
 	public:
 		static const uint8_t kNegativeSetMask = 0x80;
@@ -126,20 +128,38 @@ class Cpu6502 : public ICommandProcessor
 
 		uint8_t	GetSP();
 		void SetSP(uint8_t sp);
-		
-		void ProcessInstruction(void);
+
+		bool GetHalted();
+		void SetHalted(bool state);
+
+		void ProcessInstruction(bool ignoreBreakpoints = false);
 
 		const Opcode* GetNextInstruction();
 
 		void Autorun();
 		
+		struct Registers {
+			uint16_t	pc;
+			uint8_t		acc;
+			uint8_t		x;
+			uint8_t		y;
+			uint8_t		status;
+			uint8_t		sp;
+		};
+
+		// IConfigSerialisation
+		void SerialiseState(json& object) override;
+		void DeserialiseState(json& object) override;
+		// ~IConfigSerialisation
+
+		const std::set<uint16_t>&	GetBreakpoints();
+		void SetBreakpoint(uint16_t addr);
+		void ClearBreakpoint(uint16_t addr);
+		bool IsBreakpoint(uint16_t addr);
+
 	private:
-		uint16_t	reg_pc;
-		uint8_t		reg_acc;
-		uint8_t		reg_x;
-		uint8_t		reg_y;
-		uint8_t		reg_status;
-		uint8_t		reg_sp;
+		Registers	reg;
+		bool		halted;
 
 		bool autoRun;	// lets the CPU run by itself... needs removing 
 		
@@ -156,25 +176,27 @@ class Cpu6502 : public ICommandProcessor
 		std::string mnemonicStrings[kMnemonic_Num];
 		std::string addrModeStrings[kAddrMode_Num];
 
-		inline void SetZeroFlag(){reg_status |= kZeroSetMask;}
-		inline void ClearZeroFlag(){reg_status &= kZeroClearMask;}
-		inline bool GetZeroFlag(){return reg_status & kZeroSetMask;}
+		inline void SetZeroFlag(){reg.status |= kZeroSetMask;}
+		inline void ClearZeroFlag(){reg.status &= kZeroClearMask;}
+		inline bool GetZeroFlag(){return reg.status & kZeroSetMask;}
 
-		inline void SetNegativeFlag(){reg_status |= kNegativeSetMask;}
-		inline void ClearNegativeFlag(){reg_status &= kNegativeClearMask;}
-		inline bool GetNegativeFlag(){return reg_status & kNegativeSetMask;}
+		inline void SetNegativeFlag(){reg.status |= kNegativeSetMask;}
+		inline void ClearNegativeFlag(){reg.status &= kNegativeClearMask;}
+		inline bool GetNegativeFlag(){return reg.status & kNegativeSetMask;}
 
-		inline void SetDecimalFlag(){reg_status |= kDecimalSetMask;}
-		inline void ClearDecimalFlag(){reg_status &= kDecimalClearMask;}
-		inline bool GetDecimalFlag(){return reg_status & kDecimalSetMask;}
+		inline void SetDecimalFlag(){reg.status |= kDecimalSetMask;}
+		inline void ClearDecimalFlag(){reg.status &= kDecimalClearMask;}
+		inline bool GetDecimalFlag(){return reg.status & kDecimalSetMask;}
 
-		inline void SetInterruptFlag(){reg_status |= kInterruptSetMask;}
-		inline void ClearInterruptFlag(){reg_status &= kInterruptClearMask;}
-		inline bool GetInterruptFlag(){return reg_status & kInterruptSetMask;}
+		inline void SetInterruptFlag(){reg.status |= kInterruptSetMask;}
+		inline void ClearInterruptFlag(){reg.status &= kInterruptClearMask;}
+		inline bool GetInterruptFlag(){return reg.status & kInterruptSetMask;}
 
-		inline void SetCarryFlag(){reg_status |= kCarrySetMask;}
-		inline void ClearCarryFlag(){reg_status &= kCarryClearMask;}
-		inline bool GetCarryFlag(){return reg_status & kCarrySetMask;}
+		inline void SetCarryFlag(){reg.status |= kCarrySetMask;}
+		inline void ClearCarryFlag(){reg.status &= kCarryClearMask;}
+		inline bool GetCarryFlag(){return reg.status & kCarrySetMask;}
 
 		Memory*	pMemory;
+
+		std::set<uint16_t> 	breakpoints;
 };

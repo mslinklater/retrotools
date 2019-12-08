@@ -15,4 +15,7 @@ public:
 	
 private:
 	Cpu6502* pCpu;
+	
+	static const int kNewBreakpointTextSize = 5;
+	char	newBreakpointText[kNewBreakpointTextSize];
 };

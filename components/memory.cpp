@@ -57,7 +57,7 @@ void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
 		// VIA write
-		LOGINFOF("Memory::VIA Write 0x%04x", physicalAddress);
+		LOGWARNINGF("Memory::VIA Write 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
 	{
@@ -72,7 +72,7 @@ void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
 		// RIOT write
-		LOGINFOF("Memory::RIOT Write 0x%04x", physicalAddress);
+		LOGWARNINGF("Memory::RIOT Write 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
@@ -90,7 +90,7 @@ uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
 		// VIA read
-		LOGINFOF("Memory::VIA Read 0x%04x", physicalAddress);
+		LOGWARNINGF("Memory::VIA Read 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
 	{
@@ -104,7 +104,7 @@ uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
 		// RIOT read
-		LOGINFOF("Memory::RIOT Read 0x%04x", physicalAddress);
+		LOGWARNINGF("Memory::RIOT Read 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
@@ -142,6 +142,16 @@ uint8_t Memory::GetFlag(uint16_t address)
 		return pRom[romAddress].flags;
 	}
 	return 0;	
+}
+
+void Memory::SerialiseState(json& object)
+{
+	LOGINFO("Memory::SerialiseState");
+}
+
+void Memory::DeserialiseState(json& object)
+{
+	LOGINFO("Memory::DeserialiseState");
 }
 
 void Memory::SetReadBreakpoint(uint16_t address)

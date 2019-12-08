@@ -54,7 +54,15 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 			}
 		}
 		ImGui::SameLine();
-		ImGui::Text("    %s", line.addressString.c_str());
+		if(pCpu->IsBreakpoint(line.address))
+		{
+			ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "    %s", line.addressString.c_str());
+		}
+		else
+		{
+			ImGui::Text("    %s", line.addressString.c_str());
+		}
+		
 		ImGui::SameLine();
 		ImGui::Text("%s", line.bytes.c_str());
 		ImGui::SameLine();

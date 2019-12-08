@@ -6,6 +6,10 @@
 
 Cpu6502Window::Cpu6502Window()
 {
+	for(int i=0 ; i<kNewBreakpointTextSize ; i++)
+	{
+		newBreakpointText[i] = 0;
+	}
 }
 
 Cpu6502Window::~Cpu6502Window()
@@ -24,6 +28,16 @@ void Cpu6502Window::Draw()
 	ImGui::Text("0x%04x", pCpu->GetPC());
 	ImGui::SameLine();
 	ImGui::Text("%d", pCpu->GetPC());
+	ImGui::SameLine();
+	if(pCpu->GetHalted())
+	{
+		ImGui::Text("   HALTED");
+	}
+	else
+	{
+		ImGui::Text("   Running...");
+	}
+	
 
 	ImGui::Text("Acc:");
 	ImGui::SameLine();
@@ -84,19 +98,47 @@ void Cpu6502Window::Draw()
 	
 	if(ImGui::Button("Step"))
 	{
-		pCpu->ProcessInstruction();
+		pCpu->SetHalted(false);
+		pCpu->ProcessInstruction(true);
 	}
 
-	if(ImGui::Button("Out"))
-	{
-//		pCpu->ProcessInstruction();
-	}
+	ImGui::SameLine();
 
 	if(ImGui::Button("Next 100"))
 	{
 		for(int i=0 ; i<100 ; i++)
 		{
 			pCpu->ProcessInstruction();
+		}
+	}
+
+	ImGui::Separator();
+	ImGui::PushItemWidth(40);
+	ImGui::InputText("Address", newBreakpointText, 5);
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+	if(ImGui::Button("Add Breakpoint"))
+	{
+		// grab value and add a breakpoint
+		uint16_t addr = (int)strtol(newBreakpointText, NULL, 16);
+		pCpu->SetBreakpoint(addr);
+
+		for(int i=0 ; i<kNewBreakpointTextSize ; i++)
+		{
+			newBreakpointText[i] = 0;
+		}
+	}
+
+	ImGui::Separator();
+	ImGui::Text("BREAKPOINTS");
+	std::set<uint16_t> breakpoints = pCpu->GetBreakpoints();
+	for(auto bp : breakpoints)
+	{
+		ImGui::Text("0x%04x", bp);
+		ImGui::SameLine();
+		if(ImGui::Button("Delete"))
+		{
+			pCpu->ClearBreakpoint(bp);
 		}
 	}
 }

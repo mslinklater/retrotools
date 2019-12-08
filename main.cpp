@@ -92,7 +92,11 @@ int main(int argc, char* argv[])
 	// initialise components
 	
 	Memory* pMemory = new Memory();
+	pConfig->AddStateSerialiser(pMemory);
+
 	Cpu6502* pCpu = new Cpu6502();
+	pConfig->AddStateSerialiser(pCpu);
+	
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
 	

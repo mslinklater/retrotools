@@ -58,6 +58,7 @@ void MemoryWindow::Draw(void)
 
 	// RAM 0x80-0xff
 	{
+		ImGui::Text("RAM");
 		for(int iLine = 0; iLine < 8 ; iLine++)
 		{
 			int address = 0x0080 + (iLine * 16);
@@ -69,6 +70,7 @@ void MemoryWindow::Draw(void)
 	ImGui::Separator();
 
 	// ROM 0xf000 - 0xffff
+	ImGui::Text("ROM");
 	ImGui::BeginChild("ScrollArea");
 	{
 		// num lines of memory
