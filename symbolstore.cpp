@@ -104,6 +104,16 @@ std::vector<Symbol> SymbolStore::GetAll()
 	return ret;
 }
 
+void SymbolStore::SerialiseState(json& object)
+{
+
+}
+
+void SymbolStore::DeserialiseState(json& object)
+{
+	
+}
+
 eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 {
 	FILE* hFile;

@@ -99,6 +99,7 @@ int main(int argc, char* argv[])
 	
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
+	pConfig->AddStateSerialiser(pSymbolStore);
 	
 	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
 	{

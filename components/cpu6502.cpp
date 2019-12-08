@@ -767,11 +767,36 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 void Cpu6502::SerialiseState(json& object)
 {
 	LOGINFO("Cpu6502::SerialiseState");
+	json cpuJson = json::object();
+
+	json breakpointsJson = json::array();
+
+	for(auto breakpoint : breakpoints)
+	{
+		json breakpointJson = json::object();
+		breakpointJson["addr"] = breakpoint;
+		breakpointsJson.push_back(breakpointJson);
+	}
+
+	cpuJson["breakpoints"] = breakpointsJson;
+	object["cpu"] = cpuJson;
 }
 
 void Cpu6502::DeserialiseState(json& object)
 {
 	LOGINFO("Cpu6502::DeserialiseState");
+	json cpuJson = object["cpu"];
+	if(cpuJson.is_object())
+	{
+		json breakpointsArrayJson = cpuJson["breakpoints"];
+		if(breakpointsArrayJson.is_array())
+		{
+			for(auto breakpointJson : breakpointsArrayJson)
+			{
+				SetBreakpoint(breakpointJson["addr"].get<uint16_t>());
+			}
+		}
+	}
 }
 
 bool Cpu6502::GetHalted()

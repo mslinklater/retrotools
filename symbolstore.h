@@ -9,8 +9,9 @@
 #include <vector>
 #include "errorcodes.h"
 #include "symbol.h"
+#include "config.h"
 
-class SymbolStore
+class SymbolStore : public IConfigSerialisation
 {
 public:
 
@@ -34,7 +35,12 @@ public:
 	void UpdateSymbol(Symbol update);
 	
 	std::vector<Symbol> GetAll();
-	
+
+	// IConfigSerialisation	
+	void SerialiseState(json& object);
+	void DeserialiseState(json& object);
+	// ~IConfigSerialisation	
+
 private:
 	std::map<uint16_t,Symbol> symbolMap;
 	typedef std::map<uint16_t,Symbol>::iterator SymbolMapIterator;	// make this const ?
