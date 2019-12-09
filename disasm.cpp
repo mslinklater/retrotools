@@ -52,7 +52,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	// get rid of the old disassembly
 	
 	lines.clear();
-	anonLabelCount = 0;
+//	anonLabelCount = 0;
 	
 	uint32_t currentAddress = address;
 	while(currentAddress < (uint32_t)address + (uint32_t)size)
@@ -108,12 +108,24 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		lines.push_back(thisLine);
 	}
 
-	AddObviousLabels();
-	
-	UpdateDetailLines();
 	UpdateLineLabels();
+	UpdateDetailLines();
 
 	return kError_OK;
+}
+
+void Disassembler::DeleteAutoSymbols()
+{
+	std::vector<Symbol> symbols = pSymbolStore->GetAll();
+	for(auto symbol : symbols)
+	{
+		if(symbol.flags & Symbol::kSymbolFlag_Auto)
+		{
+			pSymbolStore->RemoveSymbolAtAddress(symbol.address);
+		}
+	}
+	UpdateLineLabels();
+	UpdateDetailLines();
 }
 
 void Disassembler::UpdateDetailLines()
@@ -200,7 +212,7 @@ void Disassembler::UpdateDetailLines()
 				// is this a new label ?
 				if(!pSymbolStore->HasLabelSymbol(addr))
 				{
-					sprintf(buffer, "<label%d>", anonLabelCount++);
+					sprintf(buffer, "<label%04x>", addr);
 					pSymbolStore->AddAutoLabel(addr, buffer);
 				}
 
@@ -307,6 +319,9 @@ void Disassembler::AddObviousLabels()
 				break;
 		}
 	}
+
+	UpdateDetailLines();
+	UpdateLineLabels();
 }
 
 void Disassembler::UpdateLineLabels()

@@ -79,14 +79,18 @@ void SymbolStore::AddAutoLabel(uint16_t address, std::string label)
 		// new item
 		Symbol newSymbol;
 		newSymbol.flags |= Symbol::kSymbolFlag_AddressLabel;
+		newSymbol.flags |= Symbol::kSymbolFlag_Auto;
 		newSymbol.address = address;
 		newSymbol.labelName = label;
 		symbolMap[address] = newSymbol;
 	}
-	else
+}
+
+void SymbolStore::RemoveSymbolAtAddress(uint16_t addr)
+{
+	if(symbolMap.find(addr) != symbolMap.end())
 	{
-		iter->second.flags |= Symbol::kSymbolFlag_MemoryRead;
-		iter->second.labelName = label;
+		symbolMap.erase(addr);
 	}
 }
 
@@ -113,8 +117,10 @@ void SymbolStore::SerialiseState(json& object)
 	for(auto symbol : symbolMap)
 	{
 		json symbolJson = json::object();
-		symbol.second.Serialise(symbolJson);
-		symbolsArrayJson.push_back(symbolJson);
+		if(symbol.second.Serialise(symbolJson))
+		{
+			symbolsArrayJson.push_back(symbolJson);
+		}
 	}
 
 	symbolStoreJson["symbols"] = symbolsArrayJson;
@@ -123,7 +129,20 @@ void SymbolStore::SerialiseState(json& object)
 
 void SymbolStore::DeserialiseState(json& object)
 {
-	
+	json symbolStoreJson = object["symbolstore"];
+	if(symbolStoreJson.is_object())
+	{
+		json symbolsArrayJson = symbolStoreJson["symbols"];
+		if(symbolsArrayJson.is_array())
+		{
+			for(auto symbolJson : symbolsArrayJson)
+			{
+				Symbol symbol;
+				symbol.Deserialise(symbolJson);
+				symbolMap[symbol.address] = symbol;
+			}
+		}
+	}
 }
 
 eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)

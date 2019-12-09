@@ -24,6 +24,15 @@ void DisassemblyWindow::DrawHeader(void)
 {
 	ImGui::Checkbox("TIA hints", &showTIAHints);
 	ImGui::Checkbox("Follow PC", &followPC);
+	if(ImGui::Button("Add Auto Symbols"))
+	{
+		pDisasm->AddObviousLabels();
+	}
+	ImGui::SameLine();
+	if(ImGui::Button("Remove Auto Symbols"))
+	{
+		pDisasm->DeleteAutoSymbols();
+	}
 }
 
 void DisassemblyWindow::DrawMainSubWindow(void)

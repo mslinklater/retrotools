@@ -65,6 +65,7 @@ void SymbolWindow::Draw()
 		strcpy(&buffer[0], symbolBeingEdited.labelName.c_str());
 		ImGui::InputText("label", buffer, 64);
 		symbolBeingEdited.labelName = buffer;
+		symbolBeingEdited.flags |= Symbol::kSymbolFlag_User;
 		pStore->UpdateSymbol(symbolBeingEdited);
 		
 		ImGui::SameLine();

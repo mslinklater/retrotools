@@ -63,11 +63,13 @@ public:
 	void		SetCpu(Cpu6502* cpu);
 	void		SetSymbolStore(SymbolStore* store);
 	
+	void 		AddObviousLabels();
+	void		DeleteAutoSymbols();
+
 private:
 	
 	virtual bool HandleCommand(const Command & command) override;
 	
-	void AddObviousLabels();
 	void UpdateDetailLines();
 	void UpdateLineLabels();
 	
@@ -76,5 +78,5 @@ private:
 	SymbolStore*	pSymbolStore;
 	
 	std::vector<Line>	lines;
-	uint32_t			anonLabelCount;
+//	uint32_t			anonLabelCount;
 };

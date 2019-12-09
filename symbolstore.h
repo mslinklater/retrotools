@@ -33,7 +33,8 @@ public:
 	eErrorCode LoadHardwareFromJSON(std::string filename);
 	
 	void UpdateSymbol(Symbol update);
-	
+	void RemoveSymbolAtAddress(uint16_t addr);
+
 	std::vector<Symbol> GetAll();
 
 	// IConfigSerialisation	

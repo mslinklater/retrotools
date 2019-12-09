@@ -8,6 +8,11 @@ using json = nlohmann::json;
 class Symbol
 {
 public:
+	Symbol()
+	: flags(0)
+	, address(0)
+	{}
+
 	const static uint32_t kSymbolFlag_MemoryRead 	= 1 << 0;
 	const static uint32_t kSymbolFlag_MemoryWrite 	= 1 << 1;
 	const static uint32_t kSymbolFlag_AddressLabel 	= 1 << 2;
@@ -27,7 +32,7 @@ public:
 	std::string readDescription;
 	std::string writeDescription;
 
-	void Serialise(json& object);
+	bool Serialise(json& object);
 	void Deserialise(json& object);
 };
 
