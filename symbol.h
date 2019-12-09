@@ -2,7 +2,9 @@
 
 #include <string>
 #include <stdint.h>
-	
+#include "json.hpp"
+using json = nlohmann::json;
+
 class Symbol
 {
 public:
@@ -24,5 +26,8 @@ public:
 		
 	std::string readDescription;
 	std::string writeDescription;
+
+	void Serialise(json& object);
+	void Deserialise(json& object);
 };
 

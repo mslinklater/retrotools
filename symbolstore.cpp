@@ -106,7 +106,19 @@ std::vector<Symbol> SymbolStore::GetAll()
 
 void SymbolStore::SerialiseState(json& object)
 {
+	json symbolStoreJson = json::object();
 
+	json symbolsArrayJson = json::array();
+
+	for(auto symbol : symbolMap)
+	{
+		json symbolJson = json::object();
+		symbol.second.Serialise(symbolJson);
+		symbolsArrayJson.push_back(symbolJson);
+	}
+
+	symbolStoreJson["symbols"] = symbolsArrayJson;
+	object["symbolstore"] = symbolStoreJson;
 }
 
 void SymbolStore::DeserialiseState(json& object)
