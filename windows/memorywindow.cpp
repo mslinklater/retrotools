@@ -6,8 +6,10 @@
 #include "memorywindow.h"
 #include "../imgui/imgui.h"
 #include "../components/memory.h"
+#include "../log.h"
 
 MemoryWindow::MemoryWindow()
+: showReadWrite(false)
 {
 }
 
@@ -20,6 +22,16 @@ void MemoryWindow::SetMemory(Memory* mem)
 	pMemory = mem;
 }
 
+void MemoryWindow::SerialiseState(json& object)
+{
+	LOGINFO("MemoryWindow::SerialiseState");
+}
+
+void MemoryWindow::DeserialiseState(json& object)
+{
+	LOGINFO("MemoryWindow::DeserialiseState");
+}
+
 void MemoryWindow::DrawLine(uint16_t startAddress)
 {
 	ImGui::Text("%04x", startAddress);
@@ -29,17 +41,20 @@ void MemoryWindow::DrawLine(uint16_t startAddress)
 		ImVec4 col(0.5, 0.5, 0.5, 1.0);
 		uint8_t flags = pMemory->GetFlag(startAddress+i);
 
-		if(flags & Memory::kMemoryFlagReadFrom)
+		if(showReadWrite)
 		{
-			col.y = 1.0f;
-		}
-		if(flags & Memory::kMemoryFlagWrittenTo)
-		{
-			col.z += 1.0f;
-		}
-		if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
-		{
-			col.x += 1.0f;
+			if(flags & Memory::kMemoryFlagReadFrom)
+			{
+				col.y = 1.0f;
+			}
+			if(flags & Memory::kMemoryFlagWrittenTo)
+			{
+				col.z += 1.0f;
+			}
+			if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
+			{
+				col.x += 1.0f;
+			}
 		}
 
 		ImGui::SameLine();
@@ -55,6 +70,10 @@ void MemoryWindow::Draw(void)
 		ImGui::End();
 		return;
 	}
+
+	ImGui::Checkbox("Show Reads/Writes", &showReadWrite);
+
+	ImGui::Separator();
 
 	// RAM 0x80-0xff
 	{

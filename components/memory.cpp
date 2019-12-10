@@ -144,6 +144,31 @@ uint8_t Memory::GetFlag(uint16_t address)
 	return 0;	
 }
 
+void Memory::SetHasBeenExecuted(uint16_t address, uint8_t numBytes)
+{
+	uint16_t physicalAddress = address & kAddressMask;
+
+	MemoryByte* pByte = nullptr;
+
+	if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	{
+		uint16_t ramAddress = physicalAddress - kRamStart;
+
+		pByte = pRam + ramAddress;
+	}
+	else
+	{
+		uint16_t romAddress = physicalAddress - kRomStart;
+		pByte = pRom + romAddress;
+	}
+
+	for(int i=0 ; i<numBytes ; i++)
+	{
+		pByte->flags |= kMemoryFlagHasBeenExecuted;
+		pByte++;
+	}
+}
+
 void Memory::SerialiseState(json& object)
 {
 	LOGINFO("Memory::SerialiseState");

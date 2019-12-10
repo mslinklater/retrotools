@@ -7,10 +7,11 @@
 
 #include <inttypes.h>
 #include "../system/windowbase.h"
+#include "../config.h"
 
 class Memory;
 
-class MemoryWindow : public WindowBase
+class MemoryWindow : public WindowBase, public IConfigSerialisation
 {
 public:
 	
@@ -26,14 +27,16 @@ public:
 	void SetMemory(Memory* mem);
 	
 	virtual void Draw(void);
-	
+
+	// IConfigSerialisation
+	void SerialiseState(json& object);
+	void DeserialiseState(json& object);
+	// ~IConfigSerialisation
+
 private:
 	void DrawLine(uint16_t startAddress);
 	
-//	uint16_t	startAddress;
-//	uint16_t	length;
 	Memory*		pMemory;
-	
-//	char		startAddressText[5];
-//	char		lengthText[5];
+
+	bool showReadWrite;
 };

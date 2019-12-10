@@ -52,7 +52,6 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 	// get rid of the old disassembly
 	
 	lines.clear();
-//	anonLabelCount = 0;
 	
 	uint32_t currentAddress = address;
 	while(currentAddress < (uint32_t)address + (uint32_t)size)
@@ -103,6 +102,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		}
 		else
 		{
+			thisLine.mnemonicString = "INVALID";
 			currentAddress++;	  
 		}
 		lines.push_back(thisLine);

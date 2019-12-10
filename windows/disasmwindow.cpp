@@ -7,6 +7,7 @@
 #include "../imgui/imgui.h"
 #include "../disasm.h"
 #include "../components/cpu6502.h"
+#include "../components/memory.h"
 #include "../log.h"
 
 DisassemblyWindow::DisassemblyWindow()
@@ -73,7 +74,14 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 		}
 		
 		ImGui::SameLine();
-		ImGui::Text("%s", line.bytes.c_str());
+		if(pMemory->GetFlag(line.address) & Memory::kMemoryFlagHasBeenExecuted)
+		{
+			ImGui::TextColored(ImVec4(0.8, 1.0, 0.8, 1.0), "%s", line.bytes.c_str());
+		}
+		else
+		{
+			ImGui::Text("%s", line.bytes.c_str());
+		}
 		ImGui::SameLine();
 		ImGui::Text("%s", line.mnemonicString.c_str());
 		ImGui::SameLine();
@@ -96,6 +104,11 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 void DisassemblyWindow::SetCPU(Cpu6502* cpu)
 {
 	pCpu = cpu;
+}
+
+void DisassemblyWindow::SetMemory(Memory* pMem)
+{
+	pMemory = pMem;
 }
 
 void DisassemblyWindow::Draw()

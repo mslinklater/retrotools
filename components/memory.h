@@ -67,6 +67,7 @@ public:
 	static const uint8_t kMemoryFlagWrittenTo = 1 << 1;
 	static const uint8_t kMemoryFlagWriteBreakpoint = 1 << 2;
 	static const uint8_t kMemoryFlagReadBreakpoint = 1 << 3;
+	static const uint8_t kMemoryFlagHasBeenExecuted = 1 << 4;
 
 	enum eTransactionType {
 		kMemoryRead,
@@ -93,6 +94,7 @@ public:
 	uint8_t 	Read(uint16_t address, bool affectFlags = true) const;
 	void 		Write(uint16_t address, uint8_t val, bool affectFlags = true);
 	uint8_t		GetFlag(uint16_t address);
+	void		SetHasBeenExecuted(uint16_t address, uint8_t numBytes);
 
 	void	SetReadBreakpoint(uint16_t address);
 	void	SetWriteBreakpoint(uint16_t address);

@@ -147,6 +147,7 @@ int main(int argc, char* argv[])
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
 	pDisasmWindow->SetCPU(pCpu);
+	pDisasmWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
 	pConfig->AddStateSerialiser(pDisasmWindow);
 

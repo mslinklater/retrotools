@@ -196,6 +196,10 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 		inline void ClearCarryFlag(){reg.status &= kCarryClearMask;}
 		inline bool GetCarryFlag(){return reg.status & kCarrySetMask;}
 
+		inline void SetOverflowFlag(){reg.status |= kOverflowSetMask;}
+		inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
+		inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
+
 		Memory*	pMemory;
 
 		std::set<uint16_t> 	breakpoints;

@@ -184,31 +184,31 @@
 			"address": "0x0010",
 			"write": "RESP0",
 			"bitmask": "--------",
-			"description": "Reset player 0"
+			"description": "Reset player 0 - horizontal strobe"
 		},
 		{
 			"address": "0x0011",
 			"write": "RESP1",
 			"bitmask": "--------",
-			"description": "Reset player 1"
+			"description": "Reset player 1 - horizontal strobe"
 		},
 		{
 			"address": "0x0012",
 			"write": "RESM0",
 			"bitmask": "--------",
-			"description": "Reset missile 0"
+			"description": "Reset missile 0 - horizontal strobe"
 		},
 		{
 			"address": "0x0013",
 			"write": "RESM1",
 			"bitmask": "--------",
-			"description": "Reset missile 1"
+			"description": "Reset missile 1 - horizontal strobe"
 		},
 		{
 			"address": "0x0014",
 			"write": "RESBL",
 			"bitmask": "--------",
-			"description": "Reset ball"
+			"description": "Reset ball - horizontal strobe"
 		},
 		{
 			"address": "0x0015",
