@@ -13,6 +13,7 @@
 #include "config.h"
 #include "components/memory.h"
 #include "components/cpu6502.h"
+#include "components/tia.h"
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"
@@ -96,7 +97,10 @@ int main(int argc, char* argv[])
 
 	Cpu6502* pCpu = new Cpu6502();
 	pConfig->AddStateSerialiser(pCpu);
+
+	Tia* pTia = new Tia();
 	
+
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
 	pConfig->AddStateSerialiser(pSymbolStore);

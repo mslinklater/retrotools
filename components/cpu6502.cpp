@@ -1047,6 +1047,11 @@ void Cpu6502::DeserialiseState(json& object)
 	}
 }
 
+void Cpu6502::SetTia(Tia* pIn)
+{
+	pTia = pIn;
+}
+
 bool Cpu6502::GetHalted()
 {
 	return halted;

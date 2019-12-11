@@ -11,6 +11,7 @@
 #include "../errorcodes.h"
 #include "../config.h"
 
+
 /*
 2600 memory layout
 
@@ -38,6 +39,7 @@ XOR	& RAM Mask	= 0b000000010000000	NO - non zero answer
 // which is useful when different things happen for read/write with memory mapped hardware
 
 class Cpu6502;
+class Tia;
 
 class Memory : public IConfigSerialisation
 {
@@ -112,4 +114,6 @@ private:
 
 	MemoryByte* pRam;
 	uint32_t	ramSize;
+
+	Tia*	pTia;
 };

@@ -20,7 +20,7 @@ Each line consists of
 
 #include <inttypes.h>
 
-class Via
+class Tia
 {
 public:
 
@@ -40,7 +40,7 @@ public:
     static const uint8_t kCXBLPF = 0x06;
     static const uint8_t kCOLUP1 = 0x07;
     static const uint8_t kCXPPMM = 0x07;
-    static const uint8_t kCOUPF = 0x08;
+    static const uint8_t kCOLUPF = 0x08;
     static const uint8_t kINPT0 = 0x08;
     static const uint8_t kCOLUBK = 0x09;
     static const uint8_t kINPT1 = 0x09;
@@ -84,8 +84,8 @@ public:
     static const uint8_t kHMCLR = 0x2b;
     static const uint8_t kCXCLR = 0x2c;
 
-    Via();
-    virtual ~Via();
+    Tia();
+    virtual ~Tia();
 
     uint8_t Read(uint8_t address);
     void    Write(uint8_t address, uint8_t value);
