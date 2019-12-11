@@ -52,12 +52,36 @@ void Symbol::Deserialise(json& object)
         writeName = object["writeName"].get<std::string>();
     }
     flags = 0;
-    if(object["flag_memoryread"].get<bool>()) flags |= kSymbolFlag_MemoryRead;
-    if(object["flag_memorywrite"].get<bool>()) flags |= kSymbolFlag_MemoryWrite;
-    if(object["flag_addresslabel"].get<bool>()) flags |= kSymbolFlag_AddressLabel;
-    if(object["flag_hardware"].get<bool>()) flags |= kSymbolFlag_Hardware;
-    if(object["flag_user"].get<bool>()) flags |= kSymbolFlag_User;
-    if(object["flag_auto"].get<bool>()) flags |= kSymbolFlag_Auto;
-    if(object["flag_jumplabel"].get<bool>()) flags |= kSymbolFlag_JumpLabel;
-    if(object["flag_branchlabel"].get<bool>()) flags |= kSymbolFlag_BranchLabel;
+    if(object.contains("flag_memoryread"))
+    {
+        if(object["flag_memoryread"].get<bool>()) flags |= kSymbolFlag_MemoryRead;
+    }
+    if(object.contains("flag_memorywrite"))
+    {
+        if(object["flag_memorywrite"].get<bool>()) flags |= kSymbolFlag_MemoryWrite;
+    }
+    if(object.contains("flag_addresslabel"))
+    {
+        if(object["flag_addresslabel"].get<bool>()) flags |= kSymbolFlag_AddressLabel;
+    }
+    if(object.contains("flag_hardware"))
+    {
+        if(object["flag_hardware"].get<bool>()) flags |= kSymbolFlag_Hardware;
+    }
+    if(object.contains("flag_user"))
+    {
+        if(object["flag_user"].get<bool>()) flags |= kSymbolFlag_User;
+    }
+    if(object.contains("flag_auto"))
+    {
+        if(object["flag_auto"].get<bool>()) flags |= kSymbolFlag_Auto;
+    }
+    if(object.contains("flag_jumplabel"))
+    {
+        if(object["flag_jumplabel"].get<bool>()) flags |= kSymbolFlag_JumpLabel;
+    }
+    if(object.contains("flag_branchlabel"))
+    {
+        if(object["flag_branchlabel"].get<bool>()) flags |= kSymbolFlag_BranchLabel;
+    }
 }

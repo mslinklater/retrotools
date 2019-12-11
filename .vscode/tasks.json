@@ -1,0 +1,24 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make vistella",
+            "type": "shell",
+            "command": "make vistella -j 2",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "clean vistella",
+            "type": "shell",
+            "command": "make clean",
+            "group": {
+                "kind": "build",
+            }
+        }
+    ]
+}

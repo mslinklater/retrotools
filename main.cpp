@@ -143,6 +143,7 @@ int main(int argc, char* argv[])
 	MemoryWindow* pMemoryWindow = new MemoryWindow();
 	pMemoryWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pMemoryWindow, "Memory");
+	pConfig->AddStateSerialiser(pMemoryWindow);
 	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);

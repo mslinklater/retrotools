@@ -25,11 +25,23 @@ void MemoryWindow::SetMemory(Memory* mem)
 void MemoryWindow::SerialiseState(json& object)
 {
 	LOGINFO("MemoryWindow::SerialiseState");
+
+	json windowJson = json::object();
+	windowJson["showReadWrite"] = showReadWrite;
+	object["memorywindow"] = windowJson;
 }
 
 void MemoryWindow::DeserialiseState(json& object)
 {
 	LOGINFO("MemoryWindow::DeserialiseState");
+	json windowJson = object["memorywindow"];
+	if(windowJson.is_object())
+	{
+		if(windowJson.contains("showReadWrite"))
+		{
+			showReadWrite = windowJson["showReadWrite"].get<bool>();
+		}
+	}
 }
 
 void MemoryWindow::DrawLine(uint16_t startAddress)
