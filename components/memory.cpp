@@ -57,8 +57,7 @@ void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 
 	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
-		// VIA write
-		LOGWARNINGF("Memory::VIA Write 0x%04x", physicalAddress);
+		pTia->Write(address, val);
 	}
 	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
 	{
@@ -90,8 +89,7 @@ uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 
 	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
 	{
-		// VIA read
-		LOGWARNINGF("Memory::VIA Read 0x%04x", physicalAddress);
+		return pTia->Read(address);
 	}
 	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
 	{

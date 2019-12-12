@@ -16,33 +16,33 @@ uint8_t Tia::Read(uint8_t address)
     switch(address)
     {
         case kCXM0P:
-            break;
+            return GetCXM0P();
         case kCXM1P:
-            break;
+            return GetCXM1P();
         case kCXP0FB:
-            break;
+            return GetCXP0FB();
         case kCXP1FB:
-            break;
+            return GetCXP1FB();
         case kCXM0FB:
-            break;
+            return GetCXM0FB();
         case kCXM1FB:
-            break;
+            return GetCXM1FB();
         case kCXBLPF:
-            break;
+            return GetCXBLPF();
         case kCXPPMM:
-            break;
+            return GetCXPPMM();
         case kINPT0:
-            break;
+            return GetINPT0();
         case kINPT1:
-            break;
+            return GetINPT1();
         case kINPT2:
-            break;
+            return GetINPT2();
         case kINPT3:
-            break;
+            return GetINPT3();
         case kINPT4:
-            break;
+            return GetINPT4();
         case kINPT5:
-            break;
+            return GetINPT5();
         default:
             LOGERRORF("VIA::Unknown read addr 0x%02x", address);
             break;
@@ -55,6 +55,7 @@ void Tia::Write(uint8_t address, uint8_t value)
     switch(address)
     {
         case kVSYNC:
+            SetVSYNC(value);
             break;
         case kVBLANK:
             break;
@@ -143,7 +144,240 @@ void Tia::Write(uint8_t address, uint8_t value)
         case kCXCLR:
             break;
         default:
-            LOGERRORF("Unknown TIA write 0x%02x", value);
+            LOGERRORF("Unknown TIA write 0x%02x", address);
             break;
     }
+}
+
+uint8_t Tia::GetCXM0P()
+{
+    return CXM0P;
+}
+uint8_t Tia::GetCXM1P()
+{
+    return CXM1P;
+}
+uint8_t Tia::GetCXP0FB()
+{
+    return CXP0FB;
+}
+uint8_t Tia::GetCXP1FB()
+{
+    return CXP1FB;
+}
+uint8_t Tia::GetCXM0FB()
+{
+    return CXM0FB;
+}
+uint8_t Tia::GetCXM1FB()
+{
+    return CXM1FB;
+}
+uint8_t Tia::GetCXBLPF()
+{
+    return CXM1FB;
+}
+uint8_t Tia::GetCXPPMM()
+{
+    return CXPPMM;
+}
+uint8_t Tia::GetINPT0()
+{
+    return INPT0;
+}
+uint8_t Tia::GetINPT1()
+{
+    return INPT1;
+}
+uint8_t Tia::GetINPT2()
+{
+    return INPT2;
+}
+uint8_t Tia::GetINPT3()
+{
+    return INPT3;
+}
+uint8_t Tia::GetINPT4()
+{
+    return INPT4;
+}
+uint8_t Tia::GetINPT5()
+{
+    return INPT5;
+}
+void Tia::SetVSYNC(uint8_t val)
+{
+
+}
+void Tia::SetVBLANK(uint8_t val)
+{
+    
+}
+void Tia::SetWSYNC(uint8_t val)
+{
+    
+}
+void Tia::SetRSYNC(uint8_t val)
+{
+    
+}
+void Tia::SetNUSIZ0(uint8_t val)
+{
+    
+}
+void Tia::SetNUSIZ1(uint8_t val)
+{
+    
+}
+void Tia::SetCOLUP0(uint8_t val)
+{
+    
+}
+void Tia::SetCOLUP1(uint8_t val)
+{
+    
+}
+void Tia::SetCOLUPF(uint8_t val)
+{
+    
+}
+void Tia::SetCOLUBK(uint8_t val)
+{
+    
+}
+void Tia::SetCTRLPF(uint8_t val)
+{
+    
+}
+void Tia::SetREFP0(uint8_t val)
+{
+    
+}
+void Tia::SetREFP1(uint8_t val)
+{
+    
+}
+void Tia::SetPF0(uint8_t val)
+{
+    
+}
+void Tia::SetPF1(uint8_t val)
+{
+    
+}
+void Tia::SetPF2(uint8_t val)
+{
+    
+}
+void Tia::SetRESP0(uint8_t val)
+{
+    
+}
+void Tia::SetRESP1(uint8_t val)
+{
+    
+}
+void Tia::SetRESM0(uint8_t val)
+{
+    
+}
+void Tia::SetRESM1(uint8_t val)
+{
+    
+}
+void Tia::SetRESBL(uint8_t val)
+{
+    
+}
+void Tia::SetAUDC0(uint8_t val)
+{
+    
+}
+void Tia::SetAUDC1(uint8_t val)
+{
+    
+}
+void Tia::SetAUDF0(uint8_t val)
+{
+    
+}
+void Tia::SetAUDF1(uint8_t val)
+{
+    
+}
+void Tia::SetAUDV0(uint8_t val)
+{
+    
+}
+void Tia::SetAUDV1(uint8_t val)
+{
+    
+}
+void Tia::SetGRP0(uint8_t val)
+{
+    
+}
+void Tia::SetGRP1(uint8_t val)
+{
+    
+}
+void Tia::SetENAM0(uint8_t val)
+{
+    
+}
+void Tia::SetENAM1(uint8_t val)
+{
+    
+}
+void Tia::SetENABL(uint8_t val)
+{
+    
+}
+void Tia::SetHMP0(uint8_t val)
+{
+    
+}
+void Tia::SetHMP1(uint8_t val)
+{
+    
+}
+void Tia::SetHMM0(uint8_t val)
+{
+    
+}
+void Tia::SetHMBL(uint8_t val)
+{
+    
+}
+void Tia::SetVDELP0(uint8_t val)
+{
+    
+}
+void Tia::SetVDELP1(uint8_t val)
+{
+    
+}
+void Tia::SetVDELBL(uint8_t val)
+{
+    
+}
+void Tia::SetRESMP0(uint8_t val)
+{
+    
+}
+void Tia::SetRESMP1(uint8_t val)
+{
+    
+}
+void Tia::SetHMOVE(uint8_t val)
+{
+    
+}
+void Tia::SetHMCLR(uint8_t val)
+{
+    
+}
+void Tia::SetCXCLR(uint8_t val)
+{
+    
 }
