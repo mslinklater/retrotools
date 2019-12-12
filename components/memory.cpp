@@ -8,6 +8,7 @@
 #include "../log.h"
 #include "../errorcodes.h"
 #include "cpu6502.h"
+#include "tia.h"
 
 static Cpu6502* pCpu;
 
@@ -193,4 +194,9 @@ void Memory::ClearReadBreakpoint(uint16_t address)
 
 void Memory::ClearWriteBreakpoint(uint16_t address)
 {
+}
+
+void Memory::SetTia(Tia* tia)
+{
+	pTia = tia;
 }

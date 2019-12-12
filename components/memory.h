@@ -92,6 +92,7 @@ public:
 	
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
+	void 		SetTia(Tia* tia);
 	eErrorCode 	Destroy(void);
 	uint8_t 	Read(uint16_t address, bool affectFlags = true) const;
 	void 		Write(uint16_t address, uint8_t val, bool affectFlags = true);

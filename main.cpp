@@ -116,6 +116,7 @@ int main(int argc, char* argv[])
 	pCpu->SetMemory(pMemory);
 	pCpu->SetPC(0xf000);
 	pMemory->SetCPU(pCpu);
+	pMemory->SetTia(pTia);
 	
 	pDisassembler->Init();
 	pDisassembler->SetMemory(pMemory);
