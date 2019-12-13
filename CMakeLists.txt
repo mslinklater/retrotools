@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 
-#set(CMAKE_C_COMPILER /usr/bin/clang)
 set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
+
+if (UNIX)
 set(CMAKE_LIBRARY_PREFIXES lib)
 set(CMAKE_LIBRARY_SUFFIXES a)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
+endif (UNIX)
+
+if (WIN32)
+set(CMAKE_MODULE_PATH C:\\Users\\mlinklater\\Code\\SDL2-2.0.10\\include)
+endif (WIN32)
 
 set(SOURCE_FILES main.cpp disasm.cpp config.cpp errorcodes.cpp log.cpp symbolstore.cpp symbol.cpp commands.cpp machine/vcs.cpp)
 
