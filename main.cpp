@@ -24,6 +24,7 @@
 #include "windows/mainwindow.h"
 #include "windows/symbolwindow.h"
 #include "windows/cpu6502window.h"
+#include "windows/tiawindow.h"
 #include "system/command.h"
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
@@ -167,6 +168,9 @@ int main(int argc, char* argv[])
 	Cpu6502Window* pCpu6502Window = new Cpu6502Window();
 	pCpu6502Window->SetCpu(pCpu);
 	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
+
+	TiaWindow* pTiaWindow = new TiaWindow();
+	pWindowManager->AddWindow(pTiaWindow, "Tia");
 	
 	pConfig->DeserialiseAppConfig();
 

@@ -90,6 +90,7 @@ public:
     uint8_t Read(uint8_t address);
     void    Write(uint8_t address, uint8_t value);
 
+    // Read only registers
     uint8_t GetCXM0P();
     uint8_t GetCXM1P();
     uint8_t GetCXP0FB();
@@ -105,6 +106,7 @@ public:
     uint8_t GetINPT4();
     uint8_t GetINPT5();
 
+    // Write only registers
     void SetVSYNC(uint8_t val);
     void SetVBLANK(uint8_t val);
     void SetWSYNC(uint8_t val);
