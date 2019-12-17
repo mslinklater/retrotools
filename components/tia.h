@@ -142,6 +142,7 @@ public:
     void SetHMP0(uint8_t val);
     void SetHMP1(uint8_t val);
     void SetHMM0(uint8_t val);
+    void SetHMM1(uint8_t val);
     void SetHMBL(uint8_t val);
     void SetVDELP0(uint8_t val);
     void SetVDELP1(uint8_t val);
@@ -152,8 +153,54 @@ public:
     void SetHMCLR(uint8_t val);
     void SetCXCLR(uint8_t val);
 
+    // Read access to write only registers
+    uint8_t GetVSYNC(void){return VSYNC;}
+    uint8_t GetVBLANK(void){return VBLANK;}
+    uint8_t GetRSYNC(void){return RSYNC;}
+    uint8_t GetWSYNC(void){return WSYNC;}
+    uint8_t GetNUSIZ0(void){return NUSIZ0;}
+    uint8_t GetNUSIZ1(void){return NUSIZ1;}
+    uint8_t GetCOLUP0(void){return COLUP0;}
+    uint8_t GetCOLUP1(void){return COLUP1;}
+    uint8_t GetCOLUPF(void){return COLUPF;}
+    uint8_t GetCOLUBK(void){return COLUBK;}
+    uint8_t GetREFP0(void){return REFP0;}
+    uint8_t GetREFP1(void){return REFP1;}
+    uint8_t GetPF0(void){return PF0;}
+    uint8_t GetPF1(void){return PF1;}
+    uint8_t GetPF2(void){return PF2;}
+    uint8_t GetRESP0(void){return RESP0;}
+    uint8_t GetRESP1(void){return RESP1;}
+    uint8_t GetRESM0(void){return RESM0;}
+    uint8_t GetRESM1(void){return RESM1;}
+    uint8_t GetRESBL(void){return RESBL;}
+    uint8_t GetAUDC0(void){return AUDC0;}
+    uint8_t GetAUDC1(void){return AUDC1;}
+    uint8_t GetAUDF0(void){return AUDF0;}
+    uint8_t GetAUDF1(void){return AUDF1;}
+    uint8_t GetAUDV0(void){return AUDV0;}
+    uint8_t GetAUDV1(void){return AUDV1;}
+    uint8_t GetGRP0(void){return GRP0;}
+    uint8_t GetGRP1(void){return GRP1;}
+    uint8_t GetENAM0(void){return ENAM0;}
+    uint8_t GetENAM1(void){return ENAM1;}
+    uint8_t GetENABL(void){return ENABL;}
+    uint8_t GetHMP0(void){return HMP0;}
+    uint8_t GetHMP1(void){return HMP1;}
+    uint8_t GetHMM0(void){return HMM0;}
+    uint8_t GetHMM1(void){return HMM1;}
+    uint8_t GetHMBL(void){return HMBL;}
+    uint8_t GetVDELP0(void){return VDELP0;}
+    uint8_t GetVDELP1(void){return VDELP1;}
+    uint8_t GetVDELBL(void){return VDELBL;}
+    uint8_t GetRESMP0(void){return RESMP0;}
+    uint8_t GetRESMP1(void){return RESMP1;}
+    uint8_t GetHMOVE(void){return HMOVE;}
+    uint8_t GetHMCLR(void){return HMCLR;}
+    uint8_t GetCXCLR(void){return CXCLR;}
+
 private:
-    //uint8_t pixels[228*262];
+//    uint8_t pixels[228*262];
 
     // registers
     uint8_t VSYNC;

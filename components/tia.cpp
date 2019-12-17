@@ -175,7 +175,7 @@ uint8_t Tia::GetCXM1FB()
 }
 uint8_t Tia::GetCXBLPF()
 {
-    return CXM1FB;
+    return CXBLPF;
 }
 uint8_t Tia::GetCXPPMM()
 {
@@ -207,177 +207,181 @@ uint8_t Tia::GetINPT5()
 }
 void Tia::SetVSYNC(uint8_t val)
 {
-
+    VSYNC = val;
 }
 void Tia::SetVBLANK(uint8_t val)
 {
-    
+    VBLANK = val;    
 }
 void Tia::SetWSYNC(uint8_t val)
 {
-    
+    WSYNC = val;    
 }
 void Tia::SetRSYNC(uint8_t val)
 {
-    
+    RSYNC = val;
 }
 void Tia::SetNUSIZ0(uint8_t val)
 {
-    
+    NUSIZ0 = val;
 }
 void Tia::SetNUSIZ1(uint8_t val)
 {
-    
+    NUSIZ1 = val;
 }
 void Tia::SetCOLUP0(uint8_t val)
 {
-    
+    COLUP0 = val;
 }
 void Tia::SetCOLUP1(uint8_t val)
 {
-    
+    COLUP1 = val;
 }
 void Tia::SetCOLUPF(uint8_t val)
 {
-    
+    COLUPF = val;
 }
 void Tia::SetCOLUBK(uint8_t val)
 {
-    
+    COLUBK = val;
 }
 void Tia::SetCTRLPF(uint8_t val)
 {
-    
+    CTRLPF = val;
 }
 void Tia::SetREFP0(uint8_t val)
 {
-    
+    REFP0 = val;
 }
 void Tia::SetREFP1(uint8_t val)
 {
-    
+    REFP1 = val;
 }
 void Tia::SetPF0(uint8_t val)
 {
-    
+    PF0 = val;
 }
 void Tia::SetPF1(uint8_t val)
 {
-    
+    PF1 = val;
 }
 void Tia::SetPF2(uint8_t val)
 {
-    
+    PF2 = val;
 }
 void Tia::SetRESP0(uint8_t val)
 {
-    
+    RESP0 = val;
 }
 void Tia::SetRESP1(uint8_t val)
 {
-    
+    RESP1 = val;
 }
 void Tia::SetRESM0(uint8_t val)
 {
-    
+    RESM0 = val;
 }
 void Tia::SetRESM1(uint8_t val)
 {
-    
+    RESM1 = val;
 }
 void Tia::SetRESBL(uint8_t val)
 {
-    
+    RESBL = val;
 }
 void Tia::SetAUDC0(uint8_t val)
 {
-    
+    AUDC0 = val;
 }
 void Tia::SetAUDC1(uint8_t val)
 {
-    
+    AUDC1 = val;
 }
 void Tia::SetAUDF0(uint8_t val)
 {
-    
+    AUDF0 = val;
 }
 void Tia::SetAUDF1(uint8_t val)
 {
-    
+    AUDF1 = val;
 }
 void Tia::SetAUDV0(uint8_t val)
 {
-    
+    AUDV0 = val;
 }
 void Tia::SetAUDV1(uint8_t val)
 {
-    
+    AUDV1 = val;
 }
 void Tia::SetGRP0(uint8_t val)
 {
-    
+    GRP0 = val;
 }
 void Tia::SetGRP1(uint8_t val)
 {
-    
+    GRP1 = val;
 }
 void Tia::SetENAM0(uint8_t val)
 {
-    
+    ENAM0 = val;
 }
 void Tia::SetENAM1(uint8_t val)
 {
-    
+    ENAM1 = val;
 }
 void Tia::SetENABL(uint8_t val)
 {
-    
+    ENABL = val;
 }
 void Tia::SetHMP0(uint8_t val)
 {
-    
+    HMP0 = val;
 }
 void Tia::SetHMP1(uint8_t val)
 {
-    
+    HMP1 = val;
 }
 void Tia::SetHMM0(uint8_t val)
 {
-    
+    HMM0 = val;
+}
+void Tia::SetHMM1(uint8_t val)
+{
+    HMM1 = val;
 }
 void Tia::SetHMBL(uint8_t val)
 {
-    
+    HMBL = val;
 }
 void Tia::SetVDELP0(uint8_t val)
 {
-    
+    VDELP0 = val;
 }
 void Tia::SetVDELP1(uint8_t val)
 {
-    
+    VDELP1 = val;
 }
 void Tia::SetVDELBL(uint8_t val)
 {
-    
+    VDELBL = val;
 }
 void Tia::SetRESMP0(uint8_t val)
 {
-    
+    RESMP0 = val;
 }
 void Tia::SetRESMP1(uint8_t val)
 {
-    
+    RESMP1 = val;
 }
 void Tia::SetHMOVE(uint8_t val)
 {
-    
+    HMOVE = val;
 }
 void Tia::SetHMCLR(uint8_t val)
 {
-    
+    HMCLR = val;
 }
 void Tia::SetCXCLR(uint8_t val)
 {
-    
+    CXCLR = val;
 }

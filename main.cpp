@@ -100,7 +100,6 @@ int main(int argc, char* argv[])
 	pConfig->AddStateSerialiser(pCpu);
 
 	Tia* pTia = new Tia();
-	
 
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
@@ -170,6 +169,7 @@ int main(int argc, char* argv[])
 	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
 
 	TiaWindow* pTiaWindow = new TiaWindow();
+	pTiaWindow->SetTia(pTia);
 	pWindowManager->AddWindow(pTiaWindow, "Tia");
 	
 	pConfig->DeserialiseAppConfig();
