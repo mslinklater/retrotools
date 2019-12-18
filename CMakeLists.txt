@@ -22,7 +22,7 @@ set(COMPONENT_FILES components/cpu6502.cpp components/memory.cpp components/tia.
 
 set(IMGUI_FILES imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_impl_opengl2.cpp imgui/imgui_widgets.cpp)
 
-set(WINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp windows/symbolwindow.cpp windows/cpu6502window.cpp windows/tiawindow.cpp)
+set(WINDOW_FILES windows/logwindow.cpp windows/memorywindow.cpp windows/disasmwindow.cpp windows/mainwindow.cpp windows/systemclockwindow.cpp windows/symbolwindow.cpp windows/cpu6502window.cpp windows/tiawindow.cpp)
 
 # libraries
 set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)

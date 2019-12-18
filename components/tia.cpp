@@ -58,90 +58,133 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetVSYNC(value);
             break;
         case kVBLANK:
+            SetVBLANK(value);
             break;
         case kWSYNC:
+            SetWSYNC(value);
             break;
         case kRSYNC:
+            SetRSYNC(value);
             break;
         case kNUSIZ0:
+            SetNUSIZ0(value);
             break;
         case kNUSIZ1:
+            SetNUSIZ1(value);
             break;
         case kCOLUP0:
+            SetCOLUP0(value);
             break;
         case kCOLUP1:
+            SetCOLUP1(value);
             break;
         case kCOLUPF:
+            SetCOLUPF(value);
             break;
         case kCOLUBK:
+            SetCOLUBK(value);
             break;
         case kCTRLPF:
+            SetCTRLPF(value);
             break;
         case kREFP0:
+            SetREFP0(value);
             break;
         case kREFP1:
+            SetREFP1(value);
             break;
         case kPF0:
+            SetPF0(value);
             break;
         case kPF1:
+            SetPF1(value);
             break;
         case kPF2:
+            SetPF2(value);
             break;
         case kRESP0:
+            SetRESP0(value);
             break;
         case kRESP1:
+            SetRESP1(value);
             break;
         case kRESM0:
+            SetRESM0(value);
             break;
         case kRESM1:
+            SetRESM1(value);
             break;
         case kRESBL:
+            SetRESBL(value);
             break;
         case kAUDC0:
+            SetAUDC0(value);
             break;
         case kAUDC1:
+            SetAUDC1(value);
             break;
         case kAUDF0:
+            SetAUDF0(value);
             break;
         case kAUDF1:
+            SetAUDF1(value);
             break;
         case kAUDV0:
+            SetAUDV0(value);
             break;
         case kAUDV1:
+            SetAUDV1(value);
             break;
         case kGRP0:
+            SetGRP0(value);
             break;
         case kGRP1:
+            SetGRP1(value);
             break;
         case kENAM0:
+            SetENAM0(value);
             break;
         case kENAM1:
+            SetENAM1(value);
             break;
         case kENABL:
+            SetENABL(value);
             break;
         case kHMP0:
+            SetHMP0(value);
             break;
         case kHMP1:
+            SetHMP1(value);
             break;
         case kHMM0:
+            SetHMM0(value);
             break;
         case kHMBL:
+            SetHMBL(value);
             break;
         case kVDELP0:
+            SetVDELP0(value);
             break;
         case kVDELP1:
+            SetVDELP1(value);
             break;
         case kVDELBL:
+            SetVDELBL(value);
             break;
         case kRESMP0:
+            SetRESMP0(value);
             break;
         case kRESMP1:
+            SetRESMP1(value);
             break;
         case kHMOVE:
+            SetHMOVE(value);
             break;
         case kHMCLR:
+            SetHMCLR(value);
             break;
         case kCXCLR:
+            SetCXCLR(value);
             break;
         default:
             LOGERRORF("Unknown TIA write 0x%02x", address);

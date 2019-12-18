@@ -14,6 +14,7 @@
 #include "components/memory.h"
 #include "components/cpu6502.h"
 #include "components/tia.h"
+#include "components/systemclock.h"
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"
@@ -25,6 +26,7 @@
 #include "windows/symbolwindow.h"
 #include "windows/cpu6502window.h"
 #include "windows/tiawindow.h"
+#include "windows/systemclockwindow.h"
 #include "system/command.h"
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
@@ -101,6 +103,10 @@ int main(int argc, char* argv[])
 
 	Tia* pTia = new Tia();
 
+	SystemClock* pSystemClock = new SystemClock();
+	pSystemClock->SetTia(pTia);
+	pSystemClock->SetCpu6502(pCpu);
+
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
 	pConfig->AddStateSerialiser(pSymbolStore);
@@ -115,6 +121,7 @@ int main(int argc, char* argv[])
     pCpu->Init(Cpu6502::k6507);
 	pCpu->SetMemory(pMemory);
 	pCpu->SetPC(0xf000);
+
 	pMemory->SetCPU(pCpu);
 	pMemory->SetTia(pTia);
 	
@@ -171,7 +178,11 @@ int main(int argc, char* argv[])
 	TiaWindow* pTiaWindow = new TiaWindow();
 	pTiaWindow->SetTia(pTia);
 	pWindowManager->AddWindow(pTiaWindow, "Tia");
-	
+
+	SystemClockWindow* pSystemClockWindow = new SystemClockWindow();
+	pSystemClockWindow->SetSystemClock(pSystemClock);
+	pWindowManager->AddWindow(pSystemClockWindow, "System Clock");
+
 	pConfig->DeserialiseAppConfig();
 
 	bool done = false;
