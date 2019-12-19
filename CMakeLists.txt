@@ -37,7 +37,10 @@ find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-project (vistella)
+project (vistella VERSION 0.1)
+configure_file(version.h.in version.h)
+
 add_executable(vistella ${SOURCE_FILES} ${IMGUI_FILES} ${WINDOW_FILES} ${COMPONENT_FILES} ${SYSTEM_FILES})
+target_include_directories(vistella PUBLIC "${PROJECT_BINARY_DIR}")
 target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(vistella PRIVATE -Wall -Werror)

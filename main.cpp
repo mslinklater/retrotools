@@ -10,6 +10,7 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl2.h"
 
+#include "version.h"
 #include "config.h"
 #include "components/memory.h"
 #include "components/cpu6502.h"
@@ -51,7 +52,8 @@ int main(int argc, char* argv[])
 	uint64_t	performanceCounterLast;
 	// TODO: Output the command line to stdout
 	
-	
+	LOGINFOF("Version %d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+
 	// check for command line args
 	
 	ProcessCommandLine(argc, argv);
