@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: install sdl2
-      run: sudo apt install libsdl2-dev
+      run: sudo apt-get install libsdl2-dev
     - name: cmake
       run: cmake .
     - name: make vistella
