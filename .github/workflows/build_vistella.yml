@@ -1,0 +1,17 @@
+name: build vistella
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: install sdl2
+      run: sudo apt-get install libsdl2-dev
+    - name: cmake
+      run: cmake .
+    - name: make vistella
+      run: make vistella
