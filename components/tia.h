@@ -19,8 +19,9 @@ Each line consists of
 */
 
 #include <inttypes.h>
+#include "../interfaces/itickable.h"
 
-class Tia
+class Tia : public ITickable
 {
 public:
 
@@ -198,6 +199,10 @@ public:
     uint8_t GetHMOVE(void){return HMOVE;}
     uint8_t GetHMCLR(void){return HMCLR;}
     uint8_t GetCXCLR(void){return CXCLR;}
+
+    // ITickable
+    void Tick(ITickable::Mode mode);
+    // ~ITickable
 
 private:
 //    uint8_t pixels[228*262];

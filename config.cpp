@@ -12,7 +12,6 @@
 #include "config.h"
 #include "log.h"
 
-
 Config::Config()
 {
 }

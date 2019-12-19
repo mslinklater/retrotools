@@ -11,6 +11,11 @@ Tia::~Tia()
 
 }
 
+void Tia::Tick(ITickable::Mode mode)
+{
+
+}
+
 uint8_t Tia::Read(uint8_t address)
 {
     switch(address)

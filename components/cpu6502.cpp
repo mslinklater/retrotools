@@ -25,6 +25,11 @@ Cpu6502::Cpu6502()
 	CommandCenter::Instance()->Subscribe(Commands::kBreakCommand, this);
 }
 
+void Cpu6502::Tick()
+{
+	
+}
+
 const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
 {
 	return mnemonicStrings[mnemonic];

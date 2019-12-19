@@ -14,7 +14,7 @@
 #include "components/memory.h"
 #include "components/cpu6502.h"
 #include "components/tia.h"
-#include "components/systemclock.h"
+#include "components/system.h"
 #include "disasm.h"
 #include "symbolstore.h"
 #include "log.h"
@@ -26,7 +26,7 @@
 #include "windows/symbolwindow.h"
 #include "windows/cpu6502window.h"
 #include "windows/tiawindow.h"
-#include "windows/systemclockwindow.h"
+#include "windows/systemwindow.h"
 #include "system/command.h"
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
@@ -47,6 +47,8 @@ void ProcessCommandLine(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+	uint64_t	performanceFrequency;
+	uint64_t	performanceCounterLast;
 	// TODO: Output the command line to stdout
 	
 	
@@ -60,7 +62,10 @@ int main(int argc, char* argv[])
 		LOGERRORF("%s\n", SDL_GetError());
 		return -1;
 	}
-	
+
+	performanceFrequency = SDL_GetPerformanceFrequency();
+	performanceCounterLast = SDL_GetPerformanceCounter();
+
 	// Setup window
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -103,9 +108,9 @@ int main(int argc, char* argv[])
 
 	Tia* pTia = new Tia();
 
-	SystemClock* pSystemClock = new SystemClock();
-	pSystemClock->SetTia(pTia);
-	pSystemClock->SetCpu6502(pCpu);
+	System* pSystem = new System();
+	pSystem->SetTia(pTia);
+	pSystem->SetCpu6502(pCpu);
 
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
@@ -179,9 +184,9 @@ int main(int argc, char* argv[])
 	pTiaWindow->SetTia(pTia);
 	pWindowManager->AddWindow(pTiaWindow, "Tia");
 
-	SystemClockWindow* pSystemClockWindow = new SystemClockWindow();
-	pSystemClockWindow->SetSystemClock(pSystemClock);
-	pWindowManager->AddWindow(pSystemClockWindow, "System Clock");
+	SystemWindow* pSystemWindow = new SystemWindow();
+	pSystemWindow->SetSystem(pSystem);
+	pWindowManager->AddWindow(pSystemWindow, "System");
 
 	pConfig->DeserialiseAppConfig();
 
@@ -199,6 +204,12 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		uint64_t performanceCounterThis = SDL_GetPerformanceCounter();
+		float dt = ((float)(performanceCounterThis - performanceCounterLast) / (float)performanceFrequency);
+		if(dt < 0.0f) dt = 0.0f;
+		performanceCounterLast = performanceCounterThis;
+
+		pSystem->Update(dt);
 		CommandCenter::Instance()->Update();
 		
 		// start ImGui frame

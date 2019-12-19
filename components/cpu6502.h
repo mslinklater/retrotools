@@ -132,7 +132,10 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 		bool GetHalted();
 		void SetHalted(bool state);
 
-		void ProcessInstruction(bool ignoreBreakpoints = false);
+		/// One single clock tick
+		void Tick(void);
+
+		void ProcessInstruction(bool ignoreBreakpoints = false);		// kind of debug
 
 		const Opcode* GetNextInstruction();
 

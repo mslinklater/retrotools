@@ -8,19 +8,19 @@
 #include <inttypes.h>
 #include "../system/windowbase.h"
 
-class SystemClock;
+class System;
 
-class SystemClockWindow : public WindowBase
+class SystemWindow : public WindowBase
 {
 public:
 	
-	SystemClockWindow();
-	virtual ~SystemClockWindow();
+	SystemWindow();
+	virtual ~SystemWindow();
 
-	void SetSystemClock(SystemClock* clock);
+	void SetSystem(System* system);
 	
 	virtual void Draw(void);
 
 private:
-	SystemClock*		pClock;
+	System*		pSystem;
 };
