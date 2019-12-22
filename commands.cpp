@@ -31,3 +31,12 @@ void Commands::Quit(void)
 	cmd.name = kQuitCommand;
 	CommandCenter::Instance()->Broadcast(cmd);
 }
+
+void Commands::Halt(bool halt)
+{
+	LOGINFOF("Commands::Halt %s", halt ? "true" : "false");
+	Command cmd;
+	cmd.name = kHaltCommand;
+	cmd.payload = halt ? "true" : "false";
+	CommandCenter::Instance()->Broadcast(cmd);
+}

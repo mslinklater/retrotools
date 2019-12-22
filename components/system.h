@@ -30,9 +30,11 @@ public:
 
     void Update(float dt);
     float GetUpdateDT(void);
+	bool GetRunning();
 
 private:
     Tia*        pTia;
     Cpu6502*    pCpu6502;
-    float updatedt;
+    float		updatedt;
+    bool		running;
 };

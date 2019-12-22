@@ -3,6 +3,7 @@
 
 #include "cpu6502window.h"
 #include "../imgui/imgui.h"
+#include "../commands.h"
 
 Cpu6502Window::Cpu6502Window()
 {
@@ -98,7 +99,7 @@ void Cpu6502Window::Draw()
 	
 	if(ImGui::Button("Step"))
 	{
-		pCpu->SetHalted(false);
+		Commands::Halt(false);
 		pCpu->ProcessInstruction(true);
 	}
 

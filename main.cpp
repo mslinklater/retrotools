@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 	uint64_t	performanceCounterLast;
 	// TODO: Output the command line to stdout
 	
-	LOGINFOF("Version %d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+	LOGINFOF("Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
 
 	// check for command line args
 	

@@ -6,6 +6,7 @@
 #include "systemwindow.h"
 #include "../components/system.h"
 #include "../imgui/imgui.h"
+#include "../commands.h"
 
 SystemWindow::SystemWindow()
 {
@@ -24,6 +25,18 @@ void SystemWindow::SetSystem(System* system)
 
 void SystemWindow::Draw(void)
 {
+	if(pSystem->GetRunning())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+		ImGui::Button("RUNNING");
+		ImGui::PopStyleColor(1);
+	}
+	else
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::Button("HALTED!");
+		ImGui::PopStyleColor(1);
+	}
     ImGui::Text("dt:%f", pSystem->GetUpdateDT());
     ImGui::Text("fps:%f", 1.0f / pSystem->GetUpdateDT());
     ImGui::Separator();

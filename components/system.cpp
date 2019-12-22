@@ -35,22 +35,27 @@ void System::TickCpuInstruction()
 
 void System::TickHBlank()
 {
-    LOGINFO("System::TickHBlank");
+	LOGINFO("System::TickHBlank");
 }
 
 void System::TickVBlank()
 {
-    LOGINFO("System::TickVBlank");
+	LOGINFO("System::TickVBlank");
 }
 
 void System::Update(float dt)
 {
-    updatedt = dt;
+	updatedt = dt;
 }
 
 float System::GetUpdateDT(void)
 {
-    return updatedt;
+	return updatedt;
+}
+
+bool System::GetRunning()
+{
+	return running;
 }
 
 void System::SetTia(Tia* pTiaIn)

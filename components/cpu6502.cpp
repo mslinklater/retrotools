@@ -5,7 +5,6 @@
 
 #include "cpu6502.h"
 #include "memory.h"
-#include "../machine/vcs.h"
 #include "../log.h"
 #include "../commands.h"
 
@@ -22,7 +21,7 @@
 Cpu6502::Cpu6502()
 : halted(0)
 {
-	CommandCenter::Instance()->Subscribe(Commands::kBreakCommand, this);
+	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 void Cpu6502::Tick()
@@ -549,7 +548,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 	{
 		if(breakpoints.find(reg.pc) != breakpoints.end())
 		{
-			SetHalted(true);
+			Commands::Halt(true);
 		}
 	}
 
@@ -611,7 +610,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 //			break;
 		default:
 			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
-			SetHalted(true);
+			Commands::Halt(true);
 			return;
 			break;
 	}
@@ -1012,7 +1011,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
-			SetHalted(true);
+			Commands::Halt(true);
 			break;
 	}
 }
@@ -1057,10 +1056,10 @@ bool Cpu6502::GetHalted()
 	return halted;
 }
 
-void Cpu6502::SetHalted(bool state)
-{
-	halted = state;
-}
+//void Cpu6502::SetHalted(bool state)
+//{
+//	halted = state;
+//}
 
 const std::set<uint16_t>&	Cpu6502::GetBreakpoints()
 {
@@ -1089,7 +1088,7 @@ const Cpu6502::Opcode* Cpu6502::GetNextInstruction()
 
 bool Cpu6502::HandleCommand(const Command& command)
 {
-	if(command.name == Commands::kBreakCommand)
+	if(command.name == Commands::kHaltCommand)
 	{
 		autoRun = false;
 	}

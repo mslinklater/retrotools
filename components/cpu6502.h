@@ -130,7 +130,7 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 		void SetSP(uint8_t sp);
 
 		bool GetHalted();
-		void SetHalted(bool state);
+//		void SetHalted(bool state);
 
 		/// One single clock tick
 		void Tick(void);
