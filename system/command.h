@@ -13,6 +13,7 @@ struct Command
 {
 	std::string	name;
 	std::string payload;
+	std::string payload2;
 };
 
 class ICommandProcessor

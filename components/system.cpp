@@ -7,6 +7,7 @@
 #include "tia.h"
 #include "cpu6502.h"
 #include "../log.h"
+#include "../commands.h"
 
 System::System()
 {
@@ -20,27 +21,32 @@ System::~System()
 
 void System::TickTia()
 {
-    LOGINFO("System::TickTia");
+	Commands::Halt(false, Commands::kHaltCommandTickTia);
 }
 
 void System::TickCpu()
 {
-    LOGINFO("System::TickCpu");
+	Commands::Halt(false, Commands::kHaltCommandTickCpu);
 }
 
 void System::TickCpuInstruction()
 {
-    LOGINFO("System::TickCpuInstruction");
+	Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
 }
 
 void System::TickHBlank()
 {
-	LOGINFO("System::TickHBlank");
+	Commands::Halt(false, Commands::kHaltCommandHBlank);
 }
 
 void System::TickVBlank()
 {
-	LOGINFO("System::TickVBlank");
+	Commands::Halt(false, Commands::kHaltCommandVBlank);
+}
+
+void System::Run()
+{
+	Commands::Halt(false, Commands::kHaltCommandRun);
 }
 
 void System::Update(float dt)

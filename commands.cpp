@@ -32,11 +32,12 @@ void Commands::Quit(void)
 	CommandCenter::Instance()->Broadcast(cmd);
 }
 
-void Commands::Halt(bool halt)
+void Commands::Halt(bool halt, std::string runType)
 {
 	LOGINFOF("Commands::Halt %s", halt ? "true" : "false");
 	Command cmd;
 	cmd.name = kHaltCommand;
 	cmd.payload = halt ? "true" : "false";
+	cmd.payload2 = runType;
 	CommandCenter::Instance()->Broadcast(cmd);
 }

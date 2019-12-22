@@ -18,7 +18,13 @@ namespace Commands
 	void Quit(void);
 	static const std::string kQuitCommand("Quit");
 
-	void Halt(bool halt);
+	void Halt(bool halt, std::string runType = "");
 	static const std::string kHaltCommand("Halt");
+	static const std::string kHaltCommandTickTia("TickTia");
+	static const std::string kHaltCommandHBlank("HBlank");
+	static const std::string kHaltCommandVBlank("VBlank");
+	static const std::string kHaltCommandTickCpu("TickCpu");
+	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
+	static const std::string kHaltCommandRun("Run");
 
 };
