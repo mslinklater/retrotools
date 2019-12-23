@@ -12,3 +12,4 @@ imgui.ini
 c_cpp_properties.json
 config.json
 vistella
+version.h

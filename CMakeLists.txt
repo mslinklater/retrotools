@@ -31,7 +31,12 @@ find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-file(GLOB_RECURSE SOURCE_FILES "*.cpp")
+set(SOURCE_FILES commands.cpp config.cpp disasm.cpp errorcodes.cpp main.cpp log.cpp symbol.cpp symbolstore.cpp)
+
+add_subdirectory("imgui")
+add_subdirectory("components")
+add_subdirectory("system")
+add_subdirectory("windows")
 
 project (vistella VERSION 0.1)
 configure_file(version.h.in version.h)
