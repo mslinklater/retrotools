@@ -28,13 +28,19 @@ void SystemWindow::Draw(void)
 	if(pSystem->GetRunning())
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-		ImGui::Button("RUNNING");
+		if(ImGui::Button("RUNNING"))
+		{
+			pSystem->Halt();
+		}
 		ImGui::PopStyleColor(1);
 	}
 	else
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-		ImGui::Button("HALTED!");
+		if(ImGui::Button("HALTED!"))
+		{
+			pSystem->Run();
+		}
 		ImGui::PopStyleColor(1);
 	}
     ImGui::Text("dt:%f", pSystem->GetUpdateDT());

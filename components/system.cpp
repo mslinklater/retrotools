@@ -10,6 +10,10 @@
 #include "../commands.h"
 
 System::System()
+: tickFrequency(3584160)
+, tickedUpToTime(0.0)
+, tickUpToTime(0.0)
+, deltaTPerTick(1.0 / tickFrequency)
 {
 
 }
@@ -46,12 +50,39 @@ void System::TickVBlank()
 
 void System::Run()
 {
+	running = true;
 	Commands::Halt(false, Commands::kHaltCommandRun);
+}
+
+void System::Halt()
+{
+	running = false;
+	Commands::Halt(true);
 }
 
 void System::Update(float dt)
 {
+	if(!running)
+	{
+		return;
+	}
+
 	updatedt = dt;
+	tickUpToTime += (double)dt;
+
+	uint32_t numTicks = 0;
+
+	while(tickedUpToTime <= tickUpToTime)
+	{
+		tickedUpToTime += deltaTPerTick;
+		numTicks++;
+	}
+	LOGINFOF("Ticks %d", numTicks);
+}
+
+void System::Tick()
+{
+	pTia->Tick();
 }
 
 float System::GetUpdateDT(void)

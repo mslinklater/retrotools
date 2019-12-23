@@ -12,11 +12,6 @@ set(CMAKE_LIBRARY_PREFIXES lib)
 set(CMAKE_LIBRARY_SUFFIXES a)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
-endif (UNIX)
-
-if (WIN32)
-set(CMAKE_MODULE_PATH C:\\Users\\mlinklater\\Code\\SDL2-2.0.10\\include)
-endif (WIN32)
 
 # libraries
 set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
@@ -30,6 +25,13 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
+
+endif (UNIX)
+
+if (WIN32)
+set(CMAKE_MODULE_PATH C:\\Users\\mlinklater\\Code\\SDL2-2.0.10\\include)
+endif (WIN32)
+
 
 set(SOURCE_FILES commands.cpp config.cpp disasm.cpp errorcodes.cpp main.cpp log.cpp symbol.cpp symbolstore.cpp)
 

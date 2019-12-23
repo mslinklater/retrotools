@@ -6,6 +6,7 @@
 #pragma once
 
 #include <vector>
+#include <inttypes.h>
 
 class ITickable;
 class Tia;
@@ -24,6 +25,7 @@ public:
     void TickHBlank();
     void TickVBlank();
     void Run();
+	void Halt();
 
     void SetTia(Tia* pTia);
     void SetCpu6502(Cpu6502* pCpu6502);
@@ -32,9 +34,15 @@ public:
     float GetUpdateDT(void);
 	bool GetRunning();
 
+	void Tick();
+
 private:
     Tia*        pTia;
     Cpu6502*    pCpu6502;
     float		updatedt;
     bool		running;
+	uint32_t	tickFrequency;
+	double		tickedUpToTime;
+	double		tickUpToTime;
+	double		deltaTPerTick;
 };
