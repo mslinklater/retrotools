@@ -6,8 +6,6 @@ Makefile
 cmake_install.cmake
 retrotool
 *.bin
-.anjuta*
-*.anjuta
 imgui.ini
 c_cpp_properties.json
 config.json
