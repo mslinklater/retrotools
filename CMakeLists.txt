@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 
+enable_testing()
+add_test(testname build/vistella [test])
+
 if (UNIX)
 set(CMAKE_LIBRARY_PREFIXES lib)
 set(CMAKE_LIBRARY_SUFFIXES a)

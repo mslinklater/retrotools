@@ -82,7 +82,7 @@ void System::Update(float dt)
 
 void System::Tick()
 {
-	pTia->Tick();
+//	pTia->Tick();
 }
 
 float System::GetUpdateDT(void)

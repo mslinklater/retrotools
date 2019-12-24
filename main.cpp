@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl2.h"
@@ -53,6 +56,12 @@ int main(int argc, char* argv[])
 	// TODO: Output the command line to stdout
 	
 	LOGINFOF("Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+
+	int result = Catch::Session().run(argc, argv);
+	if(result != 0)
+	{
+		return result;
+	}
 
 	// check for command line args
 	
@@ -257,4 +266,12 @@ int main(int argc, char* argv[])
 	LOGINFO("Exiting...\n");
 	
 	return 0;
+}
+
+TEST_CASE("Test test case", "[test]")
+{
+	int a=2;
+	int b=3;
+
+	REQUIRE(a+b == 5);
 }
