@@ -9,15 +9,14 @@
 
 #include "../log.h"
 #include "memoryutils.h"
-#include "../components/memory.h"
+#include "../interfaces/imemory.h"
 
-eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead)
+eErrorCode MemoryUtils::LoadFileToMemory(IMemory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead)
 {
 	// work out what type of file it is
 	
 	eFileType fileType = kBinary;
-	
-	
+		
 	char* pLoadBuffer = 0;
 	
 	std::ifstream inFile;
@@ -56,7 +55,7 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
 				// straight copy to memory
 				for(size_t i=0 ; i<fileSize ; i++)
 				{
-					pMemory->Write(location + i, pLoadBuffer[i], false);
+					pMemory->DbgWrite(location + i, pLoadBuffer[i]);
 				}
 				break;
 			case kPrg:
@@ -64,7 +63,7 @@ eErrorCode MemoryUtils::LoadFileToMemory(Memory* pMemory, std::string filename, 
 				LOGINFOF("MemoryUtils::Loading file %s to 0x%04x - size 0x%04x", filename.c_str(), location, fileSize-2);
 				for(size_t i=0 ; i<fileSize-2 ; i++)
 				{
-					pMemory->Write(location + i, pLoadBuffer[i+2], false);
+					pMemory->DbgWrite(location + i, pLoadBuffer[i+2]);
 				}
 				break;
 		}

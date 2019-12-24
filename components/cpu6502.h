@@ -10,7 +10,7 @@
 #include "../system/command.h"
 #include "../config.h"
 
-class Memory;
+class IMemory;
 
 class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 {
@@ -104,7 +104,7 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 		
 		const Opcode* GetOpcode(uint16_t opcode) const;
 		
-		void SetMemory(Memory* mem)
+		void SetMemory(IMemory* mem)
 		{
 			pMemory = mem;
 		}
@@ -203,7 +203,7 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 		inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
 		inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
 
-		Memory*	pMemory;
+		IMemory*	pMemory;
 
 		std::set<uint16_t> 	breakpoints;
 };

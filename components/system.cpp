@@ -77,7 +77,6 @@ void System::Update(float dt)
 		tickedUpToTime += deltaTPerTick;
 		numTicks++;
 	}
-	LOGINFOF("Ticks %d", numTicks);
 }
 
 void System::Tick()

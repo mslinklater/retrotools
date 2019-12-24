@@ -10,7 +10,7 @@
 #include "log.h"
 #include "symbolstore.h"
 #include "components/cpu6502.h"
-#include "components/memory.h"
+#include "interfaces/imemory.h"
 
 //static const uint32_t kMaxDisasmLines = 4096;
 
@@ -29,7 +29,7 @@ void Disassembler::Init(void)
 
 }
 
-void Disassembler::SetMemory(Memory* mem)
+void Disassembler::SetMemory(IMemory* mem)
 {
 	pMemory = mem;
 }
@@ -67,14 +67,14 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 		thisLine.addressString = buffer;
 		thisLine.address = currentAddress;
 		
-		uint8_t opcode = pMemory->Read(currentAddress, false);
+		uint8_t opcode = pMemory->DbgRead(currentAddress);
 		const Cpu6502::Opcode* opcodeInfo = pCpu->GetOpcode(opcode);
 
 		if(opcodeInfo->valid)
 		{
 			// bytes
-			thisLine.param1 = pMemory->Read(currentAddress+1, false);
-			thisLine.param2 = pMemory->Read(currentAddress+2, false);
+			thisLine.param1 = pMemory->DbgRead(currentAddress+1);
+			thisLine.param2 = pMemory->DbgRead(currentAddress+2);
 			
 			switch(opcodeInfo->length)
 			{

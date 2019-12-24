@@ -10,7 +10,7 @@
 #include <vector>
 #include "../errorcodes.h"
 #include "../config.h"
-
+#include "../interfaces/imemory.h"
 
 /*
 2600 memory layout
@@ -41,7 +41,7 @@ XOR	& RAM Mask	= 0b000000010000000	NO - non zero answer
 class Cpu6502;
 class Tia;
 
-class Memory : public IConfigSerialisation
+class Memory2600 : public IConfigSerialisation, public IMemory
 {
 public:
 
@@ -87,17 +87,23 @@ public:
 		uint8_t flags;
 	};
 
-	Memory();
-	virtual ~Memory();
+	Memory2600();
+	virtual ~Memory2600();
 	
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
 	void 		SetTia(Tia* tia);
 	eErrorCode 	Destroy(void);
-	uint8_t 	Read(uint16_t address, bool affectFlags = true) const;
-	void 		Write(uint16_t address, uint8_t val, bool affectFlags = true);
+
+	// IMemory
+	virtual uint8_t 	Read(uint16_t address);
+	virtual void 		Write(uint16_t address, uint8_t val);
+	virtual uint8_t 	DbgRead(uint16_t address);
+	virtual void 		DbgWrite(uint16_t address, uint8_t val);
+	virtual void		SetHasBeenExecuted(uint16_t address, uint16_t numBytes);
+	// ~IMemory
+
 	uint8_t		GetFlag(uint16_t address);
-	void		SetHasBeenExecuted(uint16_t address, uint8_t numBytes);
 
 	void	SetReadBreakpoint(uint16_t address);
 	void	SetWriteBreakpoint(uint16_t address);
@@ -117,4 +123,7 @@ private:
 	uint32_t	ramSize;
 
 	Tia*	pTia;
+
+	uint8_t 	ReadImpl(uint16_t address, bool affectFlags);
+	void 		WriteImpl(uint16_t address, uint8_t val, bool affectFlags);
 };

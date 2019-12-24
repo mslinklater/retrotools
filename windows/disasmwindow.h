@@ -10,7 +10,7 @@
 
 class Disassembler;
 class Cpu6502;
-class Memory;
+class IMemory;
 
 class DisassemblyWindow : public WindowBase, public IConfigSerialisation
 {
@@ -28,7 +28,7 @@ public:
 	
 	void SetDisassembler(Disassembler* pDisasm);
 	void SetCPU(Cpu6502* pCpu);
-	void SetMemory(Memory* pMemory);
+	void SetMemory(IMemory* pMemory);
 	
 	// IConfigSerialisation
 	virtual void SerialiseState(json& object);
@@ -41,7 +41,7 @@ private:
 	
 	Disassembler* 	pDisasm;
 	Cpu6502*		pCpu;
-	Memory*			pMemory;
+	IMemory*		pMemory;
 	
 	bool showTIAHints;
 	bool followPC;

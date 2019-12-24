@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include "cpu6502.h"
-#include "memory.h"
+#include "../interfaces/imemory.h"
 #include "../log.h"
 #include "../commands.h"
 

@@ -42,6 +42,7 @@ add_subdirectory("imgui")
 add_subdirectory("components")
 add_subdirectory("system")
 add_subdirectory("windows")
+add_subdirectory("test")
 
 project (vistella VERSION 0.1)
 configure_file(version.h.in version.h)

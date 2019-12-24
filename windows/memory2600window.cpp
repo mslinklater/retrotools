@@ -3,26 +3,26 @@
 //
 // See file 'LICENSE' for license details
 
-#include "memorywindow.h"
+#include "memory2600window.h"
 #include "../imgui/imgui.h"
-#include "../components/memory.h"
+#include "../components/memory2600.h"
 #include "../log.h"
 
-MemoryWindow::MemoryWindow()
+Memory2600Window::Memory2600Window()
 : showReadWrite(false)
 {
 }
 
-MemoryWindow::~MemoryWindow()
+Memory2600Window::~Memory2600Window()
 {
 }
 
-void MemoryWindow::SetMemory(Memory* mem)
+void Memory2600Window::SetMemory(Memory2600* mem)
 {
 	pMemory = mem;
 }
 
-void MemoryWindow::SerialiseState(json& object)
+void Memory2600Window::SerialiseState(json& object)
 {
 	LOGINFO("MemoryWindow::SerialiseState");
 
@@ -31,7 +31,7 @@ void MemoryWindow::SerialiseState(json& object)
 	object["memorywindow"] = windowJson;
 }
 
-void MemoryWindow::DeserialiseState(json& object)
+void Memory2600Window::DeserialiseState(json& object)
 {
 	LOGINFO("MemoryWindow::DeserialiseState");
 	json windowJson = object["memorywindow"];
@@ -44,7 +44,7 @@ void MemoryWindow::DeserialiseState(json& object)
 	}
 }
 
-void MemoryWindow::DrawLine(uint16_t startAddress)
+void Memory2600Window::DrawLine(uint16_t startAddress)
 {
 	ImGui::Text("%04x", startAddress);
 
@@ -55,26 +55,26 @@ void MemoryWindow::DrawLine(uint16_t startAddress)
 
 		if(showReadWrite)
 		{
-			if(flags & Memory::kMemoryFlagReadFrom)
+			if(flags & Memory2600::kMemoryFlagReadFrom)
 			{
 				col.y = 1.0f;
 			}
-			if(flags & Memory::kMemoryFlagWrittenTo)
+			if(flags & Memory2600::kMemoryFlagWrittenTo)
 			{
 				col.z += 1.0f;
 			}
-			if((flags & Memory::kMemoryFlagWriteBreakpoint) || (flags & Memory::kMemoryFlagReadBreakpoint))
+			if((flags & Memory2600::kMemoryFlagWriteBreakpoint) || (flags & Memory2600::kMemoryFlagReadBreakpoint))
 			{
 				col.x += 1.0f;
 			}
 		}
 
 		ImGui::SameLine();
-		ImGui::TextColored(col, "%02x", pMemory->Read(startAddress+i, false));
+		ImGui::TextColored(col, "%02x", pMemory->DbgRead(startAddress+i));
 	}
 }
 
-void MemoryWindow::Draw(void)
+void Memory2600Window::Draw(void)
 {
 	if(pMemory == nullptr)
 	{

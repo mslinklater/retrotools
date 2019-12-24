@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include <string.h>
-#include "memory.h"
+#include "memory2600.h"
 #include "../log.h"
 #include "../errorcodes.h"
 #include "cpu6502.h"
@@ -12,15 +12,15 @@
 
 static Cpu6502* pCpu;
 
-Memory::Memory()
+Memory2600::Memory2600()
 {
 }
 
-Memory::~Memory()
+Memory2600::~Memory2600()
 {
 }
 	
-eErrorCode Memory::Init(void)
+eErrorCode Memory2600::Init(void)
 {
 	pRam = new MemoryByte[kRamSize];
 	ramSize = kRamSize;
@@ -33,14 +33,14 @@ eErrorCode Memory::Init(void)
 	return kError_OK;
 }
 
-void Memory::SetCPU(Cpu6502* cpu)
+void Memory2600::SetCPU(Cpu6502* cpu)
 {
     pCpu = cpu;
 }
 
-eErrorCode Memory::Destroy(void)
+eErrorCode Memory2600::Destroy(void)
 {
-	LOGINFO("Memory::Destroyed\n");
+	LOGINFO("Memory2600::Destroyed\n");
 
 	delete [] pRam;
 	pRam = 0;
@@ -51,7 +51,17 @@ eErrorCode Memory::Destroy(void)
 	return kError_OK;
 }
 
-void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
+void Memory2600::Write(uint16_t address, uint8_t val)
+{
+	WriteImpl(address, val, true);
+}
+
+void Memory2600::DbgWrite(uint16_t address, uint8_t val)
+{
+	WriteImpl(address, val, false);
+}
+
+void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 {
 	uint16_t physicalAddress = address & kAddressMask;
 
@@ -83,7 +93,17 @@ void Memory::Write(uint16_t address, uint8_t val, bool affectFlags)
 	}
 }
 
-uint8_t Memory::Read(uint16_t address, bool affectFlags) const
+uint8_t Memory2600::Read(uint16_t address)
+{
+	return ReadImpl(address, true);
+}
+
+uint8_t Memory2600::DbgRead(uint16_t address)
+{
+	return ReadImpl(address, false);
+}
+
+uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 {
 	uint16_t physicalAddress = address & kAddressMask;
 
@@ -118,7 +138,7 @@ uint8_t Memory::Read(uint16_t address, bool affectFlags) const
 	return 0;
 }
 
-uint8_t Memory::GetFlag(uint16_t address)
+uint8_t Memory2600::GetFlag(uint16_t address)
 {
 	uint16_t physicalAddress = address & kAddressMask;
 
@@ -143,7 +163,7 @@ uint8_t Memory::GetFlag(uint16_t address)
 	return 0;	
 }
 
-void Memory::SetHasBeenExecuted(uint16_t address, uint8_t numBytes)
+void Memory2600::SetHasBeenExecuted(uint16_t address, uint16_t numBytes)
 {
 	uint16_t physicalAddress = address & kAddressMask;
 
@@ -168,33 +188,33 @@ void Memory::SetHasBeenExecuted(uint16_t address, uint8_t numBytes)
 	}
 }
 
-void Memory::SerialiseState(json& object)
+void Memory2600::SerialiseState(json& object)
 {
-	LOGINFO("Memory::SerialiseState");
+	LOGINFO("Memory2600::SerialiseState");
 }
 
-void Memory::DeserialiseState(json& object)
+void Memory2600::DeserialiseState(json& object)
 {
-	LOGINFO("Memory::DeserialiseState");
+	LOGINFO("Memory2600::DeserialiseState");
 }
 
-void Memory::SetReadBreakpoint(uint16_t address)
-{
-}
-
-void Memory::SetWriteBreakpoint(uint16_t address)
+void Memory2600::SetReadBreakpoint(uint16_t address)
 {
 }
 
-void Memory::ClearReadBreakpoint(uint16_t address)
+void Memory2600::SetWriteBreakpoint(uint16_t address)
 {
 }
 
-void Memory::ClearWriteBreakpoint(uint16_t address)
+void Memory2600::ClearReadBreakpoint(uint16_t address)
 {
 }
 
-void Memory::SetTia(Tia* tia)
+void Memory2600::ClearWriteBreakpoint(uint16_t address)
+{
+}
+
+void Memory2600::SetTia(Tia* tia)
 {
 	pTia = tia;
 }

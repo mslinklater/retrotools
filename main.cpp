@@ -15,7 +15,7 @@
 
 #include "version.h"
 #include "config.h"
-#include "components/memory.h"
+#include "components/memory2600.h"
 #include "components/cpu6502.h"
 #include "components/tia.h"
 #include "components/system.h"
@@ -24,7 +24,7 @@
 #include "log.h"
 #include "commands.h"
 #include "windows/logwindow.h"
-#include "windows/memorywindow.h"
+#include "windows/memory2600window.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
 #include "windows/symbolwindow.h"
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 	// Do some 6502 stuff
 	// initialise components
 	
-	Memory* pMemory = new Memory();
+	Memory2600* pMemory = new Memory2600();
 	pConfig->AddStateSerialiser(pMemory);
 
 	Cpu6502* pCpu = new Cpu6502();
@@ -168,9 +168,9 @@ int main(int argc, char* argv[])
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pConfig->AddStateSerialiser(pLogWindow);
 	
-	MemoryWindow* pMemoryWindow = new MemoryWindow();
+	Memory2600Window* pMemoryWindow = new Memory2600Window();
 	pMemoryWindow->SetMemory(pMemory);
-	pWindowManager->AddWindow(pMemoryWindow, "Memory");
+	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");
 	pConfig->AddStateSerialiser(pMemoryWindow);
 	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();

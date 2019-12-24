@@ -9,9 +9,9 @@
 #include "../system/windowbase.h"
 #include "../config.h"
 
-class Memory;
+class Memory2600;
 
-class MemoryWindow : public WindowBase, public IConfigSerialisation
+class Memory2600Window : public WindowBase, public IConfigSerialisation
 {
 public:
 	
@@ -21,10 +21,10 @@ public:
 		char	key[16];		// representative figure for each byte
 	};
 	
-	MemoryWindow();
-	virtual ~MemoryWindow();
+	Memory2600Window();
+	virtual ~Memory2600Window();
 
-	void SetMemory(Memory* mem);
+	void SetMemory(Memory2600* mem);
 	
 	virtual void Draw(void);
 
@@ -36,7 +36,7 @@ public:
 private:
 	void DrawLine(uint16_t startAddress);
 	
-	Memory*		pMemory;
+	Memory2600*		pMemory;
 
 	bool showReadWrite;
 };

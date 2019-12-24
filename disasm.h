@@ -13,7 +13,7 @@
 #include "components/cpu6502.h"
 #include "system/command.h"
 
-class Memory;
+class IMemory;
 class Cpu6502;
 class SymbolStore;
 
@@ -59,7 +59,7 @@ public:
 	int			GetNumLines();
 	const Line& GetLine(int num);
 	
-	void		SetMemory(Memory* mem);
+	void		SetMemory(IMemory* mem);
 	void		SetCpu(Cpu6502* cpu);
 	void		SetSymbolStore(SymbolStore* store);
 	
@@ -73,10 +73,9 @@ private:
 	void UpdateDetailLines();
 	void UpdateLineLabels();
 	
-	const Memory*		pMemory;
+	IMemory*		pMemory;
 	const Cpu6502*		pCpu;
 	SymbolStore*	pSymbolStore;
 	
 	std::vector<Line>	lines;
-//	uint32_t			anonLabelCount;
 };

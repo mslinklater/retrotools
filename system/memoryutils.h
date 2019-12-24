@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "../errorcodes.h"
 
-class Memory;
+class IMemory;
 
 class MemoryUtils
 {
@@ -20,5 +20,5 @@ public:
 		kPrg
 	};
 	
-	static eErrorCode LoadFileToMemory(Memory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead);
+	static eErrorCode LoadFileToMemory(IMemory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead);
 };
