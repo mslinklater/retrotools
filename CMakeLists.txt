@@ -8,7 +8,7 @@ set(CMAKE_C_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 
 enable_testing()
-add_test(testname build/vistella [test])
+add_test(cpu6502 build/vistella [cpu6502])
 
 if (UNIX)
 set(CMAKE_LIBRARY_PREFIXES lib)
