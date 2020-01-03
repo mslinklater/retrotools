@@ -5,7 +5,7 @@
 
 #include "commands.h"
 #include "shared_cpp/command.h"
-#include "log.h"
+#include "shared_cpp/log.h"
 
 void Commands::NewProject()
 {
@@ -15,22 +15,6 @@ void Commands::NewProject()
 	CommandCenter::Instance()->Broadcast(cmd);
 }
 
-void Commands::ToggleWindow(std::string windowName)
-{
-	LOGINFOF("Commands::ToggleWindow %s", windowName.c_str());
-	Command cmd;
-	cmd.name = kToggleWindowCommand;
-	cmd.payload = windowName;
-	CommandCenter::Instance()->Broadcast(cmd);
-}
-
-void Commands::Quit(void)
-{
-	LOGINFO("Commands::Quit");
-	Command cmd;
-	cmd.name = kQuitCommand;
-	CommandCenter::Instance()->Broadcast(cmd);
-}
 
 void Commands::Halt(bool halt, std::string runType)
 {

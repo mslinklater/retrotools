@@ -1,5 +1,5 @@
 #include "tia.h"
-#include "../log.h"
+#include "../shared_cpp/log.h"
 #include "../commands.h"
 #include "../shared_cpp/command.h"
 

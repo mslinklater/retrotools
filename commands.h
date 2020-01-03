@@ -12,11 +12,6 @@ namespace Commands
 	void NewProject(void);
 	static const std::string kNewProjectCommand("NewProject");
 
-	void ToggleWindow(std::string windowName);
-	static const std::string kToggleWindowCommand("ToggleWindow");
-
-	void Quit(void);
-	static const std::string kQuitCommand("Quit");
 
 	void Halt(bool halt, std::string runType = "");
 	static const std::string kHaltCommand("Halt");

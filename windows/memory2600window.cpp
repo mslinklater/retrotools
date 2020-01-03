@@ -6,7 +6,7 @@
 #include "memory2600window.h"
 #include "../imgui/imgui.h"
 #include "../components/memory2600.h"
-#include "../log.h"
+#include "../shared_cpp/log.h"
 
 Memory2600Window::Memory2600Window()
 : showReadWrite(false)

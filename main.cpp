@@ -21,7 +21,7 @@
 #include "components/system.h"
 #include "disasm.h"
 #include "symbolstore.h"
-#include "log.h"
+#include "shared_cpp/log.h"
 #include "commands.h"
 #include "windows/logwindow.h"
 #include "windows/memory2600window.h"

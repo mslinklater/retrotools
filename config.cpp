@@ -10,7 +10,7 @@
 #include <cstdint>
 
 #include "config.h"
-#include "log.h"
+#include "shared_cpp/log.h"
 
 Config::Config()
 {

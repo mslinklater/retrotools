@@ -6,7 +6,7 @@
 #include "system.h"
 #include "tia.h"
 #include "cpu6502.h"
-#include "../log.h"
+#include "../shared_cpp/log.h"
 #include "../commands.h"
 
 System::System()

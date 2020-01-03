@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include "logwindow.h"
-#include "../log.h"
+#include "../shared_cpp/log.h"
 #include "../imgui/imgui.h"
 
 LogWindow::LogWindow()

@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <string.h>
 #include "symbolstore.h"
-#include "log.h"
+#include "shared_cpp/log.h"
 #include "json.hpp"
 using json = nlohmann::json;
 

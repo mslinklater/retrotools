@@ -7,7 +7,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../log.h"
+#include "../shared_cpp/log.h"
 #include "memoryutils.h"
 #include "../interfaces/imemory.h"
 
