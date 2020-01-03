@@ -9,7 +9,7 @@
 #include "../symbolstore.h"
 #include "../system/imguihelpers.h"
 #include "../theme.h"
-#include "../system/command.h"
+#include "../shared_cpp/command.h"
 
 SymbolWindow::SymbolWindow()
 : filterFlags(0)

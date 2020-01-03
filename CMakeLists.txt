@@ -43,6 +43,7 @@ add_subdirectory("components")
 add_subdirectory("system")
 add_subdirectory("windows")
 add_subdirectory("test")
+add_subdirectory("shared_cpp")
 
 project (vistella VERSION 0.1)
 configure_file(version.h.in version.h)

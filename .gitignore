@@ -13,3 +13,4 @@ vistella
 version.h
 Testing/
 *.cmake
+shared_cpp/

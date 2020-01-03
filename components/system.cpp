@@ -26,6 +26,7 @@ System::~System()
 void System::TickTia()
 {
 	Commands::Halt(false, Commands::kHaltCommandTickTia);
+	running = true;
 }
 
 void System::TickCpu()
@@ -74,6 +75,7 @@ void System::Update(float dt)
 
 	while(tickedUpToTime <= tickUpToTime)
 	{
+		pTia->Tick();
 		tickedUpToTime += deltaTPerTick;
 		numTicks++;
 	}

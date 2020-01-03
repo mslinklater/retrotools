@@ -31,7 +31,7 @@
 #include "windows/cpu6502window.h"
 #include "windows/tiawindow.h"
 #include "windows/systemwindow.h"
-#include "system/command.h"
+#include "shared_cpp/command.h"
 #include "system/memoryutils.h"
 #include "system/windowmanager.h"
 
@@ -55,7 +55,10 @@ int main(int argc, char* argv[])
 	uint64_t	performanceCounterLast;
 	// TODO: Output the command line to stdout
 	
-	LOGINFOF("Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+	char titleString[64];
+	sprintf(titleString, "Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+
+	LOGINFO(titleString);
 
 	int result = Catch::Session().run(argc, argv);
 	if(result != 0)
@@ -84,7 +87,7 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MAXIMIZED);	
-	SDL_Window* window = SDL_CreateWindow(	"Vistella", 
+	SDL_Window* window = SDL_CreateWindow(	titleString, 
 											SDL_WINDOWPOS_CENTERED, 
 											SDL_WINDOWPOS_CENTERED, 
 											640, 480, windowFlags);
@@ -266,12 +269,4 @@ int main(int argc, char* argv[])
 	LOGINFO("Exiting...\n");
 	
 	return 0;
-}
-
-TEST_CASE("Test test case", "[test]")
-{
-	int a=2;
-	int b=3;
-
-	REQUIRE(a+b == 5);
 }

@@ -5,7 +5,7 @@
 
 #include "mainwindow.h"
 #include "../imgui/imgui.h"
-#include "../system/command.h"
+#include "../shared_cpp/command.h"
 #include "../commands.h"
 #include "../system/windowmanager.h"
 

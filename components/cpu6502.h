@@ -7,7 +7,7 @@
 #include <string>
 #include <set>
 
-#include "../system/command.h"
+#include "../shared_cpp/command.h"
 #include "../config.h"
 
 class IMemory;

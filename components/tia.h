@@ -20,8 +20,9 @@ Each line consists of
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
+#include "../interfaces/icommandprocessor.h"
 
-class Tia : public ITickable
+class Tia : public ITickable, public ICommandProcessor
 {
 public:
 
@@ -201,8 +202,12 @@ public:
     uint8_t GetCXCLR(void){return CXCLR;}
 
     // ITickable
-    void Tick(ITickable::Mode mode);
+    void Tick();
     // ~ITickable
+
+	// ICommandProcessor
+	virtual bool HandleCommand(const Command& command);
+	// ~ICommandProcessor
 
 private:
 //    uint8_t pixels[228*262];

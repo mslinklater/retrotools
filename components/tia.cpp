@@ -1,9 +1,11 @@
 #include "tia.h"
 #include "../log.h"
+#include "../commands.h"
+#include "../shared_cpp/command.h"
 
 Tia::Tia()
 {
-
+	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 Tia::~Tia()
@@ -11,7 +13,7 @@ Tia::~Tia()
 
 }
 
-void Tia::Tick(ITickable::Mode mode)
+void Tia::Tick()
 {
 
 }
@@ -195,6 +197,11 @@ void Tia::Write(uint8_t address, uint8_t value)
             LOGERRORF("Unknown TIA write 0x%02x", address);
             break;
     }
+}
+
+bool Tia::HandleCommand(const Command& command)
+{
+	return false;
 }
 
 uint8_t Tia::GetCXM0P()

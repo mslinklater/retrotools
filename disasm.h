@@ -11,7 +11,7 @@
 
 #include "errorcodes.h"
 #include "components/cpu6502.h"
-#include "system/command.h"
+#include "shared_cpp/command.h"
 
 class IMemory;
 class Cpu6502;

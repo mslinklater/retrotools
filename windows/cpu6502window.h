@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../system/windowbase.h"
+#include "../shared_cpp/windowbase.h"
 #include "../components/cpu6502.h"
 
 class Cpu6502Window : public WindowBase

@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include "commands.h"
-#include "system/command.h"
+#include "shared_cpp/command.h"
 #include "log.h"
 
 void Commands::NewProject()

@@ -5,9 +5,7 @@
 	org  $1000
 
 Start   lda	#$00
+		sta $4000
 		brk
-	
-; Here we skip to address $FFFC and define a word with the
-; address of where the CPU should start fetching instructions.
-; This also fills out the ROM size to $1000 (4k) bytes
-;	org $1100
+
+ 
