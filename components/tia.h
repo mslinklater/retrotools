@@ -20,7 +20,7 @@ Each line consists of
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "../interfaces/icommandprocessor.h"
+#include "../shared_cpp/icommandprocessor.h"
 
 class Tia : public ITickable, public ICommandProcessor
 {

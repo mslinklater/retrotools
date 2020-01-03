@@ -7,7 +7,7 @@
 #include "../imgui/imgui.h"
 #include "../shared_cpp/command.h"
 #include "../commands.h"
-#include "../system/windowmanager.h"
+#include "../shared_cpp/windowmanager.h"
 
 MainWindow::MainWindow()
 :open(true)

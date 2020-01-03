@@ -33,7 +33,7 @@
 #include "windows/systemwindow.h"
 #include "shared_cpp/command.h"
 #include "system/memoryutils.h"
-#include "system/windowmanager.h"
+#include "shared_cpp/windowmanager.h"
 
 static Config* pConfig = 0;
 

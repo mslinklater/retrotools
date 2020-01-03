@@ -6,7 +6,7 @@
 #pragma once
 
 #include <inttypes.h>
-#include "../system/windowbase.h"
+#include "../shared_cpp/windowbase.h"
 
 class System;
 
