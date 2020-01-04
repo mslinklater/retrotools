@@ -6,7 +6,7 @@
 #pragma once
 #include <string>
 #include <cstdint>
-#include "../errorcodes.h"
+#include "../shared_cpp/errorcodes.h"
 
 class IMemory;
 

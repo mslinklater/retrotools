@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "../errorcodes.h"
+#include "../shared_cpp/errorcodes.h"
 #include "../config.h"
 #include "../interfaces/imemory.h"
 
@@ -41,7 +41,7 @@ XOR	& RAM Mask	= 0b000000010000000	NO - non zero answer
 class Cpu6502;
 class Tia;
 
-class Memory2600 : public IConfigSerialisation, public IMemory
+class Memory2600 : public IStateSerialisation, public IMemory
 {
 public:
 
@@ -110,10 +110,10 @@ public:
 	void	ClearReadBreakpoint(uint16_t address);
 	void	ClearWriteBreakpoint(uint16_t address);
 
-	// IConfigSerialisation
+	// IStateSerialisation
 	void SerialiseState(json& object);
 	void DeserialiseState(json& object);
-	// ~IConfigSerialisation
+	// ~IStateSerialisation
 
 private:
 	MemoryByte* pRom;

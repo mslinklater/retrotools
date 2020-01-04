@@ -7,7 +7,7 @@
 
 #include <string>
 #include <stdint.h>
-#include "json.hpp"
+#include "shared_cpp/json.hpp"
 using json = nlohmann::json;
 
 class Symbol

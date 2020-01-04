@@ -8,7 +8,7 @@
 #include "../shared_cpp/windowmanager.h"
 #include "../shared_cpp/windowbase.h"
 
-class LogWindow : public WindowBase, public IConfigSerialisation
+class LogWindow : public WindowBase, public IStateSerialisation
 {
 public:
 	LogWindow();
@@ -18,10 +18,10 @@ public:
 	virtual void Draw();
 	// ~WindowBase
 
-	// IConfigSerialisation
+	// IStateSerialisation
 	virtual void SerialiseState(json& object);
 	virtual void DeserialiseState(json& object);
-	// ~IConfigSerialisation
+	// ~IStateSerialisation
 
 private:
 	bool showInfo;

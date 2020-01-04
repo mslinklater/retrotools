@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 
-#include "errorcodes.h"
+#include "shared_cpp/errorcodes.h"
 #include "components/cpu6502.h"
 #include "shared_cpp/command.h"
 

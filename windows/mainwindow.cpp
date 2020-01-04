@@ -46,7 +46,7 @@ void MainWindow::Draw()
 			if(ImGui::MenuItem("Quit"))
 			{
 				// quit session
-				Commands::Quit();
+				SharedCommands::Quit();
 			}
 			ImGui::EndMenu();
 		}
@@ -60,7 +60,7 @@ void MainWindow::Draw()
 			{
 				if(ImGui::MenuItem(name.c_str()))
 				{
-					Commands::ToggleWindow(name);
+					SharedCommands::ToggleWindow(name);
 				}	   
 			}
 			ImGui::EndMenu();

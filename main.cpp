@@ -34,6 +34,7 @@
 #include "shared_cpp/command.h"
 #include "system/memoryutils.h"
 #include "shared_cpp/windowmanager.h"
+#include "shared_cpp/stateserialiser.h"
 
 static Config* pConfig = 0;
 
@@ -108,17 +109,18 @@ int main(int argc, char* argv[])
 
 	// Initialise window manager
 
+	StateSerialiser* pStateSerialiser = new StateSerialiser();
 	WindowManager* pWindowManager = new WindowManager();
-	pWindowManager->Init(pConfig);
+	pWindowManager->Init(pStateSerialiser);
 	
 	// Do some 6502 stuff
 	// initialise components
 	
 	Memory2600* pMemory = new Memory2600();
-	pConfig->AddStateSerialiser(pMemory);
+	pStateSerialiser->AddStateSerialiser(pMemory);
 
 	Cpu6502* pCpu = new Cpu6502();
-	pConfig->AddStateSerialiser(pCpu);
+	pStateSerialiser->AddStateSerialiser(pCpu);
 
 	Tia* pTia = new Tia();
 
@@ -128,7 +130,7 @@ int main(int argc, char* argv[])
 
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
-	pConfig->AddStateSerialiser(pSymbolStore);
+	pStateSerialiser->AddStateSerialiser(pSymbolStore);
 	
 	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
 	{
@@ -169,19 +171,19 @@ int main(int argc, char* argv[])
 	// Log Window
 	LogWindow* pLogWindow = new LogWindow();
 	pWindowManager->AddWindow(pLogWindow, "Log");
-	pConfig->AddStateSerialiser(pLogWindow);
+	pStateSerialiser->AddStateSerialiser(pLogWindow);
 	
 	Memory2600Window* pMemoryWindow = new Memory2600Window();
 	pMemoryWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");
-	pConfig->AddStateSerialiser(pMemoryWindow);
+	pStateSerialiser->AddStateSerialiser(pMemoryWindow);
 	
 	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
 	pDisasmWindow->SetDisassembler(pDisassembler);
 	pDisasmWindow->SetCPU(pCpu);
 	pDisasmWindow->SetMemory(pMemory);
 	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
-	pConfig->AddStateSerialiser(pDisasmWindow);
+	pStateSerialiser->AddStateSerialiser(pDisasmWindow);
 
 	MainWindow* pMainWindow = new MainWindow();
 	pMainWindow->SetWindowManager(pWindowManager);
@@ -202,7 +204,7 @@ int main(int argc, char* argv[])
 	pSystemWindow->SetSystem(pSystem);
 	pWindowManager->AddWindow(pSystemWindow, "System");
 
-	pConfig->DeserialiseAppConfig();
+	pStateSerialiser->DeserialiseAppConfig();
 
 	bool done = false;
 	bool show_demo_window = true;
@@ -253,7 +255,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Save the state of the windows
-	pConfig->SerialiseAppConfig();
+	pStateSerialiser->SerialiseAppConfig();
 
 	// Cleanup
 	ImGui_ImplOpenGL2_Shutdown();

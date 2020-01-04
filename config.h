@@ -6,8 +6,8 @@
 #pragma once
 #include <cstdint>
 #include <string>
-#include "errorcodes.h"
-#include "interfaces/iconfigserialisation.h"
+#include "shared_cpp/errorcodes.h"
+#include "shared_cpp/istateserialisation.h"
 
 class Config
 {
@@ -22,10 +22,7 @@ public:
 	std::string GetLoadFilename();
 	uint16_t 	GetLoadAddress();
 	
-	void AddStateSerialiser(IConfigSerialisation* serialiser);
-
-	void SerialiseAppConfig();
-	void DeserialiseAppConfig();
+	// remove
 	
 private:
 	std::string loadROMFilename;
@@ -33,6 +30,6 @@ private:
 	
 	json	appConfig;
 
-	std::vector<IConfigSerialisation*> serialisers;
+	// remove
 };
 

@@ -12,7 +12,7 @@
 
 class IMemory;
 
-class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
+class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 {
 	public:
 		static const uint8_t kNegativeSetMask = 0x80;
@@ -150,10 +150,10 @@ class Cpu6502 : public ICommandProcessor, public IConfigSerialisation
 			uint8_t		sp;
 		};
 
-		// IConfigSerialisation
+		// IStateSerialisation
 		void SerialiseState(json& object) override;
 		void DeserialiseState(json& object) override;
-		// ~IConfigSerialisation
+		// ~IStateSerialisation
 
 		const std::set<uint16_t>&	GetBreakpoints();
 		void SetBreakpoint(uint16_t addr);

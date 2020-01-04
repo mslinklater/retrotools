@@ -11,7 +11,7 @@
 
 class Memory2600;
 
-class Memory2600Window : public WindowBase, public IConfigSerialisation
+class Memory2600Window : public WindowBase, public IStateSerialisation
 {
 public:
 	
@@ -28,10 +28,10 @@ public:
 	
 	virtual void Draw(void);
 
-	// IConfigSerialisation
+	// IStateSerialisation
 	void SerialiseState(json& object);
 	void DeserialiseState(json& object);
-	// ~IConfigSerialisation
+	// ~IStateSerialisation
 
 private:
 	void DrawLine(uint16_t startAddress);

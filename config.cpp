@@ -24,59 +24,6 @@ void Config::Destroy(void)
 {
 }
 
-void Config::SerialiseAppConfig()
-{
-	LOGINFO("Config::SerialiseAppConfig");
-	json outputJson;
-
-	// grab info
-
-	for(auto serialiser : serialisers)
-	{
-		serialiser->SerialiseState(outputJson);
-	}
-
-	std::string outputString = outputJson.dump();
-	FILE* outputFile = fopen("config.json", "w");
-	if(outputFile)
-	{
-		fwrite(outputString.c_str(), outputString.size(), 1, outputFile);
-		fclose(outputFile);
-	}
-}
-
-void Config::DeserialiseAppConfig()
-{
-	LOGINFO("Config::DeserialiseAppConfig");
-
-	json inputJson;
-
-	// Load from file.
-	FILE* hFile = fopen("config.json", "r");
-	if(hFile != 0)
-	{
-		fseek(hFile, 0, SEEK_END);
-		size_t fileSize = ftell(hFile);
-		fseek(hFile, 0, SEEK_SET);
-		char* pBuffer = new char[fileSize+1];
-		fread(pBuffer, 1, fileSize, hFile);
-		pBuffer[fileSize] = 0;
-
-		inputJson = json::parse(pBuffer);
-
-		// distribute info
-		for(auto serialiser : serialisers)
-		{
-			serialiser->DeserialiseState(inputJson);
-		}
-	}
-}
-
-void Config::AddStateSerialiser(IConfigSerialisation* serialiser)
-{
-	serialisers.push_back(serialiser);
-}
-
 eErrorCode Config::ParseCommandLine(int32_t argc, char* argv[])
 {
 	LOGINFO("Config::Parsing command line...");

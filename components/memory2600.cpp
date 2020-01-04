@@ -6,7 +6,7 @@
 #include <string.h>
 #include "memory2600.h"
 #include "../shared_cpp/log.h"
-#include "../errorcodes.h"
+#include "../shared_cpp/errorcodes.h"
 #include "cpu6502.h"
 #include "tia.h"
 

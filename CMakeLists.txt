@@ -36,7 +36,7 @@ set(CMAKE_MODULE_PATH C:\\Users\\mlinklater\\Code\\SDL2-2.0.10\\include)
 endif (WIN32)
 
 
-set(SOURCE_FILES commands.cpp config.cpp disasm.cpp errorcodes.cpp main.cpp symbol.cpp symbolstore.cpp)
+set(SOURCE_FILES commands.cpp config.cpp disasm.cpp main.cpp symbol.cpp symbolstore.cpp)
 
 add_subdirectory("imgui")
 add_subdirectory("components")

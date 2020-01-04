@@ -7,11 +7,11 @@
 
 #include <map>
 #include <vector>
-#include "errorcodes.h"
+#include "shared_cpp/errorcodes.h"
 #include "symbol.h"
 #include "config.h"
 
-class SymbolStore : public IConfigSerialisation
+class SymbolStore : public IStateSerialisation
 {
 public:
 
@@ -37,10 +37,10 @@ public:
 
 	std::vector<Symbol> GetAll();
 
-	// IConfigSerialisation	
+	// IStateSerialisation	
 	void SerialiseState(json& object);
 	void DeserialiseState(json& object);
-	// ~IConfigSerialisation	
+	// ~IStateSerialisation	
 
 private:
 	std::map<uint16_t,Symbol> symbolMap;

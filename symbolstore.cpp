@@ -9,7 +9,7 @@
 #include <string.h>
 #include "symbolstore.h"
 #include "shared_cpp/log.h"
-#include "json.hpp"
+#include "shared_cpp/json.hpp"
 using json = nlohmann::json;
 
 SymbolStore::SymbolStore()

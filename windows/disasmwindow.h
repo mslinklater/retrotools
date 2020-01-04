@@ -12,7 +12,7 @@ class Disassembler;
 class Cpu6502;
 class IMemory;
 
-class DisassemblyWindow : public WindowBase, public IConfigSerialisation
+class DisassemblyWindow : public WindowBase, public IStateSerialisation
 {
 public:
 	
@@ -30,10 +30,10 @@ public:
 	void SetCPU(Cpu6502* pCpu);
 	void SetMemory(IMemory* pMemory);
 	
-	// IConfigSerialisation
+	// IStateSerialisation
 	virtual void SerialiseState(json& object);
 	virtual void DeserialiseState(json& object);
-	// ~IConfigSerialisation
+	// ~IStateSerialisation
 private:
 	
 	void DrawHeader(void);
