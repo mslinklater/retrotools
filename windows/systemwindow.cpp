@@ -30,7 +30,7 @@ void SystemWindow::Draw(void)
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 		if(ImGui::Button("RUNNING"))
 		{
-			pSystem->Halt();
+			Commands::Halt(true);
 		}
 		ImGui::PopStyleColor(1);
 	}
@@ -39,7 +39,7 @@ void SystemWindow::Draw(void)
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 		if(ImGui::Button("HALTED!"))
 		{
-			pSystem->Run();
+			Commands::Halt(false, Commands::kHaltCommandRun);
 		}
 		ImGui::PopStyleColor(1);
 	}
@@ -49,28 +49,28 @@ void SystemWindow::Draw(void)
     ImGui::Text("TIA");
     if(ImGui::Button("Tick"))
     {
-        pSystem->TickTia();
+		Commands::Halt(false, Commands::kHaltCommandTickTia);
     }
     ImGui::SameLine();
     if(ImGui::Button("HBlank"))
     {
-        pSystem->TickHBlank();
+		Commands::Halt(false, Commands::kHaltCommandHBlank);
     }
     ImGui::SameLine();
     if(ImGui::Button("VBlank"))
     {
-        pSystem->TickVBlank();
+		Commands::Halt(false, Commands::kHaltCommandVBlank);
     }
     ImGui::Separator();
     ImGui::Text("CPU");
     if(ImGui::Button("Tick"))
     {
-        pSystem->TickCpu();
+		Commands::Halt(false, Commands::kHaltCommandTickCpu);
     }
     ImGui::SameLine();
     if(ImGui::Button("Instruction"))
     {
-        pSystem->TickCpuInstruction();
+		Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
     }
 }
 

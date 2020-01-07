@@ -7,23 +7,24 @@
 
 #include <vector>
 #include <inttypes.h>
+#include "../shared_cpp/icommandprocessor.h"
 
 class ITickable;
 class Tia;
 class Cpu6502;
 
-class System
+class System : public ICommandProcessor
 {
 public:
 
     System();
     virtual ~System();
 
-    void TickTia();
-    void TickCpu();
-    void TickCpuInstruction();
-    void TickHBlank();
-    void TickVBlank();
+//    void TickTia();
+//    void TickCpu();
+//    void TickCpuInstruction();
+//    void TickHBlank();
+//    void TickVBlank();
     void Run();
 	void Halt();
 
@@ -35,6 +36,10 @@ public:
 	bool GetRunning();
 
 	void Tick();
+
+	// ICommandProcessor
+	virtual bool HandleCommand(const Command& command);
+	// ~ICommandProcessor
 
 private:
     Tia*        pTia;

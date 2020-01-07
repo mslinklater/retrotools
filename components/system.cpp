@@ -10,12 +10,13 @@
 #include "../commands.h"
 
 System::System()
-: tickFrequency(3584160)
+: running(false)
+, tickFrequency(3584160)
 , tickedUpToTime(0.0)
 , tickUpToTime(0.0)
 , deltaTPerTick(1.0 / tickFrequency)
 {
-
+	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 System::~System()
@@ -23,6 +24,16 @@ System::~System()
 
 }
 
+bool System::HandleCommand(const Command& command)
+{
+	if(command.name == Commands::kHaltCommand)
+	{
+		running = (command.payload == "true");
+	}
+	return false;
+}
+
+#if 0
 void System::TickTia()
 {
 	Commands::Halt(false, Commands::kHaltCommandTickTia);
@@ -32,27 +43,32 @@ void System::TickTia()
 void System::TickCpu()
 {
 	Commands::Halt(false, Commands::kHaltCommandTickCpu);
+	running = true;
 }
 
 void System::TickCpuInstruction()
 {
 	Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
+	running = true;
 }
 
 void System::TickHBlank()
 {
 	Commands::Halt(false, Commands::kHaltCommandHBlank);
+	running = true;
 }
 
 void System::TickVBlank()
 {
 	Commands::Halt(false, Commands::kHaltCommandVBlank);
+	running = true;
 }
+#endif
 
 void System::Run()
 {
-	running = true;
 	Commands::Halt(false, Commands::kHaltCommandRun);
+	running = true;
 }
 
 void System::Halt()

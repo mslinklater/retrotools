@@ -272,4 +272,8 @@ private:
     uint8_t HMOVE;
     uint8_t HMCLR;
     uint8_t CXCLR;
+
+	bool bHaltOnTick;
+	bool bHaltOnHBlank;
+	bool bHaltOnVBlank;
 };

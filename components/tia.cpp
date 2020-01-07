@@ -4,6 +4,9 @@
 #include "../shared_cpp/command.h"
 
 Tia::Tia()
+: bHaltOnTick(false)
+, bHaltOnHBlank(false)
+, bHaltOnVBlank(false)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
@@ -15,7 +18,13 @@ Tia::~Tia()
 
 void Tia::Tick()
 {
+	// do tick
 
+	if(bHaltOnTick)
+	{
+		Commands::Halt(true);
+		bHaltOnTick = false;
+	}
 }
 
 uint8_t Tia::Read(uint8_t address)
@@ -201,6 +210,10 @@ void Tia::Write(uint8_t address, uint8_t value)
 
 bool Tia::HandleCommand(const Command& command)
 {
+	if(command.name == Commands::kHaltCommandTickTia)
+	{
+		bHaltOnTick = true;
+	}
 	return false;
 }
 

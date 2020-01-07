@@ -8,6 +8,7 @@ retrotool
 *.bin
 imgui.ini
 c_cpp_properties.json
+state.json
 config.json
 vistella
 version.h
