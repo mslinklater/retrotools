@@ -73,7 +73,7 @@ void SymbolWindow::Draw()
 		{
 			Command refreshCmd;
 			refreshCmd.name = "refreshDisassembly";
-			CommandCenter::Instance()->Broadcast(refreshCmd);
+			CommandCenter::Instance()->QueueForBroadcast(refreshCmd);
 		}
 		ImGui::Separator();
 	}
