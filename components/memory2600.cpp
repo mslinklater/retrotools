@@ -28,7 +28,7 @@ eErrorCode Memory2600::Init(void)
 	pRom = new MemoryByte[kRomSize];
 	romSize = kRomSize;
 
-	LOGINFO("Memory::Initialised\n");
+	LOGINFO("Memory2600::Initialised\n");
 
 	return kError_OK;
 }

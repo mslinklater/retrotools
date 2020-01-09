@@ -7,6 +7,7 @@ Tia::Tia()
 : bHaltOnTick(false)
 , bHaltOnHBlank(false)
 , bHaltOnVBlank(false)
+, ticksSinceBoot(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
@@ -210,9 +211,20 @@ void Tia::Write(uint8_t address, uint8_t value)
 
 bool Tia::HandleCommand(const Command& command)
 {
-	if(command.name == Commands::kHaltCommandTickTia)
+	if(command.name == Commands::kHaltCommand)
 	{
-		bHaltOnTick = true;
+		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandTickTia))
+		{
+			bHaltOnTick = true;
+		}
+		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandHBlank))
+		{
+			bHaltOnHBlank = true;
+		}
+		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandVBlank))
+		{
+			bHaltOnVBlank = true;
+		}
 	}
 	return false;
 }

@@ -21,5 +21,4 @@ namespace Commands
 	static const std::string kHaltCommandTickCpu("TickCpu");
 	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
 	static const std::string kHaltCommandRun("Run");
-
 };

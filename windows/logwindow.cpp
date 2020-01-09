@@ -36,6 +36,10 @@ void LogWindow::Draw(void)
 	ImGui::Checkbox("Warnings", &showWarnings);
 	ImGui::SameLine();
 	ImGui::Checkbox("Errors", &showErrors);
+	if(ImGui::Button("Reset Categories"))
+	{
+		Log::Instance()->ResetCategories();
+	}
 	
 	ImGui::Separator();
 	ImGui::BeginChild("output", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);

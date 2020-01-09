@@ -28,53 +28,9 @@ bool System::HandleCommand(const Command& command)
 {
 	if(command.name == Commands::kHaltCommand)
 	{
-		running = (command.payload == "true");
+		running = (command.payload == "false");
 	}
 	return false;
-}
-
-#if 0
-void System::TickTia()
-{
-	Commands::Halt(false, Commands::kHaltCommandTickTia);
-	running = true;
-}
-
-void System::TickCpu()
-{
-	Commands::Halt(false, Commands::kHaltCommandTickCpu);
-	running = true;
-}
-
-void System::TickCpuInstruction()
-{
-	Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
-	running = true;
-}
-
-void System::TickHBlank()
-{
-	Commands::Halt(false, Commands::kHaltCommandHBlank);
-	running = true;
-}
-
-void System::TickVBlank()
-{
-	Commands::Halt(false, Commands::kHaltCommandVBlank);
-	running = true;
-}
-#endif
-
-void System::Run()
-{
-	Commands::Halt(false, Commands::kHaltCommandRun);
-	running = true;
-}
-
-void System::Halt()
-{
-	running = false;
-	Commands::Halt(true);
 }
 
 void System::Update(float dt)

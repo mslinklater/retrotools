@@ -20,14 +20,6 @@ public:
     System();
     virtual ~System();
 
-//    void TickTia();
-//    void TickCpu();
-//    void TickCpuInstruction();
-//    void TickHBlank();
-//    void TickVBlank();
-    void Run();
-	void Halt();
-
     void SetTia(Tia* pTia);
     void SetCpu6502(Cpu6502* pCpu6502);
 

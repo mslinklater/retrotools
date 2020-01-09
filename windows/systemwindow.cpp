@@ -47,7 +47,7 @@ void SystemWindow::Draw(void)
     ImGui::Text("fps:%f", 1.0f / pSystem->GetUpdateDT());
     ImGui::Separator();
     ImGui::Text("TIA");
-    if(ImGui::Button("Tick"))
+    if(ImGui::Button("TickTIA"))
     {
 		Commands::Halt(false, Commands::kHaltCommandTickTia);
     }
@@ -63,7 +63,7 @@ void SystemWindow::Draw(void)
     }
     ImGui::Separator();
     ImGui::Text("CPU");
-    if(ImGui::Button("Tick"))
+    if(ImGui::Button("TickCPU"))
     {
 		Commands::Halt(false, Commands::kHaltCommandTickCpu);
     }
