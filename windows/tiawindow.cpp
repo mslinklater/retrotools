@@ -21,6 +21,8 @@ void TiaWindow::Draw(void)
 {
     ImGui::Text("Write registers");
     ImGui::Separator();
+	ImGui::Text("Ticks: %" PRId64, pTia->GetTicksSinceBoot());
+    ImGui::Separator();
     ImGui::Columns(4, NULL, true);
     ImGui::Text(" VSYNC:0x%02x", pTia->GetVSYNC());
     ImGui::NextColumn();

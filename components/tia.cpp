@@ -21,6 +21,8 @@ void Tia::Tick()
 {
 	// do tick
 
+	ticksSinceBoot++;
+
 	if(bHaltOnTick)
 	{
 		Commands::Halt(true);

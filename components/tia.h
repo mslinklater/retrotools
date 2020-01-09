@@ -155,6 +155,8 @@ public:
     void SetHMCLR(uint8_t val);
     void SetCXCLR(uint8_t val);
 
+	uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
+
     // Read access to write only registers
     uint8_t GetVSYNC(void){return VSYNC;}
     uint8_t GetVBLANK(void){return VBLANK;}

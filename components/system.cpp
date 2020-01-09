@@ -45,7 +45,7 @@ void System::Update(float dt)
 
 	uint32_t numTicks = 0;
 
-	while(tickedUpToTime <= tickUpToTime)
+	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
 		tickedUpToTime += deltaTPerTick;
