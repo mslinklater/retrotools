@@ -276,4 +276,6 @@ private:
 	bool bHaltOnTick;
 	bool bHaltOnHBlank;
 	bool bHaltOnVBlank;
+
+	uint64_t	ticksSinceBoot;
 };
