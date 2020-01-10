@@ -19,14 +19,22 @@
 // Constructor
 
 Cpu6502::Cpu6502()
-: halted(0)
+: ticksSinceBoot(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 void Cpu6502::Tick()
 {
-	
+	// do work
+
+	ticksSinceBoot++;
+
+	if(haltOnTick)
+	{
+		Commands::Halt(true);
+		haltOnTick = false;
+	}
 }
 
 const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
@@ -550,10 +558,10 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		}
 	}
 
-	if(halted)
-	{
-		return;
-	}
+//	if(halted)
+//	{
+//		return;
+//	}
 
 	uint8_t opcode = pMemory->Read(reg.pc);
 	Opcode* pOpcode = &opcodes[opcode];
@@ -1049,16 +1057,6 @@ void Cpu6502::DeserialiseState(json& object)
 	}
 }
 
-bool Cpu6502::GetHalted()
-{
-	return halted;
-}
-
-//void Cpu6502::SetHalted(bool state)
-//{
-//	halted = state;
-//}
-
 const std::set<uint16_t>&	Cpu6502::GetBreakpoints()
 {
 	return breakpoints;
@@ -1088,7 +1086,10 @@ bool Cpu6502::HandleCommand(const Command& command)
 {
 	if(command.name == Commands::kHaltCommand)
 	{
-		autoRun = false;
+		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandTickCpu))
+		{
+			haltOnTick = true;
+		}
 	}
 	
 	return false;

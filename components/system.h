@@ -42,4 +42,5 @@ private:
 	double		tickedUpToTime;
 	double		tickUpToTime;
 	double		deltaTPerTick;
+	uint32_t	cpuTickDelay;	
 };

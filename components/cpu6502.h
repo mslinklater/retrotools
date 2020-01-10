@@ -112,25 +112,18 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		// Register access
 		
 		uint16_t GetPC();
-		void SetPC(uint16_t pc);
-
 		uint8_t	GetAcc();
-		void SetAcc(uint8_t acc);
-
 		uint8_t	GetX();
-		void SetX(uint8_t x);
-
 		uint8_t	GetY();
-		void SetY(uint8_t y);
-
 		uint8_t	GetStatus();
-		void SetStatus(uint8_t status);
-
 		uint8_t	GetSP();
-		void SetSP(uint8_t sp);
 
-		bool GetHalted();
-//		void SetHalted(bool state);
+		void SetPC(uint16_t pc);
+		void SetAcc(uint8_t acc);
+		void SetX(uint8_t x);
+		void SetY(uint8_t y);
+		void SetStatus(uint8_t status);
+		void SetSP(uint8_t sp);
 
 		/// One single clock tick
 		void Tick(void);
@@ -139,7 +132,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 
 		const Opcode* GetNextInstruction();
 
-		void Autorun();
+//		void Autorun();
 		
 		struct Registers {
 			uint16_t	pc;
@@ -160,11 +153,12 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		void ClearBreakpoint(uint16_t addr);
 		bool IsBreakpoint(uint16_t addr);
 
+		uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
+
 	private:
 		Registers	reg;
-		bool		halted;
 
-		bool autoRun;	// lets the CPU run by itself... needs removing 
+//		bool autoRun;	// lets the CPU run by itself... needs removing 
 		
         void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
         void AddEmptyOpcode(uint8_t value);
@@ -206,4 +200,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		IMemory*	pMemory;
 
 		std::set<uint16_t> 	breakpoints;
+		uint64_t	ticksSinceBoot;
+		bool		haltOnTick;
 };

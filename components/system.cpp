@@ -15,6 +15,7 @@ System::System()
 , tickedUpToTime(0.0)
 , tickUpToTime(0.0)
 , deltaTPerTick(1.0 / tickFrequency)
+, cpuTickDelay(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
@@ -41,6 +42,7 @@ void System::Update(float dt)
 	}
 
 	updatedt = dt;
+
 	tickUpToTime += (double)dt;
 
 	uint32_t numTicks = 0;
@@ -48,6 +50,13 @@ void System::Update(float dt)
 	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
+		if(cpuTickDelay == 0)
+		{
+			pCpu6502->Tick();
+			cpuTickDelay = 3;
+		}
+		cpuTickDelay--;
+		
 		tickedUpToTime += deltaTPerTick;
 		numTicks++;
 	}

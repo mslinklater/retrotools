@@ -1,0 +1,33 @@
+Interesting 3D games on 8-bit
+=============================
+
+Elite
+Stellar 7
+
+Geoff Crammond
+--------------
+Aviator
+Sentinel
+REVS
+Stunt Car Racer
+
+Novagen
+-------
+Encounter (Paul Woakes, C64)
+Mercenary
+
+Lucasarts
+---------
+Ballblazer
+Rescue on Fractalus
+The Eidolon
+Koronis Rift
+
+Freescape Engine
+----------------
+Driller
+Dark Side
+Total Eclipse
+Castle Master
+Total Eclipse 2
+Castle Master 2

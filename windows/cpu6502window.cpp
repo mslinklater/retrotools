@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <inttypes.h>
 #include "cpu6502window.h"
 #include "../imgui/imgui.h"
 #include "../commands.h"
@@ -24,20 +25,14 @@ void Cpu6502Window::SetCpu(Cpu6502* cpu)
 
 void Cpu6502Window::Draw()
 {
+	ImGui::Text("Ticks: %" PRId64, pCpu->GetTicksSinceBoot());
+	ImGui::Separator();
 	ImGui::Text("PC :");
 	ImGui::SameLine();
 	ImGui::Text("0x%04x", pCpu->GetPC());
 	ImGui::SameLine();
 	ImGui::Text("%d", pCpu->GetPC());
 	ImGui::SameLine();
-	if(pCpu->GetHalted())
-	{
-		ImGui::Text("   HALTED");
-	}
-	else
-	{
-		ImGui::Text("   Running...");
-	}
 	
 
 	ImGui::Text("Acc:");
