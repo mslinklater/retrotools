@@ -1,6 +1,6 @@
 #include "cpu6502test.h"
 
-#include "../catch.hpp"
+#include "../shared_cpp/catch.hpp"
 #include "../components/cpu6502.h"
 #include "../components/memory64k.h"
 #include "../system/memoryutils.h"

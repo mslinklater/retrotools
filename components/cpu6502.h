@@ -79,7 +79,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 			kMnemonic_INC,		kMnemonic_INX,	kMnemonic_INY,	kMnemonic_JMP,
 			kMnemonic_JSR,		kMnemonic_LDA,	kMnemonic_LDX,	kMnemonic_LDY,
 			kMnemonic_LSR,		kMnemonic_NOP,	kMnemonic_ORA,	kMnemonic_PHA,
-			kMnemonic_PHP,		kMnemonic_PLA,	kMnemonic_ROL,	kMnemonic_ROR,
+			kMnemonic_PHP,		kMnemonic_PLA,	kMnemonic_PLP,	kMnemonic_ROL,	kMnemonic_ROR,
 			kMnemonic_RTI,		kMnemonic_RTS,	kMnemonic_SBC,	kMnemonic_SEC,
 			kMnemonic_SED,		kMnemonic_SEI,	kMnemonic_STA,	kMnemonic_STX,
 			kMnemonic_STY,		kMnemonic_TAX,	kMnemonic_TAY,	kMnemonic_TSX,
@@ -168,7 +168,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		// ~ICommandProcessor
 		
 		// static setup
-        bool 		staticsInitialised;
+//        bool 		staticsInitialised;
 		Opcode	 	opcodes[256];
 		std::string mnemonicStrings[kMnemonic_Num];
 		std::string addrModeStrings[kAddrMode_Num];
@@ -202,4 +202,5 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		std::set<uint16_t> 	breakpoints;
 		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;
+		uint32_t	ticksUntilExecution;
 };

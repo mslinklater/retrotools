@@ -22,14 +22,8 @@ public:
 	std::string GetLoadFilename();
 	uint16_t 	GetLoadAddress();
 	
-	// remove
-	
 private:
 	std::string loadROMFilename;
 	uint16_t	loadROMAddress;
-	
-	json	appConfig;
-
-	// remove
 };
 

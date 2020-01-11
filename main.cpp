@@ -7,7 +7,7 @@
 #include <SDL_opengl.h>
 
 #define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
+#include "shared_cpp/catch.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
