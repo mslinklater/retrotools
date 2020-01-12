@@ -18,7 +18,6 @@ Mercenary
 
 Lucasarts
 ---------
-Ballblazer
 Rescue on Fractalus
 The Eidolon
 Koronis Rift
@@ -31,3 +30,33 @@ Total Eclipse
 Castle Master
 Total Eclipse 2
 Castle Master 2
+
+Carrier Command
+Starglider
+Fat Worms Blows a Sparky
+UIM - Ultra Intelligent Machine
+Cholo
+Tau Ceti
+Academy (Tau Ceti 2)
+Micronaut One
+Flight Simulator II
+Project Stealth Fighter
+Gunship
+F-15 Strike Eagle
+3D Starstrike 2
+Battle Command
+Arcticfox
+Moonfall 
+Knot in 3D (Spectrum)
+Ace of Aces (Master System)
+Dark Star (Spectrum)
+Virus (Spectrum)
+Solo Flight
+Wayout (Atari)
+Chuck Yeager
+X (Gameboy)
+ATF Advanced Tactical Fighter (Spectrum)
+STar Wars
+Battlezone
+3D Pool (Nick Pelling)
+Starion (Spectrum)
