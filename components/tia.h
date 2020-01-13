@@ -85,12 +85,24 @@ public:
     static const uint8_t kHMOVE = 0x2a;
     static const uint8_t kHMCLR = 0x2b;
     static const uint8_t kCXCLR = 0x2c;
+	static const uint8_t kNumRegisters = 0x2d;
 
     Tia();
     virtual ~Tia();
 
     uint8_t Read(uint8_t address);
     void    Write(uint8_t address, uint8_t value);
+
+	bool	GetReadBreakpoint(uint8_t reg){return bReadBreakpoints[reg];}
+	void	SetReadBreakpoint(uint8_t reg, bool state){bReadBreakpoints[reg] = state;}
+	bool	GetWriteBreakpoint(uint8_t reg){return bWriteBreakpoints[reg];}
+	void	SetWriteBreakpoint(uint8_t reg, bool state){bWriteBreakpoints[reg] = state;}
+
+	bool	IsCpuStalled(){return bCpuWaitingForHsync;}
+
+	uint16_t GetRasterX(){return rasterX;}
+	uint16_t GetRasterY(){return rasterY;}
+	uint32_t GetFrameNum(){return frameNum;}
 
     // Read only registers
     uint8_t GetCXM0P();
@@ -213,6 +225,12 @@ public:
 
 private:
 //    uint8_t pixels[228*262];
+	uint16_t	rasterX;
+	uint16_t	rasterY;
+	uint32_t	frameNum;
+
+	bool bReadBreakpoints[kNumRegisters];
+	bool bWriteBreakpoints[kNumRegisters];
 
     // registers
     uint8_t VSYNC;
@@ -278,6 +296,7 @@ private:
 	bool bHaltOnTick;
 	bool bHaltOnHBlank;
 	bool bHaltOnVBlank;
+	bool bCpuWaitingForHsync;
 
 	uint64_t	ticksSinceBoot;
 };

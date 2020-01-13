@@ -19,18 +19,47 @@ TiaWindow::~TiaWindow()
 	
 void TiaWindow::Draw(void)
 {
+	bool temp;
     ImGui::Text("Write registers");
     ImGui::Separator();
 	ImGui::Text("Ticks: %" PRId64, pTia->GetTicksSinceBoot());
+	ImGui::Text("RasterX: %d", pTia->GetRasterX());
+	ImGui::Text("RasterY: %d", pTia->GetRasterY());
+	ImGui::Text("Frame: %d", pTia->GetFrameNum());
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" VSYNC:0x%02x", pTia->GetVSYNC());
+
+	temp = pTia->GetWriteBreakpoint(Tia::kVSYNC);
+	ImGui::Checkbox(" VSYNC", &temp);
+	pTia->SetWriteBreakpoint(Tia::kVSYNC, temp);
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", pTia->GetVSYNC());
+
     ImGui::NextColumn();
-    ImGui::Text("VBLANK:0x%02x", pTia->GetVBLANK());
+
+	temp = pTia->GetWriteBreakpoint(Tia::kVBLANK);
+	ImGui::Checkbox("VBLANK", &temp);
+	pTia->SetWriteBreakpoint(Tia::kVBLANK, temp);
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", pTia->GetVBLANK());
+
     ImGui::NextColumn();
-    ImGui::Text(" WSYNC:0x%02x", pTia->GetWSYNC());
+
+	temp = pTia->GetWriteBreakpoint(Tia::kWSYNC);
+	ImGui::Checkbox(" WSYNC", &temp);
+	pTia->SetWriteBreakpoint(Tia::kWSYNC, temp);
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", pTia->GetWSYNC());
+
     ImGui::NextColumn();
-    ImGui::Text(" RSYNC:0x%02x", pTia->GetRSYNC());
+
+//    ImGui::Text(" RSYNC:0x%02x", pTia->GetRSYNC());
+	temp = pTia->GetWriteBreakpoint(Tia::kRSYNC);
+	ImGui::Checkbox(" RSYNC", &temp);
+	pTia->SetWriteBreakpoint(Tia::kRSYNC, temp);
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", pTia->GetRSYNC());
+
     ImGui::Columns(1);
 
     ImGui::Separator();

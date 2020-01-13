@@ -32,9 +32,7 @@ void Cpu6502Window::Draw()
 	ImGui::Text("0x%04x", pCpu->GetPC());
 	ImGui::SameLine();
 	ImGui::Text("%d", pCpu->GetPC());
-	ImGui::SameLine();
 	
-
 	ImGui::Text("Acc:");
 	ImGui::SameLine();
 	ImGui::Text("0x%02x", pCpu->GetAcc());

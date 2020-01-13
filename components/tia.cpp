@@ -4,12 +4,20 @@
 #include "../shared_cpp/command.h"
 
 Tia::Tia()
-: bHaltOnTick(false)
+: rasterX(0)
+, rasterY(0)
+, frameNum(0)
+, bHaltOnTick(false)
 , bHaltOnHBlank(false)
 , bHaltOnVBlank(false)
 , ticksSinceBoot(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
+	for(int i=0 ; i<kNumRegisters ; i++)
+	{
+		bReadBreakpoints[i] = false;
+		bWriteBreakpoints[i] = false;
+	}
 }
 
 Tia::~Tia()
@@ -20,6 +28,32 @@ Tia::~Tia()
 void Tia::Tick()
 {
 	// do tick
+	if(VSYNC != 0) rasterY = 0;
+
+	rasterX++;
+	if(rasterX >= 228)
+	{
+		// hblank
+		rasterX = 0;
+		rasterY++;
+		if(bHaltOnHBlank)
+		{
+			Commands::Halt(true);
+		}
+		bCpuWaitingForHsync = false;
+		// end hblank
+
+		if(rasterY >= 262)
+		{
+			// vblank
+			rasterY = 0;
+			frameNum++;
+			if(bHaltOnVBlank)
+			{
+				Commands::Halt(true);
+			}
+		}
+	}
 
 	ticksSinceBoot++;
 
@@ -206,9 +240,13 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetCXCLR(value);
             break;
         default:
-            LOGERRORF("Unknown TIA write 0x%02x", address);
+//            LOGERRORF("Unknown TIA write 0x%02x", address);
             break;
     }
+	if(bWriteBreakpoints[address])
+	{
+		Commands::Halt(true);		
+	}
 }
 
 bool Tia::HandleCommand(const Command& command)
@@ -291,13 +329,15 @@ void Tia::SetVSYNC(uint8_t val)
 {
     VSYNC = val;
 }
+
 void Tia::SetVBLANK(uint8_t val)
 {
     VBLANK = val;    
 }
 void Tia::SetWSYNC(uint8_t val)
 {
-    WSYNC = val;    
+    WSYNC = val;
+	bCpuWaitingForHsync = true;
 }
 void Tia::SetRSYNC(uint8_t val)
 {

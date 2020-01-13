@@ -50,12 +50,15 @@ void System::Update(float dt)
 	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
-		if(cpuTickDelay == 0)
+		if(!pTia->IsCpuStalled())
 		{
-			pCpu6502->Tick();
-			cpuTickDelay = 3;
+			if(cpuTickDelay == 0)
+			{
+				pCpu6502->Tick();
+				cpuTickDelay = 3;
+			}
+			cpuTickDelay--;
 		}
-		cpuTickDelay--;
 		
 		tickedUpToTime += deltaTPerTick;
 		numTicks++;

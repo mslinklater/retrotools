@@ -82,7 +82,7 @@ void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
 		// RIOT write
-		LOGWARNINGF("Memory::RIOT Write 0x%04x", physicalAddress);
+//		LOGWARNINGF("Memory::RIOT Write 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
@@ -123,7 +123,7 @@ uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
 		// RIOT read
-		LOGWARNINGF("Memory::RIOT Read 0x%04x", physicalAddress);
+//		LOGWARNINGF("Memory::RIOT Read 0x%04x", physicalAddress);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
