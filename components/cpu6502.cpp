@@ -689,15 +689,18 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 					int16_t result = val16s + add16s;
 					(result <= 127 && result >= -128) ? ClearOverflowFlag() : SetOverflowFlag();
 				}
-//				switch(pOpcode->addrMode)
-//				{
-//					case kAddrModeImmediate: ticksUntilExecution = 2; break;
-//					case kAddrModeZeroPage: ticksUntilExecution = 3; break;
-//					case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
-//					case kAddrModeAbsolute: ticksUntilExecution = 4; break;
-//					case kAddrModeAbsoluteX: ticksUntilExecution = 4; break;
-//					default: break;
-//				}
+				switch(pOpcode->addrMode)
+				{
+					case kAddrModeImmediate: ticksUntilExecution = 2;
+					case kAddrModeZeroPage: ticksUntilExecution = 3;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4;
+					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeIndirectX: ticksUntilExecution = 6;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					default: break;
+				}
 				reg.pc += pOpcode->length;				
 			}
 			break;
@@ -707,6 +710,18 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				reg.acc &= val;
 				(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			}
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeImmediate: ticksUntilExecution = 2;
+				case kAddrModeZeroPage: ticksUntilExecution = 3;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4;
+				case kAddrModeAbsolute: ticksUntilExecution = 4;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+				case kAddrModeIndirectX: ticksUntilExecution = 6;
+				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+				default: break;
 			}
 			reg.pc += pOpcode->length;				
 			break;
@@ -727,6 +742,15 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(val & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 				pMemory->Write(addr, val);
 			}			
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeAccumulator: ticksUntilExecution = 2;
+				case kAddrModeZeroPage: ticksUntilExecution = 5;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6;
+				case kAddrModeAbsolute: ticksUntilExecution = 6;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				default: break;
+			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BIT:
@@ -736,63 +760,108 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				val & 0x40 ? SetOverflowFlag() : ClearOverflowFlag();
 				uint8_t anded = reg.acc & val;
 				(anded == 0) ? SetZeroFlag() : ClearZeroFlag();
-
+				switch(pOpcode->addrMode)
+				{
+					case kAddrModeZeroPage: ticksUntilExecution = 3;
+					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					default: break;
+				}
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BCC:
 			if(!GetCarryFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BCS:
 			if(GetCarryFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BEQ:
 			if(GetZeroFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BPL:
 			if(!GetNegativeFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BMI:
 			if(GetNegativeFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BNE:
 			if(!GetZeroFlag())
 			{
-				reg.pc = addr;
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
+				reg.pc = addr;	// branch taken
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BVC:
 			if(!GetOverflowFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BVS:
 			if(GetOverflowFlag())
 			{
+				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
 				reg.pc = addr;
+			}
+			else
+			{
+				ticksUntilExecution = 2;
 			}
 			reg.pc += pOpcode->length;				
 			break;
@@ -812,6 +881,18 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(reg.acc == val) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.acc >= val) ? SetCarryFlag() : ClearCarryFlag();
 			}
+				switch(pOpcode->addrMode)
+				{
+					case kAddrModeImmediate: ticksUntilExecution = 2;
+					case kAddrModeZeroPage: ticksUntilExecution = 3;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4;
+					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeIndirectX: ticksUntilExecution = 6;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					default: break;
+				}
 			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_CPX:
@@ -861,6 +942,18 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 				reg.pc += pOpcode->length;
+				switch(pOpcode->addrMode)
+				{
+					case kAddrModeImmediate: ticksUntilExecution = 2;
+					case kAddrModeZeroPage: ticksUntilExecution = 3;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4;
+					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeIndirectX: ticksUntilExecution = 6;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					default: break;
+				}
 			}
 			break;
 		case kMnemonic_INC:	// complete
@@ -870,6 +963,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(val == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(val & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();				
 				pMemory->Write(addr, val);
+			}
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeZeroPage: ticksUntilExecution = 5;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6;
+				case kAddrModeAbsolute: ticksUntilExecution = 6;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				default: break;
 			}
 			reg.pc += pOpcode->length;
 			break;
@@ -937,11 +1038,29 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg.pc += pOpcode->length;
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageY: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				default: break;
+			}
 			break;
 		case kMnemonic_LSR:
 			reg.acc >>= 1;
 			reg.acc &= 0x7f;
 			reg.pc += pOpcode->length;
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeAccumulator: ticksUntilExecution = 2;
+				case kAddrModeZeroPage: ticksUntilExecution = 5;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6;
+				case kAddrModeAbsolute: ticksUntilExecution = 6;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				default: break;
+			}
 			break;
 		case kMnemonic_NOP:
 			reg.pc += pOpcode->length;
@@ -1009,6 +1128,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc = ((uint16_t)pMemory->Read(++reg.sp)) << 8;
 			reg.pc |= (uint16_t)pMemory->Read(++reg.sp);
 			reg.pc += pOpcode->length;
+			ticksUntilExecution = 6;
 			break;
 		case kMnemonic_SBC:
 			{
@@ -1039,6 +1159,18 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				{
 					reg.acc -= pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
 					// flags
+				}
+				switch(pOpcode->addrMode)
+				{
+					case kAddrModeImmediate: ticksUntilExecution = 2;
+					case kAddrModeZeroPage: ticksUntilExecution = 3;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4;
+					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
+					case kAddrModeIndirectX: ticksUntilExecution = 6;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					default: break;
 				}
 				reg.pc += pOpcode->length;				
 			}
@@ -1076,6 +1208,13 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		case kMnemonic_STX:
 			pMemory->Write(addr, reg.x);
 			reg.pc += pOpcode->length;
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeZeroPage: ticksUntilExecution = 3;
+				case kAddrModeZeroPageY: ticksUntilExecution = 4;
+				case kAddrModeAbsolute: ticksUntilExecution = 4;
+				default: break;
+			}
 			break;
 		case kMnemonic_STY:
 			pMemory->Write(addr, reg.y);
