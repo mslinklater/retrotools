@@ -21,4 +21,7 @@ public:
 
 private:
     Tia* pTia;
+
+	void DrawWriteRegister(uint32_t reg, const char* text, uint8_t val);
+	void DrawReadRegister(uint32_t reg, const char* text, uint8_t val);
 };

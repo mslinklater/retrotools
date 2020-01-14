@@ -16,10 +16,35 @@ TiaWindow::~TiaWindow()
 {
 
 }
-	
+
+void TiaWindow::DrawWriteRegister(uint32_t reg, const char* text, uint8_t val)
+{
+	bool temp = pTia->GetWriteBreakpoint(reg);
+	bool backup = temp;
+	ImGui::Checkbox(text, &temp);
+	if(temp != backup)
+	{
+		pTia->SetWriteBreakpoint(reg, temp);
+	}
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", val);
+}
+
+void TiaWindow::DrawReadRegister(uint32_t reg, const char* text, uint8_t val)
+{
+	bool temp = pTia->GetReadBreakpoint(reg);
+	bool backup = temp;
+	ImGui::Checkbox(text, &temp);
+	if(temp != backup)
+	{
+		pTia->SetReadBreakpoint(reg, temp);
+	}
+	ImGui::SameLine();
+    ImGui::Text(":0x%02x", val);
+}
+
 void TiaWindow::Draw(void)
 {
-	bool temp;
     ImGui::Text("Write registers");
     ImGui::Separator();
 	ImGui::Text("Ticks: %" PRId64, pTia->GetTicksSinceBoot());
@@ -29,189 +54,167 @@ void TiaWindow::Draw(void)
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
 
-	temp = pTia->GetWriteBreakpoint(Tia::kVSYNC);
-	ImGui::Checkbox(" VSYNC", &temp);
-	pTia->SetWriteBreakpoint(Tia::kVSYNC, temp);
-	ImGui::SameLine();
-    ImGui::Text(":0x%02x", pTia->GetVSYNC());
-
+	DrawWriteRegister(Tia::kVSYNC, " VSYNC", pTia->GetVSYNC());
     ImGui::NextColumn();
-
-	temp = pTia->GetWriteBreakpoint(Tia::kVBLANK);
-	ImGui::Checkbox("VBLANK", &temp);
-	pTia->SetWriteBreakpoint(Tia::kVBLANK, temp);
-	ImGui::SameLine();
-    ImGui::Text(":0x%02x", pTia->GetVBLANK());
-
+	DrawWriteRegister(Tia::kVBLANK, "VBLANK", pTia->GetVBLANK());
     ImGui::NextColumn();
-
-	temp = pTia->GetWriteBreakpoint(Tia::kWSYNC);
-	ImGui::Checkbox(" WSYNC", &temp);
-	pTia->SetWriteBreakpoint(Tia::kWSYNC, temp);
-	ImGui::SameLine();
-    ImGui::Text(":0x%02x", pTia->GetWSYNC());
-
+	DrawWriteRegister(Tia::kWSYNC, " WSYNC", pTia->GetWSYNC());
     ImGui::NextColumn();
+	DrawWriteRegister(Tia::kRSYNC, " RSYNC", pTia->GetRSYNC());
 
-//    ImGui::Text(" RSYNC:0x%02x", pTia->GetRSYNC());
-	temp = pTia->GetWriteBreakpoint(Tia::kRSYNC);
-	ImGui::Checkbox(" RSYNC", &temp);
-	pTia->SetWriteBreakpoint(Tia::kRSYNC, temp);
-	ImGui::SameLine();
-    ImGui::Text(":0x%02x", pTia->GetRSYNC());
+    ImGui::Columns(1);
+    ImGui::Separator();
 
+    ImGui::Columns(4, NULL, true);
+	DrawWriteRegister(Tia::kNUSIZ0, "NUSIZ0", pTia->GetNUSIZ0());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kNUSIZ1, "NUSIZ1", pTia->GetNUSIZ1());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kCOLUP0, "COLUP0", pTia->GetCOLUP0());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kCOLUP1, "COLUP1", pTia->GetCOLUP1());
+
+    ImGui::Columns(1);
+    ImGui::Separator();
+
+    ImGui::Columns(4, NULL, true);
+	DrawWriteRegister(Tia::kCOLUPF, "COLUPF", pTia->GetCOLUPF());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kCOLUBK, "COLUBK", pTia->GetCOLUBK());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kREFP0, " REFP0", pTia->GetREFP0());
+    ImGui::NextColumn();
+	DrawWriteRegister(Tia::kREFP1, " REFP1", pTia->GetREFP1());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text("NUSIZ0:0x%02x", pTia->GetNUSIZ0());
+	DrawWriteRegister(Tia::kPF0, "   PF0", pTia->GetPF0());
     ImGui::NextColumn();
-    ImGui::Text("NUSIZ1:0x%02x", pTia->GetNUSIZ1());
+	DrawWriteRegister(Tia::kPF1, "   PF1", pTia->GetPF1());
     ImGui::NextColumn();
-    ImGui::Text("COLUP0:0x%02x", pTia->GetCOLUP0());
+	DrawWriteRegister(Tia::kPF2, "   PF2", pTia->GetPF2());
     ImGui::NextColumn();
-    ImGui::Text("COLUP1:0x%02x", pTia->GetCOLUP1());
+	DrawWriteRegister(Tia::kRESP0, " RESP0", pTia->GetRESP0());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text("COLUPF:0x%02x", pTia->GetCOLUPF());
+	DrawWriteRegister(Tia::kRESP1, " RESP1", pTia->GetRESP1());
     ImGui::NextColumn();
-    ImGui::Text("COLUBK:0x%02x", pTia->GetCOLUBK());
+	DrawWriteRegister(Tia::kRESM0, " RESM0", pTia->GetRESM0());
     ImGui::NextColumn();
-    ImGui::Text(" REFP0:0x%02x", pTia->GetREFP0());
+	DrawWriteRegister(Tia::kRESM1, " RESM1", pTia->GetRESM1());
     ImGui::NextColumn();
-    ImGui::Text(" REFP1:0x%02x", pTia->GetREFP1());
+	DrawWriteRegister(Tia::kRESBL, " RESBL", pTia->GetRESBL());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text("   PF0:0x%02x", pTia->GetPF0());
+	DrawWriteRegister(Tia::kAUDC0, " AUDC0", pTia->GetAUDC0());
     ImGui::NextColumn();
-    ImGui::Text("   PF1:0x%02x", pTia->GetPF1());
+	DrawWriteRegister(Tia::kAUDC1, " AUDC1", pTia->GetAUDC1());
     ImGui::NextColumn();
-    ImGui::Text("   PF2:0x%02x", pTia->GetPF2());
+	DrawWriteRegister(Tia::kAUDF0, " AUDF0", pTia->GetAUDF0());
     ImGui::NextColumn();
-    ImGui::Text(" RESP0:0x%02x", pTia->GetRESP0());
+	DrawWriteRegister(Tia::kAUDF1, " AUDF1", pTia->GetAUDF1());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" RESP1:0x%02x", pTia->GetRESP1());
+	DrawWriteRegister(Tia::kAUDV0, " AUDV0", pTia->GetAUDV0());
     ImGui::NextColumn();
-    ImGui::Text(" RESM0:0x%02x", pTia->GetRESM0());
+	DrawWriteRegister(Tia::kAUDV1, " AUDV1", pTia->GetAUDV1());
     ImGui::NextColumn();
-    ImGui::Text(" RESM1:0x%02x", pTia->GetRESM1());
+	DrawWriteRegister(Tia::kGRP0, "  GRP0", pTia->GetGRP0());
     ImGui::NextColumn();
-    ImGui::Text(" RESBL:0x%02x", pTia->GetRESBL());
+	DrawWriteRegister(Tia::kGRP1, "  GRP1", pTia->GetGRP1());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" AUDC0:0x%02x", pTia->GetAUDC0());
+	DrawWriteRegister(Tia::kENAM0, " ENAM0", pTia->GetENAM0());
     ImGui::NextColumn();
-    ImGui::Text(" AUDC1:0x%02x", pTia->GetAUDC1());
+	DrawWriteRegister(Tia::kENAM1, " ENAM1", pTia->GetENAM1());
     ImGui::NextColumn();
-    ImGui::Text(" AUDF0:0x%02x", pTia->GetAUDF0());
+	DrawWriteRegister(Tia::kENABL, " ENABL", pTia->GetENABL());
     ImGui::NextColumn();
-    ImGui::Text(" AUDF1:0x%02x", pTia->GetAUDF1());
+	DrawWriteRegister(Tia::kHMP0, "  HMP1", pTia->GetHMP0());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" AUDV0:0x%02x", pTia->GetAUDV0());
+	DrawWriteRegister(Tia::kHMP1, "  HMP1", pTia->GetHMP1());
     ImGui::NextColumn();
-    ImGui::Text(" AUDV1:0x%02x", pTia->GetAUDV1());
+	DrawWriteRegister(Tia::kHMM0, "  HMM0", pTia->GetHMM0());
     ImGui::NextColumn();
-    ImGui::Text("  GRP0:0x%02x", pTia->GetGRP0());
+	DrawWriteRegister(Tia::kHMM1, "  HMM1", pTia->GetHMM1());
     ImGui::NextColumn();
-    ImGui::Text("  GRP1:0x%02x", pTia->GetGRP1());
+	DrawWriteRegister(Tia::kHMBL, "  HMBL", pTia->GetHMBL());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" ENAM0:0x%02x", pTia->GetENAM0());
+	DrawWriteRegister(Tia::kVDELP0, "VDELP0", pTia->GetVDELP0());
     ImGui::NextColumn();
-    ImGui::Text(" ENAM1:0x%02x", pTia->GetENAM1());
+	DrawWriteRegister(Tia::kVDELP1, "VDELP1", pTia->GetVDELP1());
     ImGui::NextColumn();
-    ImGui::Text(" ENABL:0x%02x", pTia->GetENABL());
+	DrawWriteRegister(Tia::kVDELBL, "VDELBL", pTia->GetVDELBL());
     ImGui::NextColumn();
-    ImGui::Text("  HMP0:0x%02x", pTia->GetHMP0());
+	DrawWriteRegister(Tia::kRESMP0, "RESMP0", pTia->GetRESMP0());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text("  HMP1:0x%02x", pTia->GetHMP1());
+	DrawWriteRegister(Tia::kRESMP1, "RESMP1", pTia->GetRESMP1());
     ImGui::NextColumn();
-    ImGui::Text("  HMM0:0x%02x", pTia->GetHMM0());
+	DrawWriteRegister(Tia::kHMOVE, " HMOVE", pTia->GetHMOVE());
     ImGui::NextColumn();
-    ImGui::Text("  HMM1:0x%02x", pTia->GetHMM1());
+	DrawWriteRegister(Tia::kHMCLR, " HMCLR", pTia->GetHMCLR());
     ImGui::NextColumn();
-    ImGui::Text("  HMBL:0x%02x", pTia->GetHMBL());
-    ImGui::Columns(1);
-
-    ImGui::Separator();
-    ImGui::Columns(4, NULL, true);
-    ImGui::Text("VDELP0:0x%02x", pTia->GetVDELP0());
-    ImGui::NextColumn();
-    ImGui::Text("VDELP1:0x%02x", pTia->GetVDELP1());
-    ImGui::NextColumn();
-    ImGui::Text("VDELBL:0x%02x", pTia->GetVDELBL());
-    ImGui::NextColumn();
-    ImGui::Text("RESMP0:0x%02x", pTia->GetRESMP0());
-    ImGui::Columns(1);
-
-    ImGui::Separator();
-    ImGui::Columns(4, NULL, true);
-    ImGui::Text("RESMP1:0x%02x", pTia->GetRESMP1());
-    ImGui::NextColumn();
-    ImGui::Text(" HMOVE:0x%02x", pTia->GetHMOVE());
-    ImGui::NextColumn();
-    ImGui::Text(" HMCLR:0x%02x", pTia->GetHMCLR());
-    ImGui::NextColumn();
-    ImGui::Text(" CXCLR:0x%02x", pTia->GetCXCLR());
+	DrawWriteRegister(Tia::kCXCLR, " CXCLR", pTia->GetCXCLR());
     ImGui::Columns(1);
     ImGui::Separator();
 
     ImGui::Text("Read registers");
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" CXM0P:0x%02x", pTia->GetCXM0P());
+	DrawReadRegister(Tia::kCXM0P, " CXM0P", pTia->GetCXM0P());
     ImGui::NextColumn();
-    ImGui::Text(" CXM1P:0x%02x", pTia->GetCXM1P());
+	DrawReadRegister(Tia::kCXM1P, " CXM1P", pTia->GetCXM1P());
     ImGui::NextColumn();
-    ImGui::Text("CXP0FB:0x%02x", pTia->GetCXP0FB());
+	DrawReadRegister(Tia::kCXP0FB, "CXP0FB", pTia->GetCXP0FB());
     ImGui::NextColumn();
-    ImGui::Text("CXP1FB:0x%02x", pTia->GetCXP1FB());
+	DrawReadRegister(Tia::kCXP1FB, "CXP1FB", pTia->GetCXP1FB());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text("CXM0FB:0x%02x", pTia->GetCXM0FB());
+	DrawReadRegister(Tia::kCXM0FB, "CXM0FB", pTia->GetCXM0FB());
     ImGui::NextColumn();
-    ImGui::Text("CXM1FB:0x%02x", pTia->GetCXM1FB());
+	DrawReadRegister(Tia::kCXM1FB, "CXM1FB", pTia->GetCXM1FB());
     ImGui::NextColumn();
-    ImGui::Text("CXBLPF:0x%02x", pTia->GetCXBLPF());
+	DrawReadRegister(Tia::kCXBLPF, "CXBLPF", pTia->GetCXBLPF());
     ImGui::NextColumn();
-    ImGui::Text("CXPPMM:0x%02x", pTia->GetCXPPMM());
+	DrawReadRegister(Tia::kCXPPMM, "CXPPMM", pTia->GetCXPPMM());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" INPT0:0x%02x", pTia->GetINPT0());
+	DrawReadRegister(Tia::kINPT0, " INPT0", pTia->GetINPT0());
     ImGui::NextColumn();
-    ImGui::Text(" INPT1:0x%02x", pTia->GetINPT1());
+	DrawReadRegister(Tia::kINPT1, " INPT1", pTia->GetINPT1());
     ImGui::NextColumn();
-    ImGui::Text(" INPT2:0x%02x", pTia->GetINPT2());
+	DrawReadRegister(Tia::kINPT2, " INPT2", pTia->GetINPT2());
     ImGui::NextColumn();
-    ImGui::Text(" INPT3:0x%02x", pTia->GetINPT3());
+	DrawReadRegister(Tia::kINPT3, " INPT3", pTia->GetINPT3());
     ImGui::Columns(1);
 
     ImGui::Separator();
     ImGui::Columns(4, NULL, true);
-    ImGui::Text(" INPT4:0x%02x", pTia->GetINPT4());
+	DrawReadRegister(Tia::kINPT4, " INPT4", pTia->GetINPT4());
     ImGui::NextColumn();
-    ImGui::Text(" INPT5:0x%02x", pTia->GetINPT5());
+	DrawReadRegister(Tia::kINPT5, " INPT5", pTia->GetINPT5());
     ImGui::NextColumn();
     ImGui::Text(" ");
     ImGui::NextColumn();
