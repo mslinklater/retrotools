@@ -20,6 +20,7 @@
 
 Cpu6502::Cpu6502()
 : ticksSinceBoot(0)
+, bHaltOnInstruction(false)
 , ticksUntilExecution(1)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
@@ -564,6 +565,11 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 	}
 
 	ticksUntilExecution--;
+	if((ticksUntilExecution == 1) && (bHaltOnInstruction))
+	{
+		Commands::Halt(true);
+		bHaltOnInstruction = false;
+	}
 	if(ticksUntilExecution > 0)
 	{
 		return;
@@ -1379,6 +1385,10 @@ bool Cpu6502::HandleCommand(const Command& command)
 		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandTickCpu))
 		{
 			haltOnTick = true;
+		}
+		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandCpuInstruction))
+		{
+			bHaltOnInstruction = true;
 		}
 	}
 	

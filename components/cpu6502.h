@@ -132,8 +132,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 
 		const Opcode* GetNextInstruction();
 
-//		void Autorun();
-		
 		struct Registers {
 			uint16_t	pc;
 			uint8_t		acc;
@@ -158,8 +156,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 	private:
 		Registers	reg;
 
-//		bool autoRun;	// lets the CPU run by itself... needs removing 
-		
         void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
         void AddEmptyOpcode(uint8_t value);
         
@@ -168,7 +164,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		// ~ICommandProcessor
 		
 		// static setup
-//        bool 		staticsInitialised;
 		Opcode	 	opcodes[256];
 		std::string mnemonicStrings[kMnemonic_Num];
 		std::string addrModeStrings[kAddrMode_Num];
@@ -202,5 +197,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		std::set<uint16_t> 	breakpoints;
 		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;
+		bool		bHaltOnInstruction;
 		uint32_t	ticksUntilExecution;
 };

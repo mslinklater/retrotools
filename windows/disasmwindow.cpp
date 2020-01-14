@@ -40,6 +40,28 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 {
 	ImGui::BeginChild("MainSub");
 	int numLines = pDisasm->GetNumLines();
+
+	if(followPC)
+	{
+		uint32_t pcline = 0;
+		uint32_t setTo = 0;
+		for(int i=0 ; i<numLines && pcline == 0 ; i++)
+		{
+			Disassembler::Line line = pDisasm->GetLine(i);
+			if(pCpu->GetPC() == line.address)
+			{
+				pcline = setTo;
+			}
+			setTo++;
+		}
+		if(pcline != 0)
+		{
+			int32_t offset = pcline * (ImGui::GetFontSize()+4) - 50;
+			if(offset <0) offset = 0;
+			ImGui::SetScrollY(offset);
+		}
+	}
+
 	for(int i=0 ; i<numLines ; i++)
 	{
 		Disassembler::Line line = pDisasm->GetLine(i);
@@ -74,14 +96,7 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 		}
 		
 		ImGui::SameLine();
-//		if(pMemory->GetFlag(line.address) & Memory::kMemoryFlagHasBeenExecuted)
-//		{
-//			ImGui::TextColored(ImVec4(0.8, 1.0, 0.8, 1.0), "%s", line.bytes.c_str());
-//		}
-//		else
-//		{
 		ImGui::Text("%s", line.bytes.c_str());
-//		}
 		ImGui::SameLine();
 		ImGui::Text("%s", line.mnemonicString.c_str());
 		ImGui::SameLine();

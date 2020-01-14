@@ -39,6 +39,7 @@ void Tia::Tick()
 		if(bHaltOnHBlank)
 		{
 			Commands::Halt(true);
+			bHaltOnHBlank = false;
 		}
 		bCpuWaitingForHsync = false;
 		// end hblank
@@ -51,6 +52,7 @@ void Tia::Tick()
 			if(bHaltOnVBlank)
 			{
 				Commands::Halt(true);
+				bHaltOnVBlank = false;
 			}
 		}
 	}
