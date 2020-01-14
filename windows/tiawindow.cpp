@@ -6,6 +6,7 @@
 #include "tiawindow.h"
 #include "../imgui/imgui.h"
 #include "../components/tia.h"
+#include "../shared_cpp/log.h"
 
 TiaWindow::TiaWindow()
 {
@@ -228,4 +229,47 @@ void TiaWindow::Draw(void)
 void TiaWindow::SetTia(Tia* tia)
 {
     pTia = tia;
+}
+
+void TiaWindow::SerialiseState(json& object)
+{
+	LOGINFO("TiaWindow::SerialiseState");
+
+	json windowJson = json::object();
+
+	// serialise breakpoint states
+	for(int i=0 ; i<Tia::kNumRegisters ; i++)
+	{
+		char buffer[8];
+		sprintf(&buffer[0], "rbp%d", i);
+		windowJson[buffer] = pTia->GetReadBreakpoint(i);
+		sprintf(&buffer[0], "wbp%d", i);
+		windowJson[buffer] = pTia->GetWriteBreakpoint(i);
+	}
+
+	object["tiawindow"] = windowJson;
+}
+
+void TiaWindow::DeserialiseState(json& object)
+{
+	LOGINFO("TiaWindow::DeserialiseState");
+
+	json windowJson = object["tiawindow"];
+	if(windowJson.is_object())
+	{
+		for(int i=0 ; i<Tia::kNumRegisters ; i++)
+		{
+			char buffer[8];
+			sprintf(&buffer[0], "rbp%d", i);
+			if(windowJson.contains(buffer))
+			{
+				pTia->SetReadBreakpoint(i, windowJson[buffer].get<bool>());
+			}
+			sprintf(&buffer[0], "wbp%d", i);
+			if(windowJson.contains(buffer))
+			{
+				pTia->SetWriteBreakpoint(i, windowJson[buffer].get<bool>());
+			}
+		}
+	}
 }

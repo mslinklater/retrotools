@@ -199,6 +199,7 @@ int main(int argc, char* argv[])
 	TiaWindow* pTiaWindow = new TiaWindow();
 	pTiaWindow->SetTia(pTia);
 	pWindowManager->AddWindow(pTiaWindow, "Tia");
+	pStateSerialiser->AddStateSerialiser(pTiaWindow);
 
 	SystemWindow* pSystemWindow = new SystemWindow();
 	pSystemWindow->SetSystem(pSystem);

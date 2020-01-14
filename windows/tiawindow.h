@@ -6,10 +6,11 @@
 #pragma once
 
 #include "../shared_cpp/windowbase.h"
+#include "../shared_cpp/istateserialisation.h"
 
 class Tia;
 
-class TiaWindow : public WindowBase
+class TiaWindow : public WindowBase, public IStateSerialisation
 {
 public:
 	TiaWindow();
@@ -18,6 +19,11 @@ public:
 	virtual void Draw(void);
 
     void SetTia(Tia* tia);
+
+	// IStateSerialisation
+	virtual void SerialiseState(json& object);
+	virtual void DeserialiseState(json& object);
+	// ~IStateSerialisation
 
 private:
     Tia* pTia;
