@@ -12,7 +12,6 @@
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)
-, showTIAHints(false)
 , followPC(false)
 {
 }
@@ -23,7 +22,6 @@ DisassemblyWindow::~DisassemblyWindow()
 
 void DisassemblyWindow::DrawHeader(void)
 {
-	ImGui::Checkbox("TIA hints", &showTIAHints);
 	ImGui::Checkbox("Follow PC", &followPC);
 	if(ImGui::Button("Add Auto Symbols"))
 	{
@@ -62,57 +60,60 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 		}
 	}
 
-	for(int i=0 ; i<numLines ; i++)
+	ImGuiListClipper clipper;
+	clipper.Begin(numLines);
+	while(clipper.Step())
 	{
-		Disassembler::Line line = pDisasm->GetLine(i);
-		
-		if(line.label.length() > 0)
+		for(int i = clipper.DisplayStart ; i < clipper.DisplayEnd ; i++)
 		{
-			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s:", line.label.c_str());
-		}
-		if(showTIAHints)
-		{
-			ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), " TIA ");
-		}
-		else
-		{	
-			if(pCpu->GetPC() == line.address)
+			Disassembler::Line line = pDisasm->GetLine(i);
+			
+			if(line.label.length() > 0)
 			{
-				ImGui::Text("==>  ");	   
+				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s:", line.label.c_str());
 			}
 			else
 			{
-				ImGui::Text("     ");
+				ImGui::Text(" ");
+			}
+
+			// highlight PC		
+			if(pCpu->GetPC() == line.address)
+			{
+				ImGui::SameLine(170.0f);
+				ImGui::Text("==>");	   
+			}
+
+			ImGui::SameLine(200.0f);
+			if(pCpu->IsBreakpoint(line.address))
+			{
+				ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "%s", line.addressString.c_str());
+			}
+			else
+			{
+				ImGui::Text("%s", line.addressString.c_str());
+			}
+			
+			ImGui::SameLine();
+			ImGui::Text("%s", line.bytes.c_str());
+			ImGui::SameLine();
+			ImGui::Text("%s", line.mnemonicString.c_str());
+			ImGui::SameLine();
+			if(line.flags & Disassembler::kFlagSymbol)
+			{
+				ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
+			}
+			else if(line.flags & Disassembler::kFlagLabel)
+			{
+				ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());	   
+			}
+			else
+			{
+				ImGui::Text("%s", line.detail.c_str());
 			}
 		}
-		ImGui::SameLine();
-		if(pCpu->IsBreakpoint(line.address))
-		{
-			ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "    %s", line.addressString.c_str());
-		}
-		else
-		{
-			ImGui::Text("    %s", line.addressString.c_str());
-		}
-		
-		ImGui::SameLine();
-		ImGui::Text("%s", line.bytes.c_str());
-		ImGui::SameLine();
-		ImGui::Text("%s", line.mnemonicString.c_str());
-		ImGui::SameLine();
-		if(line.flags & Disassembler::kFlagSymbol)
-		{
-			ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());
-		}
-		else if(line.flags & Disassembler::kFlagLabel)
-		{
-			ImGui::TextColored(ImVec4(0.0f,1.0f,0.0f,1.0f), "%s", line.detail.c_str());	   
-		}
-		else
-		{
-			ImGui::Text("%s", line.detail.c_str());
-		}
 	}
+	clipper.End();
 	ImGui::EndChild();
 }
 

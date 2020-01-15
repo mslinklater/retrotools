@@ -932,6 +932,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(value == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(value & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			}
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeZeroPage: ticksUntilExecution = 5;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6;
+				case kAddrModeAbsolute: ticksUntilExecution = 6;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				default: break;
+			}
 			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_DEX:	// complete

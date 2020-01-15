@@ -43,6 +43,6 @@ private:
 	Cpu6502*		pCpu;
 	IMemory*		pMemory;
 	
-	bool showTIAHints;
+//	bool showTIAHints;
 	bool followPC;
 };

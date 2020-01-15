@@ -242,7 +242,6 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetCXCLR(value);
             break;
         default:
-//            LOGERRORF("Unknown TIA write 0x%02x", address);
             break;
     }
 	if(bWriteBreakpoints[address])
