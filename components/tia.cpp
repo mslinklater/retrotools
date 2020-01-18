@@ -13,9 +13,14 @@ Tia::Tia()
 , ticksSinceBoot(0)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
-	for(int i=0 ; i<kNumRegisters ; i++)
+	for(int i=0 ; i<kNumReadRegisters ; i++)
 	{
+		readRegisters[i] = 0;
 		bReadBreakpoints[i] = false;
+	}
+	for(int i=0 ; i<kNumWriteRegisters ; i++)
+	{
+		writeRegisters[i] = 0;
 		bWriteBreakpoints[i] = false;
 	}
 
@@ -75,13 +80,19 @@ void Tia::InitPalettes()
 				paletteSECAM[(i*3)+2]=255;
 				break;
 		}
+		paletteNTSC[i*3] = paletteSECAM[i*3];
+		paletteNTSC[(i*3)+1] = paletteSECAM[(i*3)+1];
+		paletteNTSC[(i*3)+2] = paletteSECAM[(i*3)+2];
+		palettePAL[i*3] = paletteSECAM[i*3];
+		palettePAL[(i*3)+1] = paletteSECAM[(i*3)+1];
+		palettePAL[(i*3)+2] = paletteSECAM[(i*3)+2];
 	}
 }
 
 void Tia::Tick()
 {
 	// do tick
-	if(VSYNC != 0) rasterY = 0;
+	if(GetVSYNC() != 0) rasterY = 0;
 
 	rasterX++;
 	if(rasterX >= 228)
@@ -325,239 +336,239 @@ bool Tia::HandleCommand(const Command& command)
 
 uint8_t Tia::GetCXM0P()
 {
-    return CXM0P;
+    return readRegisters[kCXM0P];
 }
 uint8_t Tia::GetCXM1P()
 {
-    return CXM1P;
+    return readRegisters[kCXM1P];
 }
 uint8_t Tia::GetCXP0FB()
 {
-    return CXP0FB;
+    return readRegisters[kCXP0FB];
 }
 uint8_t Tia::GetCXP1FB()
 {
-    return CXP1FB;
+    return readRegisters[kCXP1FB];
 }
 uint8_t Tia::GetCXM0FB()
 {
-    return CXM0FB;
+    return readRegisters[kCXM0FB];
 }
 uint8_t Tia::GetCXM1FB()
 {
-    return CXM1FB;
+    return readRegisters[kCXM1FB];
 }
 uint8_t Tia::GetCXBLPF()
 {
-    return CXBLPF;
+    return readRegisters[kCXBLPF];
 }
 uint8_t Tia::GetCXPPMM()
 {
-    return CXPPMM;
+    return readRegisters[kCXPPMM];
 }
 uint8_t Tia::GetINPT0()
 {
-    return INPT0;
+    return readRegisters[kINPT0];
 }
 uint8_t Tia::GetINPT1()
 {
-    return INPT1;
+    return readRegisters[kINPT1];
 }
 uint8_t Tia::GetINPT2()
 {
-    return INPT2;
+    return readRegisters[kINPT2];
 }
 uint8_t Tia::GetINPT3()
 {
-    return INPT3;
+    return readRegisters[kINPT3];
 }
 uint8_t Tia::GetINPT4()
 {
-    return INPT4;
+    return readRegisters[kINPT4];
 }
 uint8_t Tia::GetINPT5()
 {
-    return INPT5;
+    return readRegisters[kINPT5];
 }
 void Tia::SetVSYNC(uint8_t val)
 {
-    VSYNC = val;
+    writeRegisters[kVSYNC] = val;
 }
 
 void Tia::SetVBLANK(uint8_t val)
 {
-    VBLANK = val;    
+    writeRegisters[kVBLANK] = val;    
 }
 void Tia::SetWSYNC(uint8_t val)
 {
-    WSYNC = val;
+    writeRegisters[kWSYNC] = val;
 	bCpuWaitingForHsync = true;
 }
 void Tia::SetRSYNC(uint8_t val)
 {
-    RSYNC = val;
+    writeRegisters[kRSYNC] = val;
 }
 void Tia::SetNUSIZ0(uint8_t val)
 {
-    NUSIZ0 = val;
+    writeRegisters[kNUSIZ0] = val;
 }
 void Tia::SetNUSIZ1(uint8_t val)
 {
-    NUSIZ1 = val;
+    writeRegisters[kNUSIZ1] = val;
 }
 void Tia::SetCOLUP0(uint8_t val)
 {
-    COLUP0 = val;
+    writeRegisters[kCOLUP0] = val;
 }
 void Tia::SetCOLUP1(uint8_t val)
 {
-    COLUP1 = val;
+    writeRegisters[kCOLUP1] = val;
 }
 void Tia::SetCOLUPF(uint8_t val)
 {
-    COLUPF = val;
+    writeRegisters[kCOLUPF] = val;
 }
 void Tia::SetCOLUBK(uint8_t val)
 {
-    COLUBK = val;
+    writeRegisters[kCOLUBK] = val;
 }
 void Tia::SetCTRLPF(uint8_t val)
 {
-    CTRLPF = val;
+    writeRegisters[kCTRLPF] = val;
 }
 void Tia::SetREFP0(uint8_t val)
 {
-    REFP0 = val;
+    writeRegisters[kREFP0] = val;
 }
 void Tia::SetREFP1(uint8_t val)
 {
-    REFP1 = val;
+    writeRegisters[kREFP1] = val;
 }
 void Tia::SetPF0(uint8_t val)
 {
-    PF0 = val;
+    writeRegisters[kPF0] = val;
 }
 void Tia::SetPF1(uint8_t val)
 {
-    PF1 = val;
+    writeRegisters[kPF1] = val;
 }
 void Tia::SetPF2(uint8_t val)
 {
-    PF2 = val;
+    writeRegisters[kPF2] = val;
 }
 void Tia::SetRESP0(uint8_t val)
 {
-    RESP0 = val;
+    writeRegisters[kRESP0] = val;
 }
 void Tia::SetRESP1(uint8_t val)
 {
-    RESP1 = val;
+    writeRegisters[kRESP1] = val;
 }
 void Tia::SetRESM0(uint8_t val)
 {
-    RESM0 = val;
+    writeRegisters[kRESM0] = val;
 }
 void Tia::SetRESM1(uint8_t val)
 {
-    RESM1 = val;
+    writeRegisters[kRESM1] = val;
 }
 void Tia::SetRESBL(uint8_t val)
 {
-    RESBL = val;
+    writeRegisters[kRESBL] = val;
 }
 void Tia::SetAUDC0(uint8_t val)
 {
-    AUDC0 = val;
+    writeRegisters[kAUDC0] = val;
 }
 void Tia::SetAUDC1(uint8_t val)
 {
-    AUDC1 = val;
+    writeRegisters[kAUDC1] = val;
 }
 void Tia::SetAUDF0(uint8_t val)
 {
-    AUDF0 = val;
+    writeRegisters[kAUDF0] = val;
 }
 void Tia::SetAUDF1(uint8_t val)
 {
-    AUDF1 = val;
+    writeRegisters[kAUDF1] = val;
 }
 void Tia::SetAUDV0(uint8_t val)
 {
-    AUDV0 = val;
+    writeRegisters[kAUDV0] = val;
 }
 void Tia::SetAUDV1(uint8_t val)
 {
-    AUDV1 = val;
+    writeRegisters[kAUDV1] = val;
 }
 void Tia::SetGRP0(uint8_t val)
 {
-    GRP0 = val;
+    writeRegisters[kGRP0] = val;
 }
 void Tia::SetGRP1(uint8_t val)
 {
-    GRP1 = val;
+    writeRegisters[kGRP1] = val;
 }
 void Tia::SetENAM0(uint8_t val)
 {
-    ENAM0 = val;
+    writeRegisters[kENAM0] = val;
 }
 void Tia::SetENAM1(uint8_t val)
 {
-    ENAM1 = val;
+    writeRegisters[kENAM1] = val;
 }
 void Tia::SetENABL(uint8_t val)
 {
-    ENABL = val;
+    writeRegisters[kENABL] = val;
 }
 void Tia::SetHMP0(uint8_t val)
 {
-    HMP0 = val;
+    writeRegisters[kHMP0] = val;
 }
 void Tia::SetHMP1(uint8_t val)
 {
-    HMP1 = val;
+    writeRegisters[kHMP1] = val;
 }
 void Tia::SetHMM0(uint8_t val)
 {
-    HMM0 = val;
+    writeRegisters[kHMM0] = val;
 }
 void Tia::SetHMM1(uint8_t val)
 {
-    HMM1 = val;
+    writeRegisters[kHMM1] = val;
 }
 void Tia::SetHMBL(uint8_t val)
 {
-    HMBL = val;
+    writeRegisters[kHMBL] = val;
 }
 void Tia::SetVDELP0(uint8_t val)
 {
-    VDELP0 = val;
+    writeRegisters[kVDELP0] = val;
 }
 void Tia::SetVDELP1(uint8_t val)
 {
-    VDELP1 = val;
+    writeRegisters[kVDELP1] = val;
 }
 void Tia::SetVDELBL(uint8_t val)
 {
-    VDELBL = val;
+    writeRegisters[kVDELBL] = val;
 }
 void Tia::SetRESMP0(uint8_t val)
 {
-    RESMP0 = val;
+    writeRegisters[kRESMP0] = val;
 }
 void Tia::SetRESMP1(uint8_t val)
 {
-    RESMP1 = val;
+    writeRegisters[kRESMP1] = val;
 }
 void Tia::SetHMOVE(uint8_t val)
 {
-    HMOVE = val;
+    writeRegisters[kHMOVE] = val;
 }
 void Tia::SetHMCLR(uint8_t val)
 {
-    HMCLR = val;
+    writeRegisters[kHMCLR] = val;
 }
 void Tia::SetCXCLR(uint8_t val)
 {
-    CXCLR = val;
+    writeRegisters[kCXCLR] = val;
 }

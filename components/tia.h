@@ -28,34 +28,38 @@ public:
 	static const uint16_t kOutputHorizontalResolution = 228;
 	static const uint16_t kOutputVerticalResolution = 262;
 
-    static const uint8_t kVSYNC = 0x00;
+	// read registers
     static const uint8_t kCXM0P = 0x00;
-    static const uint8_t kVBLANK = 0x01;
     static const uint8_t kCXM1P = 0x01;
-    static const uint8_t kWSYNC = 0x02;
     static const uint8_t kCXP0FB = 0x02;
-    static const uint8_t kRSYNC = 0x03;
     static const uint8_t kCXP1FB = 0x03;
-    static const uint8_t kNUSIZ0 = 0x04;
     static const uint8_t kCXM0FB = 0x04;
-    static const uint8_t kNUSIZ1 = 0x05;
     static const uint8_t kCXM1FB = 0x05;
-    static const uint8_t kCOLUP0 = 0x06;
     static const uint8_t kCXBLPF = 0x06;
-    static const uint8_t kCOLUP1 = 0x07;
     static const uint8_t kCXPPMM = 0x07;
-    static const uint8_t kCOLUPF = 0x08;
     static const uint8_t kINPT0 = 0x08;
-    static const uint8_t kCOLUBK = 0x09;
     static const uint8_t kINPT1 = 0x09;
-    static const uint8_t kCTRLPF = 0x0a;
     static const uint8_t kINPT2 = 0x0a;
-    static const uint8_t kREFP0 = 0x0b;
     static const uint8_t kINPT3 = 0x0b;
-    static const uint8_t kREFP1 = 0x0c;
     static const uint8_t kINPT4 = 0x0c;
-    static const uint8_t kPF0 = 0x0d;
     static const uint8_t kINPT5 = 0x0d;
+	static const uint8_t kNumReadRegisters = 0x0e;
+
+	// write registers
+    static const uint8_t kVSYNC = 0x00;
+    static const uint8_t kVBLANK = 0x01;
+    static const uint8_t kWSYNC = 0x02;
+    static const uint8_t kRSYNC = 0x03;
+    static const uint8_t kNUSIZ0 = 0x04;
+    static const uint8_t kNUSIZ1 = 0x05;
+    static const uint8_t kCOLUP0 = 0x06;
+    static const uint8_t kCOLUP1 = 0x07;
+    static const uint8_t kCOLUPF = 0x08;
+    static const uint8_t kCOLUBK = 0x09;
+    static const uint8_t kCTRLPF = 0x0a;
+    static const uint8_t kREFP0 = 0x0b;
+    static const uint8_t kREFP1 = 0x0c;
+    static const uint8_t kPF0 = 0x0d;
     static const uint8_t kPF1 = 0x0e;
     static const uint8_t kPF2 = 0x0f;
     static const uint8_t kRESP0 = 0x10;
@@ -87,7 +91,7 @@ public:
     static const uint8_t kHMOVE = 0x2a;
     static const uint8_t kHMCLR = 0x2b;
     static const uint8_t kCXCLR = 0x2c;
-	static const uint8_t kNumRegisters = 0x2d;
+	static const uint8_t kNumWriteRegisters = 0x2d;
 
     Tia();
     virtual ~Tia();
@@ -172,50 +176,50 @@ public:
 	uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
 
     // Read access to write only registers
-    uint8_t GetVSYNC(void){return VSYNC;}
-    uint8_t GetVBLANK(void){return VBLANK;}
-    uint8_t GetRSYNC(void){return RSYNC;}
-    uint8_t GetWSYNC(void){return WSYNC;}
-    uint8_t GetNUSIZ0(void){return NUSIZ0;}
-    uint8_t GetNUSIZ1(void){return NUSIZ1;}
-    uint8_t GetCOLUP0(void){return COLUP0;}
-    uint8_t GetCOLUP1(void){return COLUP1;}
-    uint8_t GetCOLUPF(void){return COLUPF;}
-    uint8_t GetCOLUBK(void){return COLUBK;}
-    uint8_t GetREFP0(void){return REFP0;}
-    uint8_t GetREFP1(void){return REFP1;}
-    uint8_t GetPF0(void){return PF0;}
-    uint8_t GetPF1(void){return PF1;}
-    uint8_t GetPF2(void){return PF2;}
-    uint8_t GetRESP0(void){return RESP0;}
-    uint8_t GetRESP1(void){return RESP1;}
-    uint8_t GetRESM0(void){return RESM0;}
-    uint8_t GetRESM1(void){return RESM1;}
-    uint8_t GetRESBL(void){return RESBL;}
-    uint8_t GetAUDC0(void){return AUDC0;}
-    uint8_t GetAUDC1(void){return AUDC1;}
-    uint8_t GetAUDF0(void){return AUDF0;}
-    uint8_t GetAUDF1(void){return AUDF1;}
-    uint8_t GetAUDV0(void){return AUDV0;}
-    uint8_t GetAUDV1(void){return AUDV1;}
-    uint8_t GetGRP0(void){return GRP0;}
-    uint8_t GetGRP1(void){return GRP1;}
-    uint8_t GetENAM0(void){return ENAM0;}
-    uint8_t GetENAM1(void){return ENAM1;}
-    uint8_t GetENABL(void){return ENABL;}
-    uint8_t GetHMP0(void){return HMP0;}
-    uint8_t GetHMP1(void){return HMP1;}
-    uint8_t GetHMM0(void){return HMM0;}
-    uint8_t GetHMM1(void){return HMM1;}
-    uint8_t GetHMBL(void){return HMBL;}
-    uint8_t GetVDELP0(void){return VDELP0;}
-    uint8_t GetVDELP1(void){return VDELP1;}
-    uint8_t GetVDELBL(void){return VDELBL;}
-    uint8_t GetRESMP0(void){return RESMP0;}
-    uint8_t GetRESMP1(void){return RESMP1;}
-    uint8_t GetHMOVE(void){return HMOVE;}
-    uint8_t GetHMCLR(void){return HMCLR;}
-    uint8_t GetCXCLR(void){return CXCLR;}
+    uint8_t GetVSYNC(void){return writeRegisters[kVSYNC];}
+    uint8_t GetVBLANK(void){return writeRegisters[kVBLANK];}
+    uint8_t GetRSYNC(void){return writeRegisters[kRSYNC];}
+    uint8_t GetWSYNC(void){return writeRegisters[kWSYNC];}
+    uint8_t GetNUSIZ0(void){return writeRegisters[kNUSIZ0];}
+    uint8_t GetNUSIZ1(void){return writeRegisters[kNUSIZ1];}
+    uint8_t GetCOLUP0(void){return writeRegisters[kCOLUP0];}
+    uint8_t GetCOLUP1(void){return writeRegisters[kCOLUP1];}
+    uint8_t GetCOLUPF(void){return writeRegisters[kCOLUPF];}
+    uint8_t GetCOLUBK(void){return writeRegisters[kCOLUBK];}
+    uint8_t GetREFP0(void){return writeRegisters[kREFP0];}
+    uint8_t GetREFP1(void){return writeRegisters[kREFP1];}
+    uint8_t GetPF0(void){return writeRegisters[kPF0];}
+    uint8_t GetPF1(void){return writeRegisters[kPF1];}
+    uint8_t GetPF2(void){return writeRegisters[kPF2];}
+    uint8_t GetRESP0(void){return writeRegisters[kRESP0];}
+    uint8_t GetRESP1(void){return writeRegisters[kRESP1];}
+    uint8_t GetRESM0(void){return writeRegisters[kRESM0];}
+    uint8_t GetRESM1(void){return writeRegisters[kRESM1];}
+    uint8_t GetRESBL(void){return writeRegisters[kRESBL];}
+    uint8_t GetAUDC0(void){return writeRegisters[kAUDC0];}
+    uint8_t GetAUDC1(void){return writeRegisters[kAUDC1];}
+    uint8_t GetAUDF0(void){return writeRegisters[kAUDF0];}
+    uint8_t GetAUDF1(void){return writeRegisters[kAUDF1];}
+    uint8_t GetAUDV0(void){return writeRegisters[kAUDV0];}
+    uint8_t GetAUDV1(void){return writeRegisters[kAUDV1];}
+    uint8_t GetGRP0(void){return writeRegisters[kGRP0];}
+    uint8_t GetGRP1(void){return writeRegisters[kGRP1];}
+    uint8_t GetENAM0(void){return writeRegisters[kENAM0];}
+    uint8_t GetENAM1(void){return writeRegisters[kENAM1];}
+    uint8_t GetENABL(void){return writeRegisters[kENABL];}
+    uint8_t GetHMP0(void){return writeRegisters[kHMP0];}
+    uint8_t GetHMP1(void){return writeRegisters[kHMP1];}
+    uint8_t GetHMM0(void){return writeRegisters[kHMM0];}
+    uint8_t GetHMM1(void){return writeRegisters[kHMM1];}
+    uint8_t GetHMBL(void){return writeRegisters[kHMBL];}
+    uint8_t GetVDELP0(void){return writeRegisters[kVDELP0];}
+    uint8_t GetVDELP1(void){return writeRegisters[kVDELP1];}
+    uint8_t GetVDELBL(void){return writeRegisters[kVDELBL];}
+    uint8_t GetRESMP0(void){return writeRegisters[kRESMP0];}
+    uint8_t GetRESMP1(void){return writeRegisters[kRESMP1];}
+    uint8_t GetHMOVE(void){return writeRegisters[kHMOVE];}
+    uint8_t GetHMCLR(void){return writeRegisters[kHMCLR];}
+    uint8_t GetCXCLR(void){return writeRegisters[kCXCLR];}
 
     // ITickable
     void Tick();
@@ -241,69 +245,11 @@ private:
 	uint8_t		palettePAL[kNumColours*3];
 	uint8_t		paletteSECAM[kNumColours*3];
 
-	bool bReadBreakpoints[kNumRegisters];
-	bool bWriteBreakpoints[kNumRegisters];
+	bool bReadBreakpoints[kNumReadRegisters];
+	bool bWriteBreakpoints[kNumWriteRegisters];
 
-    // registers
-    uint8_t VSYNC;
-    uint8_t CXM0P;
-    uint8_t VBLANK;
-    uint8_t CXM1P;
-    uint8_t WSYNC;
-    uint8_t CXP0FB;
-    uint8_t RSYNC;
-    uint8_t CXP1FB;
-    uint8_t NUSIZ0;
-    uint8_t CXM0FB;
-    uint8_t NUSIZ1;
-    uint8_t CXM1FB;
-    uint8_t COLUP0;
-    uint8_t CXBLPF;
-    uint8_t COLUP1;
-    uint8_t CXPPMM;
-    uint8_t COLUPF;
-    uint8_t INPT0;
-    uint8_t COLUBK;
-    uint8_t INPT1;
-    uint8_t CTRLPF;
-    uint8_t INPT2;
-    uint8_t REFP0;
-    uint8_t INPT3;
-    uint8_t REFP1;
-    uint8_t INPT4;
-    uint8_t PF0;
-    uint8_t INPT5;
-    uint8_t PF1;
-    uint8_t PF2;
-    uint8_t RESP0;
-    uint8_t RESP1;
-    uint8_t RESM0;
-    uint8_t RESM1;
-    uint8_t RESBL;
-    uint8_t AUDC0;
-    uint8_t AUDC1;
-    uint8_t AUDF0;
-    uint8_t AUDF1;
-    uint8_t AUDV0;
-    uint8_t AUDV1;
-    uint8_t GRP0;
-    uint8_t GRP1;
-    uint8_t ENAM0;
-    uint8_t ENAM1;
-    uint8_t ENABL;
-    uint8_t HMP0;
-    uint8_t HMP1;
-    uint8_t HMM0;
-    uint8_t HMM1;
-    uint8_t HMBL;
-    uint8_t VDELP0;
-    uint8_t VDELP1;
-    uint8_t VDELBL;
-    uint8_t RESMP0;
-    uint8_t RESMP1;
-    uint8_t HMOVE;
-    uint8_t HMCLR;
-    uint8_t CXCLR;
+	uint8_t readRegisters[kNumReadRegisters];
+	uint8_t writeRegisters[kNumWriteRegisters];
 
 	bool bHaltOnTick;
 	bool bHaltOnHBlank;

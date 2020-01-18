@@ -273,11 +273,15 @@ void TiaWindow::SerialiseState(json& object)
 	windowJson["showRegisters"] = bShowRegisters;
 
 	// serialise breakpoint states
-	for(int i=0 ; i<Tia::kNumRegisters ; i++)
+	for(int i=0 ; i<Tia::kNumReadRegisters ; i++)
 	{
 		char buffer[8];
 		sprintf(&buffer[0], "rbp%d", i);
 		windowJson[buffer] = pTia->GetReadBreakpoint(i);
+	}
+	for(int i=0 ; i<Tia::kNumWriteRegisters ; i++)
+	{
+		char buffer[8];
 		sprintf(&buffer[0], "wbp%d", i);
 		windowJson[buffer] = pTia->GetWriteBreakpoint(i);
 	}
@@ -300,7 +304,7 @@ void TiaWindow::DeserialiseState(json& object)
 		{
 			bShowRegisters = windowJson["showRegisters"].get<bool>();
 		}
-		for(int i=0 ; i<Tia::kNumRegisters ; i++)
+		for(int i=0 ; i<Tia::kNumReadRegisters ; i++)
 		{
 			char buffer[8];
 			sprintf(&buffer[0], "rbp%d", i);
@@ -308,6 +312,10 @@ void TiaWindow::DeserialiseState(json& object)
 			{
 				pTia->SetReadBreakpoint(i, windowJson[buffer].get<bool>());
 			}
+		}
+		for(int i=0 ; i<Tia::kNumWriteRegisters ; i++)
+		{
+			char buffer[8];
 			sprintf(&buffer[0], "wbp%d", i);
 			if(windowJson.contains(buffer))
 			{
