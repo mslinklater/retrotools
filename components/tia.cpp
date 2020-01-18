@@ -18,11 +18,64 @@ Tia::Tia()
 		bReadBreakpoints[i] = false;
 		bWriteBreakpoints[i] = false;
 	}
+
+	InitPalettes();
 }
 
 Tia::~Tia()
 {
 
+}
+
+void Tia::InitPalettes()
+{
+	for(int i=0 ; i<kNumColours ; i++)
+	{
+		uint8_t col = i & 7;
+		switch(col)
+		{
+			case 0:	// black
+				paletteSECAM[i*3]=0;
+				paletteSECAM[(i*3)+1]=0;
+				paletteSECAM[(i*3)+2]=0;
+				break;
+			case 1:	// blue
+				paletteSECAM[i*3]=0;
+				paletteSECAM[(i*3)+1]=0;
+				paletteSECAM[(i*3)+2]=255;
+				break;
+			case 2:	// red
+				paletteSECAM[i*3]=255;
+				paletteSECAM[(i*3)+1]=0;
+				paletteSECAM[(i*3)+2]=0;
+				break;
+			case 3:	// magenta
+				paletteSECAM[i*3]=255;
+				paletteSECAM[(i*3)+1]=0;
+				paletteSECAM[(i*3)+2]=255;
+				break;
+			case 4:	// green
+				paletteSECAM[i*3]=0;
+				paletteSECAM[(i*3)+1]=255;
+				paletteSECAM[(i*3)+2]=0;
+				break;
+			case 5:	// cyan
+				paletteSECAM[i*3]=0;
+				paletteSECAM[(i*3)+1]=255;
+				paletteSECAM[(i*3)+2]=255;
+				break;
+			case 6:	// yellow
+				paletteSECAM[i*3]=255;
+				paletteSECAM[(i*3)+1]=255;
+				paletteSECAM[(i*3)+2]=0;
+				break;
+			case 7:	// white
+				paletteSECAM[i*3]=255;
+				paletteSECAM[(i*3)+1]=255;
+				paletteSECAM[(i*3)+2]=255;
+				break;
+		}
+	}
 }
 
 void Tia::Tick()

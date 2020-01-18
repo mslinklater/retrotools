@@ -25,6 +25,8 @@ Each line consists of
 class Tia : public ITickable, public ICommandProcessor
 {
 public:
+	static const uint16_t kOutputHorizontalResolution = 228;
+	static const uint16_t kOutputVerticalResolution = 262;
 
     static const uint8_t kVSYNC = 0x00;
     static const uint8_t kCXM0P = 0x00;
@@ -223,11 +225,21 @@ public:
 	virtual bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 
+	const uint8_t* GetPixels(){return &pixels[0];}
+
 private:
-//    uint8_t pixels[228*262];
+
+	void InitPalettes();
+
+    uint8_t 	pixels[228*262];
 	uint16_t	rasterX;
 	uint16_t	rasterY;
 	uint32_t	frameNum;
+
+	static const uint8_t kNumColours = 128;
+	uint8_t		paletteNTSC[kNumColours*3];
+	uint8_t		palettePAL[kNumColours*3];
+	uint8_t		paletteSECAM[kNumColours*3];
 
 	bool bReadBreakpoints[kNumRegisters];
 	bool bWriteBreakpoints[kNumRegisters];
