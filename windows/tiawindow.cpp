@@ -18,10 +18,10 @@ TiaWindow::TiaWindow()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-	for(int i=0 ; i<kOutputBufferSize ; i++)
-	{
-		outputBuffer[i] = i & 255;
-	}
+//	for(int i=0 ; i<kOutputBufferSize ; i++)
+//	{
+//		outputBuffer[i] = i & 255;
+//	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 }
 
@@ -249,6 +249,26 @@ void TiaWindow::Draw(void)
 	}
 
     // Draw screen image
+	const uint8_t* pPalette = pTia->GetPalette();
+	const uint8_t* pPixels = pTia->GetPixels();
+	uint32_t numPixels = Tia::kOutputVerticalResolution * Tia::kOutputHorizontalResolution;
+	for(int i=0 ; i<numPixels ; i++)
+	{
+		// read pixel
+		uint8_t pixel = pPixels[i];
+
+		// get palette colour for that pixel
+		uint8_t r = pPalette[pixel*3];
+		uint8_t g = pPalette[(pixel*3)+1];
+		uint8_t b = pPalette[(pixel*3)+2];
+		uint8_t a = 255;
+
+		// write RGBA in to texture
+		outputBuffer[i*4] = r;
+		outputBuffer[(i*4)+1] = g;
+		outputBuffer[(i*4)+2] = b;
+		outputBuffer[(i*4)+3] = a;
+	}
 
 	// build image from tia pixels and palette
 

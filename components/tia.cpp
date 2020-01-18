@@ -25,6 +25,14 @@ Tia::Tia()
 	}
 
 	InitPalettes();
+
+	for(int y=0 ; y<kOutputVerticalResolution ; y++)
+	{
+		for(int x=0 ; x<kOutputHorizontalResolution ; x++)
+		{
+			pixels[(y*kOutputHorizontalResolution) + x] = y & 7;
+		}
+	}
 }
 
 Tia::~Tia()

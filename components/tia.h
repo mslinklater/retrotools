@@ -230,6 +230,7 @@ public:
 	// ~ICommandProcessor
 
 	const uint8_t* GetPixels(){return &pixels[0];}
+	const uint8_t* GetPalette(){return &paletteSECAM[0];}
 
 private:
 
