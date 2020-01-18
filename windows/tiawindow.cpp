@@ -10,6 +10,9 @@
 TiaWindow::TiaWindow()
 : bShowInfo(false)
 , bShowRegisters(false)
+, bShowVBlank(false)
+, bShowHBlank(false)
+, bShowLocation(false)
 {
 	// create output buffer
 	glGenTextures(1, &videoOutputTexture);
@@ -252,7 +255,7 @@ void TiaWindow::Draw(void)
 	const uint8_t* pPalette = pTia->GetPalette();
 	const uint8_t* pPixels = pTia->GetPixels();
 	uint32_t numPixels = Tia::kOutputVerticalResolution * Tia::kOutputHorizontalResolution;
-	for(int i=0 ; i<numPixels ; i++)
+	for(uint32_t i=0 ; i<numPixels ; i++)
 	{
 		// read pixel
 		uint8_t pixel = pPixels[i];
@@ -275,7 +278,8 @@ void TiaWindow::Draw(void)
 	glBindTexture(GL_TEXTURE_2D, videoOutputTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 
-	ImGui::Image((void*)(intptr_t)videoOutputTexture, ImVec2(800, 600));
+	float imageWidth = ImGui::GetWindowWidth() - 20.0f;
+	ImGui::Image((void*)(intptr_t)videoOutputTexture, ImVec2(imageWidth, imageWidth * 0.75f));
 }
 
 void TiaWindow::SetTia(Tia* tia)

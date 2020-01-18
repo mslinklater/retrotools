@@ -33,6 +33,9 @@ private:
 
 	bool bShowInfo;
 	bool bShowRegisters;
+	bool bShowVBlank;
+	bool bShowHBlank;
+	bool bShowLocation;
 
 	void DrawWriteRegister(uint32_t reg, const char* text, uint8_t val);
 	void DrawReadRegister(uint32_t reg, const char* text, uint8_t val);

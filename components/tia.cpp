@@ -100,8 +100,12 @@ void Tia::InitPalettes()
 void Tia::Tick()
 {
 	// do tick
-	if(GetVSYNC() != 0) rasterY = 0;
 
+
+	if(GetVSYNC() != 0) rasterY = 0;
+	pixels[rasterX + (rasterY*228)] = GetCOLUBK();
+
+	// now move
 	rasterX++;
 	if(rasterX >= 228)
 	{
@@ -209,7 +213,7 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetCOLUPF(value);
             break;
         case kCOLUBK:
-            SetCOLUBK(value);
+            SetCOLUBK((value >> 1) & 0x7f);
             break;
         case kCTRLPF:
             SetCTRLPF(value);
