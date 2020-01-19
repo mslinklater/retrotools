@@ -10,21 +10,17 @@
 TiaWindow::TiaWindow()
 : bShowInfo(false)
 , bShowRegisters(false)
-, bShowVBlank(false)
-, bShowHBlank(false)
+//, bShowVBlank(false)
+//, bShowHBlank(false)
 , bShowLocation(false)
 {
 	// create output buffer
 	glGenTextures(1, &videoOutputTexture);
 	glBindTexture(GL_TEXTURE_2D, videoOutputTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-//	for(int i=0 ; i<kOutputBufferSize ; i++)
-//	{
-//		outputBuffer[i] = i & 255;
-//	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 }
 
@@ -73,6 +69,7 @@ void TiaWindow::Draw(void)
 		ImGui::Text("RasterX: %d", pTia->GetRasterX());
 		ImGui::Text("RasterY: %d", pTia->GetRasterY());
 		ImGui::Text("Frame: %d", pTia->GetFrameNum());
+		ImGui::Checkbox("Show location", &bShowLocation);
 	}
 
 	if(bShowRegisters)
@@ -271,6 +268,15 @@ void TiaWindow::Draw(void)
 		outputBuffer[(i*4)+1] = g;
 		outputBuffer[(i*4)+2] = b;
 		outputBuffer[(i*4)+3] = a;
+	}
+
+	if(bShowLocation)
+	{
+		uint32_t loc = pTia->GetRasterX() + (pTia->GetRasterY() * 228);
+		outputBuffer[loc*4] = 255;
+		outputBuffer[(loc*4)+1] = 255;
+		outputBuffer[(loc*4)+2] = 255;
+		outputBuffer[(loc*4)+3] = 255;
 	}
 
 	// build image from tia pixels and palette

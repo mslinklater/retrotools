@@ -1078,6 +1078,8 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		case kMnemonic_LSR:
 			reg.acc >>= 1;
 			reg.acc &= 0x7f;
+			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();				
+			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();				
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{

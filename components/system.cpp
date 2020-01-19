@@ -11,7 +11,7 @@
 
 System::System()
 : running(false)
-, tickFrequency(3584160)
+, tickFrequency(kCoreFrequency)
 , tickedUpToTime(0.0)
 , tickUpToTime(0.0)
 , deltaTPerTick(1.0 / tickFrequency)
@@ -36,6 +36,8 @@ bool System::HandleCommand(const Command& command)
 
 void System::Update(float dt)
 {
+	deltaTPerTick = 1.0 / tickFrequency;
+
 	if(!running)
 	{
 		return;
@@ -50,7 +52,7 @@ void System::Update(float dt)
 	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
-		if(!pTia->IsCpuStalled())
+		if(!pTia->IsCpuStalled() || (pCpu6502->GetTicksUntilExecution() > 1))	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
 		{
 			if(cpuTickDelay == 0)
 			{

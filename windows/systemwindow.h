@@ -23,4 +23,9 @@ public:
 
 private:
 	System*		pSystem;
+
+	void DrawState();
+	void DrawTIA();
+	void DrawCPU();
+	void DrawSpeedControl();
 };

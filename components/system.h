@@ -17,6 +17,8 @@ class System : public ICommandProcessor
 {
 public:
 
+	static const int kCoreFrequency = 3584160;
+
     System();
     virtual ~System();
 
@@ -28,6 +30,9 @@ public:
 	bool GetRunning();
 
 	void Tick();
+
+	void SetTickFrequency(uint32_t ticksPerSecond){tickFrequency = ticksPerSecond;}
+	uint32_t GetTickFrequency(){return tickFrequency;}
 
 	// ICommandProcessor
 	virtual bool HandleCommand(const Command& command);

@@ -7,6 +7,7 @@ Tia::Tia()
 : rasterX(0)
 , rasterY(0)
 , frameNum(0)
+, region(ERegion::NTSC)
 , bHaltOnTick(false)
 , bHaltOnHBlank(false)
 , bHaltOnVBlank(false)
@@ -33,6 +34,12 @@ Tia::Tia()
 			pixels[(y*kOutputHorizontalResolution) + x] = y & 7;
 		}
 	}
+
+	// Playfield bits
+	for(int i=0 ; i<40 ; i++)
+	{
+		playfieldBits[i] = false;
+	}
 }
 
 Tia::~Tia()
@@ -42,68 +49,30 @@ Tia::~Tia()
 
 void Tia::InitPalettes()
 {
-	for(int i=0 ; i<kNumColours ; i++)
-	{
-		uint8_t col = i & 7;
-		switch(col)
-		{
-			case 0:	// black
-				paletteSECAM[i*3]=0;
-				paletteSECAM[(i*3)+1]=0;
-				paletteSECAM[(i*3)+2]=0;
-				break;
-			case 1:	// blue
-				paletteSECAM[i*3]=0;
-				paletteSECAM[(i*3)+1]=0;
-				paletteSECAM[(i*3)+2]=255;
-				break;
-			case 2:	// red
-				paletteSECAM[i*3]=255;
-				paletteSECAM[(i*3)+1]=0;
-				paletteSECAM[(i*3)+2]=0;
-				break;
-			case 3:	// magenta
-				paletteSECAM[i*3]=255;
-				paletteSECAM[(i*3)+1]=0;
-				paletteSECAM[(i*3)+2]=255;
-				break;
-			case 4:	// green
-				paletteSECAM[i*3]=0;
-				paletteSECAM[(i*3)+1]=255;
-				paletteSECAM[(i*3)+2]=0;
-				break;
-			case 5:	// cyan
-				paletteSECAM[i*3]=0;
-				paletteSECAM[(i*3)+1]=255;
-				paletteSECAM[(i*3)+2]=255;
-				break;
-			case 6:	// yellow
-				paletteSECAM[i*3]=255;
-				paletteSECAM[(i*3)+1]=255;
-				paletteSECAM[(i*3)+2]=0;
-				break;
-			case 7:	// white
-				paletteSECAM[i*3]=255;
-				paletteSECAM[(i*3)+1]=255;
-				paletteSECAM[(i*3)+2]=255;
-				break;
-		}
-		paletteNTSC[i*3] = paletteSECAM[i*3];
-		paletteNTSC[(i*3)+1] = paletteSECAM[(i*3)+1];
-		paletteNTSC[(i*3)+2] = paletteSECAM[(i*3)+2];
-		palettePAL[i*3] = paletteSECAM[i*3];
-		palettePAL[(i*3)+1] = paletteSECAM[(i*3)+1];
-		palettePAL[(i*3)+2] = paletteSECAM[(i*3)+2];
-	}
+	// NTSC
+
 }
 
 void Tia::Tick()
 {
 	// do tick
 
+	if((GetVSYNC() & 0x02) != 0) 	// D1 of VSYNC
+	{
+		rasterY = 0;
+	}
 
-	if(GetVSYNC() != 0) rasterY = 0;
+	// Begin actual render logic
 	pixels[rasterX + (rasterY*228)] = GetCOLUBK();
+	if(rasterX >= 68)
+	{
+		int playfieldIndex = (rasterX-68)/4;
+		if(playfieldBits[playfieldIndex])
+		{
+			pixels[rasterX + (rasterY*228)] = GetCOLUPF();
+		}
+	}
+	// End actual render logic
 
 	// now move
 	rasterX++;
@@ -140,6 +109,64 @@ void Tia::Tick()
 		Commands::Halt(true);
 		bHaltOnTick = false;
 	}
+}
+
+const uint8_t* Tia::GetPalette()
+{
+	switch(region)
+	{
+		case NTSC:
+			return &paletteNTSC[0];
+		case PAL:
+			return &palettePAL[0];
+		case SECAM:
+			return &paletteSECAM[0];
+	}
+}
+
+void Tia::RebuildPlayfieldBits()
+{
+	uint8_t PF0 = GetPF0();
+	uint8_t PF1 = GetPF1();
+	uint8_t PF2 = GetPF2();
+
+	playfieldBits[0] = PF0 & 0x10;
+	playfieldBits[1] = PF0 & 0x20;
+	playfieldBits[2] = PF0 & 0x40;
+	playfieldBits[3] = PF0 & 0x80;
+	playfieldBits[4] = PF1 & 0x80;
+	playfieldBits[5] = PF1 & 0x40;
+	playfieldBits[6] = PF1 & 0x20;
+	playfieldBits[7] = PF1 & 0x10;
+	playfieldBits[8] = PF1 & 0x08;
+	playfieldBits[9] = PF1 & 0x04;
+	playfieldBits[10] = PF1 & 0x02;
+	playfieldBits[11] = PF1 & 0x01;
+	playfieldBits[12] = PF2 & 0x01;
+	playfieldBits[13] = PF2 & 0x02;
+	playfieldBits[14] = PF2 & 0x04;
+	playfieldBits[15] = PF2 & 0x08;
+	playfieldBits[16] = PF2 & 0x10;
+	playfieldBits[17] = PF2 & 0x20;
+	playfieldBits[18] = PF2 & 0x40;
+	playfieldBits[19] = PF2 & 0x80;
+	if(writeRegisters[kCTRLPF] & 0x01)
+	{
+		// mirror
+		for(int i=0 ; i<20 ; i++)
+		{
+			playfieldBits[39-i] = playfieldBits[i];
+		}	
+	}
+	else
+	{
+		// duplicate
+		for(int i=0 ; i<20 ; i++)
+		{
+			playfieldBits[i+20] = playfieldBits[i];
+		}	
+	}
+	
 }
 
 uint8_t Tia::Read(uint8_t address)
@@ -413,7 +440,7 @@ void Tia::SetVBLANK(uint8_t val)
 }
 void Tia::SetWSYNC(uint8_t val)
 {
-    writeRegisters[kWSYNC] = val;
+    writeRegisters[kWSYNC] = 0x01;
 	bCpuWaitingForHsync = true;
 }
 void Tia::SetRSYNC(uint8_t val)
@@ -447,6 +474,7 @@ void Tia::SetCOLUBK(uint8_t val)
 void Tia::SetCTRLPF(uint8_t val)
 {
     writeRegisters[kCTRLPF] = val;
+	RebuildPlayfieldBits();
 }
 void Tia::SetREFP0(uint8_t val)
 {
@@ -459,14 +487,17 @@ void Tia::SetREFP1(uint8_t val)
 void Tia::SetPF0(uint8_t val)
 {
     writeRegisters[kPF0] = val;
+	RebuildPlayfieldBits();
 }
 void Tia::SetPF1(uint8_t val)
 {
     writeRegisters[kPF1] = val;
+	RebuildPlayfieldBits();
 }
 void Tia::SetPF2(uint8_t val)
 {
     writeRegisters[kPF2] = val;
+	RebuildPlayfieldBits();
 }
 void Tia::SetRESP0(uint8_t val)
 {

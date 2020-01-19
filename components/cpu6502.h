@@ -152,6 +152,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		bool IsBreakpoint(uint16_t addr);
 
 		uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
+		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
 	private:
 		Registers	reg;

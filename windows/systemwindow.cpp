@@ -23,7 +23,7 @@ void SystemWindow::SetSystem(System* system)
     pSystem = system;
 }
 
-void SystemWindow::Draw(void)
+void SystemWindow::DrawState()
 {
 	if(pSystem->GetRunning())
 	{
@@ -46,31 +46,98 @@ void SystemWindow::Draw(void)
     ImGui::Text("dt:%f", pSystem->GetUpdateDT());
     ImGui::Text("fps:%f", 1.0f / pSystem->GetUpdateDT());
     ImGui::Separator();
-    ImGui::Text("TIA");
-    if(ImGui::Button("TickTIA"))
-    {
-		Commands::Halt(false, Commands::kHaltCommandTickTia);
-    }
-    ImGui::SameLine();
-    if(ImGui::Button("HBlank"))
-    {
-		Commands::Halt(false, Commands::kHaltCommandHBlank);
-    }
-    ImGui::SameLine();
-    if(ImGui::Button("VBlank"))
-    {
-		Commands::Halt(false, Commands::kHaltCommandVBlank);
-    }
-    ImGui::Separator();
-    ImGui::Text("CPU");
-    if(ImGui::Button("TickCPU"))
-    {
-		Commands::Halt(false, Commands::kHaltCommandTickCpu);
-    }
-    ImGui::SameLine();
-    if(ImGui::Button("Instruction"))
-    {
-		Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
-    }
+}
+
+void SystemWindow::DrawTIA()
+{
+	if(ImGui::TreeNode("TIA"))
+	{
+		if(ImGui::Button("TickTIA"))
+		{
+			Commands::Halt(false, Commands::kHaltCommandTickTia);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("HBlank"))
+		{
+			Commands::Halt(false, Commands::kHaltCommandHBlank);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("VBlank"))
+		{
+			Commands::Halt(false, Commands::kHaltCommandVBlank);
+		}
+        ImGui::TreePop();
+	}
+}
+
+void SystemWindow::DrawCPU()
+{
+	if(ImGui::TreeNode("CPU"))
+	{
+		if(ImGui::Button("TickCPU"))
+		{
+			Commands::Halt(false, Commands::kHaltCommandTickCpu);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("Instruction"))
+		{
+			Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
+		}
+		ImGui::TreePop();
+	}
+}
+
+void SystemWindow::DrawSpeedControl()
+{
+	static char newFreqText[16];
+	if(ImGui::TreeNode("Speed"))
+	{
+		ImGui::Separator();
+		ImGui::Text("Current Freq:%d", pSystem->GetTickFrequency());
+		ImGui::PushItemWidth(40);
+		ImGui::InputText("Hz", newFreqText, 7);
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+		if(ImGui::Button("Set"))
+		{
+			uint32_t freq = strtol(newFreqText, NULL, 10);
+			pSystem->SetTickFrequency(freq);
+		}
+		if(ImGui::Button("x1"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("1/10"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency/10);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("1/100"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency/100);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("1/1K"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency/1000);
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("1/10K"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency/10000);
+		}
+
+		ImGui::Separator();
+		ImGui::TreePop();
+	}
+}
+
+void SystemWindow::Draw(void)
+{
+	DrawState();
+	DrawTIA();
+	DrawCPU();
+	DrawSpeedControl();
 }
 
