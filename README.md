@@ -17,7 +17,4 @@ You should now have the 'retrotools' executable in the folder
 
 ## Command Line Parameters
 
--h	Show help
--i	Enter interactive mode
--l <file>	Load ROM file
--d	Disassemble
+TODO
