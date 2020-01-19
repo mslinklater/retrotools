@@ -35,7 +35,7 @@ LVBlank	sta WSYNC
 ; Draw the 192 scanlines
 	ldx #192
 	lda #0		; changes every scanline
-        ;lda Counter    ; uncomment to scroll!
+    lda Counter    ; uncomment to scroll!
 ScanLoop
 	sta WSYNC	; wait for next scanline
 	sta PF0		; set the PF1 playfield pattern register

@@ -70,6 +70,18 @@ void TiaWindow::Draw(void)
 		ImGui::Text("RasterY: %d", pTia->GetRasterY());
 		ImGui::Text("Frame: %d", pTia->GetFrameNum());
 		ImGui::Checkbox("Show location", &bShowLocation);
+		if(ImGui::Selectable("PAL", pTia->GetRegion() == Tia::ERegion::PAL))
+		{
+			pTia->SetRegion(Tia::ERegion::PAL);
+		}
+		if(ImGui::Selectable("NTSC", pTia->GetRegion() == Tia::ERegion::NTSC))
+		{
+			pTia->SetRegion(Tia::ERegion::NTSC);
+		}
+		if(ImGui::Selectable("SECAM", pTia->GetRegion() == Tia::ERegion::SECAM))
+		{
+			pTia->SetRegion(Tia::ERegion::SECAM);
+		}
 	}
 
 	if(bShowRegisters)

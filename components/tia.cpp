@@ -231,13 +231,13 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetNUSIZ1(value);
             break;
         case kCOLUP0:
-            SetCOLUP0(value);
+            SetCOLUP0((value >> 1) & 0x7f);
             break;
         case kCOLUP1:
-            SetCOLUP1(value);
+            SetCOLUP1((value >> 1) & 0x7f);
             break;
         case kCOLUPF:
-            SetCOLUPF(value);
+            SetCOLUPF((value >> 1) & 0x7f);
             break;
         case kCOLUBK:
             SetCOLUBK((value >> 1) & 0x7f);
