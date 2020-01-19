@@ -119,7 +119,7 @@ const uint8_t* Tia::GetPalette()
 			return &paletteNTSC[0];
 		case PAL:
 			return &palettePAL[0];
-		case SECAM:
+		default:	// SECAM
 			return &paletteSECAM[0];
 	}
 }
