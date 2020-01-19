@@ -11,7 +11,7 @@ TiaWindow::TiaWindow()
 : bShowInfo(false)
 , bShowRegisters(false)
 //, bShowVBlank(false)
-//, bShowHBlank(false)
+, bShowHBlank(false)
 , bShowLocation(false)
 {
 	// create output buffer
@@ -70,6 +70,7 @@ void TiaWindow::Draw(void)
 		ImGui::Text("RasterY: %d", pTia->GetRasterY());
 		ImGui::Text("Frame: %d", pTia->GetFrameNum());
 		ImGui::Checkbox("Show location", &bShowLocation);
+		ImGui::Checkbox("Show HBlank", &bShowHBlank);
 		if(ImGui::Selectable("PAL", pTia->GetRegion() == Tia::ERegion::PAL))
 		{
 			pTia->SetRegion(Tia::ERegion::PAL);
@@ -263,24 +264,47 @@ void TiaWindow::Draw(void)
     // Draw screen image
 	const uint8_t* pPalette = pTia->GetPalette();
 	const uint8_t* pPixels = pTia->GetPixels();
-	uint32_t numPixels = Tia::kOutputVerticalResolution * Tia::kOutputHorizontalResolution;
-	for(uint32_t i=0 ; i<numPixels ; i++)
+
+	int i=0;
+
+	for(int row=0 ; row<Tia::kOutputVerticalResolution ; row++)
 	{
-		// read pixel
-		uint8_t pixel = pPixels[i];
+		for(int col=0 ; col<Tia::kOutputHorizontalResolution ; col++)
+		{
+			if(col<68 && !bShowHBlank)
+			{
+				outputBuffer[i*4] = 0;
+				outputBuffer[(i*4)+1] = 0;
+				outputBuffer[(i*4)+2] = 0;
+				outputBuffer[(i*4)+3] = 255;
+			}
+			else
+			{
+				// read pixel
+				uint8_t pixel = pPixels[i];
 
-		// get palette colour for that pixel
-		uint8_t r = pPalette[pixel*3];
-		uint8_t g = pPalette[(pixel*3)+1];
-		uint8_t b = pPalette[(pixel*3)+2];
-		uint8_t a = 255;
+				// get palette colour for that pixel
+				uint8_t r = pPalette[pixel*3];
+				uint8_t g = pPalette[(pixel*3)+1];
+				uint8_t b = pPalette[(pixel*3)+2];
+				uint8_t a = 255;
 
-		// write RGBA in to texture
-		outputBuffer[i*4] = r;
-		outputBuffer[(i*4)+1] = g;
-		outputBuffer[(i*4)+2] = b;
-		outputBuffer[(i*4)+3] = a;
+				// write RGBA in to texture
+				outputBuffer[i*4] = r;
+				outputBuffer[(i*4)+1] = g;
+				outputBuffer[(i*4)+2] = b;
+				outputBuffer[(i*4)+3] = a;
+			}
+			
+			i++;
+		}
+
 	}
+//	for(uint32_t i=0 ; i<numPixels ; i++)
+//	{
+//		int x = i % 228;
+
+//	}
 
 	if(bShowLocation)
 	{
