@@ -27,11 +27,8 @@ void Cpu6502Window::Draw()
 {
 	ImGui::Text("Ticks: %" PRId64, pCpu->GetTicksSinceBoot());
 	ImGui::Separator();
-	ImGui::Text("PC :");
-	ImGui::SameLine();
-	ImGui::Text("0x%04x", pCpu->GetPC());
-	ImGui::SameLine();
-	ImGui::Text("%d", pCpu->GetPC());
+	ImGui::Text("PC :0x%04x", pCpu->GetPC());
+	ImGui::Text("Next :%d", pCpu->GetTicksUntilExecution());
 	
 	ImGui::Text("Acc:");
 	ImGui::SameLine();

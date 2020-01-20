@@ -141,6 +141,8 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 			uint8_t		sp;
 		};
 
+		uint16_t	next_pc;	// what the PC will be at next instruction
+
 		// IStateSerialisation
 		void SerialiseState(json& object) override;
 		void DeserialiseState(json& object) override;
@@ -199,5 +201,5 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;
 		bool		bHaltOnInstruction;
-		uint32_t	ticksUntilExecution;
+		int32_t	ticksUntilExecution;
 };

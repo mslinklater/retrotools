@@ -21,7 +21,7 @@
 Cpu6502::Cpu6502()
 : ticksSinceBoot(0)
 , bHaltOnInstruction(false)
-, ticksUntilExecution(1)
+, ticksUntilExecution(-1)
 {
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
@@ -451,6 +451,9 @@ void Cpu6502::Init(eVariant variant)
 
 	// TYA
 	AddOpcode(0x98, kMnemonic_TYA, kAddrModeImplied, kNone);
+
+	// Illegal opcodes
+	AddOpcode(0x04, kMnemonic_NOP, kAddrModeZeroPage, kNone);
 }
 
 void Cpu6502::DumpInfo(void)
@@ -555,15 +558,6 @@ void Cpu6502::SetY(uint8_t y)
 
 void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 {
-	// check for breakpoints
-	if(!ignoreBreakpoints)
-	{
-		if(breakpoints.find(reg.pc) != breakpoints.end())
-		{
-			Commands::Halt(true);
-		}
-	}
-
 	ticksUntilExecution--;
 	if((ticksUntilExecution == 1) && (bHaltOnInstruction))
 	{
@@ -574,11 +568,29 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 	{
 		return;
 	}
-	ticksUntilExecution = 0xffffffff;
+	ticksUntilExecution = -1;
 
+	// new PC comes in
+
+	// check for breakpoints
+	if(!ignoreBreakpoints)
+	{
+		if(breakpoints.find(reg.pc) != breakpoints.end())
+		{
+			Commands::Halt(true);
+		}
+	}
+
+	// fetch next instruction...
 	uint8_t opcode = pMemory->Read(reg.pc);
 	Opcode* pOpcode = &opcodes[opcode];
 	
+	if(!pOpcode->valid)
+	{
+		LOGERRORF("Invalid opcode found 0x%02x", opcode);
+		return;
+	}
+
 	uint16_t addr = 0;
 	bool pageBoundaryCrossed = false;
 	switch(pOpcode->addrMode)
@@ -623,8 +635,6 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				pageBoundaryCrossed = (((addr >> 8) ^ msb) == 0) ? false : true;
 			}
 			break;
-//		case kAddrModeIndirectX:
-//			break;
 		case kAddrModeIndirectY:
 			{
 				uint16_t loc = pMemory->Read(reg.pc+1);
@@ -639,8 +649,6 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		case kAddrModeImplied:
 			break;
-//		case kAddrModeIndirect:
-//			break;
 		default:
 			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
 			Commands::Halt(true);
@@ -697,14 +705,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				}
 				switch(pOpcode->addrMode)
 				{
-					case kAddrModeImmediate: ticksUntilExecution = 2;
-					case kAddrModeZeroPage: ticksUntilExecution = 3;
-					case kAddrModeZeroPageX: ticksUntilExecution = 4;
-					case kAddrModeAbsolute: ticksUntilExecution = 4;
-					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeIndirectX: ticksUntilExecution = 6;
-					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					case kAddrModeImmediate: ticksUntilExecution = 2; break;
+					case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+					case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 					default: break;
 				}
 				reg.pc += pOpcode->length;				
@@ -719,14 +727,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeImmediate: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
-				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeIndirectX: ticksUntilExecution = 6;
-				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;				
@@ -750,11 +758,11 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}			
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeAccumulator: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 5;
-				case kAddrModeZeroPageX: ticksUntilExecution = 6;
-				case kAddrModeAbsolute: ticksUntilExecution = 6;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				case kAddrModeAccumulator: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;				
@@ -768,8 +776,8 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(anded == 0) ? SetZeroFlag() : ClearZeroFlag();
 				switch(pOpcode->addrMode)
 				{
-					case kAddrModeZeroPage: ticksUntilExecution = 3;
-					case kAddrModeAbsolute: ticksUntilExecution = 4;
+					case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+					case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 					default: break;
 				}
 			}
@@ -889,14 +897,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeImmediate: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
-				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeIndirectX: ticksUntilExecution = 6;
-				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -909,9 +917,9 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeImmediate: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -934,10 +942,10 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeZeroPage: ticksUntilExecution = 5;
-				case kAddrModeZeroPageX: ticksUntilExecution = 6;
-				case kAddrModeAbsolute: ticksUntilExecution = 6;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -965,14 +973,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				reg.pc += pOpcode->length;
 				switch(pOpcode->addrMode)
 				{
-					case kAddrModeImmediate: ticksUntilExecution = 2;
-					case kAddrModeZeroPage: ticksUntilExecution = 3;
-					case kAddrModeZeroPageX: ticksUntilExecution = 4;
-					case kAddrModeAbsolute: ticksUntilExecution = 4;
-					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeIndirectX: ticksUntilExecution = 6;
-					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					case kAddrModeImmediate: ticksUntilExecution = 2; break;
+					case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+					case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 					default: break;
 				}
 			}
@@ -987,10 +995,10 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeZeroPage: ticksUntilExecution = 5;
-				case kAddrModeZeroPageX: ticksUntilExecution = 6;
-				case kAddrModeAbsolute: ticksUntilExecution = 6;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -1012,8 +1020,8 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		case kMnemonic_JMP:
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeAbsolute: ticksUntilExecution = 3;
-				case kAddrModeIndirect: ticksUntilExecution = 5;
+				case kAddrModeAbsolute: ticksUntilExecution = 3; break;
+				case kAddrModeIndirect: ticksUntilExecution = 5; break;
 				default: break;
 			}
 			reg.pc = addr;
@@ -1034,14 +1042,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeImmediate: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
-				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeIndirectX: ticksUntilExecution = 6;
-				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
 			break;
@@ -1083,17 +1091,22 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeAccumulator: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 5;
-				case kAddrModeZeroPageX: ticksUntilExecution = 6;
-				case kAddrModeAbsolute: ticksUntilExecution = 6;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				case kAddrModeAccumulator: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
 			break;
 		case kMnemonic_NOP:
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeImplied: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				default: break;
+			}
 			break;
 		case kMnemonic_ORA:
 			{
@@ -1104,14 +1117,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeImmediate: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
-				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-				case kAddrModeIndirectX: ticksUntilExecution = 6;
-				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -1166,11 +1179,11 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeAccumulator: ticksUntilExecution = 2;
-				case kAddrModeZeroPage: ticksUntilExecution = 5;
-				case kAddrModeZeroPageX: ticksUntilExecution = 6;
-				case kAddrModeAbsolute: ticksUntilExecution = 6;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 7;
+				case kAddrModeAccumulator: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
 			reg.pc += pOpcode->length;
@@ -1213,14 +1226,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				}
 				switch(pOpcode->addrMode)
 				{
-					case kAddrModeImmediate: ticksUntilExecution = 2;
-					case kAddrModeZeroPage: ticksUntilExecution = 3;
-					case kAddrModeZeroPageX: ticksUntilExecution = 4;
-					case kAddrModeAbsolute: ticksUntilExecution = 4;
-					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4;
-					case kAddrModeIndirectX: ticksUntilExecution = 6;
-					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5;
+					case kAddrModeImmediate: ticksUntilExecution = 2; break;
+					case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+					case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+					case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+					case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+					case kAddrModeIndirectX: ticksUntilExecution = 6; break;
+					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 					default: break;
 				}
 				reg.pc += pOpcode->length;				
@@ -1261,9 +1274,9 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageY: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageY: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 				default: break;
 			}
 			break;
@@ -1272,9 +1285,9 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeZeroPage: ticksUntilExecution = 3;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4;
-				case kAddrModeAbsolute: ticksUntilExecution = 4;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 				default: break;
 			}
 			break;

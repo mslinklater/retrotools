@@ -6,7 +6,7 @@ Each horizontal raster is 228 VIA clocks
 
 3 rasters V-Sync
 37 rasters V-Blank
-192 rasters of image
+192 rasters of image (NTSC)
 30 rasters of overscan
 
 Each line consists of
@@ -34,6 +34,7 @@ public:
 
 	static const uint16_t kOutputHorizontalResolution = 228;
 	static const uint16_t kOutputVerticalResolution = 262;
+	static const uint8_t kHBlankClocks = 68;
 
 	// read registers
     static const uint8_t kCXM0P = 0x00;
@@ -245,7 +246,17 @@ public:
 private:
 
 	void InitPalettes();
+
 	void RebuildPlayfieldBits();
+	void RebuildSprite0Bits();
+	void RebuildSprite1Bits();
+
+	// Sprite hpos
+	uint8_t	resP0Pos;
+	uint8_t resP1Pos;
+	uint8_t resM0Pos;
+	uint8_t resM1Pos;
+	uint8_t resBLPos;
 
     uint8_t 	pixels[228*262];
 	uint16_t	rasterX;
@@ -320,7 +331,12 @@ private:
 	uint8_t readRegisters[kNumReadRegisters];
 	uint8_t writeRegisters[kNumWriteRegisters];
 
-	bool playfieldBits[40];
+	static const int kNumPlayfieldBits = 40;
+	bool playfieldBits[kNumPlayfieldBits];	// TODO - pack
+
+	static const int kNumSpriteBits = 160;
+	bool sprite0Bits[kNumSpriteBits];
+	bool sprite1Bits[kNumSpriteBits];
 
 	bool bHaltOnTick;
 	bool bHaltOnHBlank;

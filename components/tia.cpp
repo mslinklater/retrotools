@@ -36,9 +36,16 @@ Tia::Tia()
 	}
 
 	// Playfield bits
-	for(int i=0 ; i<40 ; i++)
+	for(int i=0 ; i<kNumPlayfieldBits ; i++)
 	{
 		playfieldBits[i] = false;
+	}
+
+	// sprite bits
+	for(int i=0 ; i<kNumSpriteBits ; i++)
+	{
+		sprite0Bits[i] = false;
+		sprite1Bits[i] = false;
 	}
 }
 
@@ -56,11 +63,6 @@ void Tia::InitPalettes()
 void Tia::Tick()
 {
 	// do tick
-
-	if((GetVSYNC() & 0x02) != 0) 	// D1 of VSYNC
-	{
-		rasterY = 0;
-	}
 
 	// Begin actual render logic
 	pixels[rasterX + (rasterY*228)] = GetCOLUBK();
@@ -166,7 +168,16 @@ void Tia::RebuildPlayfieldBits()
 			playfieldBits[i+20] = playfieldBits[i];
 		}	
 	}
-	
+}
+
+void Tia::RebuildSprite0Bits()
+{
+
+}
+
+void Tia::RebuildSprite1Bits()
+{
+
 }
 
 uint8_t Tia::Read(uint8_t address)
@@ -432,6 +443,10 @@ uint8_t Tia::GetINPT5()
 void Tia::SetVSYNC(uint8_t val)
 {
     writeRegisters[kVSYNC] = val;
+	if(val & 0x02)
+	{
+		rasterY = 0;
+	}
 }
 
 void Tia::SetVBLANK(uint8_t val)
@@ -501,23 +516,28 @@ void Tia::SetPF2(uint8_t val)
 }
 void Tia::SetRESP0(uint8_t val)
 {
-    writeRegisters[kRESP0] = val;
+	resP0Pos = rasterX - kHBlankClocks;
+    writeRegisters[kRESP0] = resP0Pos;
 }
 void Tia::SetRESP1(uint8_t val)
 {
-    writeRegisters[kRESP1] = val;
+	resP1Pos = rasterX - kHBlankClocks;
+    writeRegisters[kRESP1] = resP1Pos;
 }
 void Tia::SetRESM0(uint8_t val)
 {
-    writeRegisters[kRESM0] = val;
+	resM0Pos = rasterX - kHBlankClocks;
+    writeRegisters[kRESM0] = resM0Pos;
 }
 void Tia::SetRESM1(uint8_t val)
 {
-    writeRegisters[kRESM1] = val;
+	resM1Pos = rasterX - kHBlankClocks;
+    writeRegisters[kRESM1] = resM1Pos;
 }
 void Tia::SetRESBL(uint8_t val)
 {
-    writeRegisters[kRESBL] = val;
+	resBLPos = rasterX - kHBlankClocks;
+    writeRegisters[kRESBL] = resBLPos;
 }
 void Tia::SetAUDC0(uint8_t val)
 {

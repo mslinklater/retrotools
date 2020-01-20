@@ -79,6 +79,44 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "(gdb) Launch playfield.bin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/asm/8bitworkshop/6-playfield/playfield.bin", "-a", "f000"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch sprite.bin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/asm/8bitworkshop/7-sprite/sprite.bin", "-a", "f000"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
