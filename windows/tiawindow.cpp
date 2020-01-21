@@ -13,6 +13,10 @@ TiaWindow::TiaWindow()
 , bShowVBlank(false)
 , bShowHBlank(false)
 , bShowLocation(false)
+, bLockPixels(false)
+, bShowPF(true)
+, bShowP0(true)
+, bShowP1(true)
 {
 	// create output buffer
 	glGenTextures(1, &videoOutputTexture);
@@ -356,7 +360,31 @@ void TiaWindow::Draw(void)
 	glBindTexture(GL_TEXTURE_2D, videoOutputTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 
-	float imageWidth = ImGui::GetWindowWidth() - 20.0f;
+	ImGui::Checkbox("Lock Pixels", &bLockPixels);
+	ImGui::SameLine();
+	ImGui::Checkbox("Draw PF", &bShowPF);
+	ImGui::SameLine();
+	ImGui::Checkbox("Draw P0", &bShowP0);
+	ImGui::SameLine();
+	ImGui::Checkbox("Draw P1", &bShowP1);
+
+	pTia->SetShowPF(bShowPF);
+	pTia->SetShowP0(bShowP0);
+	pTia->SetShowP1(bShowP1);
+
+	float imageWidth, imageHeight;
+	if(bLockPixels)
+	{
+		int factor = ((int)(ImGui::GetWindowWidth() - 20.0f)) / Tia::kOutputHorizontalResolution;
+		imageWidth = Tia::kOutputHorizontalResolution * factor;
+		imageHeight = Tia::kOutputVerticalResolution * factor;
+	}
+	else
+	{
+		imageWidth = ImGui::GetWindowWidth() - 20.0f;
+		imageHeight = imageWidth * 0.75f;
+	}
+	
 	ImGui::Image((void*)(intptr_t)videoOutputTexture, ImVec2(imageWidth, imageWidth * 0.75f));
 }
 

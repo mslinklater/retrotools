@@ -16,6 +16,27 @@ Each line consists of
 
 @60fps = 3584160 Hz clock
 
+---
+
+HSprite adjust
+
+value	dec	2scomp adjust
+0b0000	0	0		8
+0b0001	1	1		9
+0b0010	2	2		10
+0b0011	3	3		11
+0b0100	4	4		12
+0b0101	5	5		13
+0b0110	6	6		14
+0b0111	7	7		15
+0b1000	8	-8		0
+0b1001	9	-7		1
+0b1010	10	-6		2
+0b1011	11	-5		3
+0b1100	12	-4		4
+0b1101	13	-3		5
+0b1110	14	-2		6
+0b1111	15	-1		7
 */
 
 #include <inttypes.h>
@@ -243,6 +264,10 @@ public:
 	ERegion	GetRegion(){return region;}
 	void SetRegion(ERegion newRegion){region = newRegion;}
 
+	void SetShowPF(bool showPF){bShowPF = showPF;}
+	void SetShowP0(bool showP0){bShowP0 = showP0;}
+	void SetShowP1(bool showP1){bShowP1 = showP1;}
+
 private:
 
 	void InitPalettes();
@@ -251,12 +276,18 @@ private:
 	void RebuildSprite0Bits();
 	void RebuildSprite1Bits();
 
+	uint8_t	HOffsetToRealOffset(uint8_t offset);
+
 	// Sprite hpos
 	uint8_t	resP0Pos;
 	uint8_t resP1Pos;
 	uint8_t resM0Pos;
 	uint8_t resM1Pos;
 	uint8_t resBLPos;
+
+	bool bShowPF;
+	bool bShowP0;
+	bool bShowP1;
 
     uint8_t 	pixels[228*262];
 	uint16_t	rasterX;

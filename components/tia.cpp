@@ -47,11 +47,14 @@ Tia::Tia()
 		sprite0Bits[i] = false;
 		sprite1Bits[i] = false;
 	}
+
+	bShowPF = true;
+	bShowP0 = true;
+	bShowP1 = true;
 }
 
 Tia::~Tia()
 {
-
 }
 
 void Tia::InitPalettes()
@@ -69,15 +72,15 @@ void Tia::Tick()
 	if(rasterX >= 68)
 	{
 		int playfieldIndex = (rasterX-68)/4;
-		if(playfieldBits[playfieldIndex])
+		if(bShowPF && playfieldBits[playfieldIndex])
 		{
 			pixels[rasterX + (rasterY*228)] = GetCOLUPF();
 		}
-		if(sprite0Bits[rasterX-68])
+		if(bShowP0 && sprite0Bits[rasterX-68])
 		{
 			pixels[rasterX + (rasterY*228)] = GetCOLUP0();
 		}
-		if(sprite1Bits[rasterX-68])
+		if(bShowP1 && sprite1Bits[rasterX-68])
 		{
 			pixels[rasterX + (rasterY*228)] = GetCOLUP1();
 		}
@@ -98,19 +101,6 @@ void Tia::Tick()
 		}
 		bCpuWaitingForHsync = false;
 		// end hblank
-#if 0
-		if(rasterY >= 262)
-		{
-			// vblank
-			rasterY = 0;
-			frameNum++;
-			if(bHaltOnVBlank)
-			{
-				Commands::Halt(true);
-				bHaltOnVBlank = false;
-			}
-		}
-#endif
 	}
 
 	ticksSinceBoot++;
@@ -181,38 +171,104 @@ void Tia::RebuildPlayfieldBits()
 
 void Tia::RebuildSprite0Bits()
 {
+	uint8_t numCopies = 0;
+	uint8_t scale = 0;
+	uint8_t gap = 0;
+	uint8_t nusiz = GetNUSIZ0() & 0x07;
+
+	switch(nusiz)
+	{
+		case 0: numCopies=1; scale=1; break;
+		case 1: numCopies=2; scale=1; gap=1; break;
+		case 2: numCopies=2; scale=1; gap=3; break;
+		case 3: numCopies=3; scale=1; gap=1; break;
+		case 4: numCopies=2; scale=1; gap=7; break;
+		case 5: numCopies=1; scale=2; break;
+		case 6: numCopies=3; scale=1; gap=3; break;
+		case 7: numCopies=1; scale=4; break;
+	}
+
+	// clear
 	for(int i=0 ; i<kHBlankClocks ; i++)
 	{
 		sprite0Bits[i] = false;
 	}
 	uint8_t val = GetGRP0();
 
-	sprite0Bits[resP0Pos] = val & 0x80;
-	sprite0Bits[resP0Pos+1] = val & 0x40;
-	sprite0Bits[resP0Pos+2] = val & 0x20;
-	sprite0Bits[resP0Pos+3] = val & 0x10;
-	sprite0Bits[resP0Pos+4] = val & 0x08;
-	sprite0Bits[resP0Pos+5] = val & 0x04;
-	sprite0Bits[resP0Pos+6] = val & 0x02;
-	sprite0Bits[resP0Pos+7] = val & 0x01;
+	int offset = 0;
+
+	for(int iCopy = 0 ; iCopy<numCopies ; iCopy++)
+	{
+		// sprite
+		for(int bit=7 ; bit >= 0 ; bit--)
+		{
+			for(int rep=0 ; rep<scale ; rep++)
+			{
+				sprite0Bits[resP0Pos+offset] = val & (0x01 << bit);
+				offset++;
+			}
+		}
+		// gap
+		for(int iGap=0 ; iGap<gap ; iGap++)
+		{
+			for(int bit=7 ; bit >= 0 ; bit--)
+			{
+				sprite0Bits[resP0Pos+offset] = false;
+				offset++;
+			}
+		}
+	}
 }
 
 void Tia::RebuildSprite1Bits()
 {
+	uint8_t numCopies = 0;
+	uint8_t scale = 0;
+	uint8_t gap = 0;
+	uint8_t nusiz = GetNUSIZ1() & 0x07;
+
+	switch(nusiz)
+	{
+		case 0: numCopies=1; scale=1; break;
+		case 1: numCopies=2; scale=1; gap=1; break;
+		case 2: numCopies=2; scale=1; gap=3; break;
+		case 3: numCopies=3; scale=1; gap=1; break;
+		case 4: numCopies=2; scale=1; gap=7; break;
+		case 5: numCopies=1; scale=2; break;
+		case 6: numCopies=3; scale=1; gap=3; break;
+		case 7: numCopies=1; scale=4; break;
+	}
+
+	// clear
 	for(int i=0 ; i<kHBlankClocks ; i++)
 	{
 		sprite1Bits[i] = false;
 	}
 	uint8_t val = GetGRP1();
-	
-	sprite1Bits[resP1Pos] = val & 0x80;
-	sprite1Bits[resP1Pos+1] = val & 0x40;
-	sprite1Bits[resP1Pos+2] = val & 0x20;
-	sprite1Bits[resP1Pos+3] = val & 0x10;
-	sprite1Bits[resP1Pos+4] = val & 0x08;
-	sprite1Bits[resP1Pos+5] = val & 0x04;
-	sprite1Bits[resP1Pos+6] = val & 0x02;
-	sprite1Bits[resP1Pos+7] = val & 0x01;
+
+	int offset = 0;
+
+	for(int iCopy = 0 ; iCopy<numCopies ; iCopy++)
+	{
+		// sprite
+		for(int bit=7 ; bit >= 0 ; bit--)
+		{
+			for(int rep=0 ; rep<scale ; rep++)
+			{
+				sprite1Bits[resP1Pos+offset] = val & (0x01 << bit);
+				offset++;
+			}
+		}
+		// gap
+		for(int iGap=0 ; iGap<gap ; iGap++)
+		{
+			for(int bit=7 ; bit >= 0 ; bit--)
+			{
+				sprite1Bits[resP1Pos+offset] = false;
+				offset++;
+			}
+		}
+	}
 }
 
 uint8_t Tia::Read(uint8_t address)
@@ -475,6 +531,20 @@ uint8_t Tia::GetINPT5()
 {
     return readRegisters[kINPT5];
 }
+
+
+uint8_t	Tia::HOffsetToRealOffset(uint8_t offset)
+{
+	if(offset < 8)
+	{
+		return offset + 8;
+	}
+	else
+	{
+		return offset - 8;
+	}
+}
+
 void Tia::SetVSYNC(uint8_t val)
 {
     writeRegisters[kVSYNC] = val;
@@ -558,15 +628,20 @@ void Tia::SetPF2(uint8_t val)
 void Tia::SetRESP0(uint8_t val)
 {
 	resP0Pos = rasterX - kHBlankClocks;
+	resP0Pos += HOffsetToRealOffset(GetHMP0());
+	resP0Pos += 4;
     writeRegisters[kRESP0] = resP0Pos;
 	RebuildSprite0Bits();
 }
 void Tia::SetRESP1(uint8_t val)
 {
 	resP1Pos = rasterX - kHBlankClocks;
+	resP1Pos += HOffsetToRealOffset(GetHMP1());
+	resP1Pos += 4;
     writeRegisters[kRESP1] = resP1Pos;
 	RebuildSprite1Bits();
 }
+
 void Tia::SetRESM0(uint8_t val)
 {
 	resM0Pos = rasterX - kHBlankClocks;

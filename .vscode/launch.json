@@ -136,6 +136,25 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "(gdb) Launch colorsprites.bin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/ROMS/colorsprites.bin", "-a", "f000"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
