@@ -5,7 +5,6 @@ CMakeCache.txt
 Makefile
 cmake_install.cmake
 retrotool
-*.bin
 imgui.ini
 c_cpp_properties.json
 state.json

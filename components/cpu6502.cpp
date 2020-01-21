@@ -1188,6 +1188,41 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			reg.pc += pOpcode->length;
 			break;
+		case kMnemonic_ROR: 
+			{
+				bool carry = GetCarryFlag();
+				if(pOpcode->addrMode == kAddrModeAccumulator)
+				{
+					(reg.acc & 0x01) ? SetCarryFlag() : ClearCarryFlag();
+					reg.acc >>= 1;
+					if(carry)
+					{
+						reg.acc |= 0x80;
+					}
+				}
+				else
+				{
+					uint8_t val = pMemory->Read(addr);
+					(val & 0x01) ? SetCarryFlag() : ClearCarryFlag();
+					val >>= 1;
+					if(carry)
+					{
+						val |= 0x80;
+					}
+					pMemory->Write(addr, val);
+				}
+			}
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeAccumulator: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 5; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 6; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 6; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
+				default: break;
+			}
+			reg.pc += pOpcode->length;
+			break;
 		case kMnemonic_RTS:
 			reg.pc = ((uint16_t)pMemory->Read(++reg.sp)) << 8;
 			reg.pc |= (uint16_t)pMemory->Read(++reg.sp);

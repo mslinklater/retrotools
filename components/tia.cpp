@@ -98,7 +98,7 @@ void Tia::Tick()
 		}
 		bCpuWaitingForHsync = false;
 		// end hblank
-
+#if 0
 		if(rasterY >= 262)
 		{
 			// vblank
@@ -110,6 +110,7 @@ void Tia::Tick()
 				bHaltOnVBlank = false;
 			}
 		}
+#endif
 	}
 
 	ticksSinceBoot++;
@@ -247,7 +248,7 @@ uint8_t Tia::Read(uint8_t address)
         case kINPT5:
             return GetINPT5();
         default:
-            LOGERRORF("VIA::Unknown read addr 0x%02x", address);
+//            LOGERRORF("TIA::Unknown read addr 0x%02x", address);
             break;
     }
     return 0;
@@ -480,12 +481,18 @@ void Tia::SetVSYNC(uint8_t val)
 	if(val & 0x02)
 	{
 		rasterY = 0;
+		frameNum++;
+		if(bHaltOnVBlank)
+		{
+			Commands::Halt(true);
+			bHaltOnVBlank = false;
+		}
 	}
 }
 
 void Tia::SetVBLANK(uint8_t val)
 {
-    writeRegisters[kVBLANK] = val;    
+    writeRegisters[kVBLANK] = val;
 }
 void Tia::SetWSYNC(uint8_t val)
 {

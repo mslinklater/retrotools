@@ -1,8 +1,18 @@
-Frequently Asked Questions for retrotools
-=========================================
+# Frequently Asked Questions for retrotools
 
-Development
------------
+## Building
+
+### Linux
+
+### Windows
+
+Not supported yet
+
+### MacOS
+
+Not supported yet
+
+## Development
 
 Q/ Why did you code it in C++ rather than <blah> ?
 

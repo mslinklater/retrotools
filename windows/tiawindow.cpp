@@ -177,7 +177,7 @@ void TiaWindow::DrawRegisters()
 	ImGui::NextColumn();
 	DrawWriteRegister(Tia::kENABL, " ENABL", pTia->GetENABL());
 	ImGui::NextColumn();
-	DrawWriteRegister(Tia::kHMP0, "  HMP1", pTia->GetHMP0());
+	DrawWriteRegister(Tia::kHMP0, "  HMP0", pTia->GetHMP0());
 	ImGui::Columns(1);
 
 	ImGui::Separator();
@@ -341,11 +341,6 @@ void TiaWindow::Draw(void)
 		}
 
 	}
-//	for(uint32_t i=0 ; i<numPixels ; i++)
-//	{
-//		int x = i % 228;
-
-//	}
 
 	if(bShowLocation)
 	{
