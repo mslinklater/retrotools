@@ -73,6 +73,14 @@ void Tia::Tick()
 		{
 			pixels[rasterX + (rasterY*228)] = GetCOLUPF();
 		}
+		if(sprite0Bits[rasterX-68])
+		{
+			pixels[rasterX + (rasterY*228)] = GetCOLUP0();
+		}
+		if(sprite1Bits[rasterX-68])
+		{
+			pixels[rasterX + (rasterY*228)] = GetCOLUP1();
+		}
 	}
 	// End actual render logic
 
@@ -172,12 +180,38 @@ void Tia::RebuildPlayfieldBits()
 
 void Tia::RebuildSprite0Bits()
 {
+	for(int i=0 ; i<kHBlankClocks ; i++)
+	{
+		sprite0Bits[i] = false;
+	}
+	uint8_t val = GetGRP0();
 
+	sprite0Bits[resP0Pos] = val & 0x80;
+	sprite0Bits[resP0Pos+1] = val & 0x40;
+	sprite0Bits[resP0Pos+2] = val & 0x20;
+	sprite0Bits[resP0Pos+3] = val & 0x10;
+	sprite0Bits[resP0Pos+4] = val & 0x08;
+	sprite0Bits[resP0Pos+5] = val & 0x04;
+	sprite0Bits[resP0Pos+6] = val & 0x02;
+	sprite0Bits[resP0Pos+7] = val & 0x01;
 }
 
 void Tia::RebuildSprite1Bits()
 {
-
+	for(int i=0 ; i<kHBlankClocks ; i++)
+	{
+		sprite1Bits[i] = false;
+	}
+	uint8_t val = GetGRP1();
+	
+	sprite1Bits[resP1Pos] = val & 0x80;
+	sprite1Bits[resP1Pos+1] = val & 0x40;
+	sprite1Bits[resP1Pos+2] = val & 0x20;
+	sprite1Bits[resP1Pos+3] = val & 0x10;
+	sprite1Bits[resP1Pos+4] = val & 0x08;
+	sprite1Bits[resP1Pos+5] = val & 0x04;
+	sprite1Bits[resP1Pos+6] = val & 0x02;
+	sprite1Bits[resP1Pos+7] = val & 0x01;
 }
 
 uint8_t Tia::Read(uint8_t address)
@@ -518,11 +552,13 @@ void Tia::SetRESP0(uint8_t val)
 {
 	resP0Pos = rasterX - kHBlankClocks;
     writeRegisters[kRESP0] = resP0Pos;
+	RebuildSprite0Bits();
 }
 void Tia::SetRESP1(uint8_t val)
 {
 	resP1Pos = rasterX - kHBlankClocks;
     writeRegisters[kRESP1] = resP1Pos;
+	RebuildSprite1Bits();
 }
 void Tia::SetRESM0(uint8_t val)
 {
@@ -566,10 +602,12 @@ void Tia::SetAUDV1(uint8_t val)
 void Tia::SetGRP0(uint8_t val)
 {
     writeRegisters[kGRP0] = val;
+	RebuildSprite0Bits();
 }
 void Tia::SetGRP1(uint8_t val)
 {
     writeRegisters[kGRP1] = val;
+	RebuildSprite1Bits();
 }
 void Tia::SetENAM0(uint8_t val)
 {

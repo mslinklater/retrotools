@@ -1334,7 +1334,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			Commands::Halt(true);
 			break;
 	}
-	if(ticksUntilExecution == 0xffffffff)
+	if(ticksUntilExecution == -1)
 	{
 		LOGERRORF("Untimed mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
 		Commands::Halt(true);

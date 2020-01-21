@@ -60,3 +60,10 @@ STar Wars
 Battlezone
 3D Pool (Nick Pelling)
 Starion (Spectrum)
+
+Things I know are missing from Vistella
+=======================================
+
+Sound
+Sprite scaling, flipping and duplication
+Input

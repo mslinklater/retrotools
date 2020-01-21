@@ -59,12 +59,16 @@ void TiaWindow::DrawReadRegister(uint32_t reg, const char* text, uint8_t val)
 void TiaWindow::DrawInfo()
 {
 	ImGui::Separator();
+	ImGui::Text("Frame: %d", pTia->GetFrameNum());
+	ImGui::SameLine();
 	ImGui::Text("Ticks: %" PRId64, pTia->GetTicksSinceBoot());
 	ImGui::Text("RasterX: %d (%d)", pTia->GetRasterX(), pTia->GetRasterX()-68);
-	ImGui::Text("RasterY: %d (%d)", pTia->GetRasterY(), pTia->GetRasterY()-40);
-	ImGui::Text("Frame: %d", pTia->GetFrameNum());
+	ImGui::SameLine();
+	ImGui::Text("Y: %d (%d)", pTia->GetRasterY(), pTia->GetRasterY()-40);
 	ImGui::Checkbox("Show location", &bShowLocation);
+	ImGui::SameLine();
 	ImGui::Checkbox("Show HBlank", &bShowHBlank);
+	ImGui::SameLine();
 	ImGui::Checkbox("Show VBlank", &bShowVBlank);
 
 	if(ImGui::Selectable("PAL", pTia->GetRegion() == Tia::ERegion::PAL))
