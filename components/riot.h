@@ -11,16 +11,16 @@ public:
 	static const int kMemoryStart = 0x0280;
 	static const int kMemorySize = 0x18;
 
-	static const int kSWCHA = 0x00;		// 0x280	Port A data register for joysticks
-	static const int kSWACNT = 0x01;	// 0x281	Port A data direction register
-	static const int kSWCHB = 0x02;		// 0x282	Port B data (console switches)
-	static const int kSWBCNT = 0x03;	// 0x283	Port B DDR
-	static const int kINTIM = 0x04;		// 0x284	Timer output
-	static const int kTIMINT = 0x05;	// 0x285
-	static const int kTIM1T = 0x14;		// 0x294	Set 1 clock interval
-	static const int kTIM8T = 0x15;		// 0x295	Set 8 clock interval
-	static const int kTIM64T = 0x16;	// 0x296	Set 64 clock interval
-	static const int kT1024T = 0x17;	// 0x297	Set 1024 clock interval
+	static const int kSWCHA = 0x280;	// Port A data register for joysticks
+	static const int kSWACNT = 0x281;	// Port A data direction register
+	static const int kSWCHB = 0x282;	// Port B data (console switches)
+	static const int kSWBCNT = 0x283;	// Port B DDR
+	static const int kINTIM = 0x284;	// Timer output
+	static const int kTIMINT = 0x285;	// 
+	static const int kTIM1T = 0x294;	// Set 1 clock interval
+	static const int kTIM8T = 0x295;	// Set 8 clock interval
+	static const int kTIM64T = 0x296;	// Set 64 clock interval
+	static const int kT1024T = 0x297;	// Set 1024 clock interval
 
 	// port b bit masks
 	static const int kSWCHB_RESET_MASK = 0x01;

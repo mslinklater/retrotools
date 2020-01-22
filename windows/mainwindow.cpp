@@ -4,10 +4,14 @@
 // See file 'LICENSE' for license details
 
 #include "mainwindow.h"
+#include "../shared_cpp/log.h"
 #include "../imgui/imgui.h"
 #include "../shared_cpp/command.h"
 #include "../commands.h"
 #include "../shared_cpp/windowmanager.h"
+#include "../filebrowser/ImGuiFileBrowser.h"
+
+imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
 MainWindow::MainWindow()
 :open(true)
@@ -22,6 +26,8 @@ void MainWindow::Draw()
 {
 	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
 	
+	bool open = false;
+
 	// Main Menu Bar
 	if(ImGui::BeginMenuBar())
 	{
@@ -34,6 +40,7 @@ void MainWindow::Draw()
 			if(ImGui::MenuItem("Open..."))
 			{
 				// open session
+				open = true;
 			}
 			if(ImGui::MenuItem("Save"))
 			{
@@ -70,6 +77,16 @@ void MainWindow::Draw()
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
-	}		
+	}	
+
+	if(open)
+	{
+		ImGui::OpenPopup("Open File");
+	}
+
+	if(file_dialog.showOpenFileDialog("Open File", ImVec2(700, 310), ".bin,.prg"))
+	{
+		LOGINFOF("MainWindow::Open file %s", file_dialog.selected_fn.c_str());
+	}
 	ImGui::End();
 }

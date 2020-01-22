@@ -855,6 +855,10 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			reg.pc += pOpcode->length;				
 			break;
+		case kMnemonic_BRK:
+			ticksUntilExecution = 2;
+			Commands::Halt(true);
+			break;
 		case kMnemonic_BVC:
 			if(!GetOverflowFlag())
 			{
@@ -892,8 +896,10 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		case kMnemonic_CMP:
 			{
 				uint8_t val = pMemory->Read(addr);
+				int8_t result = reg.acc - val;
 				(reg.acc == val) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.acc >= val) ? SetCarryFlag() : ClearCarryFlag();
+				(result & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			}
 			switch(pOpcode->addrMode)
 			{
@@ -1084,10 +1090,24 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			break;
 		case kMnemonic_LSR:
-			reg.acc >>= 1;
-			reg.acc &= 0x7f;
-			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();				
-			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();				
+			if(pOpcode->addrMode == kAddrModeAccumulator)
+			{
+				(reg.acc & 0x01) ? SetCarryFlag() : ClearCarryFlag();
+				reg.acc >>= 1;
+				reg.acc &= 0x7f;
+				(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+				(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			}
+			else
+			{
+				uint8_t val = pMemory->Read(addr);
+				(val & 0x01) ? SetCarryFlag() : ClearCarryFlag();
+				val >>= 1;
+				val &= 0x7f;
+				(val == 0) ? SetZeroFlag() : ClearZeroFlag();
+				(val & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+				pMemory->Write(addr, val);
+			}
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{

@@ -8,7 +8,7 @@ Riot::Riot()
 		memory[i] = 0;
 	}
 	// defaults
-	memory[kSWCHB - kMemorySize] = kSWCHB_SELECT_MASK | kSWCHB_SELECT_MASK;
+	memory[kSWCHB - kMemoryStart] = kSWCHB_SELECT_MASK | kSWCHB_RESET_MASK;
 }
 
 Riot::~Riot()
@@ -30,7 +30,17 @@ uint8_t Riot::DbgRead(uint16_t addr)
 void Riot::Write(uint16_t addr, uint8_t val)
 {
 	// affect flags etc
-	memory[addr - kMemoryStart] = val;
+	switch(addr)
+	{
+		case kTIM1T:
+		case kTIM8T:
+		case kTIM64T:
+		case kT1024T:
+			memory[addr - kMemoryStart] = val;
+			break;
+		default:	// no write
+			break;
+	}
 }
 
 void Riot::DbgWrite(uint16_t addr, uint8_t val)
