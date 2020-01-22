@@ -18,6 +18,7 @@
 #include "components/memory2600.h"
 #include "components/cpu6502.h"
 #include "components/tia.h"
+#include "components/riot.h"
 #include "components/system.h"
 #include "disasm.h"
 #include "symbolstore.h"
@@ -123,6 +124,7 @@ int main(int argc, char* argv[])
 	pStateSerialiser->AddStateSerialiser(pCpu);
 
 	Tia* pTia = new Tia();
+	Riot* pRiot = new Riot();
 
 	System* pSystem = new System();
 	pSystem->SetTia(pTia);
@@ -145,6 +147,7 @@ int main(int argc, char* argv[])
 
 	pMemory->SetCPU(pCpu);
 	pMemory->SetTia(pTia);
+	pMemory->SetRiot(pRiot);
 	
 	pDisassembler->Init();
 	pDisassembler->SetMemory(pMemory);

@@ -40,6 +40,7 @@ XOR	& RAM Mask	= 0b000000010000000	NO - non zero answer
 
 class Cpu6502;
 class Tia;
+class Riot;
 
 class Memory2600 : public IStateSerialisation, public IMemory
 {
@@ -92,6 +93,7 @@ public:
 	
 	eErrorCode 	Init();
 	void 		SetCPU(Cpu6502* cpu);
+	void 		SetRiot(Riot* riot);
 	void 		SetTia(Tia* tia);
 	eErrorCode 	Destroy(void);
 
@@ -122,7 +124,9 @@ private:
 	MemoryByte* pRam;
 	uint32_t	ramSize;
 
-	Tia*	pTia;
+	Cpu6502*	pCpu;
+	Tia*		pTia;
+	Riot*		pRiot;
 
 	uint8_t 	ReadImpl(uint16_t address, bool affectFlags);
 	void 		WriteImpl(uint16_t address, uint8_t val, bool affectFlags);

@@ -9,8 +9,7 @@
 #include "../shared_cpp/errorcodes.h"
 #include "cpu6502.h"
 #include "tia.h"
-
-static Cpu6502* pCpu;
+#include "riot.h"
 
 Memory2600::Memory2600()
 {
@@ -33,11 +32,6 @@ eErrorCode Memory2600::Init(void)
 	return kError_OK;
 }
 
-void Memory2600::SetCPU(Cpu6502* cpu)
-{
-    pCpu = cpu;
-}
-
 eErrorCode Memory2600::Destroy(void)
 {
 	LOGINFO("Memory2600::Destroyed\n");
@@ -49,6 +43,19 @@ eErrorCode Memory2600::Destroy(void)
 	pRom = 0;
 
 	return kError_OK;
+}
+
+void Memory2600::SetCPU(Cpu6502* cpu)
+{
+	pCpu = cpu;
+}
+void Memory2600::SetTia(Tia* tia)
+{
+	pTia = tia;
+}
+void Memory2600::SetRiot(Riot* riot)
+{
+	pRiot = riot;
 }
 
 void Memory2600::Write(uint16_t address, uint8_t val)
@@ -81,8 +88,7 @@ void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 	}
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
-		// RIOT write
-//		LOGWARNINGF("Memory::RIOT Write 0x%04x", physicalAddress);
+		pRiot->Write(physicalAddress, val);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
@@ -122,8 +128,7 @@ uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 	}
 	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
 	{
-		// RIOT read
-//		LOGWARNINGF("Memory::RIOT Read 0x%04x", physicalAddress);
+		return pRiot->Read(physicalAddress);
 	}
 	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
 	{
@@ -214,7 +219,3 @@ void Memory2600::ClearWriteBreakpoint(uint16_t address)
 {
 }
 
-void Memory2600::SetTia(Tia* tia)
-{
-	pTia = tia;
-}

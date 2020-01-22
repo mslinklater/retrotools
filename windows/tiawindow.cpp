@@ -385,7 +385,7 @@ void TiaWindow::Draw(void)
 		imageHeight = imageWidth * 0.75f;
 	}
 	
-	ImGui::Image((void*)(intptr_t)videoOutputTexture, ImVec2(imageWidth, imageWidth * 0.75f));
+	ImGui::Image((void*)(intptr_t)videoOutputTexture, ImVec2(imageWidth, imageHeight));
 }
 
 void TiaWindow::SetTia(Tia* tia)
