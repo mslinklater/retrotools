@@ -31,6 +31,7 @@
 #include "windows/symbolwindow.h"
 #include "windows/cpu6502window.h"
 #include "windows/tiawindow.h"
+#include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "shared_cpp/command.h"
 #include "system/memoryutils.h"
@@ -203,6 +204,11 @@ int main(int argc, char* argv[])
 	pTiaWindow->SetTia(pTia);
 	pWindowManager->AddWindow(pTiaWindow, "Tia");
 	pStateSerialiser->AddStateSerialiser(pTiaWindow);
+
+	RiotWindow* pRiotWindow = new RiotWindow();
+	pRiotWindow->SetRiot(pRiot);
+	pWindowManager->AddWindow(pRiotWindow, "Riot");
+	pStateSerialiser->AddStateSerialiser(pRiotWindow);
 
 	SystemWindow* pSystemWindow = new SystemWindow();
 	pSystemWindow->SetSystem(pSystem);

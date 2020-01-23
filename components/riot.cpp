@@ -57,3 +57,13 @@ bool Riot::HandleCommand(const Command& command)
 {
 	return false;
 }
+
+bool Riot::GetBreakpoint(uint16_t addr)
+{
+	return false;
+}
+
+void Riot::SetBreakpoint(uint16_t addr, bool val)
+{
+	
+}

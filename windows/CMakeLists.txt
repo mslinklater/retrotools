@@ -7,4 +7,6 @@ set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/symbolwindow.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/systemwindow.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/tiawindow.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/riotwindow.cpp 
 	PARENT_SCOPE)
+	

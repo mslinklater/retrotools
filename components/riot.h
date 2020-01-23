@@ -37,6 +37,9 @@ public:
 	void	Write(uint16_t address, uint8_t value);
 	void	DbgWrite(uint16_t address, uint8_t value);	// used by UI etc
 
+	bool GetBreakpoint(uint16_t addr);
+	void SetBreakpoint(uint16_t addr, bool val);
+
     // ITickable
     void Tick();
     // ~ITickable
