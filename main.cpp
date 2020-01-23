@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 	ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
 	ImGui_ImplOpenGL2_Init();
 	
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 
 	// Initialise window manager
 
@@ -217,7 +217,7 @@ int main(int argc, char* argv[])
 	pStateSerialiser->DeserialiseAppConfig();
 
 	bool done = false;
-	bool show_demo_window = true;
+//	bool show_demo_window = false;
 	while(!done)
 	{
 		SDL_Event event;
@@ -244,7 +244,7 @@ int main(int argc, char* argv[])
 		ImGui::NewFrame();
 		
 		// do stuff
-		ImGui::ShowDemoWindow(&show_demo_window);
+//		ImGui::ShowDemoWindow(&show_demo_window);
 
 		pWindowManager->Draw();	// draw all managed windows
 		

@@ -69,11 +69,6 @@ void TiaWindow::DrawInfo()
 	ImGui::Text("RasterX: %d (%d)", pTia->GetRasterX(), pTia->GetRasterX()-68);
 	ImGui::SameLine();
 	ImGui::Text("Y: %d (%d)", pTia->GetRasterY(), pTia->GetRasterY()-40);
-	ImGui::Checkbox("Show location", &bShowLocation);
-	ImGui::SameLine();
-	ImGui::Checkbox("Show HBlank", &bShowHBlank);
-	ImGui::SameLine();
-	ImGui::Checkbox("Show VBlank", &bShowVBlank);
 
 	if(ImGui::Selectable("PAL", pTia->GetRegion() == Tia::ERegion::PAL))
 	{
@@ -360,13 +355,19 @@ void TiaWindow::Draw(void)
 	glBindTexture(GL_TEXTURE_2D, videoOutputTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 
-	ImGui::Checkbox("Lock Pixels", &bLockPixels);
+	ImGui::Checkbox("Square Pixels", &bLockPixels);
 	ImGui::SameLine();
-	ImGui::Checkbox("Draw PF", &bShowPF);
+	ImGui::Checkbox("PF", &bShowPF);
 	ImGui::SameLine();
-	ImGui::Checkbox("Draw P0", &bShowP0);
+	ImGui::Checkbox("P0", &bShowP0);
 	ImGui::SameLine();
-	ImGui::Checkbox("Draw P1", &bShowP1);
+	ImGui::Checkbox("P1", &bShowP1);
+	ImGui::SameLine();
+	ImGui::Checkbox("Location", &bShowLocation);
+	ImGui::SameLine();
+	ImGui::Checkbox("HBlank", &bShowHBlank);
+	ImGui::SameLine();
+	ImGui::Checkbox("VBlank", &bShowVBlank);
 
 	pTia->SetShowPF(bShowPF);
 	pTia->SetShowP0(bShowP0);
