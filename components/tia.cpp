@@ -273,41 +273,60 @@ void Tia::RebuildSprite1Bits()
 
 uint8_t Tia::Read(uint8_t address)
 {
+	uint8_t ret;
     switch(address)
     {
         case kCXM0P:
-            return GetCXM0P();
+            ret = GetCXM0P();
+			break;
         case kCXM1P:
-            return GetCXM1P();
+            ret = GetCXM1P();
+			break;
         case kCXP0FB:
-            return GetCXP0FB();
+            ret =  GetCXP0FB();
+			break;
         case kCXP1FB:
-            return GetCXP1FB();
+            ret =  GetCXP1FB();
+			break;
         case kCXM0FB:
-            return GetCXM0FB();
+            ret = GetCXM0FB();
+			break;
         case kCXM1FB:
-            return GetCXM1FB();
+            ret = GetCXM1FB();
+			break;
         case kCXBLPF:
-            return GetCXBLPF();
+            ret = GetCXBLPF();
+			break;
         case kCXPPMM:
-            return GetCXPPMM();
+            ret = GetCXPPMM();
+			break;
         case kINPT0:
-            return GetINPT0();
+            ret = GetINPT0();
+			break;
         case kINPT1:
-            return GetINPT1();
+            ret = GetINPT1();
+			break;
         case kINPT2:
-            return GetINPT2();
+            ret = GetINPT2();
+			break;
         case kINPT3:
-            return GetINPT3();
+            ret = GetINPT3();
+			break;
         case kINPT4:
-            return GetINPT4();
+            ret = GetINPT4();
+			break;
         case kINPT5:
-            return GetINPT5();
+            ret = GetINPT5();
+			break;
         default:
 //            LOGERRORF("TIA::Unknown read addr 0x%02x", address);
             break;
     }
-    return 0;
+	if(bReadBreakpoints[address])
+	{
+		Commands::Halt(true);		
+	}
+    return ret;
 }
 
 void Tia::Write(uint8_t address, uint8_t value)

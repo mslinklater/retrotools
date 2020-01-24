@@ -50,4 +50,5 @@ public:
 
 private:
 	uint8_t	memory[kMemorySize];
+	bool	breakpoints[kMemorySize];
 };

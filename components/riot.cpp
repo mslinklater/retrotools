@@ -1,4 +1,5 @@
 #include "riot.h"
+#include "../commands.h"
 
 Riot::Riot()
 {
@@ -6,6 +7,7 @@ Riot::Riot()
 	for(int i=0 ; i<kMemorySize ; i++)
 	{
 		memory[i] = 0;
+		breakpoints[i] = false;
 	}
 	// defaults
 	memory[kSWCHB - kMemoryStart] = kSWCHB_SELECT_MASK | kSWCHB_RESET_MASK;
@@ -18,6 +20,11 @@ Riot::~Riot()
 
 uint8_t Riot::Read(uint16_t addr)
 {
+	if(breakpoints[addr - kMemoryStart])
+	{
+		Commands::Halt(true);		
+	}
+
 	// affect flags etc
 	return memory[addr - kMemoryStart];
 }
@@ -41,6 +48,10 @@ void Riot::Write(uint16_t addr, uint8_t val)
 		default:	// no write
 			break;
 	}
+	if(breakpoints[addr - kMemoryStart])
+	{
+		Commands::Halt(true);		
+	}
 }
 
 void Riot::DbgWrite(uint16_t addr, uint8_t val)
@@ -60,10 +71,10 @@ bool Riot::HandleCommand(const Command& command)
 
 bool Riot::GetBreakpoint(uint16_t addr)
 {
-	return false;
+	return breakpoints[addr - kMemoryStart];
 }
 
 void Riot::SetBreakpoint(uint16_t addr, bool val)
 {
-	
+	breakpoints[addr - kMemoryStart] = val;
 }
