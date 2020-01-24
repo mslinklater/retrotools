@@ -139,5 +139,9 @@ void SystemWindow::Draw(void)
 	DrawTIA();
 	DrawCPU();
 	DrawSpeedControl();
+	if(ImGui::Button("Reset"))
+	{
+		pSystem->Reset();
+	}
 }
 

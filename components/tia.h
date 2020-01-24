@@ -54,7 +54,7 @@ public:
 	};
 
 	static const uint16_t kOutputHorizontalResolution = 228;
-	static const uint16_t kOutputVerticalResolution = 262;
+	static const uint16_t kOutputVerticalResolution = 313;	// big enough for PAL
 	static const uint8_t kHBlankClocks = 68;
 
 	// read registers
@@ -289,7 +289,7 @@ private:
 	bool bShowP0;
 	bool bShowP1;
 
-    uint8_t 	pixels[228*262];
+    uint8_t 	pixels[kOutputHorizontalResolution*kOutputVerticalResolution];
 	uint16_t	rasterX;
 	uint16_t	rasterY;
 	uint32_t	frameNum;

@@ -10,7 +10,7 @@ Riot::Riot()
 		breakpoints[i] = false;
 	}
 	// defaults
-	memory[kSWCHB - kMemoryStart] = kSWCHB_SELECT_MASK | kSWCHB_RESET_MASK;
+	memory[kSWCHB - kMemoryStart] = kSWCHB_SELECT_MASK | kSWCHB_RESET_MASK | kSWCHB_COLORBW_MASK ;
 }
 
 Riot::~Riot()

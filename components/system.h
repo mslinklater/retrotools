@@ -38,6 +38,8 @@ public:
 	virtual bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 
+	void Reset();
+
 private:
     Tia*        pTia;
     Cpu6502*    pCpu6502;

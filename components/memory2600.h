@@ -53,9 +53,13 @@ public:
 	static const uint16_t kViaStart = 0x0000;
 	static const uint16_t kViaSize = 0x002d;
 
-	// ROM
+	// RAM
 	static const uint16_t kRamStart = 0x0080;
 	static const uint16_t kRamSize = 0x0080;
+
+	// STACK
+	static const uint16_t kStackStart = 0x0180;
+	static const uint16_t kStackSize = 0x0080;
 
 	// RIOT
 	static const uint16_t kRiotStart = 0x0280;

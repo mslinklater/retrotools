@@ -71,15 +71,16 @@ void Memory2600::DbgWrite(uint16_t address, uint8_t val)
 void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 {
 	uint16_t physicalAddress = address & kAddressMask;
+	uint16_t lowMaskPhysicalAddress = physicalAddress & 0xfeff;
 
-	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
+	if((lowMaskPhysicalAddress >= kViaStart) && (lowMaskPhysicalAddress < kViaStart + kViaSize))
 	{
-		pTia->Write(address, val);
+		pTia->Write(lowMaskPhysicalAddress, val);
 	}
-	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	else if((lowMaskPhysicalAddress >= kRamStart) && (lowMaskPhysicalAddress < kRamStart + kRamSize))
 	{
 		// RAM write
-		uint16_t ramAddress = physicalAddress - kRamStart;
+		uint16_t ramAddress = lowMaskPhysicalAddress - kRamStart;
 		pRam[ramAddress].value = val;
 		if(affectFlags)
 		{
@@ -97,6 +98,11 @@ void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 		pRom[romAddress].value = val;
 		pRom[romAddress].flags = 0;
 	}
+	else
+	{
+//		LOGERRORF("Unhandled memory write 0x%04x", address);
+	}
+	
 }
 
 uint8_t Memory2600::Read(uint16_t address)
@@ -112,14 +118,15 @@ uint8_t Memory2600::DbgRead(uint16_t address)
 uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 {
 	uint16_t physicalAddress = address & kAddressMask;
+	uint16_t lowMaskPhysicalAddress = physicalAddress & 0xfeff;
 
-	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
+	if((lowMaskPhysicalAddress >= kViaStart) && (lowMaskPhysicalAddress < kViaStart + kViaSize))
 	{
-		return pTia->Read(address);
+		return pTia->Read(lowMaskPhysicalAddress);
 	}
-	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	else if((lowMaskPhysicalAddress >= kRamStart) && (lowMaskPhysicalAddress < kRamStart + kRamSize))
 	{
-		uint16_t ramAddress = physicalAddress - kRamStart;
+		uint16_t ramAddress = lowMaskPhysicalAddress - kRamStart;
 		if(affectFlags)
 		{
 			pRam[ramAddress].flags |= kMemoryFlagReadFrom;
@@ -139,6 +146,11 @@ uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 		}
 		return pRom[romAddress].value;
 	}
+	else
+	{
+//		LOGERRORF("Unhandled memory read 0x%04x", address);
+	}
+	
 
 	return 0;
 }

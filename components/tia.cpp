@@ -273,7 +273,8 @@ void Tia::RebuildSprite1Bits()
 
 uint8_t Tia::Read(uint8_t address)
 {
-	uint8_t ret;
+	uint8_t ret = 0;
+	
     switch(address)
     {
         case kCXM0P:

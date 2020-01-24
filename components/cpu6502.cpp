@@ -438,7 +438,7 @@ void Cpu6502::Init(eVariant variant)
 	AddOpcode(0xaa, kMnemonic_TAX, kAddrModeImplied, kNone);
 
 	// TAY
-	AddOpcode(0xa8, kMnemonic_TAX, kAddrModeImplied, kNone);
+	AddOpcode(0xa8, kMnemonic_TAY, kAddrModeImplied, kNone);
 
 	// TSX
 	AddOpcode(0xba, kMnemonic_TSX, kAddrModeImplied, kNone);

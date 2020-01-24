@@ -72,6 +72,11 @@ void System::Tick()
 //	pTia->Tick();
 }
 
+void System::Reset()
+{
+	pCpu6502->SetPC(0xf000);
+}
+
 float System::GetUpdateDT(void)
 {
 	return updatedt;
