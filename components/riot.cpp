@@ -20,13 +20,13 @@ Riot::~Riot()
 
 uint8_t Riot::Read(uint16_t addr)
 {
-	if(breakpoints[addr - kMemoryStart])
+	if(breakpoints[addr])
 	{
 		Commands::Halt(true);		
 	}
 
 	// affect flags etc
-	return memory[addr - kMemoryStart];
+	return memory[addr];
 }
 
 uint8_t Riot::DbgRead(uint16_t addr)

@@ -42,20 +42,28 @@ class Cpu6502;
 class Tia;
 class Riot;
 
+// ROM	0x1000
+// RIOT	0x0280
+
 class Memory2600 : public IStateSerialisation, public IMemory
 {
 public:
 
 	// Limit caused by 6507 only having 13 address bus lines
 	static const uint16_t kAddressMask = 0x1fff;
+	static const uint16_t kRomAddressFilter = 0x1000;
+	static const uint16_t kRomAddressMask = 0x0fff;
 
-	// VIA
-	static const uint16_t kViaStart = 0x0000;
-	static const uint16_t kViaSize = 0x002d;
+	// TIA
+	static const uint16_t kTiaStart = 0x0000;
+	static const uint16_t kTiaSize = 0x002d;
+	static const uint16_t kTiaAddressMask = 0x007f;
 
 	// RAM
 	static const uint16_t kRamStart = 0x0080;
 	static const uint16_t kRamSize = 0x0080;
+	static const uint16_t kRamAddressFilter = 0x0080;
+	static const uint16_t kRamAddressMask = 0x007f;
 
 	// STACK
 	static const uint16_t kStackStart = 0x0180;
@@ -64,6 +72,8 @@ public:
 	// RIOT
 	static const uint16_t kRiotStart = 0x0280;
 	static const uint16_t kRiotSize = 0x0018;
+	static const uint16_t kRiotAddressFilter = 0x0200;
+	static const uint16_t kRiotAddressMask = 0x001f;
 
 	// ROM
 	static const uint16_t kRomStart = 0x1000;

@@ -73,7 +73,7 @@ void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 	uint16_t physicalAddress = address & kAddressMask;
 	uint16_t lowMaskPhysicalAddress = physicalAddress & 0xfeff;
 
-	if((lowMaskPhysicalAddress >= kViaStart) && (lowMaskPhysicalAddress < kViaStart + kViaSize))
+	if((lowMaskPhysicalAddress >= kTiaStart) && (lowMaskPhysicalAddress < kTiaStart + kTiaSize))
 	{
 		pTia->Write(lowMaskPhysicalAddress, val);
 	}
@@ -117,85 +117,74 @@ uint8_t Memory2600::DbgRead(uint16_t address)
 
 uint8_t Memory2600::ReadImpl(uint16_t address, bool affectFlags)
 {
-	uint16_t physicalAddress = address & kAddressMask;
-	uint16_t lowMaskPhysicalAddress = physicalAddress & 0xfeff;
-
-	if((lowMaskPhysicalAddress >= kViaStart) && (lowMaskPhysicalAddress < kViaStart + kViaSize))
+	// ROM
+	if(address & kRomAddressFilter)
 	{
-		return pTia->Read(lowMaskPhysicalAddress);
-	}
-	else if((lowMaskPhysicalAddress >= kRamStart) && (lowMaskPhysicalAddress < kRamStart + kRamSize))
-	{
-		uint16_t ramAddress = lowMaskPhysicalAddress - kRamStart;
-		if(affectFlags)
-		{
-			pRam[ramAddress].flags |= kMemoryFlagReadFrom;
-		}
-		return pRam[ramAddress].value;
-	}
-	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
-	{
-		return pRiot->Read(physicalAddress);
-	}
-	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
-	{
-		uint16_t romAddress = physicalAddress - kRomStart;
+		uint16_t romAddress = address & kRomAddressMask;
 		if(affectFlags)
 		{
 			pRom[romAddress].flags |= kMemoryFlagReadFrom;
 		}
 		return pRom[romAddress].value;
 	}
+	// RIOT
+	else if(address & kRiotAddressFilter)
+	{
+		return pRiot->Read(address & kRiotAddressMask);
+	}
+	// RAM
+	else if(address & kRamAddressFilter)
+	{
+		uint16_t ramAddress = address & kRamAddressMask;
+		if(affectFlags)
+		{
+			pRam[ramAddress].flags |= kMemoryFlagReadFrom;
+		}
+		return pRam[ramAddress].value;
+	}
+	// TIA
 	else
 	{
-//		LOGERRORF("Unhandled memory read 0x%04x", address);
+		return pTia->Read(address & kTiaAddressMask);
 	}
-	
-
 	return 0;
 }
 
 uint8_t Memory2600::GetFlag(uint16_t address)
 {
-	uint16_t physicalAddress = address & kAddressMask;
+	// ROM
+	if(address & kRomAddressFilter)
+	{
+		return pRom[address & kRomAddressMask].flags;
+	}
+	// RIOT
+	else if(address & kRiotAddressFilter)
+	{
+	}
+	// RAM
+	else if(address & kRamAddressFilter)
+	{
+		return pRam[address & kRamAddressMask].flags;
+	}
+	// TIA
+	else
+	{
+	}
 
-	if((physicalAddress >= kViaStart) && (physicalAddress < kViaStart + kViaSize))
-	{
-		// VIA read
-	}
-	else if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
-	{
-		uint16_t ramAddress = physicalAddress - kRamStart;
-		return pRam[ramAddress].flags;
-	}
-	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
-	{
-		// RIOT read
-	}
-	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
-	{
-		uint16_t romAddress = physicalAddress - kRomStart;
-		return pRom[romAddress].flags;
-	}
 	return 0;	
 }
 
 void Memory2600::SetHasBeenExecuted(uint16_t address, uint16_t numBytes)
 {
-	uint16_t physicalAddress = address & kAddressMask;
-
 	MemoryByte* pByte = nullptr;
 
-	if((physicalAddress >= kRamStart) && (physicalAddress < kRamStart + kRamSize))
+	if(address & kRomAddressFilter)
 	{
-		uint16_t ramAddress = physicalAddress - kRamStart;
-
-		pByte = pRam + ramAddress;
+		pByte = pRom + (address & kRomAddressMask);
 	}
-	else
+	else if(address & kRamAddressFilter)
 	{
-		uint16_t romAddress = physicalAddress - kRomStart;
-		pByte = pRom + romAddress;
+		pByte = pRam + (address & kRamAddressMask);
 	}
 
 	for(int i=0 ; i<numBytes ; i++)

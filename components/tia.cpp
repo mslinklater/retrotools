@@ -323,7 +323,7 @@ uint8_t Tia::Read(uint8_t address)
 //            LOGERRORF("TIA::Unknown read addr 0x%02x", address);
             break;
     }
-	if(bReadBreakpoints[address])
+	if((address < kNumReadRegisters) && (bReadBreakpoints[address]))
 	{
 		Commands::Halt(true);		
 	}
