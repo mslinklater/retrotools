@@ -21,6 +21,7 @@
 #include "components/riot.h"
 #include "components/system.h"
 #include "disasm.h"
+#include "sessionmanager.h"
 #include "symbolstore.h"
 #include "shared_cpp/log.h"
 #include "commands.h"
@@ -114,7 +115,11 @@ int main(int argc, char* argv[])
 	StateSerialiser* pStateSerialiser = new StateSerialiser();
 	WindowManager* pWindowManager = new WindowManager();
 	pWindowManager->Init(pStateSerialiser);
-	
+
+	// Session Manager
+	SessionManager* pSessionManager = new SessionManager();
+	pSessionManager = nullptr;	// TEMP
+
 	// Do some 6502 stuff
 	// initialise components
 	

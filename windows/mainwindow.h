@@ -18,4 +18,13 @@ public:
 private:
 	bool open;
 	WindowManager* pWindowManager;
+	bool bShowNewSession;
+
+	static const int kNewFilenameMaxLength = 256;
+	char newFilename[kNewFilenameMaxLength];
+
+	void ClearNewFilename()
+	{
+		for(int i=0 ; i<kNewFilenameMaxLength ; i++) newFilename[i] = 0;
+	}
 };

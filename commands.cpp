@@ -7,14 +7,15 @@
 #include "shared_cpp/command.h"
 #include "shared_cpp/log.h"
 
-void Commands::NewProject()
+void Commands::NewProject(std::string name, std::string path)
 {
 	LOGINFO("Commands::NewProject");
 	Command cmd;
 	cmd.name = kNewProjectCommand;
+	cmd.payload = name;
+	cmd.payload2 = path;
 	CommandCenter::Instance()->QueueForBroadcast(cmd);
 }
-
 
 void Commands::Halt(bool halt, std::string runType)
 {

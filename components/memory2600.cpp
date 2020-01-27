@@ -65,44 +65,38 @@ void Memory2600::Write(uint16_t address, uint8_t val)
 
 void Memory2600::DbgWrite(uint16_t address, uint8_t val)
 {
-	WriteImpl(address, val, false);
+	if(address & kRomAddressFilter)
+	{
+		pRom[address & kRomAddressMask].value = val;
+	}
+	else
+	{
+		WriteImpl(address, val, false);
+	}
 }
 
 void Memory2600::WriteImpl(uint16_t address, uint8_t val, bool affectFlags)
 {
-	uint16_t physicalAddress = address & kAddressMask;
-	uint16_t lowMaskPhysicalAddress = physicalAddress & 0xfeff;
-
-	if((lowMaskPhysicalAddress >= kTiaStart) && (lowMaskPhysicalAddress < kTiaStart + kTiaSize))
+	// RIOT
+	if(address & kRiotAddressFilter)
 	{
-		pTia->Write(lowMaskPhysicalAddress, val);
+		pRiot->Write(address & kRiotAddressMask, val);
 	}
-	else if((lowMaskPhysicalAddress >= kRamStart) && (lowMaskPhysicalAddress < kRamStart + kRamSize))
+	// RAM
+	else if(address & kRamAddressFilter)
 	{
-		// RAM write
-		uint16_t ramAddress = lowMaskPhysicalAddress - kRamStart;
-		pRam[ramAddress].value = val;
+		uint16_t ramAddress = address & kRamAddressMask;
 		if(affectFlags)
 		{
 			pRam[ramAddress].flags |= kMemoryFlagWrittenTo;
 		}
+		pRam[ramAddress].value = val;
 	}
-	else if((physicalAddress >= kRiotStart) && (physicalAddress < kRiotStart + kRiotSize))
-	{
-		pRiot->Write(physicalAddress, val);
-	}
-	else if((physicalAddress >= kRomStart) && (physicalAddress < kRomStart + kRomSize))
-	{
-		// ROM write - not really possible - fix this !
-		uint16_t romAddress = physicalAddress - kRomStart;
-		pRom[romAddress].value = val;
-		pRom[romAddress].flags = 0;
-	}
+	// TIA
 	else
 	{
-//		LOGERRORF("Unhandled memory write 0x%04x", address);
+		pTia->Write(address & kTiaAddressMask, val);
 	}
-	
 }
 
 uint8_t Memory2600::Read(uint16_t address)

@@ -9,9 +9,8 @@
 
 namespace Commands
 {
-	void NewProject(void);
+	void NewProject(std::string name, std::string path);
 	static const std::string kNewProjectCommand("NewProject");
-
 
 	void Halt(bool halt, std::string runType = "");
 	static const std::string kHaltCommand("Halt");

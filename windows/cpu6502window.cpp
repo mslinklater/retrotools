@@ -87,22 +87,6 @@ void Cpu6502Window::Draw()
 	ImGui::SameLine();
 	ImGui::Text(status & Cpu6502::kCarrySetMask ? "1" : "0");
 	
-//	if(ImGui::Button("Step"))
-//	{
-//		Commands::Halt(false);
-//		pCpu->ProcessInstruction(true);
-//	}
-
-//	ImGui::SameLine();
-
-//	if(ImGui::Button("Next 100"))
-//	{
-//		for(int i=0 ; i<100 ; i++)
-//		{
-//			pCpu->ProcessInstruction();
-//		}
-//	}
-
 	ImGui::Separator();
 	ImGui::PushItemWidth(40);
 	ImGui::InputText("Address", newBreakpointText, 5);

@@ -14,7 +14,8 @@
 imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
 MainWindow::MainWindow()
-:open(true)
+: open(true)
+, bShowNewSession(false)
 {
 }
 
@@ -26,21 +27,22 @@ void MainWindow::Draw()
 {
 	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
 	
-	bool open = false;
+	bool bSessionOpen = false;
 
 	// Main Menu Bar
 	if(ImGui::BeginMenuBar())
 	{
 		if(ImGui::BeginMenu("Session"))
 		{
-			if(ImGui::MenuItem("New"))
+			if(ImGui::MenuItem("New..."))
 			{
-				Commands::NewProject();
+				bShowNewSession = true;
+				ClearNewFilename();
 			}
 			if(ImGui::MenuItem("Open..."))
 			{
 				// open session
-				open = true;
+				bSessionOpen = true;
 			}
 			if(ImGui::MenuItem("Save"))
 			{
@@ -79,12 +81,41 @@ void MainWindow::Draw()
 		ImGui::EndMenuBar();
 	}	
 
-	if(open)
+	// New Session
+
+	if(bShowNewSession)
 	{
-		ImGui::OpenPopup("Open File");
+		ImGui::Separator();
+		ImGui::Text("New Session");
+		ImGui::Separator();
+
+		ImGui::PushItemWidth(100);
+		ImGui::Text("Filename:");
+		ImGui::SameLine();
+		ImGui::InputText("", newFilename, kNewFilenameMaxLength);
+		ImGui::PopItemWidth();
+
+		if(ImGui::Button("Cancel"))
+		{
+			bShowNewSession = false;
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("Create"))
+		{
+			bShowNewSession = false;
+		}
+
+		ImGui::Separator();
 	}
 
-	if(file_dialog.showOpenFileDialog("Open File", ImVec2(700, 310), ".bin,.prg"))
+	// Open Session
+
+	if(bSessionOpen)
+	{
+		ImGui::OpenPopup("Open Session");
+	}
+
+	if(file_dialog.showOpenFileDialog("Open Session", ImVec2(700, 310), ".vistella"))
 	{
 		LOGINFOF("MainWindow::Open file %s", file_dialog.selected_fn.c_str());
 	}

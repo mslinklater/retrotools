@@ -31,24 +31,24 @@ uint8_t Riot::Read(uint16_t addr)
 
 uint8_t Riot::DbgRead(uint16_t addr)
 {
-	return memory[addr - kMemoryStart];
+	return memory[addr & 0x003f];
 }
 
 void Riot::Write(uint16_t addr, uint8_t val)
 {
 	// affect flags etc
-	switch(addr)
+	switch(addr | 0x0280)
 	{
 		case kTIM1T:
 		case kTIM8T:
 		case kTIM64T:
 		case kT1024T:
-			memory[addr - kMemoryStart] = val;
+			memory[addr] = val;
 			break;
 		default:	// no write
 			break;
 	}
-	if(breakpoints[addr - kMemoryStart])
+	if(breakpoints[addr])
 	{
 		Commands::Halt(true);		
 	}
@@ -56,7 +56,7 @@ void Riot::Write(uint16_t addr, uint8_t val)
 
 void Riot::DbgWrite(uint16_t addr, uint8_t val)
 {
-	memory[addr - kMemoryStart] = val;
+	memory[addr & 0x003f] = val;
 }
 
 void Riot::Tick()
@@ -71,10 +71,10 @@ bool Riot::HandleCommand(const Command& command)
 
 bool Riot::GetBreakpoint(uint16_t addr)
 {
-	return breakpoints[addr - kMemoryStart];
+	return breakpoints[addr & 0x003f];
 }
 
 void Riot::SetBreakpoint(uint16_t addr, bool val)
 {
-	breakpoints[addr - kMemoryStart] = val;
+	breakpoints[addr & 0x003f] = val;
 }
