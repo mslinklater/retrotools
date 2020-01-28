@@ -59,7 +59,7 @@ eErrorCode MemoryUtils::LoadFileToMemory(IMemory* pMemory, std::string filename,
 				}
 				break;
 			case kPrg:
-				location = (pLoadBuffer[1] << 8) + pLoadBuffer[0];
+				location = (((uint16_t)pLoadBuffer[1]) << 8) | pLoadBuffer[0];
 				LOGINFOF("MemoryUtils::Loading file %s to 0x%04x - size 0x%04x", filename.c_str(), location, fileSize-2);
 				for(size_t i=0 ; i<fileSize-2 ; i++)
 				{
