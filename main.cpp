@@ -117,8 +117,8 @@ int main(int argc, char* argv[])
 	pWindowManager->Init(pStateSerialiser);
 
 	// Session Manager
-	SessionManager* pSessionManager = new SessionManager();
-	pSessionManager = nullptr;	// TEMP
+//	SessionManager* pSessionManager = SessionManager::Instance();
+//	pSessionManager = nullptr;	// TEMP
 
 	// Do some 6502 stuff
 	// initialise components

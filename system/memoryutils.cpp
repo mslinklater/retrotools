@@ -17,7 +17,7 @@ eErrorCode MemoryUtils::LoadFileToMemory(IMemory* pMemory, std::string filename,
 	
 	eFileType fileType = kBinary;
 		
-	char* pLoadBuffer = 0;
+	uint8_t* pLoadBuffer = 0;
 	
 	std::ifstream inFile;
 	size_t fileSize = 0;
@@ -40,9 +40,9 @@ eErrorCode MemoryUtils::LoadFileToMemory(IMemory* pMemory, std::string filename,
 		// Now load the fecker
 		inFile.seekg(0, std::ios::end);
 		fileSize = inFile.tellg();
-		pLoadBuffer = new char[fileSize];
+		pLoadBuffer = new uint8_t[fileSize];
 		inFile.seekg(0, std::ios::beg);
-		inFile.read(pLoadBuffer, fileSize);		
+		inFile.read((char*)pLoadBuffer, fileSize);		
         inFile.close();
 		*bytesRead = fileSize;
 
