@@ -7,23 +7,20 @@
 #include "shared_cpp/command.h"
 #include "shared_cpp/log.h"
 
-#if 0
-void Commands::NewSession(std::string filename)
-{
-	LOGINFO("Commands::NewSession %s", filename.c_str());
-	Command cmd;
-	cmd.name = kNewSessionCommand;
-	cmd.payload = filename;
-	CommandCenter::Instance()->QueueForBroadcast(cmd);
-}
-#endif
-
-void Commands::Halt(bool halt, std::string runType)
+void Commands::Halt(bool halt, std::string runType, std::string reason)
 {
 	Command cmd;
 	cmd.name = kHaltCommand;
 	cmd.payload = halt ? "true" : "false";
 	cmd.payload2 = runType;
+
+	if(reason == "unknown")
+	{
+		int bp=0;
+		bp++;
+	}
+
+	LOGINFOF("Halt::Due to %s", reason.c_str());
 
 	CommandCenter::Instance()->BroadcastNow(cmd);
 }

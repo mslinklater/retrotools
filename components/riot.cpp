@@ -22,7 +22,7 @@ uint8_t Riot::Read(uint16_t addr)
 {
 	if(breakpoints[addr])
 	{
-		Commands::Halt(true);		
+		Commands::Halt(true, "", "RIOT read breakpoint");		
 	}
 
 	// affect flags etc
@@ -50,7 +50,7 @@ void Riot::Write(uint16_t addr, uint8_t val)
 	}
 	if(breakpoints[addr])
 	{
-		Commands::Halt(true);		
+		Commands::Halt(true, "", "RIOT write breakpoint");		
 	}
 }
 

@@ -30,7 +30,7 @@ void SystemWindow::DrawState()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 		if(ImGui::Button("RUNNING"))
 		{
-			Commands::Halt(true);
+			Commands::Halt(true, "", "System window button");
 		}
 		ImGui::PopStyleColor(1);
 	}
@@ -39,7 +39,7 @@ void SystemWindow::DrawState()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 		if(ImGui::Button("HALTED!"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandRun);
+			Commands::Halt(false, Commands::kHaltCommandRun, "System window button");
 		}
 		ImGui::PopStyleColor(1);
 	}
@@ -54,17 +54,17 @@ void SystemWindow::DrawTIA()
 	{
 		if(ImGui::Button("TickTIA"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandTickTia);
+			Commands::Halt(false, Commands::kHaltCommandTickTia, "System window TickTIA button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("HBlank"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandHBlank);
+			Commands::Halt(false, Commands::kHaltCommandHBlank, "System window HBlank button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("VBlank"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandVBlank);
+			Commands::Halt(false, Commands::kHaltCommandVBlank, "System window VBlank button");
 		}
         ImGui::TreePop();
 	}
@@ -76,12 +76,12 @@ void SystemWindow::DrawCPU()
 	{
 		if(ImGui::Button("TickCPU"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandTickCpu);
+			Commands::Halt(false, Commands::kHaltCommandTickCpu, "System window TickCPU button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("Instruction"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandCpuInstruction);
+			Commands::Halt(false, Commands::kHaltCommandCpuInstruction, "System window CPU Instruction button");
 		}
 		ImGui::TreePop();
 	}

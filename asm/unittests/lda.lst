@@ -3,12 +3,18 @@
       2  0000 ????						; Assembler should use basic 6502 instructions
       3  0000 ????				      processor	6502
       4  0000 ????
-      5  1000					      org	$1000
-      6  1000
-      7  1000		       a9 00	   Start      lda	#$00
-      8  1002		       00		      brk
-      9  1003
-     10  1003							; Here we skip to address $FFFC and define a word with the
-     11  1003							; address of where the CPU should start fetching instructions.
-     12  1003							; This also fills out the ROM size to $1000 (4k) bytes
-     13  1003							;	org $1100
+      5  0000 ????						; Some zero page data
+      6  0080					      org	$0080
+      7  0080
+      8  0080				   ZP_ONE
+      9  0080		       01		      .byte.b	$01
+     10  0081
+     11  1000					      org	$1000
+     12  1000
+     13  1000		       a9 00	   Start      lda	#$00
+     14  1002		       8d 00 40 	      sta	$4000
+     15  1005		       a5 80		      lda	ZP_ONE
+     16  1007		       8d 01 40 	      sta	$4001
+     17  100a		       00		      brk
+     18  100b
+     19  100b

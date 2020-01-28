@@ -12,7 +12,8 @@ namespace Commands
 //	void NewProject(std::string filename);
 //	static const std::string kNewSessionCommand("NewSession");
 
-	void Halt(bool halt, std::string runType = "");
+	void Halt(bool halt, std::string runType, std::string reason);
+	
 	static const std::string kHaltCommand("Halt");
 	static const std::string kHaltCommandTickTia("TickTia");
 	static const std::string kHaltCommandHBlank("HBlank");

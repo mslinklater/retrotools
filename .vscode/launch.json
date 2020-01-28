@@ -80,6 +80,25 @@
             ]
         },
         {
+            "name": "(gdb) Launch adventure.bin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/ROMS/ADVNTURE.BIN", "-a", "f000"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) Launch vsync.bin",
             "type": "cppdbg",
             "request": "launch",
