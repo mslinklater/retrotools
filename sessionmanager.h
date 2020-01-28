@@ -5,11 +5,15 @@
 class SessionManager : public ICommandProcessor
 {
 public:
+	static SessionManager* Instance();
+
+private:
 	SessionManager();
 	virtual ~SessionManager();
 
-private:
-		// ICommandProcessor
-		bool HandleCommand(const Command &command) override;
-		// ~ICommandProcessor
+	static SessionManager* pInstance;
+
+	// ICommandProcessor
+	bool HandleCommand(const Command &command) override;
+	// ~ICommandProcessor
 };

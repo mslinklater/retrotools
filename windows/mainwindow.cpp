@@ -103,6 +103,8 @@ void MainWindow::Draw()
 		if(ImGui::Button("Create"))
 		{
 			bShowNewSession = false;
+
+//			Commands::NewProject(newFilename);
 		}
 
 		ImGui::Separator();

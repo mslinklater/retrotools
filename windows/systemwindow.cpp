@@ -127,6 +127,11 @@ void SystemWindow::DrawSpeedControl()
 		{
 			pSystem->SetTickFrequency(System::kCoreFrequency/10000);
 		}
+		ImGui::SameLine();
+		if(ImGui::Button("1/100K"))
+		{
+			pSystem->SetTickFrequency(System::kCoreFrequency/100000);
+		}
 
 		ImGui::Separator();
 		ImGui::TreePop();

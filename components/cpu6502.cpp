@@ -936,6 +936,13 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(reg.y == val) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.y >= val) ? SetCarryFlag() : ClearCarryFlag();
 			}
+			switch(pOpcode->addrMode)
+			{
+				case kAddrModeImmediate: ticksUntilExecution = 2; break;
+				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
+				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
+				default: break;
+			}
 			reg.pc += pOpcode->length;
 			break;
 		case kMnemonic_DEC: // complete
@@ -1276,8 +1283,21 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				}
 				else
 				{
-					reg.acc -= pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
-					// flags
+//					reg.acc -= pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
+					uint16_t val = (uint16_t)reg.acc;
+					uint16_t subValue = pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
+					val -= subValue;
+					reg.acc = val & 0x00ff;
+					(val & 0x0100) ? SetCarryFlag() : ClearCarryFlag();
+					(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
+					(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+					// overflow flag
+					int8_t vals = (int8_t)reg.acc;
+					int16_t val16s = (int16_t)vals;
+					int8_t subs = ((int8_t)pMemory->Read(addr)) - (GetCarryFlag() ? 0 : 1);
+					int16_t sub16s = (int16_t)subs;
+					int16_t result = val16s - sub16s;
+					(result <= 127 && result >= -128) ? ClearOverflowFlag() : SetOverflowFlag();
 				}
 				switch(pOpcode->addrMode)
 				{
