@@ -96,7 +96,7 @@ void Tia::Tick()
 		rasterY++;
 		if(bHaltOnHBlank)
 		{
-			Commands::Halt(true);
+			Commands::Halt(true, "", "TIA - HBlank");
 			bHaltOnHBlank = false;
 		}
 		bCpuWaitingForHsync = false;
