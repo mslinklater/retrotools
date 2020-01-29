@@ -2,7 +2,6 @@
 CMakeFiles/
 build/
 CMakeCache.txt
-Makefile
 cmake_install.cmake
 retrotool
 imgui.ini
