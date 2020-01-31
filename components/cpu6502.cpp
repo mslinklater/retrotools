@@ -1283,7 +1283,6 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				}
 				else
 				{
-//					reg.acc -= pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
 					uint16_t val = (uint16_t)reg.acc;
 					uint16_t subValue = pMemory->Read(addr) - (GetCarryFlag() ? 0 : 1);
 					val -= subValue;

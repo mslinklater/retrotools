@@ -17,7 +17,8 @@ class System : public ICommandProcessor
 {
 public:
 
-	static const int kCoreFrequency = 3584160;
+	static const int kCoreFrequencyNTSC = 262 * 228 * 60;
+	static const int kCoreFrequencyPAL = 312 * 228 * 50;
 
     System();
     virtual ~System();
@@ -31,7 +32,7 @@ public:
 
 	void Tick();
 
-	void SetTickFrequency(uint32_t ticksPerSecond){tickFrequency = ticksPerSecond;}
+	void SetTickFrequencyMultiplier(float multiplier){tickFrequencyMultiplier = multiplier;}
 	uint32_t GetTickFrequency(){return tickFrequency;}
 
 	// ICommandProcessor
@@ -46,6 +47,7 @@ private:
     float		updatedt;
     bool		running;
 	uint32_t	tickFrequency;
+	float		tickFrequencyMultiplier;
 	double		tickedUpToTime;
 	double		tickUpToTime;
 	double		deltaTPerTick;

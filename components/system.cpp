@@ -11,7 +11,8 @@
 
 System::System()
 : running(false)
-, tickFrequency(kCoreFrequency)
+, tickFrequency(kCoreFrequencyNTSC)
+, tickFrequencyMultiplier(1.0f)
 , tickedUpToTime(0.0)
 , tickUpToTime(0.0)
 , deltaTPerTick(1.0 / tickFrequency)
@@ -36,6 +37,17 @@ bool System::HandleCommand(const Command& command)
 
 void System::Update(float dt)
 {
+	switch(pTia->GetRegion())
+	{
+		case Tia::ERegion::NTSC:
+			tickFrequency = kCoreFrequencyNTSC * tickFrequencyMultiplier;
+			break;
+		case Tia::ERegion::PAL:
+		case Tia::ERegion::SECAM:
+			tickFrequency = kCoreFrequencyPAL * tickFrequencyMultiplier;
+			break;
+	}
+
 	deltaTPerTick = 1.0 / tickFrequency;
 
 	if(!running)

@@ -100,48 +100,37 @@ void SystemWindow::DrawCPU()
 
 void SystemWindow::DrawSpeedControl()
 {
-	static char newFreqText[16];
 	if(ImGui::TreeNode("Speed"))
 	{
 		ImGui::Separator();
-		ImGui::Text("Current Freq:%d", pSystem->GetTickFrequency());
-		ImGui::PushItemWidth(40);
-		ImGui::InputText("Hz", newFreqText, 7);
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-		if(ImGui::Button("Set"))
-		{
-			uint32_t freq = strtol(newFreqText, NULL, 10);
-			pSystem->SetTickFrequency(freq);
-		}
 		if(ImGui::Button("x1"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency);
+			pSystem->SetTickFrequencyMultiplier(1.0f);
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("1/10"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency/10);
+			pSystem->SetTickFrequencyMultiplier(1.0f / 10.0f);
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("1/100"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency/100);
+			pSystem->SetTickFrequencyMultiplier(1.0f / 100.0f);
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("1/1K"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency/1000);
+			pSystem->SetTickFrequencyMultiplier(1.0f / 1000.0f);
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("1/10K"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency/10000);
+			pSystem->SetTickFrequencyMultiplier(1.0f / 10000.0f);
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("1/100K"))
 		{
-			pSystem->SetTickFrequency(System::kCoreFrequency/100000);
+			pSystem->SetTickFrequencyMultiplier(1.0f / 100000.0f);
 		}
 
 		ImGui::Separator();
