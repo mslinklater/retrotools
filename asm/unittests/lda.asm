@@ -10,10 +10,8 @@ ZP_ONE
 
 	org $1000
 
-Start   lda	#$00
-		sta $4000
-		lda ZP_ONE
-		sta $4001
-		brk
+Start_imm	lda	#$40
+			brk
 
- 
+Start_zp	lda ZP_ONE
+			brk

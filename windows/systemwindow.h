@@ -7,10 +7,11 @@
 
 #include <inttypes.h>
 #include "../shared_cpp/windowbase.h"
+#include "../shared_cpp/command.h"
 
 class System;
 
-class SystemWindow : public WindowBase
+class SystemWindow : public WindowBase, public ICommandProcessor
 {
 public:
 	
@@ -23,6 +24,11 @@ public:
 
 private:
 	System*		pSystem;
+	std::string haltReason;
+
+	// ICommandProcessor
+	virtual bool HandleCommand(const Command& command);
+	// ~ICommandProcessor
 
 	void DrawState();
 	void DrawTIA();

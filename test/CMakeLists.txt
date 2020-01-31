@@ -1,3 +1,5 @@
 set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/cpu6502test.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/testcommon.cpp 
 	PARENT_SCOPE)
+	

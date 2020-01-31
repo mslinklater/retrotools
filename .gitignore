@@ -13,3 +13,9 @@ version.h
 Testing/
 *.cmake
 shared_cpp
+/Makefile
+components/Makefile
+imgui/Makefile
+system/Makefile
+test/Makefile
+windows/Makefile

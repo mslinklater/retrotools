@@ -13,14 +13,15 @@ void Commands::Halt(bool halt, std::string runType, std::string reason)
 	cmd.name = kHaltCommand;
 	cmd.payload = halt ? "true" : "false";
 	cmd.payload2 = runType;
+	cmd.context = reason;
+	
+	CommandCenter::Instance()->BroadcastNow(cmd);
+}
 
-	if(reason == "unknown")
-	{
-		int bp=0;
-		bp++;
-	}
-
-	LOGINFOF("Halt::Due to %s", reason.c_str());
-
+void Commands::VSync()
+{
+	Command cmd;
+	cmd.name = kVSyncCommand;
+	
 	CommandCenter::Instance()->BroadcastNow(cmd);
 }

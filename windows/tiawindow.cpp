@@ -6,17 +6,21 @@
 #include "tiawindow.h"
 #include "../imgui/imgui.h"
 #include "../shared_cpp/log.h"
+#include "../commands.h"
+#include "../shared_cpp/command.h"
 
 TiaWindow::TiaWindow()
 : bShowInfo(false)
 , bShowRegisters(false)
 , bShowVBlank(false)
 , bShowHBlank(false)
+, bShowOverscan(false)
 , bShowLocation(false)
 , bLockPixels(false)
 , bShowPF(true)
 , bShowP0(true)
 , bShowP1(true)
+, rasterCountOffset(0)
 {
 	// create output buffer
 	glGenTextures(1, &videoOutputTexture);
@@ -26,12 +30,26 @@ TiaWindow::TiaWindow()
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
+
+	CommandCenter::Instance()->Subscribe(Commands::kVSyncCommand, this);
 }
 
 TiaWindow::~TiaWindow()
 {
 	// free output buffer
 	glDeleteTextures(1, &videoOutputTexture);
+}
+
+bool TiaWindow::HandleCommand(const Command& command)
+{
+	if(command.name == Commands::kVSyncCommand)
+	{
+		float newCount = (float)(pTia->GetRasterCount());
+		rasterCountHistory[rasterCountOffset] = newCount;
+		rasterCountOffset++;
+		rasterCountOffset %= kRasterCountHistorySize;
+	}
+	return false;
 }
 
 void TiaWindow::DrawWriteRegister(uint32_t reg, const char* text, uint8_t val)
@@ -66,6 +84,8 @@ void TiaWindow::DrawInfo()
 	ImGui::Text("Frame: %d", pTia->GetFrameNum());
 	ImGui::SameLine();
 	ImGui::Text("Ticks: %" PRId64, pTia->GetTicksSinceBoot());
+	ImGui::SameLine();
+	ImGui::Text("Raster count: %d", pTia->GetRasterCount());
 	ImGui::Text("RasterX: %d (%d)", pTia->GetRasterX(), pTia->GetRasterX()-68);
 	ImGui::SameLine();
 	ImGui::Text("Y: %d (%d)", pTia->GetRasterY(), pTia->GetRasterY()-40);
@@ -82,6 +102,17 @@ void TiaWindow::DrawInfo()
 	{
 		pTia->SetRegion(Tia::ERegion::SECAM);
 	}
+	switch(pTia->GetRegion())
+	{
+		case Tia::ERegion::PAL:
+		case Tia::ERegion::SECAM:
+			ImGui::PlotLines("Raster Count", rasterCountHistory, IM_ARRAYSIZE(rasterCountHistory), rasterCountOffset, "", 302.0f, 322.0f, ImVec2(0,80));
+			break;
+		case Tia::ERegion::NTSC:
+			ImGui::PlotLines("Raster Count", rasterCountHistory, IM_ARRAYSIZE(rasterCountHistory), rasterCountOffset, "", 252.0f, 272.0f, ImVec2(0,80));
+			break;
+	}
+
 }
 
 void TiaWindow::DrawRegisters()
@@ -281,6 +312,17 @@ void TiaWindow::Draw(void)
 	const uint8_t* pPixels = pTia->GetPixels();
 
 	int i=0;
+	int beginOverscan;
+	switch(pTia->GetRegion())
+	{
+		case Tia::ERegion::NTSC:
+			beginOverscan = 232;
+			break;
+		case Tia::ERegion::PAL:
+		case Tia::ERegion::SECAM:
+			beginOverscan = 282;
+			break;
+	}
 
 	for(int row=0 ; row<Tia::kOutputVerticalResolution ; row++)
 	{
@@ -295,7 +337,7 @@ void TiaWindow::Draw(void)
 				i++;
 			}
 		}
-		else if((row >= 232) && !bShowVBlank)
+		else if((row >= beginOverscan) && !bShowOverscan)
 		{
 			for(int col=0 ; col<Tia::kOutputHorizontalResolution ; col++)
 			{
@@ -368,6 +410,8 @@ void TiaWindow::Draw(void)
 	ImGui::Checkbox("HBlank", &bShowHBlank);
 	ImGui::SameLine();
 	ImGui::Checkbox("VBlank", &bShowVBlank);
+	ImGui::SameLine();
+	ImGui::Checkbox("Overscan", &bShowOverscan);
 
 	pTia->SetShowPF(bShowPF);
 	pTia->SetShowP0(bShowP0);

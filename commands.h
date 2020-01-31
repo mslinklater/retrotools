@@ -9,9 +9,6 @@
 
 namespace Commands
 {
-//	void NewProject(std::string filename);
-//	static const std::string kNewSessionCommand("NewSession");
-
 	void Halt(bool halt, std::string runType, std::string reason);
 	
 	static const std::string kHaltCommand("Halt");
@@ -21,4 +18,7 @@ namespace Commands
 	static const std::string kHaltCommandTickCpu("TickCpu");
 	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
 	static const std::string kHaltCommandRun("Run");
+
+	void VSync();
+	static const std::string kVSyncCommand("VSync");
 };

@@ -222,7 +222,7 @@ int main(int argc, char* argv[])
 	pStateSerialiser->DeserialiseAppConfig();
 
 	bool done = false;
-//	bool show_demo_window = false;
+	bool show_demo_window = false;
 	while(!done)
 	{
 		SDL_Event event;
@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
 		ImGui::NewFrame();
 		
 		// do stuff
-//		ImGui::ShowDemoWindow(&show_demo_window);
+		ImGui::ShowDemoWindow(&show_demo_window);
 
 		pWindowManager->Draw();	// draw all managed windows
 		

@@ -10,12 +10,21 @@
 
 SystemWindow::SystemWindow()
 {
-
+	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 SystemWindow::~SystemWindow()
 {
 
+}
+
+bool SystemWindow::HandleCommand(const Command& command)
+{
+	if(command.name == Commands::kHaltCommand)
+	{
+		haltReason = command.context;
+	}
+	return false;
 }
 
 void SystemWindow::SetSystem(System* system)
@@ -41,6 +50,8 @@ void SystemWindow::DrawState()
 		{
 			Commands::Halt(false, Commands::kHaltCommandRun, "System window button");
 		}
+		ImGui::SameLine();
+		ImGui::Text("%s", haltReason.c_str());
 		ImGui::PopStyleColor(1);
 	}
     ImGui::Text("dt:%f", pSystem->GetUpdateDT());

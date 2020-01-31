@@ -7,6 +7,8 @@ Tia::Tia()
 : rasterX(0)
 , rasterY(0)
 , frameNum(0)
+, rasterCount(0)
+, rasterCountLatched(0)
 , region(ERegion::NTSC)
 , bHaltOnTick(false)
 , bHaltOnHBlank(false)
@@ -94,9 +96,10 @@ void Tia::Tick()
 		// hblank
 		rasterX = 0;
 		rasterY++;
+		rasterCount++;
 		if(bHaltOnHBlank)
 		{
-			Commands::Halt(true, "", "TIA - HBlank");
+			Commands::Halt(true, "", "TIA HBlank");
 			bHaltOnHBlank = false;
 		}
 		bCpuWaitingForHsync = false;
@@ -107,7 +110,7 @@ void Tia::Tick()
 
 	if(bHaltOnTick)
 	{
-		Commands::Halt(true);
+		Commands::Halt(true, "", "TIA Tick");
 		bHaltOnTick = false;
 	}
 }
@@ -325,7 +328,7 @@ uint8_t Tia::Read(uint8_t address)
     }
 	if((address < kNumReadRegisters) && (bReadBreakpoints[address]))
 	{
-		Commands::Halt(true);		
+		Commands::Halt(true, "", "TIA read");		
 	}
     return ret;
 }
@@ -469,9 +472,9 @@ void Tia::Write(uint8_t address, uint8_t value)
         default:
             break;
     }
-	if(bWriteBreakpoints[address])
+	if((address < kNumWriteRegisters) && (bWriteBreakpoints[address]))
 	{
-		Commands::Halt(true);		
+		Commands::Halt(true, "", "TIA write");		
 	}
 }
 
@@ -570,11 +573,13 @@ void Tia::SetVSYNC(uint8_t val)
     writeRegisters[kVSYNC] = val;
 	if(val & 0x02)
 	{
+		Commands::VSync();
+		
 		rasterY = 0;
 		frameNum++;
 		if(bHaltOnVBlank)
 		{
-			Commands::Halt(true);
+			Commands::Halt(true, "", "TIA VSync");
 			bHaltOnVBlank = false;
 		}
 	}
@@ -582,6 +587,11 @@ void Tia::SetVSYNC(uint8_t val)
 
 void Tia::SetVBLANK(uint8_t val)
 {
+	if(val != 0)
+	{
+		rasterCountLatched = rasterCount;
+		rasterCount = 0;
+	}
     writeRegisters[kVBLANK] = val;
 }
 void Tia::SetWSYNC(uint8_t val)

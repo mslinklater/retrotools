@@ -263,6 +263,7 @@ public:
 
 	ERegion	GetRegion(){return region;}
 	void SetRegion(ERegion newRegion){region = newRegion;}
+	uint16_t GetRasterCount(){return rasterCountLatched;}
 
 	void SetShowPF(bool showPF){bShowPF = showPF;}
 	void SetShowP0(bool showP0){bShowP0 = showP0;}
@@ -293,6 +294,8 @@ private:
 	uint16_t	rasterX;
 	uint16_t	rasterY;
 	uint32_t	frameNum;
+	uint16_t	rasterCount;
+	uint16_t	rasterCountLatched;
 
 	ERegion		region;
 
