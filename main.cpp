@@ -35,7 +35,7 @@
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "shared_cpp/command.h"
-#include "system/memoryutils.h"
+#include "utils/memoryutils.h"
 #include "shared_cpp/windowmanager.h"
 #include "shared_cpp/stateserialiser.h"
 

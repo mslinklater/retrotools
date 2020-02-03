@@ -3,9 +3,9 @@
 #include "../shared_cpp/catch.hpp"
 #include "../components/cpu6502.h"
 #include "../components/memory64k.h"
-#include "../system/memoryutils.h"
+#include "../utils/romfilebundle.h"
 #include "testcommon.h"
-#include "../system/asmhelpers.h"
+#include "../utils/romfilebundle.h"
 
 TEST_CASE("lda", "[cpu6502]")
 {
@@ -14,9 +14,13 @@ TEST_CASE("lda", "[cpu6502]")
 	Memory64K* pMemory = new Memory64K();
 	pCpu->SetMemory(pMemory);
 
+	RomFileBundle bundle;
+
+	bundle.Open("lda.prg");
+
 	// and this
-	uint16_t bytesRead;
-	MemoryUtils::LoadFileToMemory(pMemory, "asm/unittests/lda.prg", 0, &bytesRead);
+//	uint16_t bytesRead;
+//	MemoryUtils::LoadFileToMemory(pMemory, "asm/unittests/lda.prg", 0, &bytesRead);
 
 	// set PC
 	// run to BRK

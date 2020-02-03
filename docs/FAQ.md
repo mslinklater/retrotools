@@ -32,8 +32,9 @@ A/ The following patterns are followed:
 
 MVC - Model, view, controller. All UI logic is contained in the Window classes. The model classes are as light as possible and just contain the raw state of the emulated objects. All the glue code is contained in controller classes.
 
-Features
---------
+Test Driven Development. Unit tests are used a lot to ensure the behaviour of the various components. Every time some emulation error is detected a unit test is created to test for that condition... and a fix is implemented. As long as all unit tests pass we know we are making progress.
+
+## Features
 
 Q/ What machines does it support ?
 

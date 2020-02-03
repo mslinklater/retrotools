@@ -40,7 +40,7 @@ set(SOURCE_FILES commands.cpp config.cpp disasm.cpp main.cpp symbol.cpp symbolst
 
 add_subdirectory("imgui")
 add_subdirectory("components")
-add_subdirectory("system")
+add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
 add_subdirectory("shared_cpp")

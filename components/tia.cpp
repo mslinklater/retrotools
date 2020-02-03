@@ -3,6 +3,8 @@
 #include "../commands.h"
 #include "../shared_cpp/command.h"
 
+#define HALT_ON_UNIMPLEMENTED 0
+
 Tia::Tia()
 : rasterX(0)
 , rasterY(0)
@@ -94,6 +96,7 @@ void Tia::Tick()
 	if(rasterX >= 228)
 	{
 		// hblank
+		vblankActive[rasterY] = GetVBLANK() != 0;
 		rasterX = 0;
 		rasterY++;
 		rasterCount++;
@@ -356,16 +359,16 @@ void Tia::Write(uint8_t address, uint8_t value)
             SetNUSIZ1(value);
             break;
         case kCOLUP0:
-            SetCOLUP0((value >> 1) & 0x7f);
+            SetCOLUP0(value);
             break;
         case kCOLUP1:
-            SetCOLUP1((value >> 1) & 0x7f);
+            SetCOLUP1(value);
             break;
         case kCOLUPF:
-            SetCOLUPF((value >> 1) & 0x7f);
+            SetCOLUPF(value);
             break;
         case kCOLUBK:
-            SetCOLUBK((value >> 1) & 0x7f);
+            SetCOLUBK(value);
             break;
         case kCTRLPF:
             SetCTRLPF(value);
@@ -500,58 +503,100 @@ bool Tia::HandleCommand(const Command& command)
 
 uint8_t Tia::GetCXM0P()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXM0P unimplemented");
+#endif
     return readRegisters[kCXM0P];
 }
 uint8_t Tia::GetCXM1P()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXM1P unimplemented");
+#endif
     return readRegisters[kCXM1P];
 }
 uint8_t Tia::GetCXP0FB()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXP0FB unimplemented");
+#endif
     return readRegisters[kCXP0FB];
 }
 uint8_t Tia::GetCXP1FB()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXP1FB unimplemented");
+#endif
     return readRegisters[kCXP1FB];
 }
 uint8_t Tia::GetCXM0FB()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXM0FB unimplemented");
+#endif
     return readRegisters[kCXM0FB];
 }
 uint8_t Tia::GetCXM1FB()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXM1FB unimplemented");
+#endif
     return readRegisters[kCXM1FB];
 }
 uint8_t Tia::GetCXBLPF()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXBLPF unimplemented");
+#endif
     return readRegisters[kCXBLPF];
 }
 uint8_t Tia::GetCXPPMM()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXPPMM unimplemented");
+#endif
     return readRegisters[kCXPPMM];
 }
 uint8_t Tia::GetINPT0()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT0 unimplemented");
+#endif
     return readRegisters[kINPT0];
 }
 uint8_t Tia::GetINPT1()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT1 unimplemented");
+#endif
     return readRegisters[kINPT1];
 }
 uint8_t Tia::GetINPT2()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT2 unimplemented");
+#endif
     return readRegisters[kINPT2];
 }
 uint8_t Tia::GetINPT3()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT3 unimplemented");
+#endif
     return readRegisters[kINPT3];
 }
 uint8_t Tia::GetINPT4()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT4 unimplemented");
+#endif
     return readRegisters[kINPT4];
 }
 uint8_t Tia::GetINPT5()
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::INPT5 unimplemented");
+#endif
     return readRegisters[kINPT5];
 }
 
@@ -601,6 +646,9 @@ void Tia::SetWSYNC(uint8_t val)
 }
 void Tia::SetRSYNC(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RSYNC unimplemented");
+#endif
     writeRegisters[kRSYNC] = val;
 }
 void Tia::SetNUSIZ0(uint8_t val)
@@ -613,19 +661,19 @@ void Tia::SetNUSIZ1(uint8_t val)
 }
 void Tia::SetCOLUP0(uint8_t val)
 {
-    writeRegisters[kCOLUP0] = val;
+    writeRegisters[kCOLUP0] = (val >> 1) & 0x7f;
 }
 void Tia::SetCOLUP1(uint8_t val)
 {
-    writeRegisters[kCOLUP1] = val;
+    writeRegisters[kCOLUP1] = (val >> 1) & 0x7f;
 }
 void Tia::SetCOLUPF(uint8_t val)
 {
-    writeRegisters[kCOLUPF] = val;
+    writeRegisters[kCOLUPF] = (val >> 1) & 0x7f;
 }
 void Tia::SetCOLUBK(uint8_t val)
 {
-    writeRegisters[kCOLUBK] = val;
+    writeRegisters[kCOLUBK] = (val >> 1) & 0x7f;
 }
 void Tia::SetCTRLPF(uint8_t val)
 {
@@ -634,10 +682,16 @@ void Tia::SetCTRLPF(uint8_t val)
 }
 void Tia::SetREFP0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::REFP0 unimplemented");
+#endif
     writeRegisters[kREFP0] = val;
 }
 void Tia::SetREFP1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::REFP1 unimplemented");
+#endif
     writeRegisters[kREFP1] = val;
 }
 void Tia::SetPF0(uint8_t val)
@@ -674,41 +728,68 @@ void Tia::SetRESP1(uint8_t val)
 
 void Tia::SetRESM0(uint8_t val)
 {
-	resM0Pos = rasterX - kHBlankClocks;
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RESM0 unimplemented");
+#endif
+//	resM0Pos = rasterX - kHBlankClocks;
     writeRegisters[kRESM0] = resM0Pos;
 }
 void Tia::SetRESM1(uint8_t val)
 {
-	resM1Pos = rasterX - kHBlankClocks;
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RESM1 unimplemented");
+#endif
+//	resM1Pos = rasterX - kHBlankClocks;
     writeRegisters[kRESM1] = resM1Pos;
 }
 void Tia::SetRESBL(uint8_t val)
 {
-	resBLPos = rasterX - kHBlankClocks;
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RESBL unimplemented");
+#endif
+//	resBLPos = rasterX - kHBlankClocks;
     writeRegisters[kRESBL] = resBLPos;
 }
 void Tia::SetAUDC0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDC0 unimplemented");
+#endif
     writeRegisters[kAUDC0] = val;
 }
 void Tia::SetAUDC1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDC1 unimplemented");
+#endif
     writeRegisters[kAUDC1] = val;
 }
 void Tia::SetAUDF0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDF0 unimplemented");
+#endif
     writeRegisters[kAUDF0] = val;
 }
 void Tia::SetAUDF1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDF1 unimplemented");
+#endif
     writeRegisters[kAUDF1] = val;
 }
 void Tia::SetAUDV0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDV0 unimplemented");
+#endif
     writeRegisters[kAUDV0] = val;
 }
 void Tia::SetAUDV1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::AUDV1 unimplemented");
+#endif
     writeRegisters[kAUDV1] = val;
 }
 void Tia::SetGRP0(uint8_t val)
@@ -723,65 +804,113 @@ void Tia::SetGRP1(uint8_t val)
 }
 void Tia::SetENAM0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::ENAM0 unimplemented");
+#endif
     writeRegisters[kENAM0] = val;
 }
 void Tia::SetENAM1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::ENAM1 unimplemented");
+#endif
     writeRegisters[kENAM1] = val;
 }
 void Tia::SetENABL(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::ENABL unimplemented");
+#endif
     writeRegisters[kENABL] = val;
 }
 void Tia::SetHMP0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMP0 unimplemented");
+#endif
     writeRegisters[kHMP0] = val;
 }
 void Tia::SetHMP1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMP1 unimplemented");
+#endif
     writeRegisters[kHMP1] = val;
 }
 void Tia::SetHMM0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMM0 unimplemented");
+#endif
     writeRegisters[kHMM0] = val;
 }
 void Tia::SetHMM1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMM1 unimplemented");
+#endif
     writeRegisters[kHMM1] = val;
 }
 void Tia::SetHMBL(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMBL unimplemented");
+#endif
     writeRegisters[kHMBL] = val;
 }
 void Tia::SetVDELP0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::VDELP0 unimplemented");
+#endif
     writeRegisters[kVDELP0] = val;
 }
 void Tia::SetVDELP1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::VDELP1 unimplemented");
+#endif
     writeRegisters[kVDELP1] = val;
 }
 void Tia::SetVDELBL(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::VDELBL unimplemented");
+#endif
     writeRegisters[kVDELBL] = val;
 }
 void Tia::SetRESMP0(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RESMP0 unimplemented");
+#endif
     writeRegisters[kRESMP0] = val;
 }
 void Tia::SetRESMP1(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::RESMP1 unimplemented");
+#endif
     writeRegisters[kRESMP1] = val;
 }
 void Tia::SetHMOVE(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMOVE unimplemented");
+#endif
     writeRegisters[kHMOVE] = val;
 }
 void Tia::SetHMCLR(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::HMCLR unimplemented");
+#endif
     writeRegisters[kHMCLR] = val;
 }
 void Tia::SetCXCLR(uint8_t val)
 {
+#if HALT_ON_UNIMPLEMENTED
+	Commands::Halt(true, "", "TIA::CXCLR unimplemented");
+#endif
     writeRegisters[kCXCLR] = val;
 }

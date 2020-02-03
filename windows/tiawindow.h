@@ -42,7 +42,7 @@ private:
 	bool bShowRegisters;
 	bool bShowVBlank;
 	bool bShowHBlank;
-	bool bShowOverscan;
+	bool bShowTV;
 	bool bShowLocation;
 	bool bLockPixels;
 	bool bShowPF;

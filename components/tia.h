@@ -7,6 +7,7 @@ Each horizontal raster is 228 VIA clocks
 3 rasters V-Sync
 37 rasters V-Blank
 192 rasters of image (NTSC)
+242 rasters of image (PAL)
 30 rasters of overscan
 
 Each line consists of
@@ -258,8 +259,9 @@ public:
 	virtual bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 
-	const uint8_t* GetPixels(){return &pixels[0];}
-	const uint8_t* GetPalette();
+	const uint8_t* 	GetPixels(){return &pixels[0];}
+	const bool*		GetVBlankActive(){return &vblankActive[0];}
+	const uint8_t* 	GetPalette();
 
 	ERegion	GetRegion(){return region;}
 	void SetRegion(ERegion newRegion){region = newRegion;}
@@ -291,6 +293,7 @@ private:
 	bool bShowP1;
 
     uint8_t 	pixels[kOutputHorizontalResolution*kOutputVerticalResolution];
+	bool		vblankActive[kOutputVerticalResolution];
 	uint16_t	rasterX;
 	uint16_t	rasterY;
 	uint32_t	frameNum;

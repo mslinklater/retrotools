@@ -14,7 +14,7 @@ TiaWindow::TiaWindow()
 , bShowRegisters(false)
 , bShowVBlank(false)
 , bShowHBlank(false)
-, bShowOverscan(false)
+, bShowTV(false)
 , bShowLocation(false)
 , bLockPixels(false)
 , bShowPF(true)
@@ -324,20 +324,11 @@ void TiaWindow::Draw(void)
 			break;
 	}
 
+	const bool* pVBlankActive = pTia->GetVBlankActive();
+
 	for(int row=0 ; row<Tia::kOutputVerticalResolution ; row++)
 	{
-		if((row < 40) && !bShowVBlank)
-		{
-			for(int col=0 ; col<Tia::kOutputHorizontalResolution ; col++)
-			{
-				outputBuffer[i*4] = 0;
-				outputBuffer[(i*4)+1] = 0;
-				outputBuffer[(i*4)+2] = 0;
-				outputBuffer[(i*4)+3] = 255;				
-				i++;
-			}
-		}
-		else if((row >= beginOverscan) && !bShowOverscan)
+		if((pVBlankActive[row]) && (!bShowVBlank))
 		{
 			for(int col=0 ; col<Tia::kOutputHorizontalResolution ; col++)
 			{
@@ -383,6 +374,47 @@ void TiaWindow::Draw(void)
 
 	}
 
+	if(bShowTV)
+	{
+		uint32_t pixel = Tia::kOutputHorizontalResolution * 39;
+		// top line
+		for(int i=0 ; i<Tia::kOutputHorizontalResolution ; i++)
+		{
+			outputBuffer[(pixel+i) * 4] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 1] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 2] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 3] = 0xff;
+		}
+		// bottom line
+		switch(pTia->GetRegion())
+		{
+			case Tia::ERegion::NTSC:
+				pixel = Tia::kOutputHorizontalResolution * (40 + 192);
+				break;
+			case Tia::ERegion::PAL:
+			case Tia::ERegion::SECAM:
+				pixel = Tia::kOutputHorizontalResolution * (40 + 242);
+				break;
+		}
+		for(int i=0 ; i<Tia::kOutputHorizontalResolution ; i++)
+		{
+			outputBuffer[(pixel+i) * 4] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 1] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 2] = 0xff;
+			outputBuffer[(pixel+i) * 4 + 3] = 0xff;
+		}
+		// left line
+		pixel = 67;
+		for(int i=0 ; i<Tia::kOutputVerticalResolution ; i++)
+		{
+			outputBuffer[pixel * 4] = 0xff;
+			outputBuffer[pixel * 4 + 1] = 0xff;
+			outputBuffer[pixel * 4 + 2] = 0xff;
+			outputBuffer[pixel * 4 + 3] = 0xff;
+			pixel += Tia::kOutputHorizontalResolution;
+		}
+	}
+
 	if(bShowLocation)
 	{
 		uint32_t loc = pTia->GetRasterX() + (pTia->GetRasterY() * 228);
@@ -411,7 +443,7 @@ void TiaWindow::Draw(void)
 	ImGui::SameLine();
 	ImGui::Checkbox("VBlank", &bShowVBlank);
 	ImGui::SameLine();
-	ImGui::Checkbox("Overscan", &bShowOverscan);
+	ImGui::Checkbox("TV", &bShowTV);
 
 	pTia->SetShowPF(bShowPF);
 	pTia->SetShowP0(bShowP0);

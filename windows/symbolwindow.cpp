@@ -7,7 +7,7 @@
 #include "symbolwindow.h"
 #include "../imgui/imgui.h"
 #include "../symbolstore.h"
-#include "../system/imguihelpers.h"
+#include "../utils/imguihelpers.h"
 #include "../theme.h"
 #include "../shared_cpp/command.h"
 
