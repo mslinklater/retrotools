@@ -19,3 +19,6 @@ imgui/Makefile
 system/Makefile
 test/Makefile
 windows/Makefile
+asm/8bitworkshop/*.lst
+asm/8bitworkshop/*.prg
+asm/8bitworkshop/*.sym

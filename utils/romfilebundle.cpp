@@ -27,11 +27,30 @@ void RomFileBundle::Open(string filename)
 	if(dotPos == string::npos)
 	{
 		// no suffix so presuming a raw binary file
+		romType = ERomType::kBinary;
 	}
 	else
 	{
-	}
+		std::string suffix = filename.substr(dotPos+1);
+		if(suffix == "prg")
+		{
+			romType = ERomType::kPrg;
+		}
+		else
+		{
+			romType = ERomType::kBinary;
+		}
+	}	
+	// load the rom file
+
+	std::ifstream romFile;
+	size_t romFileSize;
+	romFile.open(filename, std::ios::in | std::ios::binary);
 	
+	if(romFile.is_open())
+	{
+
+	}
 }
 
 void RomFileBundle::SetLoadAddress(uint16_t addr)
