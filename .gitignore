@@ -22,3 +22,6 @@ windows/Makefile
 asm/8bitworkshop/*.lst
 asm/8bitworkshop/*.prg
 asm/8bitworkshop/*.sym
+asm/unittests/*.lst
+asm/unittests/*.prg
+asm/unittests/*.sym
