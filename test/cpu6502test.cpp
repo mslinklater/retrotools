@@ -16,15 +16,10 @@ TEST_CASE("lda", "[cpu6502]")
 
 	RomFileBundle bundle;
 
-	bundle.Open("lda.prg");
-
-	// and this
-//	uint16_t bytesRead;
-//	MemoryUtils::LoadFileToMemory(pMemory, "asm/unittests/lda.prg", 0, &bytesRead);
-
-	// set PC
-	// run to BRK
-	// check 
-
-	REQUIRE(true);
+	bool lda_loaded = bundle.Open("asm/unittests/lda.prg");
+	REQUIRE(lda_loaded);
+	if(lda_loaded)
+	{
+		bundle.CopyToMemory(pMemory);
+	}
 }

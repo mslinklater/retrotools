@@ -312,17 +312,6 @@ void TiaWindow::Draw(void)
 	const uint8_t* pPixels = pTia->GetPixels();
 
 	int i=0;
-	int beginOverscan;
-	switch(pTia->GetRegion())
-	{
-		case Tia::ERegion::NTSC:
-			beginOverscan = 232;
-			break;
-		case Tia::ERegion::PAL:
-		case Tia::ERegion::SECAM:
-			beginOverscan = 282;
-			break;
-	}
 
 	const bool* pVBlankActive = pTia->GetVBlankActive();
 

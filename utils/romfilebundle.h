@@ -16,21 +16,27 @@ public:
 		kPrg
 	};
 
-	void Open(std::string filename);
+	bool Open(std::string filename);
+	bool HasLoadAddressBeenSet(){return hasLoadAddressBeenSet;}
 	void SetLoadAddress(uint16_t address);
 	void CopyToMemory(IMemory* pMemory);
 private:
 
 	ERomType	romType;
 
-	char* 		pRomFile;
+	uint8_t* 	pRomFile;
 	uint16_t 	loadAddress;
 	uint32_t	romFileSize;
 	bool		hasLoadAddressBeenSet;
 
 	// list
+	uint8_t*	pListFile;
+	uint32_t	listFileSize;
 
 	// symbols
+	uint8_t*	pSymbolFile;
+	uint32_t	symbolFileSize;
+
 	struct Symbol
 	{
 		uint16_t	value;
