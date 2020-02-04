@@ -12,7 +12,13 @@ using namespace std;
 RomFileBundle::RomFileBundle()
 : pRomFile(nullptr)
 , loadAddress(0)
+, romFileSize(0)
 , hasLoadAddressBeenSet(false)
+//, pListFile(nullptr)
+//, listFileSize(0)
+, pSymbolFile(nullptr)
+, symbolFileSize(0)
+, hasSymbols(false)
 {
 
 }
@@ -23,6 +29,11 @@ RomFileBundle::~RomFileBundle()
 	{
 		delete pRomFile;
 		pRomFile = nullptr;
+	}
+	if(pSymbolFile != nullptr)
+	{
+		delete pSymbolFile;
+		pSymbolFile = nullptr;
 	}
 }
 
@@ -51,7 +62,6 @@ bool RomFileBundle::Open(string filename)
 	// load the rom file
 
 	ifstream romFile;
-	size_t romFileSize;
 	romFile.open(filename, ios::in | ios::binary);
 	
 	if(romFile.is_open())
@@ -74,9 +84,65 @@ bool RomFileBundle::Open(string filename)
 	{
 		return false;	// File not found
 	}
+
 	// is there a symbol file to go with it ?
+	string filenameRoot = filename.substr(0, dotPos);
+	ifstream symFile;
+	symFile.open(filenameRoot + ".sym", ios::in);
+	
+	if(symFile.is_open())
+	{
+		symFile.seekg(0, ios::end);
+		symbolFileSize = symFile.tellg();
+		pSymbolFile = new uint8_t[symbolFileSize];
+		symFile.seekg(0, ios::beg);
+		symFile.read((char*)pSymbolFile, symbolFileSize);
+		symFile.close();
+
+		hasSymbols = true;
+
+		// iterate through each line of the file
+		uint32_t lineStart = 0;
+		for(uint32_t ptr = 0 ; ptr < symbolFileSize ; ptr++)
+		{
+			if(pSymbolFile[ptr] == 0x0a)
+			{
+				string line((const char*)&(pSymbolFile[lineStart]), (int)(ptr-lineStart));
+
+				if(line[0] != '-')
+				{
+					// valid line
+					size_t endSymbol = line.find_first_of(" ");
+					size_t startValue = line.find_first_not_of(" ", endSymbol);
+					size_t endValue = line.find_first_of(" ", startValue);
+
+					string symbol = line.substr(0,endSymbol);
+					string valueString = line.substr(startValue, endValue);
+					uint16_t value = stoi(valueString, 0, 16);
+
+					Symbol newSymbol;
+					newSymbol.value = value;
+					newSymbol.readOnly = false;
+					symbolMap[symbol] = newSymbol;
+				}
+
+				lineStart = ptr+1;
+			}
+		}
+	}
+
 	// is there a list file to go with it ?
 	return true;
+}
+
+bool RomFileBundle::SymbolExists(std::string name)
+{
+	return symbolMap.find(name) != symbolMap.end();
+}
+
+uint16_t RomFileBundle::GetSymbolValue(std::string name)
+{
+	return symbolMap[name].value;
 }
 
 void RomFileBundle::CopyToMemory(IMemory* pMemory)

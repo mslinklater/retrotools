@@ -20,22 +20,25 @@ public:
 	bool HasLoadAddressBeenSet(){return hasLoadAddressBeenSet;}
 	void SetLoadAddress(uint16_t address);
 	void CopyToMemory(IMemory* pMemory);
+	bool SymbolExists(std::string name);
+	uint16_t GetSymbolValue(std::string name);
 private:
 
 	ERomType	romType;
 
 	uint8_t* 	pRomFile;
 	uint16_t 	loadAddress;
-	uint32_t	romFileSize;
+	size_t		romFileSize;
 	bool		hasLoadAddressBeenSet;
 
 	// list
-	uint8_t*	pListFile;
-	uint32_t	listFileSize;
+//	uint8_t*	pListFile;
+//	uint32_t	listFileSize;
 
 	// symbols
 	uint8_t*	pSymbolFile;
-	uint32_t	symbolFileSize;
+	size_t		symbolFileSize;
+	bool		hasSymbols;
 
 	struct Symbol
 	{
