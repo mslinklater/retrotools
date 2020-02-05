@@ -154,7 +154,7 @@ void RomFileBundle::CopyToMemory(IMemory* pMemory)
 		case ERomType::kPrg:
 			for(uint32_t i=0 ; i<romFileSize-2 ; i++)
 			{
-				pMemory->DbgWrite(loadAddress + i, pRomFile[i]);
+				pMemory->Write(loadAddress + i, pRomFile[i+2]);
 			}
 			break;
 	}

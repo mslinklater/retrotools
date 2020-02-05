@@ -130,6 +130,8 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 
 		void ProcessInstruction(bool ignoreBreakpoints = false);		// kind of debug
 
+		uint32_t RunToBrk();	// Runs until BRK statement. Used in unit tests.
+
 		const Opcode* GetNextInstruction();
 
 		struct Registers {
@@ -156,21 +158,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
 		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
-	private:
-		Registers	reg;
-
-        void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
-        void AddEmptyOpcode(uint8_t value);
-        
-		// ICommandProcessor
-		bool HandleCommand(const Command &command) override;
-		// ~ICommandProcessor
-		
-		// static setup
-		Opcode	 	opcodes[256];
-		std::string mnemonicStrings[kMnemonic_Num];
-		std::string addrModeStrings[kAddrMode_Num];
-
 		inline void SetZeroFlag(){reg.status |= kZeroSetMask;}
 		inline void ClearZeroFlag(){reg.status &= kZeroClearMask;}
 		inline bool GetZeroFlag(){return reg.status & kZeroSetMask;}
@@ -194,6 +181,22 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		inline void SetOverflowFlag(){reg.status |= kOverflowSetMask;}
 		inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
 		inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
+		
+	private:
+		Registers	reg;
+
+        void AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp);
+        void AddEmptyOpcode(uint8_t value);
+        
+		// ICommandProcessor
+		bool HandleCommand(const Command &command) override;
+		// ~ICommandProcessor
+		
+		// static setup
+		Opcode	 	opcodes[256];
+		std::string mnemonicStrings[kMnemonic_Num];
+		std::string addrModeStrings[kAddrMode_Num];
+
 
 		IMemory*	pMemory;
 
@@ -201,5 +204,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;
 		bool		bHaltOnInstruction;
+		bool		bHalted;
 		int32_t	ticksUntilExecution;
 };

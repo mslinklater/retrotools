@@ -47,6 +47,7 @@ const std::string& Cpu6502::GetMnemonicString(eMnemonic mnemonic) const
 
 void Cpu6502::AddOpcode(uint8_t value, enum eMnemonic mnemonic, enum eAddressingMode addrMode, eMemoryOp memoryOp)
 {
+	opcodes[value].value = value;
 	opcodes[value].valid = true;
 	opcodes[value].mnemonic = mnemonic;
 	opcodes[value].addrMode = addrMode;
@@ -534,6 +535,7 @@ void Cpu6502::SetAcc(uint8_t acc)
 void Cpu6502::SetPC(uint16_t pc)
 {
 	reg.pc = pc;
+	ticksUntilExecution = -1;
 }
 
 void Cpu6502::SetSP(uint8_t sp)
@@ -554,6 +556,20 @@ void Cpu6502::SetX(uint8_t x)
 void Cpu6502::SetY(uint8_t y)
 {
 	reg.y = y;
+}
+
+uint32_t Cpu6502::RunToBrk()
+{
+	bHalted = false;
+
+	uint32_t ticks = 0;
+	while(!bHalted)
+	{
+		ProcessInstruction(true);
+		ticks++;
+	}
+
+	return ticks-1; // sub 1 for the BRK decode.
 }
 
 void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
@@ -642,6 +658,12 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				uint16_t tempaddr = pMemory->Read(loc) | (msb << 8);
 				addr += tempaddr + reg.y;
 				pageBoundaryCrossed = (((addr >> 8) ^ msb) == 0) ? false : true;
+			}
+			break;
+		case kAddrModeIndirectX:
+			{
+				uint16_t loc = (pMemory->Read(reg.pc+1) + reg.x) & 0xff;
+				addr = (pMemory->Read((loc+1)&0xff) << 8) | pMemory->Read(loc);
 			}
 			break;
 		case kAddrModeRelative:
@@ -1090,9 +1112,9 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			{
 				case kAddrModeImmediate: ticksUntilExecution = 2; break;
 				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
-				case kAddrModeZeroPageY: ticksUntilExecution = 4; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
 				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
-				case kAddrModeAbsoluteY: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = pageBoundaryCrossed ? 5 : 4; break;
 				default: break;
 			}
 			break;
@@ -1487,6 +1509,16 @@ bool Cpu6502::HandleCommand(const Command& command)
 		{
 			bHaltOnInstruction = true;
 		}
+
+		if(command.payload == "true")
+		{
+			bHalted = true;
+		}
+		else
+		{
+			bHalted = false;	
+		}
+		
 	}
 	
 	return false;
