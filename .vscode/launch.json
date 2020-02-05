@@ -23,11 +23,11 @@
             ]
         },
         {
-            "name": "(gdb) Launch combat.bin",
+            "name": "(gdb) Launch retail combat",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/ROMS/combat.bin", "-a", "f000"],
+            "args": ["-l", "~/Code/retrotools/RETAILROMS/Combat.bin", "-a", "f000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -42,11 +42,11 @@
             ]
         },
         {
-            "name": "(gdb) Launch adventure.bin",
+            "name": "(gdb) Launch retail adventure.bin",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/ROMS/ADVNTURE.BIN", "-a", "f000"],
+            "args": ["-l", "~/Code/retrotools/RETAILROMS/ADVNTURE.BIN", "-a", "f000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -61,11 +61,11 @@
             ]
         },
         {
-            "name": "(gdb) Launch 3dcopper.bin",
+            "name": "(gdb) Launch misc 3dcopper.bin",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/ROMS/3dcopper.bin", "-a", "f800"],
+            "args": ["-l", "~/Code/retrotools/asm/misc/3dcopper.prg", "-a", "f800"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -84,7 +84,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/ROMS/vsync.bin", "-a", "f000"],
+            "args": ["-l", "~/Code/retrotools/asm/8bitworkshop/vsync.prg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

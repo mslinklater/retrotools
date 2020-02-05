@@ -5,7 +5,6 @@
 #include "../components/memory64k.h"
 #include "../utils/romfilebundle.h"
 #include "testcommon.h"
-#include "../utils/romfilebundle.h"
 
 TEST_CASE("lda", "[cpu6502]")
 {
@@ -16,7 +15,7 @@ TEST_CASE("lda", "[cpu6502]")
 	pCpu->SetMemory(pMemory.get());
 
 	RomFileBundle bundle;
-	uint32_t numClocks;
+	uint8_t numClocks;
 
 	bool lda_loaded = bundle.Open("asm/unittests/lda.prg");
 	REQUIRE(lda_loaded);
@@ -24,47 +23,47 @@ TEST_CASE("lda", "[cpu6502]")
 	{
 		bundle.CopyToMemory(pMemory.get());
 
-		// immediate
+		// immediate, no flags
 		pCpu->SetPC(bundle.GetSymbolValue("Start_imm"));
 		numClocks = pCpu->RunToBrk();
-		REQUIRE(pCpu->GetAcc() == 0x40);
+		REQUIRE(pCpu->GetAcc() == bundle.GetSymbolValue("IMM_VALUE_NOFLAGS"));
 		REQUIRE(!pCpu->GetZeroFlag());
 		REQUIRE(!pCpu->GetNegativeFlag());
-		REQUIRE(numClocks == 2);
+		REQUIRE(numClocks == k6502TicksLDAimm);
 
-		// zero
+		// immediate, zero flag
 		pCpu->SetPC(bundle.GetSymbolValue("Start_zero"));
 		numClocks = pCpu->RunToBrk();
-		REQUIRE(pCpu->GetAcc() == 0x00);
+		REQUIRE(pCpu->GetAcc() == bundle.GetSymbolValue("IMM_VALUE_ZEROFLAG"));
 		REQUIRE(pCpu->GetZeroFlag());
 		REQUIRE(!pCpu->GetNegativeFlag());
-		REQUIRE(numClocks == 2);
+		REQUIRE(numClocks == k6502TicksLDAimm);
 
-		// zero
+		// immediate, neg flag
 		pCpu->SetPC(bundle.GetSymbolValue("Start_neg"));
 		numClocks = pCpu->RunToBrk();
-		REQUIRE(pCpu->GetAcc() == 0x80);
+		REQUIRE(pCpu->GetAcc() == bundle.GetSymbolValue("IMM_VALUE_NEGFLAG"));
 		REQUIRE(!pCpu->GetZeroFlag());
 		REQUIRE(pCpu->GetNegativeFlag());
-		REQUIRE(numClocks == 2);
+		REQUIRE(numClocks == k6502TicksLDAimm);
 
 		// zero page
 		pCpu->SetPC(bundle.GetSymbolValue("Start_zp"));
 		numClocks = pCpu->RunToBrk();
 		REQUIRE(pCpu->GetAcc() == 0x01);
-		REQUIRE(numClocks == 3);
+		REQUIRE(numClocks == k6502TicksLDAzp);
 
 		// zero page,x negative
 		pCpu->SetPC(bundle.GetSymbolValue("Start_zpx1"));
 		numClocks = pCpu->RunToBrk();
 		REQUIRE(pCpu->GetAcc() == 0x00);
-		REQUIRE(numClocks == 6);	// 2 for LDX, 4 for LDA ZP,X
+		REQUIRE(numClocks == k6502TicksLDXimm + k6502TicksLDAzpx);	// 2 for LDX, 4 for LDA ZP,X
 
 		// zero page,x positive
 		pCpu->SetPC(bundle.GetSymbolValue("Start_zpx2"));
 		numClocks = pCpu->RunToBrk();
 		REQUIRE(pCpu->GetAcc() == 0x02);
-		REQUIRE(numClocks == 6);	// 2 for LDX, 4 for LDA ZP,X
+		REQUIRE(numClocks == k6502TicksLDXimm + k6502TicksLDAzpx);	// 2 for LDX, 4 for LDA ZP,X
 
 		// abs
 		pCpu->SetPC(bundle.GetSymbolValue("Start_abs"));

@@ -10,6 +10,23 @@
 #include "../shared_cpp/command.h"
 #include "../config.h"
 
+// setting these as defines rather than static consts because the test harness
+// doesn't like static consts in its REQUIRE() statements...
+#define k6502TicksADCimm 2
+#define k6502TicksADCzp 3
+#define k6502TicksADCzpx 4
+#define k6502TicksADCabs 4
+#define k6502TicksADCabsx 4
+#define k6502TicksADCabsy 4
+#define k6502TicksADCindx 6
+#define k6502TicksADCindy 5
+
+#define k6502TicksLDAimm 2
+#define k6502TicksLDAzp 3
+#define k6502TicksLDAzpx 4
+
+#define k6502TicksLDXimm 2
+
 class IMemory;
 
 class Cpu6502 : public ICommandProcessor, public IStateSerialisation
@@ -181,7 +198,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		inline void SetOverflowFlag(){reg.status |= kOverflowSetMask;}
 		inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
 		inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
-		
+
 	private:
 		Registers	reg;
 

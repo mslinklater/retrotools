@@ -11,6 +11,7 @@ config.json
 vistella
 version.h
 Testing/
+RETAILROMS/
 *.cmake
 shared_cpp
 /Makefile

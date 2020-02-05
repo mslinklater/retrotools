@@ -46,16 +46,20 @@ PAGE_NEXT
 ; Some code
 	org $1000
 
+IMM_VALUE_NOFLAGS	= $40
+IMM_VALUE_ZEROFLAG	= $00
+IMM_VALUE_NEGFLAG	= $80
+
 Start_imm	
-			lda	#$40
+			lda	#IMM_VALUE_NOFLAGS
 			brk
 
 Start_zero	
-			lda	#$00
+			lda	#IMM_VALUE_ZEROFLAG
 			brk
 
 Start_neg	
-			lda	#$80
+			lda	#IMM_VALUE_NEGFLAG
 			brk
 
 Start_zp	
