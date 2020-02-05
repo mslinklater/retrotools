@@ -23,44 +23,6 @@
             ]
         },
         {
-            "name": "(gdb) Launch one.prg",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/asm/one.prg"],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "(gdb) Launch two.prg",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/asm/two.prg"],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
             "name": "(gdb) Launch combat.bin",
             "type": "cppdbg",
             "request": "launch",
@@ -85,6 +47,25 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
             "args": ["-l", "~/Code/retrotools/ROMS/ADVNTURE.BIN", "-a", "f000"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch 3dcopper.bin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/vistella",
+            "args": ["-l", "~/Code/retrotools/ROMS/3dcopper.bin", "-a", "f800"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
