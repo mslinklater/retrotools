@@ -46,9 +46,9 @@
 |RTI|-|
 |RTS|-|
 |SBC|-|
-|SEC|-|
-|SED|-|
-|SEI|-|
+|SEC|Full|
+|SED|Full|
+|SEI|Full|
 |STA|-|
 |STX|-|
 |STY|-|
