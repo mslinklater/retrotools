@@ -111,7 +111,7 @@ const Cpu6502::Opcode* Cpu6502::GetOpcode(uint16_t opcode) const
 
 void Cpu6502::Init(eVariant variant)
 {
-	LOGINFO("Cpu6502::Intialising\n");
+	//LOGINFO("Cpu6502::Intialising\n");
 	// init mnemonics
 
 	mnemonicStrings[kMnemonic_ADC] = "ADC";
@@ -255,10 +255,10 @@ void Cpu6502::Init(eVariant variant)
 	AddOpcode(0xd8, kMnemonic_CLD, kAddrModeImplied, kNone);
 
 	// CLI
-	AddOpcode(0x58, kMnemonic_CLI, kAddrModeRelative, kNone);
+	AddOpcode(0x58, kMnemonic_CLI, kAddrModeImplied, kNone);
 
 	// CLV
-	AddOpcode(0xb8, kMnemonic_CLV, kAddrModeRelative, kNone);
+	AddOpcode(0xb8, kMnemonic_CLV, kAddrModeImplied, kNone);
 
 	// CMP
 	AddOpcode(0xc9, kMnemonic_CMP, kAddrModeImmediate, kNone);
@@ -908,12 +908,22 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 		case kMnemonic_CLC:
 			ClearCarryFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksCLC;
 			break;
 		case kMnemonic_CLD:
 			ClearDecimalFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksCLD;
+			break;
+		case kMnemonic_CLI:
+			ClearInterruptFlag();
+			reg.pc += pOpcode->length;
+			ticksUntilExecution = k6502TicksCLI;
+			break;
+		case kMnemonic_CLV:
+			ClearOverflowFlag();
+			reg.pc += pOpcode->length;
+			ticksUntilExecution = k6502TicksCLV;
 			break;
 		case kMnemonic_CMP:
 			{
@@ -1389,41 +1399,45 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		case kMnemonic_TAX:
 			reg.x = reg.acc;
-			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksTAX;
 			break;
 		case kMnemonic_TAY:
 			reg.y = reg.acc;
-			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
-			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksTAY;
 			break;
 		case kMnemonic_TSX:
 			reg.x = reg.sp;
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			ticksUntilExecution = k6502TicksTSX;
 			break;
 		case kMnemonic_TXA:
 			reg.acc = reg.x;
 			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksTXA;
 			break;
 		case kMnemonic_TXS:
 			reg.sp = reg.x;
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			(reg.sp == 0) ? SetZeroFlag() : ClearZeroFlag();
+			(reg.sp & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
+			ticksUntilExecution = k6502TicksTXS;
 			break;
 		case kMnemonic_TYA:
 			reg.acc = reg.y;
 			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			reg.pc += pOpcode->length;
-			ticksUntilExecution = 2;
+			ticksUntilExecution = k6502TicksTYA;
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());

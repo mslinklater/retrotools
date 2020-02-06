@@ -16,10 +16,10 @@
 |BRK|-|
 |BVC|-|
 |BVS|-|
-|CLC|-|
-|CLD|-|
-|CLI|-|
-|CLV|-|
+|CLC|Full|
+|CLD|Full|
+|CLI|Full|
+|CLV|Full|
 |CMP|-|
 |CPX|-|
 |CPY|-|
@@ -54,10 +54,10 @@
 |STY|-|
 |TAX|Full|
 |TAY|Full|
-|TSX|-|
-|TXA|-|
-|TXS|-|
-|TYA|-|
+|TSX|Full|
+|TXA|Full|
+|TXS|Full|
+|TYA|Full|
 
 ## TIA
 

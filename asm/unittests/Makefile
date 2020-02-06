@@ -12,4 +12,7 @@ ldy.prg: ldy.asm
 txx.prg: txx.asm
 	$(ASSEMBLER) txx.asm -otxx.prg -ltxx.lst -stxx.sym
 
-all: lda.prg ldx.prg ldy.prg txx.prg
+clx.prg: txx.asm
+	$(ASSEMBLER) clx.asm -oclx.prg -lclx.lst -sclx.sym
+
+all: lda.prg ldx.prg ldy.prg txx.prg clx.prg
