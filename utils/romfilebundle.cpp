@@ -142,6 +142,10 @@ bool RomFileBundle::SymbolExists(std::string name)
 
 uint16_t RomFileBundle::GetSymbolValue(std::string name)
 {
+	if(!SymbolExists(name))
+	{
+		return 0xffff;
+	}
 	return symbolMap[name].value;
 }
 

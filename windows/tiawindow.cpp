@@ -375,13 +375,9 @@ void TiaWindow::Draw(void)
 			{
 				if(pCpuActive[i])
 				{
-					outputBuffer[(i*4)+1] = 255;
-				}
-				else
-				{
 					outputBuffer[(i*4)] = 255;
+					outputBuffer[(i*4)+3] = 255;
 				}
-				outputBuffer[(i*4)+3] = 255;
 				i++;
 			}
 		}

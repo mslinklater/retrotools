@@ -15,7 +15,10 @@ ldy.prg: ldy.asm
 sex.prg: sex.asm
 	$(ASSEMBLER) sex.asm -osex.prg -lsex.lst -ssex.sym
 
+stx.prg: stx.asm
+	$(ASSEMBLER) stx.asm -ostx.prg -lstx.lst -sstx.sym
+
 txx.prg: txx.asm
 	$(ASSEMBLER) txx.asm -otxx.prg -ltxx.lst -stxx.sym
 
-all: lda.prg ldx.prg ldy.prg sex.prg txx.prg clx.prg 
+all: lda.prg ldx.prg ldy.prg sex.prg txx.prg clx.prg stx.prg
