@@ -29,7 +29,7 @@ Tia::Tia()
 		bWriteBreakpoints[i] = false;
 	}
 
-	InitPalettes();
+//	InitPalettes();
 
 	for(int y=0 ; y<kOutputVerticalResolution ; y++)
 	{
@@ -61,12 +61,6 @@ Tia::~Tia()
 {
 }
 
-void Tia::InitPalettes()
-{
-	// NTSC
-
-}
-
 void Tia::Tick()
 {
 	// do tick
@@ -90,6 +84,7 @@ void Tia::Tick()
 		}
 	}
 	// End actual render logic
+	cpuActive[rasterX + (rasterY*228)] = !bCpuWaitingForHsync;
 
 	// now move
 	rasterX++;

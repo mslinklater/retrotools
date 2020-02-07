@@ -651,6 +651,11 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				pageBoundaryCrossed = (((addr >> 8) ^ msb) == 0) ? false : true;
 			}
 			break;
+		case kAddrModeIndirect:
+			{
+				addr = (uint16_t)(pMemory->Read(reg.pc+1)) | (uint16_t)((pMemory->Read(reg.pc+2) << 8));
+			}
+			break;
 		case kAddrModeIndirectY:
 			{
 				uint16_t loc = pMemory->Read(reg.pc+1);
@@ -673,7 +678,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		default:
 			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
-			Commands::Halt(true, "", "CPU emu problem");
+			Commands::Halt(true, "", "CPU emu problem - see log");
 			return;
 			break;
 	}
@@ -1441,13 +1446,13 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
-			Commands::Halt(true, "", "CPU emu problem");
+			Commands::Halt(true, "", "CPU emu problem - see log");
 			break;
 	}
 	if(ticksUntilExecution == -1)
 	{
 		LOGERRORF("Untimed mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
-		Commands::Halt(true, "", "CPU emu problem");
+		Commands::Halt(true, "", "CPU emu problem - see log");
 	}
 }
 

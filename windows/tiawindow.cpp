@@ -20,6 +20,7 @@ TiaWindow::TiaWindow()
 , bShowPF(true)
 , bShowP0(true)
 , bShowP1(true)
+, bShowCPU(false)
 , rasterCountOffset(0)
 {
 	// create output buffer
@@ -314,6 +315,7 @@ void TiaWindow::Draw(void)
 	int i=0;
 
 	const bool* pVBlankActive = pTia->GetVBlankActive();
+	const bool* pCpuActive = pTia->GetCpuActive();
 
 	for(int row=0 ; row<Tia::kOutputVerticalResolution ; row++)
 	{
@@ -361,6 +363,28 @@ void TiaWindow::Draw(void)
 			}
 		}
 
+	}
+
+	// CPU active
+	if(bShowCPU)
+	{
+		i=0;
+		for(int row=0 ; row<Tia::kOutputVerticalResolution ; row++)
+		{
+			for(int col=0 ; col<Tia::kOutputHorizontalResolution ; col++)
+			{
+				if(pCpuActive[i])
+				{
+					outputBuffer[(i*4)+1] = 255;
+				}
+				else
+				{
+					outputBuffer[(i*4)] = 255;
+				}
+				outputBuffer[(i*4)+3] = 255;
+				i++;
+			}
+		}
 	}
 
 	if(bShowTV)
@@ -433,6 +457,8 @@ void TiaWindow::Draw(void)
 	ImGui::Checkbox("VBlank", &bShowVBlank);
 	ImGui::SameLine();
 	ImGui::Checkbox("TV", &bShowTV);
+	ImGui::SameLine();
+	ImGui::Checkbox("CPU", &bShowCPU);
 
 	pTia->SetShowPF(bShowPF);
 	pTia->SetShowP0(bShowP0);

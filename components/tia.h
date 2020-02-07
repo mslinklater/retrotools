@@ -260,6 +260,7 @@ public:
 	// ~ICommandProcessor
 
 	const uint8_t* 	GetPixels(){return &pixels[0];}
+	const bool* 	GetCpuActive(){return &cpuActive[0];}
 	const bool*		GetVBlankActive(){return &vblankActive[0];}
 	const uint8_t* 	GetPalette();
 
@@ -272,9 +273,6 @@ public:
 	void SetShowP1(bool showP1){bShowP1 = showP1;}
 
 private:
-
-	void InitPalettes();
-
 	void RebuildPlayfieldBits();
 	void RebuildSprite0Bits();
 	void RebuildSprite1Bits();
@@ -294,6 +292,7 @@ private:
 
     uint8_t 	pixels[kOutputHorizontalResolution*kOutputVerticalResolution];
 	bool		vblankActive[kOutputVerticalResolution];
+	bool		cpuActive[kOutputHorizontalResolution*kOutputVerticalResolution];
 	uint16_t	rasterX;
 	uint16_t	rasterY;
 	uint32_t	frameNum;

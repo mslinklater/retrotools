@@ -48,6 +48,7 @@ private:
 	bool bShowPF;
 	bool bShowP0;
 	bool bShowP1;
+	bool bShowCPU;
 
 	static const int kRasterCountHistorySize = 100;
 	float rasterCountHistory[kRasterCountHistorySize];

@@ -181,10 +181,13 @@ void Memory2600::SetHasBeenExecuted(uint16_t address, uint16_t numBytes)
 		pByte = pRam + (address & kRamAddressMask);
 	}
 
-	for(int i=0 ; i<numBytes ; i++)
+	if(pByte != nullptr)
 	{
-		pByte->flags |= kMemoryFlagHasBeenExecuted;
-		pByte++;
+		for(int i=0 ; i<numBytes ; i++)
+		{
+			pByte->flags |= kMemoryFlagHasBeenExecuted;
+			pByte++;
+		}
 	}
 }
 

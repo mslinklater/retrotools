@@ -201,6 +201,7 @@ class IMemory;
 class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 {
 	public:
+
 		static const uint8_t kNegativeSetMask = 0x80;
 		static const uint8_t kNegativeClearMask = 0x7f;
 		
@@ -329,6 +330,12 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 			uint8_t		sp;
 		};
 
+		struct HistoryEntry
+		{
+			bool		valid;
+			Registers 	reg;
+		};
+
 		uint16_t	next_pc;	// what the PC will be at next instruction
 
 		// IStateSerialisation
@@ -382,7 +389,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		Opcode	 	opcodes[256];
 		std::string mnemonicStrings[kMnemonic_Num];
 		std::string addrModeStrings[kAddrMode_Num];
-
 
 		IMemory*	pMemory;
 
