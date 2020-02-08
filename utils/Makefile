@@ -91,14 +91,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/link/Code/retrotools && $(CMAKE_COMMAND) -E cmake_progress_start /home/link/Code/retrotools/CMakeFiles /home/link/Code/retrotools/system/CMakeFiles/progress.marks
-	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 system/all
+	cd /home/link/Code/retrotools && $(CMAKE_COMMAND) -E cmake_progress_start /home/link/Code/retrotools/CMakeFiles /home/link/Code/retrotools/utils/CMakeFiles/progress.marks
+	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 utils/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/link/Code/retrotools/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 system/clean
+	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 utils/clean
 .PHONY : clean
 
 # The main clean target
@@ -108,12 +108,12 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 system/preinstall
+	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 utils/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 system/preinstall
+	cd /home/link/Code/retrotools && $(MAKE) -f CMakeFiles/Makefile2 utils/preinstall
 .PHONY : preinstall/fast
 
 # clear depends

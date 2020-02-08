@@ -10,6 +10,12 @@ ZP0
 	.byte $00
 ZP1
 	.byte $00
+ZP_ADDR0
+	.word DATA0
+ZP_ADDR1
+	.word DATA1
+ZP_ADDR2
+	.word DATA2
 
 ; normal data
 	org 0400
@@ -44,6 +50,7 @@ Start_sta_absy
 	brk
 
 Start_sta_indx
+	sta (ZP_ADDR1,x)
 	brk
 
 Start_sta_indy
