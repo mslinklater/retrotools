@@ -1370,13 +1370,13 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.pc += pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
-				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
-				case kAddrModeZeroPageX: ticksUntilExecution = 4; break;
-				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
-				case kAddrModeAbsoluteX: ticksUntilExecution = 5; break;
-				case kAddrModeAbsoluteY: ticksUntilExecution = 5; break;
-				case kAddrModeIndirectX: ticksUntilExecution = 6; break;
-				case kAddrModeIndirectY: ticksUntilExecution = 6; break;
+				case kAddrModeZeroPage: ticksUntilExecution = k6502TicksSTAzp; break;
+				case kAddrModeZeroPageX: ticksUntilExecution = k6502TicksSTAzpx; break;
+				case kAddrModeAbsolute: ticksUntilExecution = k6502TicksSTAabs; break;
+				case kAddrModeAbsoluteX: ticksUntilExecution = k6502TicksSTAabsx; break;
+				case kAddrModeAbsoluteY: ticksUntilExecution = k6502TicksSTAabsy; break;
+				case kAddrModeIndirectX: ticksUntilExecution = k6502TicksSTAindx; break;
+				case kAddrModeIndirectY: ticksUntilExecution = k6502TicksSTAindy; break;
 				default: break;
 			}
 			break;

@@ -49,9 +49,9 @@
 |SEC|Full|
 |SED|Full|
 |SEI|Full|
-|STA|-|
-|STX|-|
-|STY|-|
+|STA|Full|
+|STX|Full|
+|STY|Full|
 |TAX|Full|
 |TAY|Full|
 |TSX|Full|

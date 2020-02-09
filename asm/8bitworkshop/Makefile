@@ -26,6 +26,8 @@ sethorizpos.prg: 11-sethorizpos/sethorizpos.a
 
 piatimer.prg: 12-piatimer/piatimer.a
 	$(ASSEMBLER) 12-piatimer/piatimer.a -opiatimer.prg -lpiatimer.lst -spiatimer.sym
+piatimer.bin: 12-piatimer/piatimer.a
+	$(ASSEMBLER) 12-piatimer/piatimer.a -opiatimer.bin -f3 -lpiatimer.lst -spiatimer.sym
 
 controls.prg: 13-controls/controls.a
 	$(ASSEMBLER) 13-controls/controls.a -ocontrols.prg -lcontrols.lst -scontrols.sym
@@ -87,4 +89,4 @@ fracpitch.prg: fracpitch/fracpitch.a
 pal.prg: pal/pal.a
 	$(ASSEMBLER) pal/pal.a -opal.prg -lpal.lst -spal.sym
 
-all: hello.prg vsync.prg playfield.prg sprite.prg colorsprites.prg timing2.prg missiles.prg sethorizpos.prg piatimer.prg controls.prg complexscene.prg complexscene2.prg scoreboard.prg collisions.prg bitmap.prg brickgame.prg bigsprite.prg tinytext.prg score6.prg retrigger.prg multisprites.prg procgen1.prg lines.prg musicplayer.prg road.prg bankswitching.prg wavetable.prg fracpitch.prg pal.prg
+all: hello.prg vsync.prg playfield.prg sprite.prg colorsprites.prg timing2.prg missiles.prg sethorizpos.prg piatimer.prg controls.prg complexscene.prg complexscene2.prg scoreboard.prg collisions.prg bitmap.prg brickgame.prg bigsprite.prg tinytext.prg score6.prg retrigger.prg multisprites.prg procgen1.prg lines.prg musicplayer.prg road.prg bankswitching.prg wavetable.prg fracpitch.prg pal.prg piatimer.bin

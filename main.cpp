@@ -135,6 +135,7 @@ int main(int argc, char* argv[])
 	System* pSystem = new System();
 	pSystem->SetTia(pTia);
 	pSystem->SetCpu6502(pCpu);
+	pSystem->SetRiot(pRiot);
 
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();

@@ -2,6 +2,9 @@
 #include "../commands.h"
 
 Riot::Riot()
+: timerVal(1)
+, timerInterval(1)
+, timerDelay(1)
 {
 	// clear memory
 	for(int i=0 ; i<kMemorySize ; i++)
@@ -25,13 +28,36 @@ uint8_t Riot::Read(uint16_t addr)
 		Commands::Halt(true, "", "RIOT read breakpoint");		
 	}
 
+	uint8_t ret = 0;
+
+	switch(addr | 0x0280)
+	{
+		case kINTIM:
+			ret = timerVal;
+			break;
+		default:
+			break;
+	}
+
 	// affect flags etc
-	return memory[addr];
+	return ret;
 }
 
 uint8_t Riot::DbgRead(uint16_t addr)
 {
-	return memory[addr & 0x003f];
+	uint8_t ret = 0;
+
+	switch(addr | 0x0280)
+	{
+		case kINTIM:
+			ret = timerVal;
+			break;
+		default:
+			break;
+	}
+
+	// affect flags etc
+	return ret;
 }
 
 void Riot::Write(uint16_t addr, uint8_t val)
@@ -40,14 +66,26 @@ void Riot::Write(uint16_t addr, uint8_t val)
 	switch(addr | 0x0280)
 	{
 		case kTIM1T:
+			timerDelay = 1;
+			timerInterval = 1;
+			break;
 		case kTIM8T:
+			timerDelay = 8;
+			timerInterval = 8;
+			break;
 		case kTIM64T:
+			timerInterval = 64;
+			timerDelay = 64;
+			break;
 		case kT1024T:
-			memory[addr] = val;
+			timerDelay = 1024;
+			timerInterval = 1024;
 			break;
 		default:	// no write
 			break;
 	}
+	timerVal = val;
+
 	if(breakpoints[addr])
 	{
 		Commands::Halt(true, "", "RIOT write breakpoint");		
@@ -61,7 +99,23 @@ void Riot::DbgWrite(uint16_t addr, uint8_t val)
 
 void Riot::Tick()
 {
+	// timer
+
+	timerDelay--;
+	if(timerDelay == 0)
+	{
+		timerDelay = timerInterval;
+		timerVal--;
+		if(timerVal == 0xff)	// reached the end of countdown so interval is now 1
+		{
+			timerInterval = 1;
+			timerDelay = 1;
+		}
+	}
+
+
 	// read input, deal with timers etc
+
 }
 
 bool Riot::HandleCommand(const Command& command)

@@ -28,6 +28,9 @@ void RiotWindow::DrawRegister(uint32_t reg, const char* text, uint8_t val)
 
 void RiotWindow::Draw(void)
 {
+	ImGui::Text("Timer:%d", pRiot->GetTimerVal());
+	ImGui::Text("Interval:%d", pRiot->GetTimerInterval());
+	ImGui::Text("Delay:%d", pRiot->GetTimerDelay());
 	ImGui::Separator();
 	ImGui::Columns(4, NULL, true);
 

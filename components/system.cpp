@@ -6,6 +6,7 @@
 #include "system.h"
 #include "tia.h"
 #include "cpu6502.h"
+#include "riot.h"
 #include "../shared_cpp/log.h"
 #include "../commands.h"
 
@@ -69,6 +70,7 @@ void System::Update(float dt)
 			if(cpuTickDelay == 0)
 			{
 				pCpu6502->Tick();
+				pRiot->Tick();
 				cpuTickDelay = 3;
 			}
 			cpuTickDelay--;
@@ -107,4 +109,9 @@ void System::SetTia(Tia* pTiaIn)
 void System::SetCpu6502(Cpu6502* pCpu6502In)
 {
     pCpu6502 = pCpu6502In;
+}
+
+void System::SetRiot(Riot* pRiotIn)
+{
+    pRiot = pRiotIn;
 }

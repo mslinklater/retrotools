@@ -185,9 +185,9 @@
 #define k6502TicksSTXzpy 4
 #define k6502TicksSTXabs 4
 
-#define k6502TicksSTXzp 3
-#define k6502TicksSTXzpx 4
-#define k6502TicksSTXabs 4
+#define k6502TicksSTYzp 3
+#define k6502TicksSTYzpx 4
+#define k6502TicksSTYabs 4
 
 #define k6502TicksTAX 2
 #define k6502TicksTAY 2

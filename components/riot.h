@@ -48,7 +48,15 @@ public:
 	bool HandleCommand(const Command& command);
 	// ~ICommandProcessor
 
+	uint8_t GetTimerVal(){return timerVal;}
+	uint16_t GetTimerInterval(){return timerInterval;}
+	uint16_t GetTimerDelay(){return timerDelay;}
+
 private:
 	uint8_t	memory[kMemorySize];
 	bool	breakpoints[kMemorySize];
+
+	uint8_t timerVal;
+	uint16_t timerInterval;
+	uint16_t timerDelay;
 };

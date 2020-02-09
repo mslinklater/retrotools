@@ -12,6 +12,7 @@
 class ITickable;
 class Tia;
 class Cpu6502;
+class Riot;
 
 class System : public ICommandProcessor
 {
@@ -25,6 +26,7 @@ public:
 
     void SetTia(Tia* pTia);
     void SetCpu6502(Cpu6502* pCpu6502);
+    void SetRiot(Riot* pRiot);
 
     void Update(float dt);
     float GetUpdateDT(void);
@@ -44,6 +46,8 @@ public:
 private:
     Tia*        pTia;
     Cpu6502*    pCpu6502;
+	Riot*		pRiot;
+
     float		updatedt;
     bool		running;
 	uint32_t	tickFrequency;

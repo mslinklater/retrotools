@@ -94,6 +94,13 @@ void Tia::Tick()
 		vblankActive[rasterY] = GetVBLANK() != 0;
 		rasterX = 0;
 		rasterY++;
+		
+		// stop overruns
+		if(rasterY >= kOutputVerticalResolution)
+		{
+			rasterY = kOutputVerticalResolution;
+		}
+
 		rasterCount++;
 		if(bHaltOnHBlank)
 		{
