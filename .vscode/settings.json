@@ -4,5 +4,6 @@
 		"build/": true,
 		"CMakeFiles/": true,
 		"Testing/": true
-	}
+	},
+	"git.autofetch": true
 }

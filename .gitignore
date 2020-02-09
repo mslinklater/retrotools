@@ -31,3 +31,6 @@ asm/unittests/*.sym
 asm/misc/*.lst
 asm/misc/*.prg
 asm/misc/*.sym
+asm/davie/*.lst
+asm/davie/*.prg
+asm/davie/*.sym
