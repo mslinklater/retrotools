@@ -80,11 +80,11 @@
             ]
         },
         {
-            "name": "(gdb) Launch misc 3dcopper.bin",
+            "name": "(gdb) Launch misc 3dcopper.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
-            "args": ["-l", "~/Code/retrotools/asm/misc/3dcopper.prg", "-a", "f800"],
+            "args": ["-l", "~/Code/retrotools/asm/misc/3dcopper.prg"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -99,7 +99,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch vsync.bin",
+            "name": "(gdb) Launch vsync.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
@@ -118,7 +118,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch piatimer.bin",
+            "name": "(gdb) Launch piatimer.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
@@ -137,7 +137,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch playfield.bin",
+            "name": "(gdb) Launch playfield.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
@@ -156,7 +156,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch sprite.bin",
+            "name": "(gdb) Launch sprite.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
@@ -194,7 +194,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch timing2.bin",
+            "name": "(gdb) Launch timing2.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",
@@ -213,7 +213,7 @@
             ]
         },
         {
-            "name": "(gdb) Launch colorsprites.bin",
+            "name": "(gdb) Launch colorsprites.prg",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/vistella",

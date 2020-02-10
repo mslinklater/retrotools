@@ -32,6 +32,9 @@ uint8_t Riot::Read(uint16_t addr)
 
 	switch(addr | 0x0280)
 	{
+		case kSWCHB:
+			ret = 0x08 | 0x02 | 0x01;	// temp, no reset or select, colour output
+			break;
 		case kINTIM:
 			ret = timerVal;
 			break;
