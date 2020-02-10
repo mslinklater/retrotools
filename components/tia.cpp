@@ -29,8 +29,6 @@ Tia::Tia()
 		bWriteBreakpoints[i] = false;
 	}
 
-//	InitPalettes();
-
 	for(int y=0 ; y<kOutputVerticalResolution ; y++)
 	{
 		for(int x=0 ; x<kOutputHorizontalResolution ; x++)

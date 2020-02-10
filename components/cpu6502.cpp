@@ -534,7 +534,7 @@ void Cpu6502::SetAcc(uint8_t acc)
 
 void Cpu6502::SetPC(uint16_t pc)
 {
-	reg.pc = pc;
+	reg.pc = next_pc = pc;
 	ticksUntilExecution = -1;
 }
 
@@ -587,6 +587,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 	ticksUntilExecution = -1;
 
 	// new PC comes in
+	reg.pc = next_pc;
 
 	// check for breakpoints
 	if(!ignoreBreakpoints)
@@ -742,7 +743,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? k6502TicksADCindy+1 : k6502TicksADCindy; break;
 					default: break;
 				}
-				reg.pc += pOpcode->length;				
+				next_pc = reg.pc + pOpcode->length;				
 			}
 			break;
 		case kMnemonic_AND:
@@ -764,7 +765,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;				
+			next_pc = reg.pc + pOpcode->length;				
 			break;
 		case kMnemonic_ASL:
 			if(pOpcode->addrMode == kAddrModeAccumulator)
@@ -792,7 +793,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;				
+			next_pc = reg.pc + pOpcode->length;				
 			break;
 		case kMnemonic_BIT:
 			{
@@ -808,79 +809,79 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 					default: break;
 				}
 			}
-			reg.pc += pOpcode->length;				
+			next_pc = reg.pc + pOpcode->length;				
 			break;
 		case kMnemonic_BCC:
 			if(!GetCarryFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
 				ticksUntilExecution = 2;
+				next_pc = reg.pc + pOpcode->length;				
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BCS:
 			if(GetCarryFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BEQ:
 			if(GetZeroFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BPL:
 			if(!GetNegativeFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BMI:
 			if(GetNegativeFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BNE:
 			if(!GetZeroFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;	// branch taken
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
 				ticksUntilExecution = 2;
+				next_pc = reg.pc + pOpcode->length;				
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BRK:
 			ticksUntilExecution = 2;
@@ -890,44 +891,44 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			if(!GetOverflowFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_BVS:
 			if(GetOverflowFlag())
 			{
 				ticksUntilExecution = ((reg.pc & 0xff00) ^ (addr & 0xff00)) ? 4 : 3;
-				reg.pc = addr;
+				next_pc = addr + pOpcode->length;				
 			}
 			else
 			{
+				next_pc = reg.pc + pOpcode->length;				
 				ticksUntilExecution = 2;
 			}
-			reg.pc += pOpcode->length;				
 			break;
 		case kMnemonic_CLC:
 			ClearCarryFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksCLC;
 			break;
 		case kMnemonic_CLD:
 			ClearDecimalFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksCLD;
 			break;
 		case kMnemonic_CLI:
 			ClearInterruptFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksCLI;
 			break;
 		case kMnemonic_CLV:
 			ClearOverflowFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksCLV;
 			break;
 		case kMnemonic_CMP:
@@ -950,7 +951,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_CPX:
 			{
@@ -965,7 +966,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_CPY:
 			{
@@ -980,7 +981,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsolute: ticksUntilExecution = 4; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_DEC: // complete
 			{
@@ -998,20 +999,20 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_DEX:	// complete
 			reg.x--;
 			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_DEY:	// complete
 			reg.y--;
 			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_EOR:	// complete
@@ -1020,7 +1021,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				reg.acc ^= val;
 				(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 				(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-				reg.pc += pOpcode->length;
+				next_pc = reg.pc + pOpcode->length;
 				switch(pOpcode->addrMode)
 				{
 					case kAddrModeImmediate: ticksUntilExecution = 2; break;
@@ -1051,20 +1052,20 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_INX:	// complete
 			reg.x++;
 			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_INY:	// complete
 			reg.y++;
 			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_JMP:
@@ -1074,14 +1075,14 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeIndirect: ticksUntilExecution = 5; break;
 				default: break;
 			}
-			reg.pc = addr;
+			next_pc = addr;
 			break;
 		case kMnemonic_JSR:
 			{
 				uint16_t returnAddress = reg.pc + 2;	// next instruction - 1
 				pMemory->Write(reg.sp--, (uint8_t)(returnAddress & 0x00ff));
 				pMemory->Write(reg.sp--, (uint8_t)((returnAddress & 0xff00) >> 8));
-				reg.pc = addr;
+				next_pc = addr;
 				ticksUntilExecution = 6;
 			}
 			break;
@@ -1089,7 +1090,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.acc = pMemory->Read(addr);
 			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeImmediate: ticksUntilExecution = k6502TicksLDAimm; break;
@@ -1107,7 +1108,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.x = pMemory->Read(addr);
 			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeImmediate: ticksUntilExecution = 2; break;
@@ -1122,7 +1123,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.y = pMemory->Read(addr);
 			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeImmediate: ticksUntilExecution = 2; break;
@@ -1152,7 +1153,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				(val & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 				pMemory->Write(addr, val);
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeAccumulator: ticksUntilExecution = 2; break;
@@ -1164,7 +1165,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			}
 			break;
 		case kMnemonic_NOP:
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeImplied: ticksUntilExecution = 2; break;
@@ -1191,30 +1192,30 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_PHA: 
 			addr = 0x0100 | reg.sp--;
 			pMemory->Write(addr, reg.acc);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 3;
 			break;
 		case kMnemonic_PLA: 
 			addr = 0x0100 | ++reg.sp;
 			reg.acc = pMemory->Read(addr);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 4;
 			break;
 		case kMnemonic_PHP: 
 			addr = 0x0100 | reg.sp--;
 			pMemory->Write(addr, reg.status);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 3;
 			break;
 		case kMnemonic_PLP: 
 			addr = 0x0100 | ++reg.sp;
 			reg.status = pMemory->Read(addr);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 4;
 			break;
 		case kMnemonic_ROL: 
@@ -1250,7 +1251,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_ROR: 
 			{
@@ -1285,12 +1286,12 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 				case kAddrModeAbsoluteX: ticksUntilExecution = 7; break;
 				default: break;
 			}
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			break;
 		case kMnemonic_RTS:
-			reg.pc = ((uint16_t)pMemory->Read(++reg.sp)) << 8;
-			reg.pc |= (uint16_t)pMemory->Read(++reg.sp);
-			reg.pc += pOpcode->length;
+			next_pc = ((uint16_t)pMemory->Read(++reg.sp)) << 8;
+			next_pc |= (uint16_t)pMemory->Read(++reg.sp);
+			next_pc += pOpcode->length;
 			ticksUntilExecution = 6;
 			break;
 		case kMnemonic_SBC:
@@ -1347,27 +1348,27 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 					case kAddrModeIndirectY: ticksUntilExecution = pageBoundaryCrossed ? 6 : 5; break;
 					default: break;
 				}
-				reg.pc += pOpcode->length;				
+				next_pc = reg.pc + pOpcode->length;				
 			}
 			break;
 		case kMnemonic_SEC:
 			SetCarryFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_SED:
 			SetDecimalFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_SEI:
 			SetInterruptFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = 2;
 			break;
 		case kMnemonic_STA:
 			pMemory->Write(addr, reg.acc);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeZeroPage: ticksUntilExecution = k6502TicksSTAzp; break;
@@ -1382,7 +1383,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		case kMnemonic_STX:
 			pMemory->Write(addr, reg.x);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
@@ -1393,7 +1394,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			break;
 		case kMnemonic_STY:
 			pMemory->Write(addr, reg.y);
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			switch(pOpcode->addrMode)
 			{
 				case kAddrModeZeroPage: ticksUntilExecution = 3; break;
@@ -1406,19 +1407,19 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.x = reg.acc;
 			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksTAX;
 			break;
 		case kMnemonic_TAY:
 			reg.y = reg.acc;
 			(reg.y == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.y & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksTAY;
 			break;
 		case kMnemonic_TSX:
 			reg.x = reg.sp;
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			(reg.x == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.x & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			ticksUntilExecution = k6502TicksTSX;
@@ -1427,12 +1428,12 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.acc = reg.x;
 			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksTXA;
 			break;
 		case kMnemonic_TXS:
 			reg.sp = reg.x;
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			(reg.sp == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.sp & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
 			ticksUntilExecution = k6502TicksTXS;
@@ -1441,7 +1442,7 @@ void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 			reg.acc = reg.y;
 			(reg.acc == 0) ? SetZeroFlag() : ClearZeroFlag();
 			(reg.acc & 0x80) ? SetNegativeFlag() : ClearNegativeFlag();
-			reg.pc += pOpcode->length;
+			next_pc = reg.pc + pOpcode->length;
 			ticksUntilExecution = k6502TicksTYA;
 			break;
 		default:
