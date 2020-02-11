@@ -3,7 +3,7 @@
 ## CPU
 |Instruction|Covered|
 |---|---|
-|ADC|-|
+|ADC|In Progress|
 |AND|-|
 |ASL|-|
 |BCC|-|

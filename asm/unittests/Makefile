@@ -1,5 +1,8 @@
 ASSEMBLER=dasm
 
+adc.prg: adc.asm
+	$(ASSEMBLER) adc.asm -oadc.prg -ladc.lst -sadc.sym
+
 clx.prg: clx.asm
 	$(ASSEMBLER) clx.asm -oclx.prg -lclx.lst -sclx.sym
 
@@ -21,4 +24,4 @@ stx.prg: stx.asm
 txx.prg: txx.asm
 	$(ASSEMBLER) txx.asm -otxx.prg -ltxx.lst -stxx.sym
 
-all: lda.prg ldx.prg ldy.prg sex.prg txx.prg clx.prg stx.prg
+all: adc.prg lda.prg ldx.prg ldy.prg sex.prg txx.prg clx.prg stx.prg

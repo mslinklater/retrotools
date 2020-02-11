@@ -36,14 +36,9 @@
 #define k6502TicksASLabs 6
 #define k6502TicksASLabsx 7
 
-#define k6502TicksBCC 2
-#define k6502TicksBCS 2
-#define k6502TicksBEQ 2
-#define k6502TicksBMI 2
-#define k6502TicksBNE 2
-#define k6502TicksBPL 2
-#define k6502TicksBVC 2
-#define k6502TicksBVS 2
+#define k6502TicksBranchNotTaken 2
+#define k6502TicksBranchTaken 3
+#define k6502TicksBranchTakenPage 4
 
 #define k6502TicksBITzp 3
 #define k6502TicksBITabs 4

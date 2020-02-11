@@ -24,13 +24,17 @@ utils/Makefile
 filebrowser/Makefile
 asm/8bitworkshop/*.lst
 asm/8bitworkshop/*.prg
+asm/8bitworkshop/*.bin
 asm/8bitworkshop/*.sym
 asm/unittests/*.lst
 asm/unittests/*.prg
+asm/unittests/*.bin
 asm/unittests/*.sym
 asm/misc/*.lst
 asm/misc/*.prg
+asm/misc/*.bin
 asm/misc/*.sym
 asm/davie/*.lst
 asm/davie/*.prg
+asm/davie/*.bin
 asm/davie/*.sym
