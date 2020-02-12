@@ -109,7 +109,7 @@ const Cpu6502::Opcode* Cpu6502::GetOpcode(uint16_t opcode) const
 	return &opcodes[opcode];
 }
 
-void Cpu6502::Init(eVariant variant)
+void Cpu6502::Init(EVariant variant)
 {
 	//LOGINFO("Cpu6502::Intialising\n");
 	// init mnemonics

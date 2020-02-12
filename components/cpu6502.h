@@ -9,6 +9,7 @@
 
 #include "../shared_cpp/command.h"
 #include "../config.h"
+#include "../interfaces/icpu6502.h"
 
 // setting these as defines rather than static consts because the test harness
 // doesn't like static consts in its REQUIRE() statements...
@@ -193,7 +194,7 @@
 
 class IMemory;
 
-class Cpu6502 : public ICommandProcessor, public IStateSerialisation
+class Cpu6502 : public ICpu6502, public ICommandProcessor, public IStateSerialisation
 {
 	public:
 
@@ -218,11 +219,6 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		static const uint8_t kCarrySetMask = 0x01;
 		static const uint8_t kCarryClearMask = 0xfe;
 		
-		enum eVariant
-		{
-			k6502,
-			k6507
-		};
 		
 		enum eMemoryOp
 		{
@@ -280,7 +276,7 @@ class Cpu6502 : public ICommandProcessor, public IStateSerialisation
 		Cpu6502();
 		virtual ~Cpu6502(){}
 		
-		void Init(eVariant variant);
+		void Init(EVariant variant);
 		void DumpInfo();
 		const std::string& GetMnemonicString(eMnemonic mnemonic) const;
 		
