@@ -34,9 +34,9 @@ public:
 	struct Line
 	{
 		bool used;
-		Cpu6502::eMnemonic	mnemonic;
-		Cpu6502::eAddressingMode addressingMode;
-		Cpu6502::eMemoryOp memoryOp;
+		Cpu6502::EMnemonic	mnemonic;
+		Cpu6502::EAddressingMode addressingMode;
+		Cpu6502::EMemoryOp memoryOp;
 		uint8_t		opcode;
 		uint8_t		param1;
 		uint8_t		param2;

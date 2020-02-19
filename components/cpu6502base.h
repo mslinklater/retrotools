@@ -1,5 +1,9 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+#include <set>
+
 // Base class for all 6502 implementations
 // All common stuff held here
 
@@ -187,9 +191,142 @@
 class Cpu6502Base
 {
 public:
+	static const uint8_t kNegativeSetMask = 0x80;
+	static const uint8_t kNegativeClearMask = 0x7f;
+		
+	static const uint8_t kOverflowSetMask = 0x40;
+	static const uint8_t kOverflowClearMask = 0xbf;
+		
+	static const uint8_t kBreakSetMask = 0x10;
+	static const uint8_t kBreakClearMask = 0xef;
+		
+	static const uint8_t kDecimalSetMask = 0x08;
+	static const uint8_t kDecimalClearMask = 0xf7;
+		
+	static const uint8_t kInterruptSetMask = 0x04;
+	static const uint8_t kInterruptClearMask = 0xfb;
+		
+	static const uint8_t kZeroSetMask = 0x02;
+	static const uint8_t kZeroClearMask = 0xfd;
+		
+	static const uint8_t kCarrySetMask = 0x01;
+	static const uint8_t kCarryClearMask = 0xfe;
+
 	enum EVariant
 	{
 		k6502,
 		k6507
 	};
+
+	// This needs to go since the only thing which uses it is the disassembler,
+	// so the knowledge should be there instead.
+	enum EMemoryOp
+	{
+		kRead,
+		kWrite,
+		kReadWrite,
+		kNone
+	};
+		
+	enum EAddressingMode 
+	{
+		kAddrModeAccumulator = 0,
+		kAddrModeImmediate,
+		kAddrModeZeroPage,
+		kAddrModeZeroPageX,
+		kAddrModeZeroPageY,
+		kAddrModeAbsolute,
+		kAddrModeAbsoluteX,
+		kAddrModeAbsoluteY,
+		kAddrModeIndirectX,
+		kAddrModeIndirectY,
+		kAddrModeRelative,
+		kAddrModeImplied,
+		kAddrModeIndirect,
+		kAddrMode_Num
+	};
+
+	enum EMnemonic 
+	{
+		kMnemonic_ADC=0,	kMnemonic_AND,	kMnemonic_ASL,	kMnemonic_BCC,
+		kMnemonic_BCS,		kMnemonic_BEQ,	kMnemonic_BIT,	kMnemonic_BMI,
+		kMnemonic_BNE,		kMnemonic_BPL,	kMnemonic_BRK,	kMnemonic_BVC,
+		kMnemonic_BVS,		kMnemonic_CLC,	kMnemonic_CLD,	kMnemonic_CLI,
+		kMnemonic_CLV,		kMnemonic_CMP,	kMnemonic_CPX,	kMnemonic_CPY,
+		kMnemonic_DEC,		kMnemonic_DEX,	kMnemonic_DEY,	kMnemonic_EOR,
+		kMnemonic_INC,		kMnemonic_INX,	kMnemonic_INY,	kMnemonic_JMP,
+		kMnemonic_JSR,		kMnemonic_LDA,	kMnemonic_LDX,	kMnemonic_LDY,
+		kMnemonic_LSR,		kMnemonic_NOP,	kMnemonic_ORA,	kMnemonic_PHA,
+		kMnemonic_PHP,		kMnemonic_PLA,	kMnemonic_PLP,	kMnemonic_ROL,	kMnemonic_ROR,
+		kMnemonic_RTI,		kMnemonic_RTS,	kMnemonic_SBC,	kMnemonic_SEC,
+		kMnemonic_SED,		kMnemonic_SEI,	kMnemonic_STA,	kMnemonic_STX,
+		kMnemonic_STY,		kMnemonic_TAX,	kMnemonic_TAY,	kMnemonic_TSX,
+		kMnemonic_TXA,		kMnemonic_TXS,	kMnemonic_TYA,	kMnemonic_Num
+	};
+
+	struct Opcode {
+		bool			valid;
+		uint8_t			value;
+		uint8_t			length;
+		EMnemonic		mnemonic;
+		EAddressingMode	addrMode;
+		EMemoryOp		memoryOp;	// TODO - get rid of this
+	};
+
+	struct Registers {
+		uint16_t	pc;
+		uint8_t		acc;
+		uint8_t		x;
+		uint8_t		y;
+		uint8_t		status;
+		uint8_t		sp;
+	};
+
+	Cpu6502Base();
+	virtual ~Cpu6502Base();
+
+	void Init(EVariant variant);
+	
+	const Opcode* GetOpcode(uint16_t opcode) const;
+
+	inline void SetZeroFlag(){reg.status |= kZeroSetMask;}
+	inline void ClearZeroFlag(){reg.status &= kZeroClearMask;}
+	inline bool GetZeroFlag(){return reg.status & kZeroSetMask;}
+
+	inline void SetNegativeFlag(){reg.status |= kNegativeSetMask;}
+	inline void ClearNegativeFlag(){reg.status &= kNegativeClearMask;}
+	inline bool GetNegativeFlag(){return reg.status & kNegativeSetMask;}
+
+	inline void SetDecimalFlag(){reg.status |= kDecimalSetMask;}
+	inline void ClearDecimalFlag(){reg.status &= kDecimalClearMask;}
+	inline bool GetDecimalFlag(){return reg.status & kDecimalSetMask;}
+
+	inline void SetInterruptFlag(){reg.status |= kInterruptSetMask;}
+	inline void ClearInterruptFlag(){reg.status &= kInterruptClearMask;}
+	inline bool GetInterruptFlag(){return reg.status & kInterruptSetMask;}
+
+	inline void SetCarryFlag(){reg.status |= kCarrySetMask;}
+	inline void ClearCarryFlag(){reg.status &= kCarryClearMask;}
+	inline bool GetCarryFlag(){return reg.status & kCarrySetMask;}
+
+	inline void SetOverflowFlag(){reg.status |= kOverflowSetMask;}
+	inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
+	inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
+
+	const std::set<uint16_t>&	GetBreakpoints();
+	void SetBreakpoint(uint16_t addr);
+	void ClearBreakpoint(uint16_t addr);
+	bool IsBreakpoint(uint16_t addr);
+
+protected:
+	Registers	reg;
+
+	Opcode	 	opcodes[256];
+	std::string mnemonicStrings[kMnemonic_Num];
+	std::string addrModeStrings[kAddrMode_Num];
+
+	std::set<uint16_t> 	breakpoints;
+
+	void AddOpcode(uint8_t value, enum EMnemonic mnemonic, enum EAddressingMode addrMode, EMemoryOp memoryOp);
+	void AddEmptyOpcode(uint8_t value);
 };

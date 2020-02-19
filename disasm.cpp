@@ -91,7 +91,7 @@ eErrorCode Disassembler::Disassemble(uint16_t address, uint16_t size, uint16_t o
 			thisLine.bytes = buffer;
 
 			// opcode
-			Cpu6502::eMnemonic mnemonic = pCpu->GetOpcode(opcode)->mnemonic;
+			Cpu6502::EMnemonic mnemonic = pCpu->GetOpcode(opcode)->mnemonic;
 			sprintf(buffer, "%s", pCpu->GetMnemonicString(mnemonic).c_str());
 			thisLine.mnemonicString = buffer;
 			thisLine.mnemonic = mnemonic;
@@ -138,8 +138,8 @@ void Disassembler::UpdateDetailLines()
 		sprintf(buffer, " ");
 		switch(pLine->addressingMode)
 		{
-			case Cpu6502::eAddressingMode::kAddrModeAbsolute:
-				if(pLine->memoryOp == Cpu6502::eMemoryOp::kNone)
+			case Cpu6502::EAddressingMode::kAddrModeAbsolute:
+				if(pLine->memoryOp == Cpu6502::EMemoryOp::kNone)
 				{
 					uint16_t value = pLine->param2 << 8 | pLine->param1;
 					if(pSymbolStore->HasLabelSymbol(value))
@@ -152,7 +152,7 @@ void Disassembler::UpdateDetailLines()
 						sprintf(buffer, "$%02x%02x", pLine->param2, pLine->param1);
 					}
 				}
-				else if(pLine->memoryOp == Cpu6502::eMemoryOp::kRead)
+				else if(pLine->memoryOp == Cpu6502::EMemoryOp::kRead)
 				{
 					uint16_t value = pLine->param2 << 8 | pLine->param1;
 					if(pSymbolStore->HasReadSymbol(value))
@@ -165,7 +165,7 @@ void Disassembler::UpdateDetailLines()
 						sprintf(buffer, "$%02x%02x", pLine->param2, pLine->param1);
 					}
 				}
-				else if(pLine->memoryOp == Cpu6502::eMemoryOp::kWrite)
+				else if(pLine->memoryOp == Cpu6502::EMemoryOp::kWrite)
 				{
 					uint16_t value = pLine->param2 << 8 | pLine->param1;
 					if(pSymbolStore->HasWriteSymbol(value))
@@ -183,31 +183,31 @@ void Disassembler::UpdateDetailLines()
 					sprintf(buffer, "$%02x%02x", pLine->param2, pLine->param1);		
 				}
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeAbsoluteX:
+			case Cpu6502::EAddressingMode::kAddrModeAbsoluteX:
 				// TODO: need some symbol output here
 				sprintf(buffer, "$%02x%02x,X", pLine->param2, pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeAbsoluteY:
+			case Cpu6502::EAddressingMode::kAddrModeAbsoluteY:
 				// TODO: need some symbol output here
 				sprintf(buffer, "$%02x%02x,Y", pLine->param2, pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeAccumulator:
+			case Cpu6502::EAddressingMode::kAddrModeAccumulator:
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeImmediate:
+			case Cpu6502::EAddressingMode::kAddrModeImmediate:
 				sprintf(buffer, "#$%02x", pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeImplied:
+			case Cpu6502::EAddressingMode::kAddrModeImplied:
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeIndirect:
+			case Cpu6502::EAddressingMode::kAddrModeIndirect:
 				sprintf(buffer, "($%02x%02x)", pLine->param2, pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeIndirectX:
+			case Cpu6502::EAddressingMode::kAddrModeIndirectX:
 				sprintf(buffer, "($%02x,X)", pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeIndirectY:
+			case Cpu6502::EAddressingMode::kAddrModeIndirectY:
 				sprintf(buffer, "($%02x),Y", pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeRelative:
+			case Cpu6502::EAddressingMode::kAddrModeRelative:
 				addr = pLine->address + 2 + (int8_t)pLine->param1;	// offset is from next instruction, hence the '+2'
 				// is this a new label ?
 				if(!pSymbolStore->HasLabelSymbol(addr))
@@ -216,7 +216,7 @@ void Disassembler::UpdateDetailLines()
 					pSymbolStore->AddAutoLabel(addr, buffer);
 				}
 
-				if(pLine->memoryOp == Cpu6502::eMemoryOp::kNone)
+				if(pLine->memoryOp == Cpu6502::EMemoryOp::kNone)
 				{
 					if(pSymbolStore->HasLabelSymbol(addr))
 					{
@@ -233,8 +233,8 @@ void Disassembler::UpdateDetailLines()
 					sprintf(buffer, "$%04x", addr);
 				}
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeZeroPage:
-				if(pLine->memoryOp == Cpu6502::eMemoryOp::kRead)
+			case Cpu6502::EAddressingMode::kAddrModeZeroPage:
+				if(pLine->memoryOp == Cpu6502::EMemoryOp::kRead)
 				{
 					if(pSymbolStore->HasReadSymbol(pLine->param1))
 					{
@@ -246,7 +246,7 @@ void Disassembler::UpdateDetailLines()
 						sprintf(buffer, "$%02x", pLine->param1);
 					}
 				}
-				else if(pLine->memoryOp == Cpu6502::eMemoryOp::kWrite)
+				else if(pLine->memoryOp == Cpu6502::EMemoryOp::kWrite)
 				{
 					if(pSymbolStore->HasWriteSymbol(pLine->param1))
 					{
@@ -263,10 +263,10 @@ void Disassembler::UpdateDetailLines()
 					sprintf(buffer, "$%02x", pLine->param1);
 				}
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeZeroPageX:
+			case Cpu6502::EAddressingMode::kAddrModeZeroPageX:
 				sprintf(buffer, "$%02x,X", pLine->param1);
 				break;
-			case Cpu6502::eAddressingMode::kAddrModeZeroPageY:
+			case Cpu6502::EAddressingMode::kAddrModeZeroPageY:
 				sprintf(buffer, "$%02x,Y", pLine->param1);
 				break;
 			default:
@@ -308,9 +308,9 @@ void Disassembler::AddObviousLabels()
 		// based on addressing addressingMode
 		switch(lines[iLine].addressingMode)
 		{
-			case Cpu6502::eAddressingMode::kAddrModeAbsolute:
-			case Cpu6502::eAddressingMode::kAddrModeAbsoluteX:
-			case Cpu6502::eAddressingMode::kAddrModeAbsoluteY:
+			case Cpu6502::EAddressingMode::kAddrModeAbsolute:
+			case Cpu6502::EAddressingMode::kAddrModeAbsoluteX:
+			case Cpu6502::EAddressingMode::kAddrModeAbsoluteY:
 				addr = lines[iLine].param2 << 8 | lines[iLine].param1;
 				sprintf(buffer, "<label%04x>", addr);
 				pSymbolStore->AddAutoLabel(addr, buffer);
