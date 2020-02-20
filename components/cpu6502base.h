@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 #include <set>
+#include "../interfaces/imemory.h"
+#include "../interfaces/itickable.h"
 
 // Base class for all 6502 implementations
 // All common stuff held here
@@ -188,7 +190,7 @@
 #define k6502TicksTXS 2
 #define k6502TicksTYA 2
 
-class Cpu6502Base
+class Cpu6502Base : public ITickable
 {
 public:
 	static const uint8_t kNegativeSetMask = 0x80;
@@ -313,13 +315,27 @@ public:
 	inline void ClearOverflowFlag(){reg.status &= kOverflowClearMask;}
 	inline bool GetOverflowFlag(){return reg.status & kOverflowSetMask;}
 
+	const std::string& GetMnemonicString(EMnemonic mnemonic) const;
+
 	const std::set<uint16_t>&	GetBreakpoints();
 	void SetBreakpoint(uint16_t addr);
 	void ClearBreakpoint(uint16_t addr);
 	bool IsBreakpoint(uint16_t addr);
 
+	void SetMemory(IMemory* mem)
+	{
+		pMemory = mem;
+	}
+
+	// ITickable
+//	virtual void CommitInputs() = 0;		// commit state of input pins - so chip update order doesn't matter
+//	virtual void Tick(bool clockState)=  0;	// update the actual silicon state - based on the clockState
+	// ~ITickable
+
 protected:
 	Registers	reg;
+
+	IMemory*	pMemory;
 
 	Opcode	 	opcodes[256];
 	std::string mnemonicStrings[kMnemonic_Num];

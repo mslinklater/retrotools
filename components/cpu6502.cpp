@@ -46,53 +46,6 @@ void Cpu6502::Tick()
 	}
 }
 
-const std::string& Cpu6502::GetMnemonicString(EMnemonic mnemonic) const
-{
-	return mnemonicStrings[mnemonic];
-}
-
-
-
-void Cpu6502::DumpInfo(void)
-{
-	// output the CPU info we have...
-	printf("-----------------------------------------------------------------------------------------------------\n");
-	printf("    | 0x00| 0x01| 0x02| 0x03| 0x04| 0x05| 0x06| 0x07| 0x08| 0x09| 0x0a| 0x0b| 0x0c| 0x0d| 0x0e| 0x0f|\n");
-	printf("-----------------------------------------------------------------------------------------------------\n");
-	for(int row=0 ; row < 16 ; row++)
-	{
-		printf("0x%01x0|", row);
-		for(int col=0 ; col<16 ; col++)
-		{
-			uint8_t operand = row*16 + col;
-			if(opcodes[operand].valid)
-			{
-				printf(" %s |", mnemonicStrings[opcodes[operand].mnemonic].c_str());
-			}
-			else
-			{
-				printf("     |");
-			}
-		}
-		printf("\n");
-		printf("0x%01x0|", row);
-		for(int col=0 ; col<16 ; col++)
-		{
-			uint8_t operand = row*16 + col;
-			if(opcodes[operand].valid)
-			{
-				printf("%s|", addrModeStrings[opcodes[operand].addrMode].c_str());
-			}
-			else
-			{
-				printf("     |");
-			}
-		}
-		printf("\n");
-		printf("-----------------------------------------------------------------------------------------------------\n");
-	}
-}
-
 uint16_t Cpu6502::GetPC()
 {
 	return reg.pc;

@@ -21,14 +21,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		Cpu6502();
 		virtual ~Cpu6502();
 		
-		void DumpInfo();
-		const std::string& GetMnemonicString(EMnemonic mnemonic) const;
 		
-		
-		void SetMemory(IMemory* mem)
-		{
-			pMemory = mem;
-		}
 
 		// Register access
 		
@@ -66,6 +59,11 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
 		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
+		// ITickable
+		void CommitInputs(){};			// commit state of input pins - so chip update order doesn't matter
+		void Tick(bool clockState){};	// update the actual silicon state - based on the clockState
+		// ~ITickable
+
 	private:
 
         
@@ -73,7 +71,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		bool HandleCommand(const Command &command) override;
 		// ~ICommandProcessor
 		
-		IMemory*	pMemory;
 
 		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;

@@ -421,6 +421,11 @@ const Cpu6502Base::Opcode* Cpu6502Base::GetOpcode(uint16_t opcode) const
 	return &opcodes[opcode];
 }
 
+const std::string& Cpu6502Base::GetMnemonicString(EMnemonic mnemonic) const
+{
+	return mnemonicStrings[mnemonic];
+}
+
 const std::set<uint16_t>&	Cpu6502Base::GetBreakpoints()
 {
 	return breakpoints;
