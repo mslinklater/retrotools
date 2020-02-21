@@ -5,6 +5,8 @@ Cpu6502Base::Cpu6502Base()
 {
 	LOGINFO("Cpu6502Base::Constructor");
 
+	ticksSinceBoot = 0;
+
 	mnemonicStrings[kMnemonic_ADC] = "ADC";
 	mnemonicStrings[kMnemonic_AND] = "AND";
 	mnemonicStrings[kMnemonic_ASL] = "ASL";

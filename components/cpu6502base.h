@@ -327,9 +327,11 @@ public:
 		pMemory = mem;
 	}
 
+	uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
+
 	// ITickable
-//	virtual void CommitInputs() = 0;		// commit state of input pins - so chip update order doesn't matter
-//	virtual void Tick(bool clockState)=  0;	// update the actual silicon state - based on the clockState
+	virtual void CommitInputs() = 0;		// commit state of input pins - so chip update order doesn't matter
+	virtual void Tick(bool clockState)=  0;	// update the actual silicon state - based on the clockState
 	// ~ITickable
 
 protected:
@@ -342,6 +344,7 @@ protected:
 	std::string addrModeStrings[kAddrMode_Num];
 
 	std::set<uint16_t> 	breakpoints;
+	uint64_t	ticksSinceBoot;
 
 	void AddOpcode(uint8_t value, enum EMnemonic mnemonic, enum EAddressingMode addrMode, EMemoryOp memoryOp);
 	void AddEmptyOpcode(uint8_t value);

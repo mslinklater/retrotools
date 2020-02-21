@@ -19,8 +19,7 @@
 // Constructor
 
 Cpu6502::Cpu6502()
-: ticksSinceBoot(0)
-, bHaltOnInstruction(false)
+: bHaltOnInstruction(false)
 , ticksUntilExecution(-1)
 {
 	LOGINFO("Cpu6502::Constructor");

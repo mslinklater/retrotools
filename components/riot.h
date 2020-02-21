@@ -41,8 +41,11 @@ public:
 	void SetBreakpoint(uint16_t addr, bool val);
 
     // ITickable
-    void Tick();
+	void CommitInputs(){}		// commit state of input pins - so chip update order doesn't matter
+	void Tick(bool clockState){}	// update the actual silicon state - based on the clockState
     // ~ITickable
+
+    void Tick();
 
 	// ICommandProcessor
 	bool HandleCommand(const Command& command);

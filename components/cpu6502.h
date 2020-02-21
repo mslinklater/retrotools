@@ -21,8 +21,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		Cpu6502();
 		virtual ~Cpu6502();
 		
-		
-
 		// Register access
 		
 		uint16_t GetPC();
@@ -56,7 +54,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		// ~IStateSerialisation
 
 
-		uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
 		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
 		// ITickable
@@ -71,8 +68,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		bool HandleCommand(const Command &command) override;
 		// ~ICommandProcessor
 		
-
-		uint64_t	ticksSinceBoot;
 		bool		haltOnTick;
 		bool		bHaltOnInstruction;
 		bool		bHalted;

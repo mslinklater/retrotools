@@ -252,8 +252,11 @@ public:
     uint8_t GetCXCLR(void){return writeRegisters[kCXCLR];}
 
     // ITickable
-    void Tick();
+	void CommitInputs(){}		// commit state of input pins - so chip update order doesn't matter
+	void Tick(bool clockState){}	// update the actual silicon state - based on the clockState
     // ~ITickable
+
+    void Tick();
 
 	// ICommandProcessor
 	virtual bool HandleCommand(const Command& command);
