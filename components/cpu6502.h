@@ -23,7 +23,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		
 		// Register access
 		
-		uint16_t GetPC();
+		uint16_t GetPC(){return reg.pc;}
 		uint8_t	GetAcc();
 		uint8_t	GetX();
 		uint8_t	GetY();

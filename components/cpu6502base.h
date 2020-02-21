@@ -289,6 +289,20 @@ public:
 
 	void Init(EVariant variant);
 	
+	virtual uint16_t GetPC() = 0;
+	virtual uint8_t	GetAcc() = 0;
+	virtual uint8_t	GetX() = 0;
+	virtual uint8_t	GetY() = 0;
+	virtual uint8_t	GetStatus() = 0;
+	virtual uint8_t	GetSP() = 0;
+
+	virtual void SetPC(uint16_t pc) = 0;
+	virtual void SetAcc(uint8_t acc) = 0;
+	virtual void SetX(uint8_t x) = 0;
+	virtual void SetY(uint8_t y) = 0;
+	virtual void SetStatus(uint8_t status) = 0;
+	virtual void SetSP(uint8_t sp) = 0;
+
 	const Opcode* GetOpcode(uint16_t opcode) const;
 
 	inline void SetZeroFlag(){reg.status |= kZeroSetMask;}

@@ -45,10 +45,10 @@ void Cpu6502::Tick()
 	}
 }
 
-uint16_t Cpu6502::GetPC()
-{
-	return reg.pc;
-}
+//uint16_t Cpu6502::GetPC()
+//{
+//	return reg.pc;
+//}
 
 uint8_t Cpu6502::GetAcc()
 {
