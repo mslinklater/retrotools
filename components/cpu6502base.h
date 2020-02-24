@@ -190,6 +190,8 @@
 #define k6502TicksTXS 2
 #define k6502TicksTYA 2
 
+class Bus;
+
 class Cpu6502Base : public ITickable
 {
 public:
@@ -341,12 +343,14 @@ public:
 		pMemory = mem;
 	}
 
-	uint64_t GetTicksSinceBoot(){return ticksSinceBoot;}
+	uint64_t GetCyclesSinceBoot(){return cyclesSinceBoot;}
 
 	// ITickable
 	virtual void CommitInputs() = 0;		// commit state of input pins - so chip update order doesn't matter
 	virtual void Tick(bool clockState)=  0;	// update the actual silicon state - based on the clockState
 	// ~ITickable
+
+	uint32_t RunToBrk();	// Runs until BRK statement. Used in unit tests.
 
 protected:
 	Registers	reg;
@@ -358,8 +362,24 @@ protected:
 	std::string addrModeStrings[kAddrMode_Num];
 
 	std::set<uint16_t> 	breakpoints;
-	uint64_t	ticksSinceBoot;
+	uint64_t	cyclesSinceBoot;	
 
 	void AddOpcode(uint8_t value, enum EMnemonic mnemonic, enum EAddressingMode addrMode, EMemoryOp memoryOp);
 	void AddEmptyOpcode(uint8_t value);
+
+	// Busses
+	Bus*	pAddressBus;
+	Bus*	pDataBus;
+	Bus*	pSyncPin;
+	Bus*	pVssPin;
+	Bus*	pRdyPin;
+	Bus*	pTimer0Pin;
+	Bus*	pTimer1Pin;
+	Bus*	pTimer2Pin;
+	Bus*	pResPin;
+	Bus*	pSoPin;
+	Bus*	pIrqPin;
+	Bus*	pNmiPin;
+	Bus*	pVccPin;
+	Bus*	pReadWritePin;
 };

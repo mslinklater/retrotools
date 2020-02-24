@@ -25,7 +25,7 @@ void Cpu6502Window::SetCpu(Cpu6502* cpu)
 
 void Cpu6502Window::Draw()
 {
-	ImGui::Text("Ticks: %" PRId64, pCpu->GetTicksSinceBoot());
+	ImGui::Text("Cycles: %" PRId64, pCpu->GetCyclesSinceBoot());
 	ImGui::Separator();
 	ImGui::Text("PC :0x%04x", pCpu->GetPC());
 	ImGui::Text("Next :%d", pCpu->GetTicksUntilExecution());

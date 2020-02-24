@@ -36,88 +36,13 @@ void Cpu6502::Tick()
 	// do work
 	ProcessInstruction();
 
-	ticksSinceBoot++;
+	cyclesSinceBoot++;
 
 	if(haltOnTick)
 	{
 		Commands::Halt(true, "", "CPU tick");
 		haltOnTick = false;
 	}
-}
-
-//uint16_t Cpu6502::GetPC()
-//{
-//	return reg.pc;
-//}
-
-uint8_t Cpu6502::GetAcc()
-{
-	return reg.acc;
-}
-
-uint8_t Cpu6502::GetSP()
-{
-	return reg.sp;
-}
-
-uint8_t Cpu6502::GetStatus()
-{
-	return reg.status;
-}
-
-uint8_t Cpu6502::GetX()
-{
-	return reg.x;
-}
-
-uint8_t Cpu6502::GetY()
-{
-	return reg.y;
-}
-
-void Cpu6502::SetAcc(uint8_t acc)
-{
-	reg.acc = acc;
-}
-
-void Cpu6502::SetPC(uint16_t pc)
-{
-	reg.pc = next_pc = pc;
-	ticksUntilExecution = -1;
-}
-
-void Cpu6502::SetSP(uint8_t sp)
-{
-	reg.sp = sp;
-}
-
-void Cpu6502::SetStatus(uint8_t status)
-{
-	reg.status = status;
-}
-
-void Cpu6502::SetX(uint8_t x)
-{
-	reg.x = x;
-}
-
-void Cpu6502::SetY(uint8_t y)
-{
-	reg.y = y;
-}
-
-uint32_t Cpu6502::RunToBrk()
-{
-	bHalted = false;
-
-	uint32_t ticks = 0;
-	while(!bHalted)
-	{
-		ProcessInstruction(true);
-		ticks++;
-	}
-
-	return ticks-1; // sub 1 for the BRK decode.
 }
 
 void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
@@ -1040,11 +965,6 @@ void Cpu6502::DeserialiseState(json& object)
 	}
 }
 
-
-const Cpu6502::Opcode* Cpu6502::GetNextInstruction()
-{
-	return nullptr;
-}
 
 bool Cpu6502::HandleCommand(const Command& command)
 {

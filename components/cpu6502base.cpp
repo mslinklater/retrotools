@@ -5,7 +5,22 @@ Cpu6502Base::Cpu6502Base()
 {
 	LOGINFO("Cpu6502Base::Constructor");
 
-	ticksSinceBoot = 0;
+	cyclesSinceBoot = 0;
+
+	pAddressBus = nullptr;
+	pDataBus = nullptr;
+	pSyncPin = nullptr;
+	pVssPin = nullptr;
+	pRdyPin = nullptr;
+	pTimer0Pin = nullptr;
+	pTimer1Pin = nullptr;
+	pTimer2Pin = nullptr;
+	pResPin = nullptr;
+	pSoPin = nullptr;
+	pIrqPin = nullptr;
+	pNmiPin = nullptr;
+	pVccPin = nullptr;
+	pReadWritePin = nullptr;
 
 	mnemonicStrings[kMnemonic_ADC] = "ADC";
 	mnemonicStrings[kMnemonic_AND] = "AND";
@@ -446,4 +461,20 @@ void Cpu6502Base::ClearBreakpoint(uint16_t addr)
 bool Cpu6502Base::IsBreakpoint(uint16_t addr)
 {
 	return breakpoints.find(addr) != breakpoints.end();
+}
+
+uint32_t Cpu6502Base::RunToBrk()
+{
+//	bHalted = false;
+
+//	uint32_t ticks = 0;
+//	while(!bHalted)
+//	{
+//		ProcessInstruction(true);
+//		ticks++;
+//	}
+
+//	return ticks-1; // sub 1 for the BRK decode.
+	LOGERROR("RunToBek not implemented...");
+	return -1;
 }
