@@ -56,8 +56,10 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		void Tick(bool clockState){};	// update the actual silicon state - based on the clockState
 		// ~ITickable
 
-	private:
+		const Opcode* GetFetchOpcode() const;
+		const Opcode* GetExecuteOpcode() const;
 
+	private:
         
 		// ICommandProcessor
 		bool HandleCommand(const Command &command) override;

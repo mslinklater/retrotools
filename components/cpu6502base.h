@@ -307,6 +307,9 @@ public:
 
 	const Opcode* GetOpcode(uint16_t opcode) const;
 
+	virtual const Opcode* GetFetchOpcode() const = 0;
+	virtual const Opcode* GetExecuteOpcode() const = 0;
+
 	inline void SetZeroFlag(){reg.status |= kZeroSetMask;}
 	inline void ClearZeroFlag(){reg.status &= kZeroClearMask;}
 	inline bool GetZeroFlag(){return reg.status & kZeroSetMask;}

@@ -45,6 +45,17 @@ void Cpu6502::Tick()
 	}
 }
 
+const Cpu6502Base::Opcode* Cpu6502::GetFetchOpcode() const
+{
+	return GetExecuteOpcode();
+}
+
+const Cpu6502Base::Opcode* Cpu6502::GetExecuteOpcode() const
+{
+	uint8_t opcode = pMemory->Read(reg.pc);
+	return &opcodes[opcode];
+}
+
 void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
 {
 	ticksUntilExecution--;
