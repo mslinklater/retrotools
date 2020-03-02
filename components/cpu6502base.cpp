@@ -6,6 +6,7 @@ Cpu6502Base::Cpu6502Base()
 	LOGINFO("Cpu6502Base::Constructor");
 
 	cyclesSinceBoot = 0;
+	haltOnTick = false;
 
 	pAddressBus = nullptr;
 	pDataBus = nullptr;
@@ -465,16 +466,17 @@ bool Cpu6502Base::IsBreakpoint(uint16_t addr)
 
 uint32_t Cpu6502Base::RunToBrk()
 {
-//	bHalted = false;
+	uint32_t ticks = 0;
 
-//	uint32_t ticks = 0;
-//	while(!bHalted)
-//	{
-//		ProcessInstruction(true);
-//		ticks++;
-//	}
+	EMnemonic mnemonic = GetExecuteOpcode()->mnemonic;
 
-//	return ticks-1; // sub 1 for the BRK decode.
-	LOGERROR("RunToBek not implemented...");
-	return -1;
+	while(mnemonic != EMnemonic::kMnemonic_BRK)
+	{
+		Tick(false);
+		Tick(true);
+		ticks++;
+		mnemonic = GetExecuteOpcode()->mnemonic;
+	}
+
+	return ticks-1; // sub 1 for the BRK decode.
 }

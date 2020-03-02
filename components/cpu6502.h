@@ -30,7 +30,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		uint8_t	GetStatus(){return reg.status;}
 		uint8_t	GetSP(){return reg.sp;}
 
-		void SetPC(uint16_t pc){reg.pc = pc; ticksUntilExecution = -1;}
+		void SetPC(uint16_t pc);
 		void SetAcc(uint8_t acc){reg.acc = acc;}
 		void SetX(uint8_t x){reg.x = x;}
 		void SetY(uint8_t y){reg.y = y;}
@@ -38,7 +38,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		void SetSP(uint8_t sp){reg.sp = sp;}
 
 		/// One single clock tick
-		void Tick(void);	// GET RID
+//		void Tick(void);	// GET RID
 
 		void ProcessInstruction(bool ignoreBreakpoints = false);		// kind of debug
 
@@ -53,7 +53,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 
 		// ITickable
 		void CommitInputs(){};			// commit state of input pins - so chip update order doesn't matter
-		void Tick(bool clockState){};	// update the actual silicon state - based on the clockState
+		void Tick(bool clockState);	// update the actual silicon state - based on the clockState
 		// ~ITickable
 
 		const Opcode* GetFetchOpcode() const;
@@ -65,7 +65,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		bool HandleCommand(const Command &command) override;
 		// ~ICommandProcessor
 		
-		bool		haltOnTick;
 		bool		bHaltOnInstruction;
 		bool		bHalted;
 		int32_t		ticksUntilExecution;

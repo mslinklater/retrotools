@@ -69,7 +69,9 @@ void System::Update(float dt)
 		{
 			if(cpuTickDelay == 0)
 			{
-				pCpu6502->Tick();
+				pCpu6502->Tick(false);
+				pCpu6502->Tick(true);
+				
 				pRiot->Tick();
 				cpuTickDelay = 3;
 			}

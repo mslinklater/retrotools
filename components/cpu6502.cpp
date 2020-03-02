@@ -29,19 +29,23 @@ Cpu6502::Cpu6502()
 Cpu6502::~Cpu6502()
 {
 	LOGINFO("Cpu6502::Destructor");
+	CommandCenter::Instance()->Unsubscribe(Commands::kHaltCommand, this);
 }
 
-void Cpu6502::Tick()
+void Cpu6502::Tick(bool clockState)
 {
-	// do work
-	ProcessInstruction();
-
-	cyclesSinceBoot++;
-
-	if(haltOnTick)
+	if(clockState)
 	{
-		Commands::Halt(true, "", "CPU tick");
-		haltOnTick = false;
+		// do work
+		ProcessInstruction();
+
+		cyclesSinceBoot++;
+
+		if(haltOnTick)
+		{
+			Commands::Halt(true, "", "CPU tick");
+			haltOnTick = false;
+		}
 	}
 }
 
@@ -54,6 +58,13 @@ const Cpu6502Base::Opcode* Cpu6502::GetExecuteOpcode() const
 {
 	uint8_t opcode = pMemory->Read(reg.pc);
 	return &opcodes[opcode];
+}
+
+void Cpu6502::SetPC(uint16_t pc)
+{
+	reg.pc = pc; 
+	next_pc = pc;
+	ticksUntilExecution = -1;
 }
 
 void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
@@ -975,7 +986,6 @@ void Cpu6502::DeserialiseState(json& object)
 		}
 	}
 }
-
 
 bool Cpu6502::HandleCommand(const Command& command)
 {
