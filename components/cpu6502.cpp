@@ -37,7 +37,7 @@ void Cpu6502::Tick(bool clockState)
 	if(clockState)
 	{
 		// do work
-		ProcessInstruction();
+		UpdateState();
 
 		cyclesSinceBoot++;
 
@@ -67,7 +67,32 @@ void Cpu6502::SetPC(uint16_t pc)
 	ticksUntilExecution = -1;
 }
 
-void Cpu6502::ProcessInstruction(bool ignoreBreakpoints)
+void Cpu6502::SetAcc(uint8_t acc)
+{
+	reg.acc = acc;
+}
+
+void Cpu6502::SetX(uint8_t x)
+{
+	reg.x = x;
+}
+
+void Cpu6502::SetY(uint8_t y)
+{
+	reg.y = y;
+}
+
+void Cpu6502::SetStatus(uint8_t status)
+{
+	reg.status = status;
+}
+
+void Cpu6502::SetSP(uint8_t sp)
+{
+	reg.sp = sp;
+}
+
+void Cpu6502::UpdateState(bool ignoreBreakpoints)
 {
 	ticksUntilExecution--;
 	if((ticksUntilExecution == 1) && (bHaltOnInstruction))

@@ -65,7 +65,8 @@ void System::Update(float dt)
 	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
-		if(!pTia->IsCpuStalled() || (pCpu6502->GetTicksUntilExecution() > 1))	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
+//		if(!pTia->IsCpuStalled() || (pCpu6502->GetTicksUntilExecution() > 1))	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
+		if(!pTia->IsCpuStalled())	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
 		{
 			if(cpuTickDelay == 0)
 			{

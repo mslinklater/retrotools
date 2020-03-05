@@ -31,16 +31,11 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		uint8_t	GetSP(){return reg.sp;}
 
 		void SetPC(uint16_t pc);
-		void SetAcc(uint8_t acc){reg.acc = acc;}
-		void SetX(uint8_t x){reg.x = x;}
-		void SetY(uint8_t y){reg.y = y;}
-		void SetStatus(uint8_t status){reg.status = status;}
-		void SetSP(uint8_t sp){reg.sp = sp;}
-
-		/// One single clock tick
-//		void Tick(void);	// GET RID
-
-		void ProcessInstruction(bool ignoreBreakpoints = false);		// kind of debug
+		void SetAcc(uint8_t acc);
+		void SetX(uint8_t x);
+		void SetY(uint8_t y);
+		void SetStatus(uint8_t status);
+		void SetSP(uint8_t sp);
 
 		uint16_t	next_pc;	// what the PC will be at next instruction
 
@@ -49,7 +44,7 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		void DeserialiseState(json& object) override;
 		// ~IStateSerialisation
 
-		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
+//		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
 		// ITickable
 		void CommitInputs(){};			// commit state of input pins - so chip update order doesn't matter
@@ -61,6 +56,8 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 
 	private:
         
+		void UpdateState(bool ignoreBreakpoints = false);		// kind of debug
+
 		// ICommandProcessor
 		bool HandleCommand(const Command &command) override;
 		// ~ICommandProcessor

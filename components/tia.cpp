@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "tia.h"
 #include "../shared_cpp/log.h"
 #include "../commands.h"
@@ -261,7 +263,9 @@ void Tia::RebuildSprite1Bits()
 		{
 			for(int rep=0 ; rep<scale ; rep++)
 			{
-				sprite1Bits[resP1Pos+offset] = val & (0x01 << bit);
+				uint8_t i = resP1Pos+offset;
+				assert(i<kNumSpriteBits);
+				sprite1Bits[i] = val & (0x01 << bit);
 				offset++;
 			}
 		}

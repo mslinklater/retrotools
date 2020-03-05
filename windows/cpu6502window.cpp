@@ -28,7 +28,7 @@ void Cpu6502Window::Draw()
 	ImGui::Text("Cycles: %" PRId64, pCpu->GetCyclesSinceBoot());
 	ImGui::Separator();
 	ImGui::Text("PC :0x%04x", pCpu->GetPC());
-	ImGui::Text("Next :%d", pCpu->GetTicksUntilExecution());
+//	ImGui::Text("Next :%d", pCpu->GetTicksUntilExecution());
 	
 	ImGui::Text("Acc:");
 	ImGui::SameLine();
