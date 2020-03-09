@@ -60,6 +60,36 @@ const Cpu6502Base::Opcode* Cpu6502::GetExecuteOpcode() const
 	return &opcodes[opcode];
 }
 
+uint16_t Cpu6502::GetPC()
+{
+	return reg.pc;
+}
+
+uint8_t	Cpu6502::GetAcc()
+{
+	return reg.acc;
+}
+
+uint8_t	Cpu6502::GetX()
+{
+	return reg.x;
+}
+
+uint8_t	Cpu6502::GetY()
+{
+	return reg.y;
+}
+
+uint8_t	Cpu6502::GetStatus()
+{
+	return reg.status;
+}
+
+uint8_t	Cpu6502::GetSP()
+{
+	return reg.sp;
+}
+
 void Cpu6502::SetPC(uint16_t pc)
 {
 	reg.pc = pc; 

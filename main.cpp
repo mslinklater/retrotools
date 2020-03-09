@@ -124,11 +124,7 @@ int main(int argc, char* argv[])
 	// initialise components
 	
 	Memory2600* pMemory = new Memory2600();
-	pStateSerialiser->AddStateSerialiser(pMemory);
-
 	Cpu6502* pCpu = new Cpu6502();
-	pStateSerialiser->AddStateSerialiser(pCpu);
-
 	Tia* pTia = new Tia();
 	Riot* pRiot = new Riot();
 
@@ -136,6 +132,10 @@ int main(int argc, char* argv[])
 	pSystem->SetTia(pTia);
 	pSystem->SetCpu6502(pCpu);
 	pSystem->SetRiot(pRiot);
+	pSystem->SetMemory(pMemory);
+
+	pStateSerialiser->AddStateSerialiser(pMemory);
+	pStateSerialiser->AddStateSerialiser(pCpu);
 
 	Disassembler* pDisassembler = new Disassembler();
 	SymbolStore* pSymbolStore = new SymbolStore();
@@ -145,16 +145,6 @@ int main(int argc, char* argv[])
 	{
 		return -1;
 	}
-	
-	pMemory->Init();	
-	
-    pCpu->Init(Cpu6502::k6507);
-	pCpu->SetMemory(pMemory);
-	pCpu->SetPC(0xf000);
-
-	pMemory->SetCPU(pCpu);
-	pMemory->SetTia(pTia);
-	pMemory->SetRiot(pRiot);
 	
 	pDisassembler->Init();
 	pDisassembler->SetMemory(pMemory);

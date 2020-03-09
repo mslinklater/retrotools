@@ -10,6 +10,7 @@
 #include "../shared_cpp/icommandprocessor.h"
 
 class ITickable;
+class IMemory;
 class Tia;
 class Cpu6502;
 class Riot;
@@ -24,9 +25,12 @@ public:
     System();
     virtual ~System();
 
+	void Init();	// initialise all the cross-component connections
+
     void SetTia(Tia* pTia);
     void SetCpu6502(Cpu6502* pCpu6502);
     void SetRiot(Riot* pRiot);
+    void SetMemory(IMemory* pMemory);
 
     void Update(float dt);
     float GetUpdateDT(void);
@@ -47,6 +51,7 @@ private:
     Tia*        pTia;
     Cpu6502*    pCpu6502;
 	Riot*		pRiot;
+	IMemory*	pMemory;
 
     float		updatedt;
     bool		running;

@@ -23,12 +23,12 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		
 		// Register access
 		
-		uint16_t GetPC(){return reg.pc;}
-		uint8_t	GetAcc(){return reg.acc;}
-		uint8_t	GetX(){return reg.x;}
-		uint8_t	GetY(){return reg.y;}
-		uint8_t	GetStatus(){return reg.status;}
-		uint8_t	GetSP(){return reg.sp;}
+		uint16_t GetPC();
+		uint8_t	GetAcc();
+		uint8_t	GetX();
+		uint8_t	GetY();
+		uint8_t	GetStatus();
+		uint8_t	GetSP();
 
 		void SetPC(uint16_t pc);
 		void SetAcc(uint8_t acc);
@@ -37,14 +37,10 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		void SetStatus(uint8_t status);
 		void SetSP(uint8_t sp);
 
-		uint16_t	next_pc;	// what the PC will be at next instruction
-
 		// IStateSerialisation
 		void SerialiseState(json& object) override;
 		void DeserialiseState(json& object) override;
 		// ~IStateSerialisation
-
-//		uint32_t GetTicksUntilExecution(){return ticksUntilExecution;}
 
 		// ITickable
 		void CommitInputs(){};			// commit state of input pins - so chip update order doesn't matter
@@ -65,5 +61,6 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		bool		bHaltOnInstruction;
 		bool		bHalted;
 		int32_t		ticksUntilExecution;
+		uint16_t	next_pc;	// what the PC will be at next instruction
 
 };

@@ -212,7 +212,11 @@ void Tia::RebuildSprite0Bits()
 		{
 			for(int rep=0 ; rep<scale ; rep++)
 			{
-				sprite0Bits[resP0Pos+offset] = val & (0x01 << bit);
+				int i = resP0Pos+offset;
+				if(i < kNumSpriteBits)
+				{
+					sprite0Bits[i] = val & (0x01 << bit);
+				}
 				offset++;
 			}
 		}
@@ -221,7 +225,11 @@ void Tia::RebuildSprite0Bits()
 		{
 			for(int bit=7 ; bit >= 0 ; bit--)
 			{
-				sprite0Bits[resP0Pos+offset] = false;
+				int i = resP0Pos+offset;
+				if(i < kNumSpriteBits)
+				{
+					sprite0Bits[i] = false;
+				}
 				offset++;
 			}
 		}
@@ -264,8 +272,10 @@ void Tia::RebuildSprite1Bits()
 			for(int rep=0 ; rep<scale ; rep++)
 			{
 				uint8_t i = resP1Pos+offset;
-				assert(i<kNumSpriteBits);
-				sprite1Bits[i] = val & (0x01 << bit);
+				if(i < kNumSpriteBits)
+				{
+					sprite1Bits[i] = val & (0x01 << bit);
+				}
 				offset++;
 			}
 		}
@@ -274,7 +284,11 @@ void Tia::RebuildSprite1Bits()
 		{
 			for(int bit=7 ; bit >= 0 ; bit--)
 			{
-				sprite1Bits[resP1Pos+offset] = false;
+				uint8_t i = resP1Pos+offset;
+				if(i < kNumSpriteBits)
+				{
+					sprite1Bits[resP1Pos+offset] = false;
+				}
 				offset++;
 			}
 		}

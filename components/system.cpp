@@ -65,7 +65,6 @@ void System::Update(float dt)
 	while((tickedUpToTime <= tickUpToTime) && running)
 	{
 		pTia->Tick();
-//		if(!pTia->IsCpuStalled() || (pCpu6502->GetTicksUntilExecution() > 1))	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
 		if(!pTia->IsCpuStalled())	// If CPU instruction is in-flight, let it complete before HSYNC stops it.
 		{
 			if(cpuTickDelay == 0)
@@ -84,9 +83,19 @@ void System::Update(float dt)
 	}
 }
 
+void System::Init()
+{
+	pMemory->Init();		
+    pCpu->Init(Cpu6502::k6507);
+	pCpu->SetMemory(pMemory);
+	pCpu->SetPC(0xf000);
+	pMemory->SetCPU(pCpu);
+	pMemory->SetTia(pTia);
+	pMemory->SetRiot(pRiot);
+}
+
 void System::Tick()
 {
-//	pTia->Tick();
 }
 
 void System::Reset()
@@ -117,4 +126,9 @@ void System::SetCpu6502(Cpu6502* pCpu6502In)
 void System::SetRiot(Riot* pRiotIn)
 {
     pRiot = pRiotIn;
+}
+
+void System::SetMemory(IMemory* pMemoryIn)
+{
+    pMemory = pMemoryIn;
 }

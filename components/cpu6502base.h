@@ -305,10 +305,10 @@ public:
 	virtual void SetStatus(uint8_t status) = 0;
 	virtual void SetSP(uint8_t sp) = 0;
 
-	const Opcode* GetOpcode(uint16_t opcode) const;
-
 	virtual const Opcode* GetFetchOpcode() const = 0;
 	virtual const Opcode* GetExecuteOpcode() const = 0;
+
+	const Opcode* GetOpcode(uint16_t opcode) const;
 
 	inline void SetZeroFlag(){reg.status |= kZeroSetMask;}
 	inline void ClearZeroFlag(){reg.status &= kZeroClearMask;}
