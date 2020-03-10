@@ -27,6 +27,9 @@ public:
 
 	void Init();	// initialise all the cross-component connections
 
+	uint8_t	CpuRead(uint16_t address);
+	void CpuWrite(uint16_t address, uint8_t value);
+
     void SetTia(Tia* pTia);
     void SetCpu6502(Cpu6502* pCpu6502);
     void SetRiot(Riot* pRiot);

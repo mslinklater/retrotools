@@ -13,14 +13,6 @@
 
 Memory2600::Memory2600()
 {
-}
-
-Memory2600::~Memory2600()
-{
-}
-	
-eErrorCode Memory2600::Init(void)
-{
 	pRam = new MemoryByte[kRamSize];
 	ramSize = kRamSize;
 
@@ -28,27 +20,19 @@ eErrorCode Memory2600::Init(void)
 	romSize = kRomSize;
 
 	LOGINFO("Memory2600::Initialised\n");
-
-	return kError_OK;
 }
 
-eErrorCode Memory2600::Destroy(void)
+Memory2600::~Memory2600()
 {
-	LOGINFO("Memory2600::Destroyed\n");
-
 	delete [] pRam;
 	pRam = 0;
 
 	delete [] pRom;
 	pRom = 0;
 
-	return kError_OK;
-}
+	LOGINFO("Memory2600::Destroyed\n");
+}	
 
-void Memory2600::SetCPU(Cpu6502* cpu)
-{
-	pCpu = cpu;
-}
 void Memory2600::SetTia(Tia* tia)
 {
 	pTia = tia;

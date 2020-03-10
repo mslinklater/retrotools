@@ -85,13 +85,12 @@ void System::Update(float dt)
 
 void System::Init()
 {
-	pMemory->Init();		
-    pCpu->Init(Cpu6502::k6507);
-	pCpu->SetMemory(pMemory);
-	pCpu->SetPC(0xf000);
-	pMemory->SetCPU(pCpu);
-	pMemory->SetTia(pTia);
-	pMemory->SetRiot(pRiot);
+    pCpu6502->Init(Cpu6502::k6507);
+	pCpu6502->SetMemory(pMemory);
+	pCpu6502->SetPC(0xf000);
+//	pMemory->SetCPU(pCpu6502);
+//	pMemory->SetTia(pTia);
+//	pMemory->SetRiot(pRiot);
 }
 
 void System::Tick()

@@ -8,20 +8,6 @@ Cpu6502Base::Cpu6502Base()
 	cyclesSinceBoot = 0;
 	haltOnTick = false;
 
-	pAddressBus = nullptr;
-	pDataBus = nullptr;
-	pSyncPin = nullptr;
-	pVssPin = nullptr;
-	pRdyPin = nullptr;
-	pTimer0Pin = nullptr;
-	pTimer1Pin = nullptr;
-	pTimer2Pin = nullptr;
-	pResPin = nullptr;
-	pSoPin = nullptr;
-	pIrqPin = nullptr;
-	pNmiPin = nullptr;
-	pVccPin = nullptr;
-	pReadWritePin = nullptr;
 
 	mnemonicStrings[kMnemonic_ADC] = "ADC";
 	mnemonicStrings[kMnemonic_AND] = "AND";

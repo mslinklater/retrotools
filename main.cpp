@@ -272,7 +272,7 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	
-	pMemory->Destroy();
+	delete pMemory;
 
 	LOGINFO("Exiting...\n");
 	

@@ -191,6 +191,7 @@
 #define k6502TicksTYA 2
 
 class Bus;
+class ISystem;
 
 class Cpu6502Base : public ITickable
 {
@@ -341,6 +342,11 @@ public:
 	void ClearBreakpoint(uint16_t addr);
 	bool IsBreakpoint(uint16_t addr);
 
+//	void SetSystem(ISystem* pSys)
+//	{
+//		pSystem = pSys;
+//	}
+
 	void SetMemory(IMemory* mem)
 	{
 		pMemory = mem;
@@ -359,6 +365,7 @@ protected:
 	Registers	reg;
 
 	IMemory*	pMemory;
+	ISystem*	pSystem;
 
 	Opcode	 	opcodes[256];
 	std::string mnemonicStrings[kMnemonic_Num];
@@ -370,21 +377,6 @@ protected:
 	void AddOpcode(uint8_t value, enum EMnemonic mnemonic, enum EAddressingMode addrMode, EMemoryOp memoryOp);
 	void AddEmptyOpcode(uint8_t value);
 
-	// Busses
-	Bus*	pAddressBus;
-	Bus*	pDataBus;
-	Bus*	pSyncPin;
-	Bus*	pVssPin;
-	Bus*	pRdyPin;
-	Bus*	pTimer0Pin;
-	Bus*	pTimer1Pin;
-	Bus*	pTimer2Pin;
-	Bus*	pResPin;
-	Bus*	pSoPin;
-	Bus*	pIrqPin;
-	Bus*	pNmiPin;
-	Bus*	pVccPin;
-	Bus*	pReadWritePin;
 
 	bool		haltOnTick;
 
