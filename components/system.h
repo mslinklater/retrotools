@@ -12,7 +12,7 @@
 class ITickable;
 class IMemory;
 class Tia;
-class Cpu6502;
+class Cpu6502Alpha;
 class Riot;
 
 class System : public ICommandProcessor
@@ -31,7 +31,7 @@ public:
 	void CpuWrite(uint16_t address, uint8_t value);
 
     void SetTia(Tia* pTia);
-    void SetCpu6502(Cpu6502* pCpu6502);
+    void SetCpu6502Alpha(Cpu6502Alpha* pCpu6502);
     void SetRiot(Riot* pRiot);
     void SetMemory(IMemory* pMemory);
 
@@ -51,8 +51,8 @@ public:
 	void Reset();
 
 private:
-    Tia*        pTia;
-    Cpu6502*    pCpu6502;
+    Tia*        	pTia;
+    Cpu6502Alpha*    pCpu6502Alpha;
 	Riot*		pRiot;
 	IMemory*	pMemory;
 

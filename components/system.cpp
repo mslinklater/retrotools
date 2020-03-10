@@ -5,7 +5,7 @@
 
 #include "system.h"
 #include "tia.h"
-#include "cpu6502.h"
+#include "cpu6502alpha.h"
 #include "riot.h"
 #include "../shared_cpp/log.h"
 #include "../commands.h"
@@ -69,8 +69,8 @@ void System::Update(float dt)
 		{
 			if(cpuTickDelay == 0)
 			{
-				pCpu6502->Tick(false);
-				pCpu6502->Tick(true);
+				pCpu6502Alpha->Tick(false);
+				pCpu6502Alpha->Tick(true);
 				
 				pRiot->Tick();
 				cpuTickDelay = 3;
@@ -85,9 +85,9 @@ void System::Update(float dt)
 
 void System::Init()
 {
-    pCpu6502->Init(Cpu6502::k6507);
-	pCpu6502->SetMemory(pMemory);
-	pCpu6502->SetPC(0xf000);
+    pCpu6502Alpha->Init(Cpu6502Base::k6507);
+	pCpu6502Alpha->SetMemory(pMemory);
+	pCpu6502Alpha->SetPC(0xf000);
 //	pMemory->SetCPU(pCpu6502);
 //	pMemory->SetTia(pTia);
 //	pMemory->SetRiot(pRiot);
@@ -99,7 +99,7 @@ void System::Tick()
 
 void System::Reset()
 {
-	pCpu6502->SetPC(0xf000);
+	pCpu6502Alpha->SetPC(0xf000);
 }
 
 float System::GetUpdateDT(void)
@@ -117,9 +117,9 @@ void System::SetTia(Tia* pTiaIn)
     pTia = pTiaIn;
 }
 
-void System::SetCpu6502(Cpu6502* pCpu6502In)
+void System::SetCpu6502Alpha(Cpu6502Alpha* pCpu6502In)
 {
-    pCpu6502 = pCpu6502In;
+    pCpu6502Alpha = pCpu6502In;
 }
 
 void System::SetRiot(Riot* pRiotIn)

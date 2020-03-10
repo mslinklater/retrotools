@@ -3,7 +3,7 @@
 //
 // See file 'LICENSE' for license details
 
-#include "cpu6502.h"
+#include "cpu6502alpha.h"
 #include "../interfaces/imemory.h"
 #include "../shared_cpp/log.h"
 #include "../commands.h"
@@ -18,7 +18,7 @@
 
 // Constructor
 
-Cpu6502::Cpu6502()
+Cpu6502Alpha::Cpu6502Alpha()
 : bHaltOnInstruction(false)
 , ticksUntilExecution(-1)
 {
@@ -26,13 +26,13 @@ Cpu6502::Cpu6502()
 	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
-Cpu6502::~Cpu6502()
+Cpu6502Alpha::~Cpu6502Alpha()
 {
 	LOGINFO("Cpu6502::Destructor");
 	CommandCenter::Instance()->Unsubscribe(Commands::kHaltCommand, this);
 }
 
-void Cpu6502::Tick(bool clockState)
+void Cpu6502Alpha::Tick(bool clockState)
 {
 	if(clockState)
 	{
@@ -49,81 +49,83 @@ void Cpu6502::Tick(bool clockState)
 	}
 }
 
-const Cpu6502Base::Opcode* Cpu6502::GetFetchOpcode() const
+const Cpu6502Base::Opcode* Cpu6502Alpha::GetFetchOpcode() const
 {
 	return GetExecuteOpcode();
 }
 
-const Cpu6502Base::Opcode* Cpu6502::GetExecuteOpcode() const
+const Cpu6502Base::Opcode* Cpu6502Alpha::GetExecuteOpcode() const
 {
 	uint8_t opcode = pMemory->Read(reg.pc);
 	return &opcodes[opcode];
 }
 
-uint16_t Cpu6502::GetPC()
+uint16_t Cpu6502Alpha::GetPC()
 {
 	return reg.pc;
 }
 
-uint8_t	Cpu6502::GetAcc()
+uint8_t	Cpu6502Alpha::GetAcc()
 {
 	return reg.acc;
 }
 
-uint8_t	Cpu6502::GetX()
+uint8_t	Cpu6502Alpha::GetX()
 {
 	return reg.x;
 }
 
-uint8_t	Cpu6502::GetY()
+uint8_t	Cpu6502Alpha::GetY()
 {
 	return reg.y;
 }
 
-uint8_t	Cpu6502::GetStatus()
+uint8_t	Cpu6502Alpha::GetStatus()
 {
 	return reg.status;
 }
 
-uint8_t	Cpu6502::GetSP()
+uint8_t	Cpu6502Alpha::GetSP()
 {
 	return reg.sp;
 }
 
-void Cpu6502::SetPC(uint16_t pc)
+void Cpu6502Alpha::SetPC(uint16_t pc)
 {
 	reg.pc = pc; 
 	next_pc = pc;
 	ticksUntilExecution = -1;
 }
 
-void Cpu6502::SetAcc(uint8_t acc)
+void Cpu6502Alpha::SetAcc(uint8_t acc)
 {
 	reg.acc = acc;
 }
 
-void Cpu6502::SetX(uint8_t x)
+void Cpu6502Alpha::SetX(uint8_t x)
 {
 	reg.x = x;
 }
 
-void Cpu6502::SetY(uint8_t y)
+void Cpu6502Alpha::SetY(uint8_t y)
 {
 	reg.y = y;
 }
 
-void Cpu6502::SetStatus(uint8_t status)
+void Cpu6502Alpha::SetStatus(uint8_t status)
 {
 	reg.status = status;
 }
 
-void Cpu6502::SetSP(uint8_t sp)
+void Cpu6502Alpha::SetSP(uint8_t sp)
 {
 	reg.sp = sp;
 }
 
-void Cpu6502::UpdateState(bool ignoreBreakpoints)
+void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 {
+	assert(pMemory != nullptr);
+
 	ticksUntilExecution--;
 	if((ticksUntilExecution == 1) && (bHaltOnInstruction))
 	{
@@ -1007,7 +1009,7 @@ void Cpu6502::UpdateState(bool ignoreBreakpoints)
 	}
 }
 
-void Cpu6502::SerialiseState(json& object)
+void Cpu6502Alpha::SerialiseState(json& object)
 {
 	LOGINFO("Cpu6502::SerialiseState");
 	json cpuJson = json::object();
@@ -1025,7 +1027,7 @@ void Cpu6502::SerialiseState(json& object)
 	object["cpu"] = cpuJson;
 }
 
-void Cpu6502::DeserialiseState(json& object)
+void Cpu6502Alpha::DeserialiseState(json& object)
 {
 	LOGINFO("Cpu6502::DeserialiseState");
 	json cpuJson = object["cpu"];
@@ -1042,7 +1044,7 @@ void Cpu6502::DeserialiseState(json& object)
 	}
 }
 
-bool Cpu6502::HandleCommand(const Command& command)
+bool Cpu6502Alpha::HandleCommand(const Command& command)
 {
 	if(command.name == Commands::kHaltCommand)
 	{

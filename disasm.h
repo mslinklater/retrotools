@@ -10,11 +10,10 @@
 #include <vector>
 
 #include "shared_cpp/errorcodes.h"
-#include "components/cpu6502.h"
+#include "components/cpu6502base.h"
 #include "shared_cpp/command.h"
 
 class IMemory;
-class Cpu6502;
 class SymbolStore;
 
 class Disassembler : public ICommandProcessor
@@ -34,9 +33,9 @@ public:
 	struct Line
 	{
 		bool used;
-		Cpu6502::EMnemonic	mnemonic;
-		Cpu6502::EAddressingMode addressingMode;
-		Cpu6502::EMemoryOp memoryOp;
+		Cpu6502Base::EMnemonic	mnemonic;
+		Cpu6502Base::EAddressingMode addressingMode;
+//		Cpu6502Alpha::EMemoryOp memoryOp;
 		uint8_t		opcode;
 		uint8_t		param1;
 		uint8_t		param2;
@@ -60,7 +59,7 @@ public:
 	const Line& GetLine(int num);
 	
 	void		SetMemory(IMemory* mem);
-	void		SetCpu(Cpu6502* cpu);
+	void		SetCpu(Cpu6502Base* cpu);
 	void		SetSymbolStore(SymbolStore* store);
 	
 	void 		AddObviousLabels();
@@ -73,9 +72,9 @@ private:
 	void UpdateDetailLines();
 	void UpdateLineLabels();
 	
-	IMemory*		pMemory;
-	const Cpu6502*		pCpu;
-	SymbolStore*	pSymbolStore;
+	IMemory*			pMemory;
+	const Cpu6502Base*	pCpu;
+	SymbolStore*		pSymbolStore;
 	
 	std::vector<Line>	lines;
 };

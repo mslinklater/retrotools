@@ -6,7 +6,7 @@
 #include "disasmwindow.h"
 #include "../imgui/imgui.h"
 #include "../disasm.h"
-#include "../components/cpu6502.h"
+#include "../components/cpu6502alpha.h"
 #include "../interfaces/imemory.h"
 #include "../shared_cpp/log.h"
 
@@ -117,7 +117,7 @@ void DisassemblyWindow::DrawMainSubWindow(void)
 	ImGui::EndChild();
 }
 
-void DisassemblyWindow::SetCPU(Cpu6502* cpu)
+void DisassemblyWindow::SetCPU(Cpu6502Base* cpu)
 {
 	pCpu = cpu;
 }

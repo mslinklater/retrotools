@@ -9,7 +9,7 @@
 #include "../config.h"
 
 class Disassembler;
-class Cpu6502;
+class Cpu6502Base;
 class IMemory;
 
 class DisassemblyWindow : public WindowBase, public IStateSerialisation
@@ -27,7 +27,7 @@ public:
 	virtual void Draw(void);
 	
 	void SetDisassembler(Disassembler* pDisasm);
-	void SetCPU(Cpu6502* pCpu);
+	void SetCPU(Cpu6502Base* pCpu);
 	void SetMemory(IMemory* pMemory);
 	
 	// IStateSerialisation
@@ -40,7 +40,7 @@ private:
 	void DrawMainSubWindow(void);
 	
 	Disassembler* 	pDisasm;
-	Cpu6502*		pCpu;
+	Cpu6502Base*	pCpu;
 	IMemory*		pMemory;
 	
 //	bool showTIAHints;

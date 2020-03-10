@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../shared_cpp/windowbase.h"
-#include "../components/cpu6502.h"
+#include "../components/cpu6502base.h"
 
 class Cpu6502Window : public WindowBase
 {
@@ -11,10 +11,10 @@ public:
 	
 	void Draw() override;
 	
-	void SetCpu(Cpu6502* cpu);
+	void SetCpu(Cpu6502Base* cpu);
 	
 private:
-	Cpu6502* pCpu;
+	Cpu6502Base* pCpu;
 	
 	static const int kNewBreakpointTextSize = 5;
 	char	newBreakpointText[kNewBreakpointTextSize];

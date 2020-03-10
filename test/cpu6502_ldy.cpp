@@ -1,17 +1,17 @@
 #include "cpu6502_ldy.h"
 
 #include "../shared_cpp/catch.hpp"
-#include "../components/cpu6502.h"
+#include "../components/cpu6502alpha.h"
 #include "../components/memory64k.h"
 #include "../utils/romfilebundle.h"
 #include "testcommon.h"
 #include "../utils/romfilebundle.h"
 
-TEST_CASE("ldy", "[cpu6502]")
+TEST_CASE("ldy", "[cpu6502alpha]")
 {
 	// bury this
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 

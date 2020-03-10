@@ -1,15 +1,15 @@
 #include "cpu6502_txx.h"
 
 #include "../shared_cpp/catch.hpp"
-#include "../components/cpu6502.h"
+#include "../components/cpu6502alpha.h"
 #include "../components/memory64k.h"
 #include "../utils/romfilebundle.h"
 #include "testcommon.h"
 
-TEST_CASE("tax", "[cpu6502]")
+TEST_CASE("tax", "[cpu6502alpha]")
 {
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 
@@ -48,11 +48,11 @@ TEST_CASE("tax", "[cpu6502]")
 	}
 }
 
-TEST_CASE("tay", "[cpu6502]")
+TEST_CASE("tay", "[cpu6502alpha]")
 {
 	// bury this
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 
@@ -91,10 +91,10 @@ TEST_CASE("tay", "[cpu6502]")
 	}
 }
 
-TEST_CASE("tsx", "[cpu6502]")
+TEST_CASE("tsx", "[cpu6502alpha]")
 {
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 
@@ -133,10 +133,10 @@ TEST_CASE("tsx", "[cpu6502]")
 	}
 }
 
-TEST_CASE("txa", "[cpu6502]")
+TEST_CASE("txa", "[cpu6502alpha]")
 {
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 
@@ -175,10 +175,10 @@ TEST_CASE("txa", "[cpu6502]")
 	}
 }
 
-TEST_CASE("txs", "[cpu6502]")
+TEST_CASE("txs", "[cpu6502alpha]")
 {
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 
@@ -217,10 +217,10 @@ TEST_CASE("txs", "[cpu6502]")
 	}
 }
 
-TEST_CASE("tya", "[cpu6502]")
+TEST_CASE("tya", "[cpu6502alpha]")
 {
-	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
-	pCpu->Init(Cpu6502::k6507);
+	std::unique_ptr<Cpu6502Alpha> pCpu(new Cpu6502Alpha());
+	pCpu->Init(Cpu6502Base::k6507);
 	std::unique_ptr<Memory64K> pMemory(new Memory64K());
 	pCpu->SetMemory(pMemory.get());
 

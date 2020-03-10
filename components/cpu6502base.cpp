@@ -2,6 +2,7 @@
 #include "../shared_cpp/log.h"
 
 Cpu6502Base::Cpu6502Base()
+: pMemory(nullptr)
 {
 	LOGINFO("Cpu6502Base::Constructor");
 

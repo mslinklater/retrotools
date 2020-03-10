@@ -11,15 +11,12 @@
 #include "../config.h"
 #include "cpu6502base.h"
 
-
-//class IMemory;
-
-class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSerialisation
+class Cpu6502Alpha : public Cpu6502Base, public ICommandProcessor, public IStateSerialisation
 {
 	public:
 
-		Cpu6502();
-		virtual ~Cpu6502();
+		Cpu6502Alpha();
+		virtual ~Cpu6502Alpha();
 		
 		// Register access
 		
@@ -62,5 +59,4 @@ class Cpu6502 : public Cpu6502Base, public ICommandProcessor, public IStateSeria
 		bool		bHalted;
 		int32_t		ticksUntilExecution;
 		uint16_t	next_pc;	// what the PC will be at next instruction
-
 };

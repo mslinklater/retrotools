@@ -9,6 +9,7 @@ class Cpu6502Perfect : public Cpu6502Base
 	public:
 		Cpu6502Perfect();
 		virtual ~Cpu6502Perfect();
+		
 	private:
 		Bus*	pAddressBus;
 		Bus*	pDataBus;

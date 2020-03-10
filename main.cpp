@@ -16,7 +16,7 @@
 #include "version.h"
 #include "config.h"
 #include "components/memory2600.h"
-#include "components/cpu6502.h"
+#include "components/cpu6502alpha.h"
 #include "components/tia.h"
 #include "components/riot.h"
 #include "components/system.h"
@@ -124,13 +124,13 @@ int main(int argc, char* argv[])
 	// initialise components
 	
 	Memory2600* pMemory = new Memory2600();
-	Cpu6502* pCpu = new Cpu6502();
+	Cpu6502Alpha* pCpu = new Cpu6502Alpha();
 	Tia* pTia = new Tia();
 	Riot* pRiot = new Riot();
 
 	System* pSystem = new System();
 	pSystem->SetTia(pTia);
-	pSystem->SetCpu6502(pCpu);
+	pSystem->SetCpu6502Alpha(pCpu);
 	pSystem->SetRiot(pRiot);
 	pSystem->SetMemory(pMemory);
 
