@@ -2,7 +2,7 @@
 
 This is really out of date... I'll get to sorting this out soon, honest 8). 
 
-Mainly 6502 stuff
+Mainly 6502 stuff - 2600 emulation
 
 ## Some videos
 
