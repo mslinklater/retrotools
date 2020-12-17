@@ -7,8 +7,11 @@ Mainly 6502 stuff
 ## Some videos
 
 [Jan 2020](https://www.youtube.com/watch?v=ZFyCltxY-v0)
+
 [First run of Combat](https://www.youtube.com/watch?v=vHxzVI3zZks)
+
 [Playfields](https://www.youtube.com/watch?v=vk6umVQUwZQ)
+
 [First ROM](https://www.youtube.com/watch?v=yhQVkIKHjTM)
 
 ## To Build
