@@ -1,0 +1,105 @@
+------- FILE adc.asm LEVEL 1 PASS 1
+      1  0000 ????
+      2  0000 ????						; Assembler should use basic 6502 instructions
+      3  0000 ????				      processor	6502
+      4  0000 ????
+      5  0000 ????						; zero page data
+      6  0080					      org	$0080
+      7  0080
+      8  0080				   ZP_0
+      9  0080		       00		      .byte.b	$00
+     10  0081				   ZP_1
+     11  0081		       01		      .byte.b	$01
+     12  0082				   ZP_80
+     13  0082		       80		      .byte.b	$80
+     14  0083				   ZP_ff
+     15  0083		       ff		      .byte.b	$ff
+     16  0084
+     17  0084							; Some vars
+     18  0400					      org	$0400
+     19  0400
+     20  0400				   DATA_0
+     21  0400		       00		      .byte.b	$00
+     22  0401				   DATA_1
+     23  0401		       01		      .byte.b	$01
+     24  0402				   DATA_80
+     25  0402		       80		      .byte.b	$80
+     26  0403				   DATA_ff
+     27  0403		       ff		      .byte.b	$ff
+     28  0404
+     29  0404				   DATA_ZP_0
+     30  0404		       80 00		      .word.w	ZP_0
+     31  0406				   DATA_ZP_1
+     32  0406		       81 00		      .word.w	ZP_1
+     33  0408				   DATA_ZP_80
+     34  0408		       82 00		      .word.w	ZP_80
+     35  040a				   DATA_ZP_ff
+     36  040a		       83 00		      .word.w	ZP_ff
+     37  040c
+     38  040c							; Some code
+     39  1000					      org	$1000
+     40  1000
+     41  1000							; --- Immediate ---
+     42  1000
+     43  1000				   Start_adc_imm_01
+     44  1000		       69 01		      adc	#$01
+     45  1002		       00		      brk
+     46  1003
+     47  1003				   Start_adc_imm_80
+     48  1003		       69 80		      adc	#$80
+     49  1005		       00		      brk
+     50  1006
+     51  1006				   Start_adc_imm_ff
+     52  1006		       69 ff		      adc	#$ff
+     53  1008		       00		      brk
+     54  1009
+     55  1009							; --- Zero Page ---
+     56  1009
+     57  1009				   Start_adc_zp_1
+     58  1009		       65 81		      adc	ZP_1
+     59  100b		       00		      brk
+     60  100c
+     61  100c				   Start_adc_zp_80
+     62  100c		       65 82		      adc	ZP_80
+     63  100e		       00		      brk
+     64  100f
+     65  100f				   Start_adc_zp_ff
+     66  100f		       65 83		      adc	ZP_ff
+     67  1011		       00		      brk
+     68  1012
+     69  1012							; --- Zero Page, X ---
+     70  1012
+     71  1012				   Start_adc_zp_1x
+     72  1012		       75 81		      adc	ZP_1,X
+     73  1014		       00		      brk
+     74  1015
+     75  1015				   Start_adc_zp_80x
+     76  1015		       75 82		      adc	ZP_80,X
+     77  1017		       00		      brk
+     78  1018
+     79  1018				   Start_adc_zp_ffx
+     80  1018		       75 83		      adc	ZP_ff,X
+     81  101a		       00		      brk
+     82  101b
+     83  101b							; --- Absolute ---
+     84  101b
+     85  101b				   Start_adc_abs_1
+     86  101b		       6d 01 04 	      adc	DATA_1
+     87  101e		       00		      brk
+     88  101f
+     89  101f				   Start_adc_abs_80
+     90  101f		       6d 02 04 	      adc	DATA_80
+     91  1022		       00		      brk
+     92  1023
+     93  1023				   Start_adc_abs_ff
+     94  1023		       6d 03 04 	      adc	DATA_ff
+     95  1026		       00		      brk
+     96  1027
+     97  1027							; --- Absolute, X ---
+     98  1027
+     99  1027							; --- Absolute, Y ---
+    100  1027
+    101  1027							; --- Indirect, X ---
+    102  1027
+    103  1027							; --- Indirect, Y ---
+    104  1027

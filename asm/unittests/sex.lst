@@ -1,0 +1,19 @@
+------- FILE sex.asm LEVEL 1 PASS 1
+      1  0000 ????
+      2  0000 ????						; Assembler should use basic 6502 instructions
+      3  0000 ????				      processor	6502
+      4  0000 ????
+      5  0000 ????						; Some code
+      6  1000					      org	$1000
+      7  1000
+      8  1000				   Start_sec
+      9  1000		       38		      sec
+     10  1001		       00		      brk
+     11  1002
+     12  1002				   Start_sed
+     13  1002		       f8		      sed
+     14  1003		       00		      brk
+     15  1004
+     16  1004				   Start_sei
+     17  1004		       78		      sei
+     18  1005		       00		      brk

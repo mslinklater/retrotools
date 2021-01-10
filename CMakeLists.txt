@@ -17,9 +17,9 @@ set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
 
 # libraries
-set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
-set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
-set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
+set(SDL2_DIR /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
+set(OPENGL_opengl_LIBRARY /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
+set(OPENGL_glx_LIBRARY /usr/lib/arm-linux-gnueabihf/)
 
 # headers
 set(OPENGL_INCLUDE_DIR /usr/include/GL/)

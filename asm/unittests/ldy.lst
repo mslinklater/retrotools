@@ -1,0 +1,89 @@
+------- FILE ldy.asm LEVEL 1 PASS 2
+      1  1026 ????
+      2  1026 ????						; Assembler should use basic 6502 instructions
+      3  1026 ????				      processor	6502
+      4  1026 ????
+      5  1026 ????						; Some zero page data
+      6  0080					      org	$0080
+      7  0080
+      8  0080				   ZP_ZERO
+      9  0080		       00		      .byte.b	$00
+     10  0081				   ZP_ONE
+     11  0081		       01		      .byte.b	$01
+     12  0082				   ZP_TWO
+     13  0082		       02		      .byte.b	$02
+     14  0083
+     15  0083				   ZP_D0
+     16  0083		       00 04		      .word.w	DATA_ZERO
+     17  0085				   ZP_D1
+     18  0085		       01 04		      .word.w	DATA_ONE
+     19  0087				   ZP_D2
+     20  0087		       02 04		      .word.w	DATA_TWO
+     21  0089				   ZP_D3
+     22  0089		       03 04		      .word.w	DATA_THREE
+     23  008b				   ZP_DP
+     24  008b		       c0 05		      .word.w	PAGE_NEXT_ROOT
+     25  008d
+     26  008d							; Some non zero page data
+     27  0400					      org	$400
+     28  0400
+     29  0400				   DATA_ZERO
+     30  0400		       00		      .byte.b	$00
+     31  0401				   DATA_ONE
+     32  0401		       01		      .byte.b	$01
+     33  0402				   DATA_TWO
+     34  0402		       02		      .byte.b	$02
+     35  0403				   DATA_THREE
+     36  0403		       03		      .byte.b	$03
+     37  0404		       04		      .byte.b	$04
+     38  0405
+     39  05c0					      org	$5c0
+     40  05c0				   PAGE_NEXT_ROOT
+     41  05c0		       00		      .byte.b	$00
+     42  05c1
+     43  0610					      org	$610
+     44  0610				   PAGE_NEXT
+     45  0610		       24		      .byte.b	$24
+     46  0611
+     47  0611							; Some code
+     48  1000					      org	$1000
+     49  1000
+     50  1000				   Start_imm
+     51  1000		       a0 40		      ldy	#$40
+     52  1002		       00		      brk
+     53  1003
+     54  1003				   Start_imm_zero
+     55  1003		       a0 00		      ldy	#$00
+     56  1005		       00		      brk
+     57  1006
+     58  1006				   Start_imm_neg
+     59  1006		       a0 80		      ldy	#$80
+     60  1008		       00		      brk
+     61  1009
+     62  1009				   Start_zp
+     63  1009		       a4 81		      ldy	ZP_ONE
+     64  100b		       00		      brk
+     65  100c
+     66  100c				   Start_zpx1
+     67  100c		       a2 01		      ldx	#$01
+     68  100e		       b4 81		      ldy	ZP_ONE,x
+     69  1010		       00		      brk
+     70  1011
+     71  1011				   Start_zpx2
+     72  1011		       a2 ff		      ldx	#$ff
+     73  1013		       b4 81		      ldy	ZP_ONE,x
+     74  1015		       00		      brk
+     75  1016
+     76  1016				   Start_abs
+     77  1016		       ac 01 04 	      ldy	DATA_ONE
+     78  1019		       00		      brk
+     79  101a
+     80  101a				   Start_absx1
+     81  101a		       a2 03		      ldx	#DATA_THREE-DATA_ZERO
+     82  101c		       bc 00 04 	      ldy	DATA_ZERO,x
+     83  101f		       00		      brk
+     84  1020
+     85  1020				   Start_absx2
+     86  1020		       a2 50		      ldx	#PAGE_NEXT-PAGE_NEXT_ROOT
+     87  1022		       bc c0 05 	      ldy	PAGE_NEXT_ROOT,x
+     88  1025		       00		      brk

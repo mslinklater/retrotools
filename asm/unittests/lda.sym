@@ -1,0 +1,33 @@
+--- Symbol List (sorted by symbol)
+DATA_ONE                 0401              (R )
+DATA_THREE               0403              (R )
+DATA_TWO                 0402              (R )
+DATA_ZERO                0400              (R )
+IMM_VALUE_NEGFLAG        0080              (R )
+IMM_VALUE_NOFLAGS        0040              (R )
+IMM_VALUE_ZEROFLAG       0000              (R )
+PAGE_NEXT                0610              (R )
+PAGE_NEXT_ROOT           05c0              (R )
+Start_abs                1016                  
+Start_absx1              101a                  
+Start_absx2              1020                  
+Start_absy1              1026                  
+Start_absy2              102c                  
+Start_imm                1000                  
+Start_indx               1032                  
+Start_indy1              1037                  
+Start_indy2              103c                  
+Start_neg                1006                  
+Start_zero               1003                  
+Start_zp                 1009                  
+Start_zpx1               100c                  
+Start_zpx2               1011                  
+ZP_D0                    0083              (R )
+ZP_D1                    0085                  
+ZP_D2                    0087              (R )
+ZP_D3                    0089              (R )
+ZP_DP                    008b              (R )
+ZP_ONE                   0081              (R )
+ZP_TWO                   0082                  
+ZP_ZERO                  0080                  
+--- End of Symbol List.

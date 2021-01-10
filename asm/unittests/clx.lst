@@ -1,0 +1,23 @@
+------- FILE clx.asm LEVEL 1 PASS 1
+      1  0000 ????
+      2  0000 ????						; Assembler should use basic 6502 instructions
+      3  0000 ????				      processor	6502
+      4  0000 ????
+      5  0000 ????						; Some code
+      6  1000					      org	$1000
+      7  1000
+      8  1000				   Start_clc
+      9  1000		       18		      clc
+     10  1001		       00		      brk
+     11  1002
+     12  1002				   Start_cld
+     13  1002		       d8		      cld
+     14  1003		       00		      brk
+     15  1004
+     16  1004				   Start_cli
+     17  1004		       58		      cli
+     18  1005		       00		      brk
+     19  1006
+     20  1006				   Start_clv
+     21  1006		       b8		      clv
+     22  1007		       00		      brk

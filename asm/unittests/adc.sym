@@ -1,0 +1,26 @@
+--- Symbol List (sorted by symbol)
+DATA_0                   0400                  
+DATA_1                   0401              (R )
+DATA_80                  0402              (R )
+DATA_ff                  0403              (R )
+DATA_ZP_0                0404                  
+DATA_ZP_1                0406                  
+DATA_ZP_80               0408                  
+DATA_ZP_ff               040a                  
+Start_adc_abs_1          101b                  
+Start_adc_abs_80         101f                  
+Start_adc_abs_ff         1023                  
+Start_adc_imm_01         1000                  
+Start_adc_imm_80         1003                  
+Start_adc_imm_ff         1006                  
+Start_adc_zp_1           1009                  
+Start_adc_zp_1x          1012                  
+Start_adc_zp_80          100c                  
+Start_adc_zp_80x         1015                  
+Start_adc_zp_ff          100f                  
+Start_adc_zp_ffx         1018                  
+ZP_0                     0080              (R )
+ZP_1                     0081              (R )
+ZP_80                    0082              (R )
+ZP_ff                    0083              (R )
+--- End of Symbol List.

@@ -1,0 +1,112 @@
+------- FILE lda.asm LEVEL 1 PASS 2
+      1  1041 ????
+      2  1041 ????						; Assembler should use basic 6502 instructions
+      3  1041 ????				      processor	6502
+      4  1041 ????
+      5  1041 ????						; Some zero page data
+      6  0080					      org	$0080
+      7  0080
+      8  0080				   ZP_ZERO
+      9  0080		       00		      .byte.b	$00
+     10  0081				   ZP_ONE
+     11  0081		       01		      .byte.b	$01
+     12  0082				   ZP_TWO
+     13  0082		       02		      .byte.b	$02
+     14  0083
+     15  0083				   ZP_D0
+     16  0083		       00 04		      .word.w	DATA_ZERO
+     17  0085				   ZP_D1
+     18  0085		       01 04		      .word.w	DATA_ONE
+     19  0087				   ZP_D2
+     20  0087		       02 04		      .word.w	DATA_TWO
+     21  0089				   ZP_D3
+     22  0089		       03 04		      .word.w	DATA_THREE
+     23  008b				   ZP_DP
+     24  008b		       c0 05		      .word.w	PAGE_NEXT_ROOT
+     25  008d
+     26  008d							; Some non zero page data
+     27  0400					      org	$400
+     28  0400
+     29  0400				   DATA_ZERO
+     30  0400		       00		      .byte.b	$00
+     31  0401				   DATA_ONE
+     32  0401		       01		      .byte.b	$01
+     33  0402				   DATA_TWO
+     34  0402		       02		      .byte.b	$02
+     35  0403				   DATA_THREE
+     36  0403		       03		      .byte.b	$03
+     37  0404		       04		      .byte.b	$04
+     38  0405
+     39  05c0					      org	$5c0
+     40  05c0				   PAGE_NEXT_ROOT
+     41  05c0		       00		      .byte.b	$00
+     42  0610					      org	$610
+     43  0610				   PAGE_NEXT
+     44  0610		       24		      .byte.b	$24
+     45  0611
+     46  0611							; Some code
+     47  1000					      org	$1000
+     48  1000
+     49  1000		       00 40	   IMM_VALUE_NOFLAGS =	$40
+     50  1000		       00 00	   IMM_VALUE_ZEROFLAG =	$00
+     51  1000		       00 80	   IMM_VALUE_NEGFLAG =	$80
+     52  1000
+     53  1000				   Start_imm
+     54  1000		       a9 40		      lda	#IMM_VALUE_NOFLAGS
+     55  1002		       00		      brk
+     56  1003
+     57  1003				   Start_zero
+     58  1003		       a9 00		      lda	#IMM_VALUE_ZEROFLAG
+     59  1005		       00		      brk
+     60  1006
+     61  1006				   Start_neg
+     62  1006		       a9 80		      lda	#IMM_VALUE_NEGFLAG
+     63  1008		       00		      brk
+     64  1009
+     65  1009				   Start_zp
+     66  1009		       a5 81		      lda	ZP_ONE
+     67  100b		       00		      brk
+     68  100c
+     69  100c				   Start_zpx1
+     70  100c		       a2 ff		      ldx	#$ff
+     71  100e		       b5 81		      lda	ZP_ONE,x
+     72  1010		       00		      brk
+     73  1011
+     74  1011				   Start_zpx2
+     75  1011		       a2 01		      ldx	#$01
+     76  1013		       b5 81		      lda	ZP_ONE,x
+     77  1015		       00		      brk
+     78  1016
+     79  1016				   Start_abs
+     80  1016		       ad 01 04 	      lda	DATA_ONE
+     81  1019		       00		      brk
+     82  101a
+     83  101a				   Start_absx1
+     84  101a		       a2 01		      ldx	#$01
+     85  101c		       bd 01 04 	      lda	DATA_ONE,x
+     86  101f		       00		      brk
+     87  1020				   Start_absx2
+     88  1020		       a2 50		      ldx	#PAGE_NEXT-PAGE_NEXT_ROOT
+     89  1022		       bd c0 05 	      lda	PAGE_NEXT_ROOT,x
+     90  1025		       00		      brk
+     91  1026				   Start_absy1
+     92  1026		       a0 01		      ldy	#$01
+     93  1028		       b9 01 04 	      lda	DATA_ONE,y
+     94  102b		       00		      brk
+     95  102c				   Start_absy2
+     96  102c		       a0 50		      ldy	#PAGE_NEXT-PAGE_NEXT_ROOT
+     97  102e		       b9 c0 05 	      lda	PAGE_NEXT_ROOT,y
+     98  1031		       00		      brk
+     99  1032
+    100  1032				   Start_indx
+    101  1032		       a2 04		      ldx	#ZP_D2-ZP_D0
+    102  1034		       a1 83		      lda	(ZP_D0,x)
+    103  1036		       00		      brk
+    104  1037				   Start_indy1
+    105  1037		       a0 01		      ldy	#$01
+    106  1039		       b1 89		      lda	(ZP_D3),y
+    107  103b		       00		      brk
+    108  103c				   Start_indy2
+    109  103c		       a0 50		      ldy	#PAGE_NEXT-PAGE_NEXT_ROOT
+    110  103e		       b1 8b		      lda	(ZP_DP),y
+    111  1040		       00		      brk

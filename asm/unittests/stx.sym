@@ -1,0 +1,28 @@
+--- Symbol List (sorted by symbol)
+DATA0                    0400              (R )
+DATA1                    0401              (R )
+DATA2                    0402              (R )
+PAGE0                    0480              (R )
+PAGE2                    0500                  
+Start_sta_abs            1006                  
+Start_sta_absx           100a                  
+Start_sta_absy           100e                  
+Start_sta_indx           1012                  
+Start_sta_indy           1015                  
+Start_sta_indy_page      1018                  
+Start_sta_zp             1000                  
+Start_sta_zpx            1003                  
+Start_stx_abs            1021                  
+Start_stx_zp             101b                  
+Start_stx_zpy            101e                  
+Start_sty_abs            102b                  
+Start_sty_zp             1025                  
+Start_sty_zpx            1028                  
+ZP0                      0081              (R )
+ZP1                      0082                  
+ZP_ADDR0                 0083                  
+ZP_ADDR1                 0085              (R )
+ZP_ADDR2                 0087                  
+ZP_PAGE                  0089              (R )
+ZPNEG                    0080                  
+--- End of Symbol List.

@@ -6,8 +6,13 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+#define RUN_TESTS 1
+#define IMGUI_DEMO 1
+
+#if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
 #include "shared_cpp/catch.hpp"
+#endif
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
@@ -64,11 +69,13 @@ int main(int argc, char* argv[])
 
 	LOGINFO(titleString);
 
+#if RUN_TESTS
 	int result = Catch::Session().run(argc, argv);
 	if(result != 0)
 	{
 		return result;
 	}
+#endif
 
 	// check for command line args
 	
@@ -240,7 +247,9 @@ int main(int argc, char* argv[])
 		ImGui::NewFrame();
 		
 		// do stuff
+#if IMGUI_DEMO
 		ImGui::ShowDemoWindow(&show_demo_window);
+#endif
 
 		pWindowManager->Draw();	// draw all managed windows
 		

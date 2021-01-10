@@ -25,10 +25,6 @@ asm/8bitworkshop/*.lst
 asm/8bitworkshop/*.prg
 asm/8bitworkshop/*.bin
 asm/8bitworkshop/*.sym
-asm/unittests/*.lst
-asm/unittests/*.prg
-asm/unittests/*.bin
-asm/unittests/*.sym
 asm/misc/*.lst
 asm/misc/*.prg
 asm/misc/*.bin

@@ -1,0 +1,104 @@
+------- FILE stx.asm LEVEL 1 PASS 2
+      1  102f ????
+      2  102f ????						; Assembler should use basic 6502 instructions
+      3  102f ????				      processor	6502
+      4  102f ????
+      5  102f ????						; zero page
+      6  0080					      org	$80
+      7  0080				   ZPNEG
+      8  0080		       00		      .byte.b	$00
+      9  0081				   ZP0
+     10  0081		       00		      .byte.b	$00
+     11  0082				   ZP1
+     12  0082		       00		      .byte.b	$00
+     13  0083				   ZP_ADDR0
+     14  0083		       00 04		      .word.w	DATA0
+     15  0085				   ZP_ADDR1
+     16  0085		       01 04		      .word.w	DATA1
+     17  0087				   ZP_ADDR2
+     18  0087		       02 04		      .word.w	DATA2
+     19  0089				   ZP_PAGE
+     20  0089		       80 04		      .word.w	PAGE0
+     21  008b
+     22  008b							; normal data
+     23  0400					      org	$0400
+     24  0400				   DATA0
+     25  0400		       00		      .byte.b	$00
+     26  0401				   DATA1
+     27  0401		       00		      .byte.b	$00
+     28  0402				   DATA2
+     29  0402		       00		      .byte.b	$00
+     30  0403
+     31  0403							; page data
+     32  0480					      org	$0480
+     33  0480				   PAGE0
+     34  0480		       00		      .byte.b	$00
+     35  0481
+     36  0500					      org	$0500
+     37  0500				   PAGE2
+     38  0500		       00		      .byte.b	$00
+     39  0501
+     40  0501							; Some code
+     41  1000					      org	$1000
+     42  1000
+     43  1000							; --- STA ---
+     44  1000
+     45  1000				   Start_sta_zp
+     46  1000		       85 81		      sta	ZP0
+     47  1002		       00		      brk
+     48  1003
+     49  1003				   Start_sta_zpx
+     50  1003		       95 81		      sta	ZP0,x
+     51  1005		       00		      brk
+     52  1006
+     53  1006				   Start_sta_abs
+     54  1006		       8d 00 04 	      sta	DATA0
+     55  1009		       00		      brk
+     56  100a
+     57  100a				   Start_sta_absx
+     58  100a		       9d 00 04 	      sta	DATA0,x
+     59  100d		       00		      brk
+     60  100e
+     61  100e				   Start_sta_absy
+     62  100e		       99 00 04 	      sta	DATA0,y
+     63  1011		       00		      brk
+     64  1012
+     65  1012				   Start_sta_indx
+     66  1012		       81 85		      sta	(ZP_ADDR1,x)
+     67  1014		       00		      brk
+     68  1015
+     69  1015				   Start_sta_indy
+     70  1015		       91 85		      sta	(ZP_ADDR1),y
+     71  1017		       00		      brk
+     72  1018
+     73  1018				   Start_sta_indy_page
+     74  1018		       91 89		      sta	(ZP_PAGE),y
+     75  101a		       00		      brk
+     76  101b
+     77  101b							; --- STX ---
+     78  101b
+     79  101b				   Start_stx_zp
+     80  101b		       86 81		      stx	ZP0
+     81  101d		       00		      brk
+     82  101e
+     83  101e				   Start_stx_zpy
+     84  101e		       96 81		      stx	ZP0,y
+     85  1020		       00		      brk
+     86  1021
+     87  1021				   Start_stx_abs
+     88  1021		       8e 00 04 	      stx	DATA0
+     89  1024		       00		      brk
+     90  1025
+     91  1025							; --- STY ---
+     92  1025
+     93  1025				   Start_sty_zp
+     94  1025		       84 81		      sty	ZP0
+     95  1027		       00		      brk
+     96  1028
+     97  1028				   Start_sty_zpx
+     98  1028		       94 81		      sty	ZP0,x
+     99  102a		       00		      brk
+    100  102b
+    101  102b				   Start_sty_abs
+    102  102b		       8c 00 04 	      sty	DATA0
+    103  102e		       00		      brk
