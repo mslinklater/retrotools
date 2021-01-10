@@ -13,7 +13,6 @@ version.h
 Testing/
 RETAILROMS/
 *.cmake
-shared_cpp
 /Makefile
 components/Makefile
 imgui/Makefile
