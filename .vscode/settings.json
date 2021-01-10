@@ -1,8 +1,10 @@
 {
 	"cmake.configureOnOpen": true,
 	"files.exclude": {
+		"**/*.cmake": true,
+		"**/CMakeFiles/": true,
 		"build/": true,
-		"CMakeFiles/": true,
+		"CMakeCache.txt": true,
 		"Testing/": true
 	},
 	"git.autofetch": true

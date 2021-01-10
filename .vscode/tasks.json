@@ -6,7 +6,7 @@
         {
             "label": "make vistella",
             "type": "shell",
-            "command": "make vistella -j 2",
+            "command": "make vistella -j 4",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -17,7 +17,7 @@
             "type": "shell",
             "command": "make clean",
             "group": {
-                "kind": "build",
+                "kind": "build"
             }
         }
     ]

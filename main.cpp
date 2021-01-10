@@ -7,7 +7,7 @@
 #include <SDL_opengl.h>
 
 #define RUN_TESTS 1
-#define IMGUI_DEMO 1
+#define IMGUI_DEMO 0
 
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
@@ -73,6 +73,7 @@ int main(int argc, char* argv[])
 	int result = Catch::Session().run(argc, argv);
 	if(result != 0)
 	{
+		LOGINFO("Unit tests failed...");
 		return result;
 	}
 #endif
@@ -220,7 +221,11 @@ int main(int argc, char* argv[])
 	pStateSerialiser->DeserialiseAppConfig();
 
 	bool done = false;
+
+#if IMGUI_DEMO	
 	bool show_demo_window = false;
+#endif
+
 	while(!done)
 	{
 		SDL_Event event;

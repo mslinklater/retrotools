@@ -17,9 +17,18 @@ set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
 
 # libraries
-set(SDL2_DIR /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
-set(OPENGL_opengl_LIBRARY /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
-set(OPENGL_glx_LIBRARY /usr/lib/arm-linux-gnueabihf/)
+# SDL2
+if(EXISTS /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
+	set(SDL2_DIR /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
+endif()
+
+if(EXISTS /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
+	set(OPENGL_opengl_LIBRARY /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
+endif()
+
+if(EXISTS /usr/lib/arm-linux-gnueabihf/)
+	set(OPENGL_glx_LIBRARY /usr/lib/arm-linux-gnueabihf/)
+endif()
 
 # headers
 set(OPENGL_INCLUDE_DIR /usr/include/GL/)
@@ -53,4 +62,4 @@ configure_file(version.h.in version.h)
 add_executable(vistella ${SOURCE_FILES})
 target_include_directories(vistella PUBLIC "${PROJECT_BINARY_DIR}")
 target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
-target_compile_options(vistella PRIVATE -Wall -Werror -g)
+target_compile_options(vistella PRIVATE -Wall -Werror -Wno-psabi -g)
