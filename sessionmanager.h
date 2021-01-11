@@ -14,6 +14,6 @@ private:
 	static SessionManager* pInstance;
 
 	// ICommandProcessor
-	bool HandleCommand(const Command &command) override;
+	bool HandleCommand(const std::shared_ptr<Command> command) override;
 	// ~ICommandProcessor
 };

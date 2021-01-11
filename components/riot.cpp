@@ -121,7 +121,7 @@ void Riot::Tick()
 
 }
 
-bool Riot::HandleCommand(const Command& command)
+bool Riot::HandleCommand(const std::shared_ptr<Command> command)
 {
 	return false;
 }

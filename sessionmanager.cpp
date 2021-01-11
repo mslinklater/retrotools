@@ -22,7 +22,7 @@ SessionManager::~SessionManager()
 
 }
 
-bool SessionManager::HandleCommand(const Command& command)
+bool SessionManager::HandleCommand(const std::shared_ptr<Command> command)
 {
 	return false;
 }

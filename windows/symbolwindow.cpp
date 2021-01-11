@@ -73,7 +73,7 @@ void SymbolWindow::Draw()
 		{
 			Command refreshCmd;
 			refreshCmd.name = "refreshDisassembly";
-			CommandCenter::Instance()->QueueForBroadcast(refreshCmd);
+			CommandCenter::Instance()->QueueForBroadcast(std::make_shared<Command>(refreshCmd));
 		}
 		ImGui::Separator();
 	}

@@ -27,12 +27,14 @@ System::~System()
 
 }
 
-bool System::HandleCommand(const Command& command)
+bool System::HandleCommand(const std::shared_ptr<Command> command)
 {
+#if 0
 	if(command.name == Commands::kHaltCommand)
 	{
 		running = (command.payload == "false");
 	}
+#endif
 	return false;
 }
 

@@ -36,35 +36,39 @@ void CommandCenter::Update()
 		if(dispatchMap.find(thisCommand.name) != dispatchMap.end())
 		{
 			std::vector<ICommandProcessor*> handlers = dispatchMap[thisCommand.name];
-			for( ICommandProcessor* handler : handlers)
-			{
-				handler->HandleCommand(thisCommand);
-			}
+//			for( ICommandProcessor* handler : handlers)
+//			{
+//				handler->HandleCommand(thisCommand);
+//			}
 		}
 	}
 }
 
-void CommandCenter::QueueForBroadcast(Command& command)
+void CommandCenter::QueueForBroadcast(std::shared_ptr<Command> command)
 {
+#if 0
 #if LOGGING
 	LOGINFOF("CommandCenter::QueueForBroadcast %s(%s,%s)", command.name.c_str(), command.payload.c_str(), command.payload2.c_str());
 #endif
 	commandList[writeQueueIndex].push(command);
+#endif
 }
 
-void CommandCenter::BroadcastNow(Command& thisCommand)
+void CommandCenter::BroadcastNow(std::shared_ptr<Command> thisCommand)
 {
+#if 0
 #if LOGGING
 	LOGINFOF("CommandCenter::BroadcastNow %s(%s,%s)", thisCommand.name.c_str(), thisCommand.payload.c_str(), thisCommand.payload2.c_str());
 #endif
 	if(dispatchMap.find(thisCommand.name) != dispatchMap.end())
 	{
 		std::vector<ICommandProcessor*> handlers = dispatchMap[thisCommand.name];
-		for( ICommandProcessor* handler : handlers)
-		{
-			handler->HandleCommand(thisCommand);
-		}
+//		for( ICommandProcessor* handler : handlers)
+//		{
+//			handler->HandleCommand(thisCommand);
+//		}
 	}
+#endif
 }
 
 CommandCenter * CommandCenter::Instance()
@@ -107,6 +111,8 @@ void CommandCenter::Unsubscribe(std::string commandName, ICommandProcessor* hand
 	}
 }
 
+// Shared Commands
+
 void SharedCommands::ToggleWindow(std::string windowName)
 {
 #if LOGGING
@@ -114,8 +120,8 @@ void SharedCommands::ToggleWindow(std::string windowName)
 #endif
 	Command cmd;
 	cmd.name = kToggleWindowCommand;
-	cmd.payload = windowName;
-	CommandCenter::Instance()->QueueForBroadcast(cmd);
+//	cmd.payload = windowName;
+	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<Command>(cmd));
 }
 
 void SharedCommands::Quit(void)
@@ -125,5 +131,5 @@ void SharedCommands::Quit(void)
 #endif
 	Command cmd;
 	cmd.name = kQuitCommand;
-	CommandCenter::Instance()->QueueForBroadcast(cmd);
+	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<Command>(cmd));
 }

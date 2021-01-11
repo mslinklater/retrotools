@@ -41,8 +41,9 @@ TiaWindow::~TiaWindow()
 	glDeleteTextures(1, &videoOutputTexture);
 }
 
-bool TiaWindow::HandleCommand(const Command& command)
+bool TiaWindow::HandleCommand(const std::shared_ptr<Command> command)
 {
+#if 0
 	if(command.name == Commands::kVSyncCommand)
 	{
 		float newCount = (float)(pTia->GetRasterCount());
@@ -50,6 +51,7 @@ bool TiaWindow::HandleCommand(const Command& command)
 		rasterCountOffset++;
 		rasterCountOffset %= kRasterCountHistorySize;
 	}
+#endif
 	return false;
 }
 

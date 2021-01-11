@@ -1,17 +1,15 @@
 #pragma once
 #include <string>
+#include <memory>
 
 class Command
 {
 public:
-	std::string	name;	
-	std::string payload;
-	std::string payload2;
-	std::string context;
+	std::string	name;
 };
 
 class ICommandProcessor
 {
 public:
-	virtual bool HandleCommand(const Command& command) = 0;
+	virtual bool HandleCommand(const std::shared_ptr<Command> command) = 0;
 };

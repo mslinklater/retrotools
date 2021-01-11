@@ -1044,8 +1044,9 @@ void Cpu6502Alpha::DeserialiseState(json& object)
 	}
 }
 
-bool Cpu6502Alpha::HandleCommand(const Command& command)
+bool Cpu6502Alpha::HandleCommand(const std::shared_ptr<Command> command)
 {
+#if 0
 	if(command.name == Commands::kHaltCommand)
 	{
 		if((command.payload == "false") && (command.payload2 == Commands::kHaltCommandTickCpu))
@@ -1067,6 +1068,6 @@ bool Cpu6502Alpha::HandleCommand(const Command& command)
 		}
 		
 	}
-	
+#endif
 	return false;
 }

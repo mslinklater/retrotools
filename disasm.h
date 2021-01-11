@@ -67,7 +67,7 @@ public:
 
 private:
 	
-	virtual bool HandleCommand(const Command & command) override;
+	virtual bool HandleCommand(const std::shared_ptr<Command> command) override;
 	
 	void UpdateDetailLines();
 	void UpdateLineLabels();

@@ -54,18 +54,19 @@ void WindowManager::Draw()
 	}
 }
 
-bool WindowManager::HandleCommand(const Command& command)
+bool WindowManager::HandleCommand(const std::shared_ptr<Command> command)
 {
+#if 0
 	if(command.name == SharedCommands::kToggleWindowCommand)
 	{
-		windowActive[command.payload] = !windowActive[command.payload];
+//		windowActive[command.payload] = !windowActive[command.payload];
 	}
 	if(command.name == SharedCommands::kQuitCommand)
 	{
 		// save the state of the windows
 		receivedQuit = true;
 	}
-	
+#endif	
 	return false;
 }
 

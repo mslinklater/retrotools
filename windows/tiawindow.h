@@ -32,7 +32,7 @@ public:
 	// ~IStateSerialisation
 
 	// ICommandProcessor
-	virtual bool HandleCommand(const Command& command);
+	virtual bool HandleCommand(const std::shared_ptr<Command> command);
 	// ~ICommandProcessor
 
 private:
