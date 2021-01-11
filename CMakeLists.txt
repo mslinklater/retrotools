@@ -16,18 +16,28 @@ set(CMAKE_LIBRARY_SUFFIXES a)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
 
-# libraries
+#set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
+#set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
+#set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
+
+# libraries - I'm probably doing this a rubbish way
 # SDL2
 if(EXISTS /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
 	set(SDL2_DIR /usr/lib/arm-linux-gnueabihf/cmake/SDL2/)
+elseif(EXISTS /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
+	set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
 endif()
 
 if(EXISTS /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
 	set(OPENGL_opengl_LIBRARY /usr/lib/arm-linux-gnueabihf/libOpenGL.so)
+elseif(EXISTS /usr/lib/x86_64-linux-gnu/libOpenGL.so)
+	set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
 endif()
 
 if(EXISTS /usr/lib/arm-linux-gnueabihf/)
 	set(OPENGL_glx_LIBRARY /usr/lib/arm-linux-gnueabihf/)
+elseif(EXISTS /usr/lib/x86_64-linux-gnu/)
+	set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
 endif()
 
 # headers
