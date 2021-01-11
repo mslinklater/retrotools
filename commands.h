@@ -6,9 +6,28 @@
 #pragma once
 
 #include <string>
+#include "shared_cpp/icommandprocessor.h"
 
 namespace Commands
 {
+	class HaltCommand : public Command
+	{
+		enum ERunType
+		{
+			kHalt,
+			kTickTia,
+			kHBlank,
+			kVBlank,
+			kTickCpu,
+			kCpuInstruction,
+			kRun
+		};
+
+		bool		halt;
+		ERunType	runType;
+		std::string reason;
+	};
+
 	void Halt(bool halt, std::string runType, std::string reason);
 	
 	static const std::string kHaltCommand("Halt");

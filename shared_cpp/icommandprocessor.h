@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
 
-struct Command
+class Command
 {
-	std::string	name;
+public:
+	std::string	name;	
 	std::string payload;
 	std::string payload2;
 	std::string context;
