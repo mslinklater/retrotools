@@ -18,7 +18,7 @@ SystemWindow::~SystemWindow()
 
 }
 
-bool SystemWindow::HandleCommand(const std::shared_ptr<Command> command)
+bool SystemWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 #if 0
 	if(command.name == Commands::kHaltCommand)

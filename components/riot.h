@@ -48,7 +48,7 @@ public:
     void Tick();
 
 	// ICommandProcessor
-	bool HandleCommand(const std::shared_ptr<Command> command);
+	bool HandleCommand(const std::shared_ptr<CommandBase> command);
 	// ~ICommandProcessor
 
 	uint8_t GetTimerVal(){return timerVal;}

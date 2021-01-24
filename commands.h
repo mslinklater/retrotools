@@ -10,7 +10,7 @@
 
 namespace Commands
 {
-	class HaltCommand : public Command
+	class HaltCommand : public CommandBase
 	{
 		enum ERunType
 		{

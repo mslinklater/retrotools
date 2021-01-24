@@ -337,7 +337,7 @@ void Disassembler::UpdateLineLabels()
 	}
 }
 
-bool Disassembler::HandleCommand(const std::shared_ptr<Command> command)
+bool Disassembler::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 #if 0
 	UpdateLineLabels();

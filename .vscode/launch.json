@@ -26,7 +26,7 @@
             "name": "(gdb) Launch retail combat",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/vistella",
+            "program": "${workspaceFolder}/vistella",
             "args": ["-l", "~/Code/retrotools/RETAILROMS/Combat.bin", "-a", "f000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

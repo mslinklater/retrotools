@@ -499,7 +499,7 @@ void Tia::Write(uint8_t address, uint8_t value)
 	}
 }
 
-bool Tia::HandleCommand(const std::shared_ptr<Command> command)
+bool Tia::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 #if 0
 	if(command.name == Commands::kHaltCommand)

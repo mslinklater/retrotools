@@ -35,7 +35,6 @@ public:
 		bool used;
 		Cpu6502Base::EMnemonic	mnemonic;
 		Cpu6502Base::EAddressingMode addressingMode;
-//		Cpu6502Alpha::EMemoryOp memoryOp;
 		uint8_t		opcode;
 		uint8_t		param1;
 		uint8_t		param2;
@@ -67,7 +66,7 @@ public:
 
 private:
 	
-	virtual bool HandleCommand(const std::shared_ptr<Command> command) override;
+	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command) override;
 	
 	void UpdateDetailLines();
 	void UpdateLineLabels();

@@ -41,7 +41,7 @@ TiaWindow::~TiaWindow()
 	glDeleteTextures(1, &videoOutputTexture);
 }
 
-bool TiaWindow::HandleCommand(const std::shared_ptr<Command> command)
+bool TiaWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 #if 0
 	if(command.name == Commands::kVSyncCommand)

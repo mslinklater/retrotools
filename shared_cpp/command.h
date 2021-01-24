@@ -12,6 +12,12 @@
 
 namespace SharedCommands
 {
+	class ToggleWindowCommand : public CommandBase
+	{
+		public:
+		virtual ~ToggleWindowCommand(){}
+		std::string windowName;
+	};
 	void ToggleWindow(std::string windowName);
 	static const std::string kToggleWindowCommand("ToggleWindow");
 
@@ -26,8 +32,8 @@ public:
 	static CommandCenter* Instance();
 	void Update();
 	
-	void QueueForBroadcast(std::shared_ptr<Command> command);
-	void BroadcastNow(std::shared_ptr<Command> command);
+	void QueueForBroadcast(std::shared_ptr<CommandBase> command);
+	void BroadcastNow(std::shared_ptr<CommandBase> command);
 	
 	void Subscribe(std::string commandName, ICommandProcessor* handler);
 	void Unsubscribe(std::string commandName, ICommandProcessor* handler);
@@ -38,7 +44,7 @@ private:
 	
 	uint32_t			writeQueueIndex;
 	uint32_t			readQueueIndex;
-	std::queue<Command> commandList[2];	// double-buffered to stop infinite recursion
+	std::queue<std::shared_ptr<CommandBase>> commandList[2];	// double-buffered to stop infinite recursion
 	
 	std::map<std::string,std::vector<ICommandProcessor*>>	dispatchMap;
 	

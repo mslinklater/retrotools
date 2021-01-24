@@ -9,7 +9,7 @@
 
 void Commands::Halt(bool halt, std::string runType, std::string reason)
 {
-	Command cmd;
+	CommandBase cmd;
 	cmd.name = kHaltCommand;
 //	cmd.payload = halt ? "true" : "false";
 //	cmd.payload2 = runType;
@@ -20,7 +20,7 @@ void Commands::Halt(bool halt, std::string runType, std::string reason)
 
 void Commands::VSync()
 {
-	Command cmd;
+	CommandBase cmd;
 	cmd.name = kVSyncCommand;
 	
 //	CommandCenter::Instance()->BroadcastNow(cmd);

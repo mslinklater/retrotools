@@ -7,6 +7,8 @@
 #include "log.h"
 #include <algorithm>
 
+using namespace std;
+
 #define LOGGING 0
 
 CommandCenter* CommandCenter::pInstance = 0;
@@ -30,45 +32,41 @@ void CommandCenter::Update()
 	
 	while(!commandList[readQueueIndex].empty())
 	{
-		Command thisCommand = commandList[readQueueIndex].front();
+		shared_ptr<CommandBase> thisCommand = commandList[readQueueIndex].front();
 		commandList[readQueueIndex].pop();
 		
-		if(dispatchMap.find(thisCommand.name) != dispatchMap.end())
+		if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 		{
-			std::vector<ICommandProcessor*> handlers = dispatchMap[thisCommand.name];
-//			for( ICommandProcessor* handler : handlers)
-//			{
-//				handler->HandleCommand(thisCommand);
-//			}
+			vector<ICommandProcessor*> handlers = dispatchMap[thisCommand->name];
+			for( ICommandProcessor* handler : handlers)
+			{
+				handler->HandleCommand(thisCommand);
+			}
 		}
 	}
 }
 
-void CommandCenter::QueueForBroadcast(std::shared_ptr<Command> command)
+void CommandCenter::QueueForBroadcast(shared_ptr<CommandBase> command)
 {
-#if 0
 #if LOGGING
 	LOGINFOF("CommandCenter::QueueForBroadcast %s(%s,%s)", command.name.c_str(), command.payload.c_str(), command.payload2.c_str());
 #endif
 	commandList[writeQueueIndex].push(command);
-#endif
 }
 
-void CommandCenter::BroadcastNow(std::shared_ptr<Command> thisCommand)
+void CommandCenter::BroadcastNow(shared_ptr<CommandBase> thisCommand)
 {
-#if 0
 #if LOGGING
 	LOGINFOF("CommandCenter::BroadcastNow %s(%s,%s)", thisCommand.name.c_str(), thisCommand.payload.c_str(), thisCommand.payload2.c_str());
 #endif
-	if(dispatchMap.find(thisCommand.name) != dispatchMap.end())
+	if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 	{
-		std::vector<ICommandProcessor*> handlers = dispatchMap[thisCommand.name];
-//		for( ICommandProcessor* handler : handlers)
-//		{
-//			handler->HandleCommand(thisCommand);
-//		}
+		vector<ICommandProcessor*> handlers = dispatchMap[thisCommand->name];
+		for( ICommandProcessor* handler : handlers)
+		{
+			handler->HandleCommand(thisCommand);
+		}
 	}
-#endif
 }
 
 CommandCenter * CommandCenter::Instance()
@@ -80,11 +78,11 @@ CommandCenter * CommandCenter::Instance()
 	return pInstance;
 }
 
-void CommandCenter::Subscribe(std::string commandName, ICommandProcessor* handler)
+void CommandCenter::Subscribe(string commandName, ICommandProcessor* handler)
 {
-	std::vector<ICommandProcessor*>& vec = dispatchMap[commandName];
+	vector<ICommandProcessor*>& vec = dispatchMap[commandName];
 
-	if(std::find(vec.begin(), vec.end(), handler) == vec.end())
+	if(find(vec.begin(), vec.end(), handler) == vec.end())
 	{
 		vec.push_back(handler);
 	}
@@ -95,11 +93,11 @@ void CommandCenter::Subscribe(std::string commandName, ICommandProcessor* handle
 	
 }
 
-void CommandCenter::Unsubscribe(std::string commandName, ICommandProcessor* handler)
+void CommandCenter::Unsubscribe(string commandName, ICommandProcessor* handler)
 {
-	std::vector<ICommandProcessor*>& vec = dispatchMap[commandName];
+	vector<ICommandProcessor*>& vec = dispatchMap[commandName];
 
-	auto ret = std::find(vec.begin(), vec.end(), handler);
+	auto ret = find(vec.begin(), vec.end(), handler);
 
 	if(ret != vec.end())
 	{
@@ -113,15 +111,15 @@ void CommandCenter::Unsubscribe(std::string commandName, ICommandProcessor* hand
 
 // Shared Commands
 
-void SharedCommands::ToggleWindow(std::string windowName)
+void SharedCommands::ToggleWindow(string windowName)
 {
 #if LOGGING
 	LOGINFOF("Commands::ToggleWindow %s", windowName.c_str());
 #endif
-	Command cmd;
+	ToggleWindowCommand cmd;
 	cmd.name = kToggleWindowCommand;
-//	cmd.payload = windowName;
-	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<Command>(cmd));
+	cmd.windowName = windowName;
+	CommandCenter::Instance()->QueueForBroadcast(dynamic_pointer_cast<CommandBase>(make_shared<ToggleWindowCommand>(cmd)));
 }
 
 void SharedCommands::Quit(void)
@@ -129,7 +127,7 @@ void SharedCommands::Quit(void)
 #if LOGGING
 	LOGINFO("Commands::Quit");
 #endif
-	Command cmd;
+	CommandBase cmd;
 	cmd.name = kQuitCommand;
-	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<Command>(cmd));
+	CommandCenter::Instance()->QueueForBroadcast(make_shared<CommandBase>(cmd));
 }

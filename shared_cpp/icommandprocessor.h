@@ -2,14 +2,15 @@
 #include <string>
 #include <memory>
 
-class Command
+class CommandBase
 {
 public:
+	virtual ~CommandBase(){}
 	std::string	name;
 };
 
 class ICommandProcessor
 {
 public:
-	virtual bool HandleCommand(const std::shared_ptr<Command> command) = 0;
+	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command) = 0;
 };
