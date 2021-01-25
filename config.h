@@ -4,6 +4,9 @@
 // See file 'LICENSE' for license details
 
 #pragma once
+
+#if 0
+
 #include <cstdint>
 #include <string>
 #include "shared_cpp/errorcodes.h"
@@ -27,3 +30,4 @@ private:
 	uint16_t	loadROMAddress;
 };
 
+#endif

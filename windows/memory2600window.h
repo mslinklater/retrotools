@@ -7,7 +7,8 @@
 
 #include <inttypes.h>
 #include "../shared_cpp/windowbase.h"
-#include "../config.h"
+//#include "../config.h"
+#include "../shared_cpp/istateserialisation.h"
 
 class Memory2600;
 

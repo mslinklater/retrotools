@@ -7,7 +7,7 @@
 #include <SDL_opengl.h>
 
 #define RUN_TESTS 1
-#define IMGUI_DEMO 0
+#define IMGUI_DEMO 1
 
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
@@ -44,8 +44,9 @@
 #include "shared_cpp/windowmanager.h"
 #include "shared_cpp/stateserialiser.h"
 
-static Config* pConfig = 0;
+//static Config* pConfig = 0;
 
+#if 0
 void ProcessCommandLine(int argc, char* argv[])
 {
 	pConfig = new Config();
@@ -57,6 +58,7 @@ void ProcessCommandLine(int argc, char* argv[])
 		exit(1);
 	}
 }
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -80,7 +82,7 @@ int main(int argc, char* argv[])
 
 	// check for command line args
 	
-	ProcessCommandLine(argc, argv);
+//	ProcessCommandLine(argc, argv);
 	
 	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -159,6 +161,7 @@ int main(int argc, char* argv[])
 	pDisassembler->SetCpu(pCpu);
 	pDisassembler->SetSymbolStore(pSymbolStore);
 
+#if 0
 	uint16_t bytesLoaded = 0;
 	uint16_t loadAddress = pConfig->GetLoadAddress();
 
@@ -170,9 +173,10 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 	}
+#endif
 
 	// TODO: Handle loaded address better
-	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
+//	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
 	
 	// create windows
 

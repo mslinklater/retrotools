@@ -10,6 +10,7 @@
 #include "shared_cpp/errorcodes.h"
 #include "symbol.h"
 #include "config.h"
+#include "shared_cpp/istateserialisation.h"
 
 class SymbolStore : public IStateSerialisation
 {

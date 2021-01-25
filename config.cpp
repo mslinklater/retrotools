@@ -4,6 +4,7 @@
 // See file 'LICENSE' for license details
 
 // Global configuration vars
+#if 0
 
 #include <string.h>
 #include <string>
@@ -75,3 +76,4 @@ uint16_t Config::GetLoadAddress(void)
 {
 	return loadROMAddress;
 }
+#endif

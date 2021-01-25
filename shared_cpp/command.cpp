@@ -116,6 +116,7 @@ void SharedCommands::ToggleWindow(string windowName)
 #if LOGGING
 	LOGINFOF("Commands::ToggleWindow %s", windowName.c_str());
 #endif
+
 	ToggleWindowCommand cmd;
 	cmd.name = kToggleWindowCommand;
 	cmd.windowName = windowName;
@@ -127,6 +128,7 @@ void SharedCommands::Quit(void)
 #if LOGGING
 	LOGINFO("Commands::Quit");
 #endif
+
 	CommandBase cmd;
 	cmd.name = kQuitCommand;
 	CommandCenter::Instance()->QueueForBroadcast(make_shared<CommandBase>(cmd));

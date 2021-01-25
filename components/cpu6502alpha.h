@@ -8,8 +8,9 @@
 #include <set>
 
 #include "../shared_cpp/command.h"
-#include "../config.h"
+//#include "../config.h"
 #include "cpu6502base.h"
+#include "../shared_cpp/istateserialisation.h"
 
 class Cpu6502Alpha : public Cpu6502Base, public ICommandProcessor, public IStateSerialisation
 {

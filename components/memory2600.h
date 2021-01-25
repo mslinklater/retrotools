@@ -11,6 +11,7 @@
 #include "../shared_cpp/errorcodes.h"
 #include "../config.h"
 #include "../interfaces/imemory.h"
+#include "../shared_cpp/istateserialisation.h"
 
 /*
 2600 memory layout
