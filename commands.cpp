@@ -7,7 +7,7 @@
 #include "shared_cpp/command.h"
 #include "shared_cpp/log.h"
 
-void Commands::Halt(bool halt, std::string runType, std::string reason)
+void Commands::Halt(bool halt, Commands::HaltCommand::ERunType runType, std::string reason)
 {
 	CommandBase cmd;
 	cmd.name = kHaltCommand;

@@ -6,6 +6,8 @@
 #include "../utils/romfilebundle.h"
 #include "testcommon.h"
 
+#if RUN_TESTS
+
 TEST_CASE("lda", "[cpu6502alpha]")
 {
 	// bury this
@@ -114,3 +116,5 @@ TEST_CASE("lda", "[cpu6502alpha]")
 		REQUIRE(numClocks == 8);
 	}
 }
+
+#endif // RUN_TESTS

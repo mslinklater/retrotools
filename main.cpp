@@ -5,9 +5,8 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include "globalconfig.h"
 
-#define RUN_TESTS 1
-#define IMGUI_DEMO 1
 
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER

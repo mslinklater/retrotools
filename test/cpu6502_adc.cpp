@@ -6,6 +6,8 @@
 #include "../utils/romfilebundle.h"
 #include "testcommon.h"
 
+#if RUN_TESTS
+
 TEST_CASE("adc", "[cpu6502]")
 {
 	std::unique_ptr<Cpu6502> pCpu(new Cpu6502());
@@ -140,3 +142,5 @@ TEST_CASE("adc", "[cpu6502]")
 		REQUIRE(numClocks == k6502TicksADCabs);
 	}
 }
+
+#endif // RUN_TESTS

@@ -104,7 +104,7 @@ void Tia::Tick()
 		rasterCount++;
 		if(bHaltOnHBlank)
 		{
-			Commands::Halt(true, "", "TIA HBlank");
+			Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA HBlank");
 			bHaltOnHBlank = false;
 		}
 		bCpuWaitingForHsync = false;
@@ -115,7 +115,7 @@ void Tia::Tick()
 
 	if(bHaltOnTick)
 	{
-		Commands::Halt(true, "", "TIA Tick");
+		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA Tick");
 		bHaltOnTick = false;
 	}
 }
@@ -349,7 +349,7 @@ uint8_t Tia::Read(uint8_t address)
     }
 	if((address < kNumReadRegisters) && (bReadBreakpoints[address]))
 	{
-		Commands::Halt(true, "", "TIA read");		
+		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA read");		
 	}
     return ret;
 }
@@ -495,7 +495,7 @@ void Tia::Write(uint8_t address, uint8_t value)
     }
 	if((address < kNumWriteRegisters) && (bWriteBreakpoints[address]))
 	{
-		Commands::Halt(true, "", "TIA write");		
+		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA write");		
 	}
 }
 
@@ -644,7 +644,7 @@ void Tia::SetVSYNC(uint8_t val)
 		frameNum++;
 		if(bHaltOnVBlank)
 		{
-			Commands::Halt(true, "", "TIA VSync");
+			Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA VSync");
 			bHaltOnVBlank = false;
 		}
 	}

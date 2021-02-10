@@ -12,6 +12,7 @@ namespace Commands
 {
 	class HaltCommand : public CommandBase
 	{
+	public:
 		enum ERunType
 		{
 			kHalt,
@@ -28,15 +29,16 @@ namespace Commands
 		std::string reason;
 	};
 
-	void Halt(bool halt, std::string runType, std::string reason);
+	void Halt(bool halt, HaltCommand::ERunType runType, std::string reason);
 	
 	static const std::string kHaltCommand("Halt");
-	static const std::string kHaltCommandTickTia("TickTia");
-	static const std::string kHaltCommandHBlank("HBlank");
-	static const std::string kHaltCommandVBlank("VBlank");
-	static const std::string kHaltCommandTickCpu("TickCpu");
-	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
-	static const std::string kHaltCommandRun("Run");
+	
+//	static const std::string kHaltCommandTickTia("TickTia");
+//	static const std::string kHaltCommandHBlank("HBlank");
+//	static const std::string kHaltCommandVBlank("VBlank");
+//	static const std::string kHaltCommandTickCpu("TickCpu");
+//	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
+//	static const std::string kHaltCommandRun("Run");
 
 	void VSync();
 	static const std::string kVSyncCommand("VSync");

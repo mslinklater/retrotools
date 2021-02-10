@@ -41,7 +41,7 @@ void SystemWindow::DrawState()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 		if(ImGui::Button("RUNNING"))
 		{
-			Commands::Halt(true, "", "System window button");
+			Commands::Halt(true, Commands::HaltCommand::kHalt, "System window button");
 		}
 		ImGui::PopStyleColor(1);
 	}
@@ -50,7 +50,7 @@ void SystemWindow::DrawState()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 		if(ImGui::Button("HALTED!"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandRun, "System window button");
+			Commands::Halt(false, Commands::HaltCommand::kRun, "System window button");
 		}
 		ImGui::SameLine();
 		ImGui::Text("%s", haltReason.c_str());
@@ -67,17 +67,17 @@ void SystemWindow::DrawTIA()
 	{
 		if(ImGui::Button("TickTIA"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandTickTia, "System window TickTIA button");
+			Commands::Halt(false, Commands::HaltCommand::kTickTia, "System window TickTIA button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("HBlank"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandHBlank, "System window HBlank button");
+			Commands::Halt(false, Commands::HaltCommand::kHBlank, "System window HBlank button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("VBlank"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandVBlank, "System window VBlank button");
+			Commands::Halt(false, Commands::HaltCommand::kVBlank, "System window VBlank button");
 		}
         ImGui::TreePop();
 	}
@@ -89,12 +89,12 @@ void SystemWindow::DrawCPU()
 	{
 		if(ImGui::Button("TickCPU"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandTickCpu, "System window TickCPU button");
+			Commands::Halt(false, Commands::HaltCommand::kTickCpu, "System window TickCPU button");
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("Instruction"))
 		{
-			Commands::Halt(false, Commands::kHaltCommandCpuInstruction, "System window CPU Instruction button");
+			Commands::Halt(false, Commands::HaltCommand::kCpuInstruction, "System window CPU Instruction button");
 		}
 		ImGui::TreePop();
 	}
