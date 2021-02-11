@@ -59,31 +59,21 @@ void ProcessCommandLine(int argc, char* argv[])
 }
 #endif
 
-int main(int argc, char* argv[])
+// DearImGui stuff
+static uint64_t	performanceFrequency;
+static uint64_t	performanceCounterLast;
+static SDL_GLContext gl_context;
+static SDL_Window* window;
+static int displayWidth;
+static int displayHeight;
+
+int InitImGui()
 {
-	uint64_t	performanceFrequency;
-	uint64_t	performanceCounterLast;
-	// TODO: Output the command line to stdout
-	
 	char titleString[64];
 	sprintf(titleString, "Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
 
 	LOGINFO(titleString);
 
-#if RUN_TESTS
-	int result = Catch::Session().run(argc, argv);
-	if(result != 0)
-	{
-		LOGINFO("Unit tests failed...");
-		return result;
-	}
-#endif
-
-	// check for command line args
-	
-//	ProcessCommandLine(argc, argv);
-	
-	// SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
 	{
 		LOGERRORF("%s\n", SDL_GetError());
@@ -100,11 +90,11 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MAXIMIZED);	
-	SDL_Window* window = SDL_CreateWindow(	titleString, 
+	window = SDL_CreateWindow(	titleString, 
 											SDL_WINDOWPOS_CENTERED, 
 											SDL_WINDOWPOS_CENTERED, 
 											640, 480, windowFlags);
-	SDL_GLContext gl_context = SDL_GL_CreateContext(window);
+	gl_context = SDL_GL_CreateContext(window);
 	SDL_GL_MakeCurrent(window, gl_context);
 	SDL_GL_SetSwapInterval(1);
 
@@ -116,6 +106,48 @@ int main(int argc, char* argv[])
 	ImGui::StyleColorsDark();
 	ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
 	ImGui_ImplOpenGL2_Init();
+
+	displayWidth = io.DisplaySize.x;
+	displayHeight = io.DisplaySize.y;
+
+	return 0;
+}
+
+void ShutdownImGui()
+{
+	// Cleanup
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+	
+	SDL_GL_DeleteContext(gl_context);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+int main(int argc, char* argv[])
+{
+	// TODO: Output the command line to stdout
+	
+
+#if RUN_TESTS
+	int result = Catch::Session().run(argc, argv);
+	if(result != 0)
+	{
+		LOGINFO("Unit tests failed...");
+		return result;
+	}
+#endif
+
+	// check for command line args
+	
+//	ProcessCommandLine(argc, argv);
+	
+	// SDL stuff
+	if(InitImGui() != 0)
+	{
+		return -1;
+	}
 	
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 
@@ -265,7 +297,7 @@ int main(int argc, char* argv[])
 		
 		// rendering
 		ImGui::Render();
-		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+		glViewport(0, 0, displayWidth, displayHeight);
 		glClearColor(clear_color.x, clear_color.y,clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -280,14 +312,7 @@ int main(int argc, char* argv[])
 	// Save the state of the windows
 	pStateSerialiser->SerialiseAppConfig();
 
-	// Cleanup
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-	
-	SDL_GL_DeleteContext(gl_context);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+	ShutdownImGui();
 	
 	delete pMemory;
 

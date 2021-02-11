@@ -12,8 +12,8 @@ vistella
 version.h
 Testing/
 RETAILROMS/
-*.cmake
-/Makefile
+**/*.cmake
+**/Makefile
 components/Makefile
 imgui/Makefile
 system/Makefile
