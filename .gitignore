@@ -14,13 +14,6 @@ Testing/
 RETAILROMS/
 **/*.cmake
 **/Makefile
-components/Makefile
-imgui/Makefile
-system/Makefile
-test/Makefile
-windows/Makefile
-utils/Makefile
-filebrowser/Makefile
 asm/8bitworkshop/*.lst
 asm/8bitworkshop/*.prg
 asm/8bitworkshop/*.bin

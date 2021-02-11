@@ -38,6 +38,7 @@
 #include "windows/tiawindow.h"
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
+#include "windows/perfect6502window.h"
 #include "shared_cpp/command.h"
 #include "utils/memoryutils.h"
 #include "shared_cpp/windowmanager.h"
@@ -252,6 +253,9 @@ int main(int argc, char* argv[])
 	SystemWindow* pSystemWindow = new SystemWindow();
 	pSystemWindow->SetSystem(pSystem);
 	pWindowManager->AddWindow(pSystemWindow, "System");
+
+	Perfect6502Window* pPerfect6502Window = new Perfect6502Window();
+	pWindowManager->AddWindow(pPerfect6502Window, "Perfect6502");
 
 	pStateSerialiser->DeserialiseAppConfig();
 

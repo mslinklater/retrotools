@@ -8,5 +8,6 @@ set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/systemwindow.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/tiawindow.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/riotwindow.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/perfect6502window.cpp 
 	PARENT_SCOPE)
 	
