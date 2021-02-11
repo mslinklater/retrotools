@@ -316,7 +316,7 @@ addNodeToGroup(state_t *state, nodenum_t n)
 	 * the fact that they are connected to vcc or vss.
 	 */
 	if (n == state->vss) {
-		state->group_contains_value = state_t::contains_vss;
+		state->group_contains_value = contains_vss;
 		return;
 	}
 	if (n == state->vcc) {
