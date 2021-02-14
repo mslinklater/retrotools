@@ -5,7 +5,6 @@
 
 #include "mainwindow.h"
 #include "../shared_cpp/log.h"
-#include "../imgui/imgui.h"
 #include "../shared_cpp/command.h"
 #include "../commands.h"
 #include "../shared_cpp/windowmanager.h"
@@ -23,12 +22,8 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::Draw()
+void MainWindow::DrawMenuBar()
 {
-	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
-	
-	bool bSessionOpen = false;
-
 	// Main Menu Bar
 	if(ImGui::BeginMenuBar())
 	{
@@ -42,7 +37,7 @@ void MainWindow::Draw()
 			if(ImGui::MenuItem("Open..."))
 			{
 				// open session
-				bSessionOpen = true;
+//				bSessionOpen = true;
 			}
 			if(ImGui::MenuItem("Save"))
 			{
@@ -80,6 +75,55 @@ void MainWindow::Draw()
 		}
 		ImGui::EndMenuBar();
 	}	
+}
+
+static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
+{
+	MainWindow* window = (MainWindow*)data->UserData;
+	return window->TextEditCallback(data);
+}
+
+int MainWindow::TextEditCallback(ImGuiInputTextCallbackData* data)
+{
+	return 0;
+}
+
+void MainWindow::DrawConsole()
+{
+	ImGui::Separator();
+	// Scroll region
+
+    const float footerHeightToReserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footerHeightToReserve), false, 0);
+	ImGui::EndChild();
+
+	ImGui::Separator();
+	// Command-Line
+	bool reclaimFocus = false;
+	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
+	if(ImGui::InputText("", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
+	{
+		// Exec the command
+		// clear the buffer
+		strcpy(inputBuffer, "");
+		reclaimFocus = true;
+	}
+	ImGui::SetItemDefaultFocus();
+    if (reclaimFocus)
+	{
+        ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+	}
+}
+
+void MainWindow::Draw()
+{
+	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
+	
+	bool bSessionOpen = false;
+
+	DrawMenuBar();
+
+	DrawConsole();
 
 	// New Session
 
@@ -121,5 +165,6 @@ void MainWindow::Draw()
 	{
 		LOGINFOF("MainWindow::Open file %s", file_dialog.selected_fn.c_str());
 	}
-	ImGui::End();
+
+	ImGui::End(); 
 }
