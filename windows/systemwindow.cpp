@@ -5,7 +5,7 @@
 
 #include "systemwindow.h"
 #include "../components/system.h"
-#include "../imgui/imgui.h"
+#include "common.h"
 #include "../commands.h"
 
 SystemWindow::SystemWindow()

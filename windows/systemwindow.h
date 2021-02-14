@@ -6,8 +6,8 @@
 #pragma once
 
 #include <inttypes.h>
-#include "../shared_cpp/windowbase.h"
-#include "../shared_cpp/command.h"
+#include "windowbase.h"
+#include "command.h"
 
 class System;
 

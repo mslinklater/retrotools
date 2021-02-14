@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include "cpu6502window.h"
-#include "../imgui/imgui.h"
+#include "common.h"
 #include "../commands.h"
 
 Cpu6502Window::Cpu6502Window()

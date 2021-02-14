@@ -1,6 +1,6 @@
 #include "perfect6502window.h"
-#include "../imgui/imgui.h"
-#include "../shared_cpp/log.h"
+#include "common.h"
+#include "log.h"
 
 Perfect6502Window::Perfect6502Window()
 :bRunning(false)

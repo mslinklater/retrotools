@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../shared_cpp/log.h"
+#include "log.h"
 #include "../interfaces/imemory.h"
 
 using namespace std;

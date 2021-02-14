@@ -5,8 +5,8 @@
 
 #include <string.h>
 #include "memory2600.h"
-#include "../shared_cpp/log.h"
-#include "../shared_cpp/errorcodes.h"
+#include "log.h"
+#include "errorcodes.h"
 #include "cpu6502alpha.h"
 #include "tia.h"
 #include "riot.h"

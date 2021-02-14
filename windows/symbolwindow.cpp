@@ -5,11 +5,11 @@
 
 #include <vector>
 #include "symbolwindow.h"
-#include "../imgui/imgui.h"
+#include "common.h"
 #include "../symbolstore.h"
 #include "../utils/imguihelpers.h"
 #include "../theme.h"
-#include "../shared_cpp/command.h"
+#include "command.h"
 
 SymbolWindow::SymbolWindow()
 : filterFlags(0)

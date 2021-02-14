@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../shared_cpp/windowbase.h"
-#include "../shared_cpp/istateserialisation.h"
+#include "windowbase.h"
+#include "istateserialisation.h"
 #include "../components/riot.h"
 
 class RiotWindow : public WindowBase, public IStateSerialisation

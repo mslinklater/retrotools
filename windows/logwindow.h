@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "../shared_cpp/windowmanager.h"
-#include "../shared_cpp/windowbase.h"
+#include "windowmanager.h"
+#include "windowbase.h"
 
 class LogWindow : public WindowBase, public IStateSerialisation
 {

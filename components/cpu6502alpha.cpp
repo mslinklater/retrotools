@@ -5,7 +5,7 @@
 
 #include "cpu6502alpha.h"
 #include "../interfaces/imemory.h"
-#include "../shared_cpp/log.h"
+#include "log.h"
 #include "../commands.h"
 
 #define CPU_STATUS_MASK_CARRY		0x01

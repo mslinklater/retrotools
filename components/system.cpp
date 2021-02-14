@@ -7,7 +7,7 @@
 #include "tia.h"
 #include "cpu6502alpha.h"
 #include "riot.h"
-#include "../shared_cpp/log.h"
+#include "log.h"
 #include "../commands.h"
 
 System::System()

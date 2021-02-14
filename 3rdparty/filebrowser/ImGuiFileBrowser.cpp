@@ -1,5 +1,5 @@
 #include "ImGuiFileBrowser.h"
-#include "../imgui/imgui_internal.h"
+#include "../3rdparty/imgui/imgui_internal.h"
 
 #include <iostream>
 #include <string.h>

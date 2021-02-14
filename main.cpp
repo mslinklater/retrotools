@@ -13,9 +13,9 @@
 #include "shared_cpp/catch.hpp"
 #endif
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl2.h"
+#include "common.h"
+#include "3rdparty/imgui/imgui_impl_sdl.h"
+#include "3rdparty/imgui/imgui_impl_opengl2.h"
 
 #include "version.h"
 #include "config.h"
@@ -27,7 +27,7 @@
 #include "disasm.h"
 #include "sessionmanager.h"
 #include "symbolstore.h"
-#include "shared_cpp/log.h"
+#include "log.h"
 #include "commands.h"
 #include "windows/logwindow.h"
 #include "windows/memory2600window.h"
@@ -39,10 +39,10 @@
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "windows/perfect6502window.h"
-#include "shared_cpp/command.h"
+#include "command.h"
 #include "utils/memoryutils.h"
-#include "shared_cpp/windowmanager.h"
-#include "shared_cpp/stateserialiser.h"
+#include "windowmanager.h"
+#include "stateserialiser.h"
 
 //static Config* pConfig = 0;
 

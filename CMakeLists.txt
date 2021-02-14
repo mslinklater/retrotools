@@ -47,24 +47,19 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
+include_directories("3rdparty")
 
 endif (UNIX)
 
-if (WIN32)
-set(CMAKE_MODULE_PATH C:\\Users\\mlinklater\\Code\\SDL2-2.0.10\\include)
-endif (WIN32)
+set(SOURCE_FILES command.cpp commands.cpp config.cpp disasm.cpp errorcodes.cpp log.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp windowbase.cpp windowmanager.cpp)
 
-
-set(SOURCE_FILES commands.cpp config.cpp disasm.cpp main.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
-
-add_subdirectory("imgui")
+add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")
 add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
-add_subdirectory("shared_cpp")
-add_subdirectory("filebrowser")
-add_subdirectory("perfect6502")
+add_subdirectory("3rdparty/filebrowser")
+add_subdirectory("3rdparty/perfect6502")
 
 project (vistella VERSION 0.1)
 configure_file(version.h.in version.h)

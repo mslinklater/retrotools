@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../shared_cpp/windowbase.h"
-#include "../shared_cpp/istateserialisation.h"
-#include "../perfect6502/perfect6502.h"
+#include "windowbase.h"
+#include "istateserialisation.h"
+#include "perfect6502/perfect6502.h"
 
 class Perfect6502Window : public WindowBase, public IStateSerialisation
 {

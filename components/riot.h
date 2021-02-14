@@ -2,7 +2,7 @@
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "../shared_cpp/icommandprocessor.h"
+#include "icommandprocessor.h"
 
 class Riot : public ITickable, public ICommandProcessor
 {

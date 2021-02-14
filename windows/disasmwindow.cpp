@@ -4,11 +4,11 @@
 // See file 'LICENSE' for license details
 
 #include "disasmwindow.h"
-#include "../imgui/imgui.h"
+#include "common.h"
 #include "../disasm.h"
 #include "../components/cpu6502alpha.h"
 #include "../interfaces/imemory.h"
-#include "../shared_cpp/log.h"
+#include "log.h"
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)

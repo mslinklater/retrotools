@@ -7,7 +7,7 @@
 #include "windowmanager.h"
 #include "windowbase.h"
 #include "log.h"
-#include "../imgui/imgui.h"	// external dependency
+#include "common.h"
 #include "command.h"
 #include "stateserialiser.h"
 

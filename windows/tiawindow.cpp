@@ -4,10 +4,10 @@
 // See file 'LICENSE' for license details
 
 #include "tiawindow.h"
-#include "../imgui/imgui.h"
-#include "../shared_cpp/log.h"
-#include "../commands.h"
-#include "../shared_cpp/command.h"
+#include "common.h"
+#include "log.h"
+#include "commands.h"
+#include "command.h"
 
 TiaWindow::TiaWindow()
 : bShowInfo(false)

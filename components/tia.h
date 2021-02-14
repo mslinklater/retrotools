@@ -42,7 +42,7 @@ value	dec	2scomp adjust
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "../shared_cpp/icommandprocessor.h"
+#include "../icommandprocessor.h"
 
 class Tia : public ITickable, public ICommandProcessor
 {

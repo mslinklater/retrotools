@@ -1,6 +1,6 @@
 #include "cpu6502_sex.h"
 
-#include "../shared_cpp/catch.hpp"
+#include "catch.hpp"
 #include "../components/cpu6502alpha.h"
 #include "../components/memory64k.h"
 #include "../utils/romfilebundle.h"
