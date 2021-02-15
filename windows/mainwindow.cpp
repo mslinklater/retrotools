@@ -104,6 +104,7 @@ void MainWindow::DrawConsole()
 	for(int i=0; i<logItems.size(); i++)
 	{
 		const char* item = logItems[i];
+		// TODO: Need to add some formatting here
 		ImGui::TextUnformatted(item);
 	}
 	ImGui::EndChild();
@@ -119,7 +120,6 @@ void MainWindow::DrawConsole()
 		// copy the inputBuffer and add to the items vector
 		char* newBuffer = new char[strlen(inputBuffer) + 3];
 		sprintf(newBuffer, "> %s", inputBuffer);
-//		strcpy(newBuffer, inputBuffer);
 		logItems.push_back(newBuffer);
 
 		// clear the buffer
