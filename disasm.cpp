@@ -7,7 +7,7 @@
 #include <sstream>
 #include <cassert>
 #include "disasm.h"
-#include "log.h"
+#include "common.h"
 #include "symbolstore.h"
 #include "components/cpu6502alpha.h"
 #include "interfaces/imemory.h"

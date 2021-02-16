@@ -4,8 +4,8 @@
 // See file 'LICENSE' for license details
 
 #include <string.h>
+#include "common.h"
 #include "memory2600.h"
-#include "log.h"
 #include "errorcodes.h"
 #include "cpu6502alpha.h"
 #include "tia.h"

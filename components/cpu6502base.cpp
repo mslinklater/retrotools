@@ -1,5 +1,5 @@
+#include "common.h"
 #include "cpu6502base.h"
-#include "log.h"
 
 Cpu6502Base::Cpu6502Base()
 : pMemory(nullptr)

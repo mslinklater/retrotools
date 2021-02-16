@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include "mainwindow.h"
-#include "log.h"
+#include "common.h"
 #include "command.h"
 #include "../commands.h"
 #include "windowmanager.h"

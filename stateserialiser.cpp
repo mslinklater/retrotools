@@ -1,5 +1,5 @@
+#include "common.h"
 #include "stateserialiser.h"
-#include "log.h"
 
 void StateSerialiser::AddStateSerialiser(IStateSerialisation* serialiser)
 {

@@ -5,7 +5,6 @@
 
 #include "tiawindow.h"
 #include "common.h"
-#include "log.h"
 #include "commands.h"
 #include "command.h"
 

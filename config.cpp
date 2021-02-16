@@ -10,8 +10,8 @@
 #include <string>
 #include <cstdint>
 
+#include "common.h"
 #include "config.h"
-#include "shared_cpp/log.h"
 
 Config::Config()
 {

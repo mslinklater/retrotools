@@ -51,20 +51,21 @@ include_directories("3rdparty")
 
 endif (UNIX)
 
-set(SOURCE_FILES command.cpp commands.cpp config.cpp disasm.cpp errorcodes.cpp log.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp windowbase.cpp windowmanager.cpp)
+set(SOURCE_FILES command.cpp commands.cpp config.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp windowbase.cpp windowmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")
 add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
+add_subdirectory("system")
 add_subdirectory("3rdparty/filebrowser")
 add_subdirectory("3rdparty/perfect6502")
 
-project (vistella VERSION 0.1)
+project (retrotools VERSION 0.1)
 configure_file(version.h.in version.h)
 
-add_executable(vistella ${SOURCE_FILES})
-target_include_directories(vistella PUBLIC "${PROJECT_BINARY_DIR}")
-target_link_libraries(vistella ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
-target_compile_options(vistella PRIVATE -Wall -Werror -Wno-psabi -g)
+add_executable(retrotools ${SOURCE_FILES})
+target_include_directories(retrotools PUBLIC "${PROJECT_BINARY_DIR}")
+target_link_libraries(retrotools ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
+target_compile_options(retrotools PRIVATE -Wall -Werror -Wno-psabi -g)

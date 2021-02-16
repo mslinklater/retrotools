@@ -6,7 +6,6 @@
 #include "memory2600window.h"
 #include "common.h"
 #include "../components/memory2600.h"
-#include "log.h"
 
 Memory2600Window::Memory2600Window()
 : showReadWrite(false)

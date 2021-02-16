@@ -27,7 +27,6 @@
 #include "disasm.h"
 #include "sessionmanager.h"
 #include "symbolstore.h"
-#include "log.h"
 #include "commands.h"
 #include "windows/logwindow.h"
 #include "windows/memory2600window.h"
@@ -71,7 +70,7 @@ static int displayHeight;
 int InitImGui()
 {
 	char titleString[64];
-	sprintf(titleString, "Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+	sprintf(titleString, "Retrotools V%d.%d", Retrotools_VERSION_MAJOR, Retrotools_VERSION_MINOR);
 
 	LOGINFO(titleString);
 
@@ -129,7 +128,6 @@ void ShutdownImGui()
 int main(int argc, char* argv[])
 {
 	// TODO: Output the command line to stdout
-	
 
 #if RUN_TESTS
 	int result = Catch::Session().run(argc, argv);
@@ -149,7 +147,7 @@ int main(int argc, char* argv[])
 	{
 		return -1;
 	}
-	
+
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 
 	// Initialise window manager

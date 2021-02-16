@@ -4,7 +4,7 @@
 // See file 'LICENSE' for license details
 
 #include "command.h"
-#include "log.h"
+#include "common.h"
 #include <algorithm>
 
 using namespace std;

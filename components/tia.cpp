@@ -1,7 +1,7 @@
 #include <assert.h>
 
+#include "common.h"
 #include "tia.h"
-#include "log.h"
 #include "../commands.h"
 #include "command.h"
 

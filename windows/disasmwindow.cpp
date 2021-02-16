@@ -8,7 +8,6 @@
 #include "../disasm.h"
 #include "../components/cpu6502alpha.h"
 #include "../interfaces/imemory.h"
-#include "log.h"
 
 DisassemblyWindow::DisassemblyWindow()
 : pDisasm(0)

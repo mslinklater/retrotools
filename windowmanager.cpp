@@ -4,10 +4,9 @@
 // See file 'LICENSE' for license details
 
 #include <cassert>
+#include "common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
-#include "log.h"
-#include "common.h"
 #include "command.h"
 #include "stateserialiser.h"
 
