@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../imgui/imgui.h"
+#include "common.h"
 
 class WindowManager;
 
@@ -33,12 +33,16 @@ private:
 	void DrawMenuBar();
 
 	// Console stuff
- 	void DrawConsole();
 public:
     int TextEditCallback(ImGuiInputTextCallbackData* data);
 
 private:
 	static const int kInputBufferSize = 256;
 	char inputBuffer[kInputBufferSize];
-	ImVector<char*> history;
+
+	ImVector<char*> history;	// Command history
+	ImVector<char*> logItems;
+
+ 	void DrawConsole();
+	void ClearLog();
 };

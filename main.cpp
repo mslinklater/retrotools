@@ -13,9 +13,9 @@
 #include "shared_cpp/catch.hpp"
 #endif
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl2.h"
+#include "common.h"
+#include "3rdparty/imgui/imgui_impl_sdl.h"
+#include "3rdparty/imgui/imgui_impl_opengl2.h"
 
 #include "version.h"
 #include "config.h"
@@ -27,7 +27,6 @@
 #include "disasm.h"
 #include "sessionmanager.h"
 #include "symbolstore.h"
-#include "shared_cpp/log.h"
 #include "commands.h"
 #include "windows/logwindow.h"
 #include "windows/memory2600window.h"
@@ -39,10 +38,10 @@
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "windows/perfect6502window.h"
-#include "shared_cpp/command.h"
+#include "command.h"
 #include "utils/memoryutils.h"
-#include "shared_cpp/windowmanager.h"
-#include "shared_cpp/stateserialiser.h"
+#include "windowmanager.h"
+#include "stateserialiser.h"
 
 //static Config* pConfig = 0;
 
@@ -71,7 +70,7 @@ static int displayHeight;
 int InitImGui()
 {
 	char titleString[64];
-	sprintf(titleString, "Vistella V%d.%d", Vistella_VERSION_MAJOR, Vistella_VERSION_MINOR);
+	sprintf(titleString, "Retrotools V%d.%d", Retrotools_VERSION_MAJOR, Retrotools_VERSION_MINOR);
 
 	LOGINFO(titleString);
 
@@ -129,7 +128,6 @@ void ShutdownImGui()
 int main(int argc, char* argv[])
 {
 	// TODO: Output the command line to stdout
-	
 
 #if RUN_TESTS
 	int result = Catch::Session().run(argc, argv);
@@ -149,7 +147,7 @@ int main(int argc, char* argv[])
 	{
 		return -1;
 	}
-	
+
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 
 	// Initialise window manager

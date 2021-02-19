@@ -6,7 +6,7 @@
 #pragma once
 
 #include <string>
-#include "shared_cpp/icommandprocessor.h"
+#include "icommandprocessor.h"
 
 namespace Commands
 {

@@ -3,9 +3,9 @@
 //
 // See file 'LICENSE' for license details
 
+#include "common.h"
 #include "commands.h"
-#include "shared_cpp/command.h"
-#include "shared_cpp/log.h"
+#include "command.h"
 
 void Commands::Halt(bool halt, Commands::HaltCommand::ERunType runType, std::string reason)
 {

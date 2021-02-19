@@ -1,9 +1,9 @@
 #include <assert.h>
 
+#include "common.h"
 #include "tia.h"
-#include "../shared_cpp/log.h"
 #include "../commands.h"
-#include "../shared_cpp/command.h"
+#include "command.h"
 
 #define HALT_ON_UNIMPLEMENTED 0
 

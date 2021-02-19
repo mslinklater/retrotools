@@ -9,9 +9,9 @@
 #include <map>
 #include <vector>
 
-#include "shared_cpp/errorcodes.h"
+#include "errorcodes.h"
 #include "components/cpu6502base.h"
-#include "shared_cpp/command.h"
+#include "command.h"
 
 class IMemory;
 class SymbolStore;

@@ -6,9 +6,8 @@
 #pragma once
 
 #include <inttypes.h>
-#include "../shared_cpp/windowbase.h"
-//#include "../config.h"
-#include "../shared_cpp/istateserialisation.h"
+#include "windowbase.h"
+#include "istateserialisation.h"
 
 class Memory2600;
 

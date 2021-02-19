@@ -3,11 +3,11 @@
 //
 // See file 'LICENSE' for license details
 
+#include "common.h"
 #include "system.h"
 #include "tia.h"
 #include "cpu6502alpha.h"
 #include "riot.h"
-#include "../shared_cpp/log.h"
 #include "../commands.h"
 
 System::System()

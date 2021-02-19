@@ -7,10 +7,10 @@
 #include <string>
 #include <set>
 
-#include "../shared_cpp/command.h"
+#include "command.h"
 //#include "../config.h"
 #include "cpu6502base.h"
-#include "../shared_cpp/istateserialisation.h"
+#include "istateserialisation.h"
 
 class Cpu6502Alpha : public Cpu6502Base, public ICommandProcessor, public IStateSerialisation
 {

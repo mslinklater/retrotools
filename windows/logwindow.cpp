@@ -3,9 +3,8 @@
 //
 // See file 'LICENSE' for license details
 
+#include "common.h"
 #include "logwindow.h"
-#include "../shared_cpp/log.h"
-#include "../imgui/imgui.h"
 
 LogWindow::LogWindow()
 : showInfo(true)

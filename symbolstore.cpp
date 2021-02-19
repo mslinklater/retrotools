@@ -7,9 +7,11 @@
 #include <fstream>
 #include <iomanip>
 #include <string.h>
+
+#include "common.h"
 #include "symbolstore.h"
-#include "shared_cpp/log.h"
-#include "shared_cpp/json.hpp"
+#include "json.hpp"
+
 using json = nlohmann::json;
 
 SymbolStore::SymbolStore()

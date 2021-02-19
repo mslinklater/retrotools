@@ -1,6 +1,5 @@
 #include "riotwindow.h"
-#include "../imgui/imgui.h"
-#include "../shared_cpp/log.h"
+#include "common.h"
 
 RiotWindow::RiotWindow()
 : pRiot(nullptr)

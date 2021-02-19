@@ -8,10 +8,10 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "../shared_cpp/errorcodes.h"
+#include "errorcodes.h"
 #include "../config.h"
 #include "../interfaces/imemory.h"
-#include "../shared_cpp/istateserialisation.h"
+#include "istateserialisation.h"
 
 /*
 2600 memory layout

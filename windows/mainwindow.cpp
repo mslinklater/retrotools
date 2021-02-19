@@ -4,11 +4,11 @@
 // See file 'LICENSE' for license details
 
 #include "mainwindow.h"
-#include "../shared_cpp/log.h"
-#include "../shared_cpp/command.h"
+#include "common.h"
+#include "command.h"
 #include "../commands.h"
-#include "../shared_cpp/windowmanager.h"
-#include "../filebrowser/ImGuiFileBrowser.h"
+#include "windowmanager.h"
+#include "filebrowser/ImGuiFileBrowser.h"
 
 imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
@@ -88,6 +88,11 @@ int MainWindow::TextEditCallback(ImGuiInputTextCallbackData* data)
 	return 0;
 }
 
+void MainWindow::ClearLog()
+{
+
+}
+
 void MainWindow::DrawConsole()
 {
 	ImGui::Separator();
@@ -95,6 +100,13 @@ void MainWindow::DrawConsole()
 
     const float footerHeightToReserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footerHeightToReserve), false, 0);
+	// the actual log
+	for(int i=0; i<logItems.size(); i++)
+	{
+		const char* item = logItems[i];
+		// TODO: Need to add some formatting here
+		ImGui::TextUnformatted(item);
+	}
 	ImGui::EndChild();
 
 	ImGui::Separator();
@@ -104,6 +116,12 @@ void MainWindow::DrawConsole()
 	if(ImGui::InputText("", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
 	{
 		// Exec the command
+
+		// copy the inputBuffer and add to the items vector
+		char* newBuffer = new char[strlen(inputBuffer) + 3];
+		sprintf(newBuffer, "> %s", inputBuffer);
+		logItems.push_back(newBuffer);
+
 		// clear the buffer
 		strcpy(inputBuffer, "");
 		reclaimFocus = true;

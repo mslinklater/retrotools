@@ -4,9 +4,8 @@
 // See file 'LICENSE' for license details
 
 #include "memory2600window.h"
-#include "../imgui/imgui.h"
+#include "common.h"
 #include "../components/memory2600.h"
-#include "../shared_cpp/log.h"
 
 Memory2600Window::Memory2600Window()
 : showReadWrite(false)

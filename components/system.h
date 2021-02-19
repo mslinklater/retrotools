@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <inttypes.h>
-#include "../shared_cpp/icommandprocessor.h"
+#include "icommandprocessor.h"
 
 class ITickable;
 class IMemory;

@@ -7,9 +7,9 @@
 
 #include <GL/gl.h>
 
-#include "../shared_cpp/windowbase.h"
-#include "../shared_cpp/istateserialisation.h"
-#include "../shared_cpp/icommandprocessor.h"
+#include "windowbase.h"
+#include "istateserialisation.h"
+#include "icommandprocessor.h"
 #include "../components/tia.h"
 
 class Tia;

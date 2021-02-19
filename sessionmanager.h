@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shared_cpp/command.h"
+#include "command.h"
 
 class SessionManager : public ICommandProcessor
 {

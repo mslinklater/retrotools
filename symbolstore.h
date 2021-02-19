@@ -7,10 +7,10 @@
 
 #include <map>
 #include <vector>
-#include "shared_cpp/errorcodes.h"
+#include "errorcodes.h"
 #include "symbol.h"
 #include "config.h"
-#include "shared_cpp/istateserialisation.h"
+#include "istateserialisation.h"
 
 class SymbolStore : public IStateSerialisation
 {
