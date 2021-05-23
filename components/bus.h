@@ -1,7 +1,15 @@
+// Copyright (c) 2019-2021, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #pragma once
 
 #include <cstdint>
 #include <vector>
+
+// The bus models a group of connections between ICs
+// Voltage is modelled rather than logic so analog connections can be simulated
 
 class Bus
 {
@@ -9,16 +17,17 @@ public:
 	Bus(uint16_t size);
 	virtual ~Bus();
 
-	bool Get(uint16_t line)
+	float Get(uint16_t line)
 	{
 		return values[line];
 	}
 
-	void Set(uint16_t line, bool value)
+	void Set(uint16_t line, float value)
 	{	
 		values[line] = value;
 	}
 
 private:
-	std::vector<bool> values;
+	std::vector<float> values;
 };
+

@@ -18,7 +18,7 @@
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
 
 #include "version.h"
-#include "config.h"
+//#include "config.h"
 #include "components/memory2600.h"
 #include "components/cpu6502alpha.h"
 #include "components/tia.h"
