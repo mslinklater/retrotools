@@ -16,6 +16,7 @@ MainWindow::MainWindow()
 : open(true)
 , bShowNewSession(false)
 {
+	memset(&inputBuffer[0], 0, kInputBufferSize);
 }
 
 MainWindow::~MainWindow()
@@ -135,7 +136,7 @@ void MainWindow::DrawConsole()
 
 void MainWindow::Draw()
 {
-	ImGui::Begin("Vistella", &open, ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("Retrotools", &open, ImGuiWindowFlags_MenuBar);
 	
 	bool bSessionOpen = false;
 
@@ -179,10 +180,10 @@ void MainWindow::Draw()
 		ImGui::OpenPopup("Open Session");
 	}
 
-	if(file_dialog.showOpenFileDialog("Open Session", ImVec2(700, 310), ".vistella"))
-	{
-		LOGINFOF("MainWindow::Open file %s", file_dialog.selected_fn.c_str());
-	}
+//	if(file_dialog.showOpenFileDialog("Open Session", ImVec2(700, 310), ".vistella"))
+//	{
+//		LOGINFOF("MainWindow::Open file %s", file_dialog.selected_fn.c_str());
+//	}
 
 	ImGui::End(); 
 }

@@ -140,8 +140,6 @@ int main(int argc, char* argv[])
 
 	// check for command line args
 	
-//	ProcessCommandLine(argc, argv);
-	
 	// SDL stuff
 	if(InitImGui() != 0)
 	{
@@ -163,33 +161,33 @@ int main(int argc, char* argv[])
 	// Do some 6502 stuff
 	// initialise components
 	
-	Memory2600* pMemory = new Memory2600();
-	Cpu6502Alpha* pCpu = new Cpu6502Alpha();
-	Tia* pTia = new Tia();
-	Riot* pRiot = new Riot();
+//	Memory2600* pMemory = new Memory2600();
+//	Cpu6502Alpha* pCpu = new Cpu6502Alpha();
+//	Tia* pTia = new Tia();
+//	Riot* pRiot = new Riot();
 
-	System* pSystem = new System();
-	pSystem->SetTia(pTia);
-	pSystem->SetCpu6502Alpha(pCpu);
-	pSystem->SetRiot(pRiot);
-	pSystem->SetMemory(pMemory);
+//	System* pSystem = new System();
+//	pSystem->SetTia(pTia);
+//	pSystem->SetCpu6502Alpha(pCpu);
+//	pSystem->SetRiot(pRiot);
+//	pSystem->SetMemory(pMemory);
 
-	pStateSerialiser->AddStateSerialiser(pMemory);
-	pStateSerialiser->AddStateSerialiser(pCpu);
+//	pStateSerialiser->AddStateSerialiser(pMemory);
+//	pStateSerialiser->AddStateSerialiser(pCpu);
 
-	Disassembler* pDisassembler = new Disassembler();
-	SymbolStore* pSymbolStore = new SymbolStore();
-	pStateSerialiser->AddStateSerialiser(pSymbolStore);
+//	Disassembler* pDisassembler = new Disassembler();
+//	SymbolStore* pSymbolStore = new SymbolStore();
+//	pStateSerialiser->AddStateSerialiser(pSymbolStore);
 	
-	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
-	{
-		return -1;
-	}
+//	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
+//	{
+//		return -1;
+//	}
 	
-	pDisassembler->Init();
-	pDisassembler->SetMemory(pMemory);
-	pDisassembler->SetCpu(pCpu);
-	pDisassembler->SetSymbolStore(pSymbolStore);
+//	pDisassembler->Init();
+//	pDisassembler->SetMemory(pMemory);
+//	pDisassembler->SetCpu(pCpu);
+//	pDisassembler->SetSymbolStore(pSymbolStore);
 
 #if 0
 	uint16_t bytesLoaded = 0;
@@ -215,45 +213,45 @@ int main(int argc, char* argv[])
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
 	
-	Memory2600Window* pMemoryWindow = new Memory2600Window();
-	pMemoryWindow->SetMemory(pMemory);
-	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");
-	pStateSerialiser->AddStateSerialiser(pMemoryWindow);
+//	Memory2600Window* pMemoryWindow = new Memory2600Window();
+//	pMemoryWindow->SetMemory(pMemory);
+//	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");
+//	pStateSerialiser->AddStateSerialiser(pMemoryWindow);
 	
-	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
-	pDisasmWindow->SetDisassembler(pDisassembler);
-	pDisasmWindow->SetCPU(pCpu);
-	pDisasmWindow->SetMemory(pMemory);
-	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
-	pStateSerialiser->AddStateSerialiser(pDisasmWindow);
+//	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
+//	pDisasmWindow->SetDisassembler(pDisassembler);
+//	pDisasmWindow->SetCPU(pCpu);
+//	pDisasmWindow->SetMemory(pMemory);
+//	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
+//	pStateSerialiser->AddStateSerialiser(pDisasmWindow);
 
 	MainWindow* pMainWindow = new MainWindow();
 	pMainWindow->SetWindowManager(pWindowManager);
 	
-	SymbolWindow* pSymbolWindow = new SymbolWindow();
-	pSymbolWindow->SetSymbolStore(pSymbolStore);
-	pWindowManager->AddWindow(pSymbolWindow, "Symbols");
+//	SymbolWindow* pSymbolWindow = new SymbolWindow();
+//	pSymbolWindow->SetSymbolStore(pSymbolStore);
+//	pWindowManager->AddWindow(pSymbolWindow, "Symbols");
 	
-	Cpu6502Window* pCpu6502Window = new Cpu6502Window();
-	pCpu6502Window->SetCpu(pCpu);
-	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
+//	Cpu6502Window* pCpu6502Window = new Cpu6502Window();
+//	pCpu6502Window->SetCpu(pCpu);
+//	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
 
-	TiaWindow* pTiaWindow = new TiaWindow();
-	pTiaWindow->SetTia(pTia);
-	pWindowManager->AddWindow(pTiaWindow, "Tia");
-	pStateSerialiser->AddStateSerialiser(pTiaWindow);
+//	TiaWindow* pTiaWindow = new TiaWindow();
+//	pTiaWindow->SetTia(pTia);
+//	pWindowManager->AddWindow(pTiaWindow, "Tia");
+//	pStateSerialiser->AddStateSerialiser(pTiaWindow);
 
-	RiotWindow* pRiotWindow = new RiotWindow();
-	pRiotWindow->SetRiot(pRiot);
-	pWindowManager->AddWindow(pRiotWindow, "Riot");
-	pStateSerialiser->AddStateSerialiser(pRiotWindow);
+//	RiotWindow* pRiotWindow = new RiotWindow();
+//	pRiotWindow->SetRiot(pRiot);
+//	pWindowManager->AddWindow(pRiotWindow, "Riot");
+//	pStateSerialiser->AddStateSerialiser(pRiotWindow);
 
-	SystemWindow* pSystemWindow = new SystemWindow();
-	pSystemWindow->SetSystem(pSystem);
-	pWindowManager->AddWindow(pSystemWindow, "System");
+//	SystemWindow* pSystemWindow = new SystemWindow();
+//	pSystemWindow->SetSystem(pSystem);
+//	pWindowManager->AddWindow(pSystemWindow, "System");
 
-	Perfect6502Window* pPerfect6502Window = new Perfect6502Window();
-	pWindowManager->AddWindow(pPerfect6502Window, "Perfect6502");
+//	Perfect6502Window* pPerfect6502Window = new Perfect6502Window();
+//	pWindowManager->AddWindow(pPerfect6502Window, "Perfect6502");
 
 	pStateSerialiser->DeserialiseAppConfig();
 
@@ -280,7 +278,7 @@ int main(int argc, char* argv[])
 		if(dt < 0.0f) dt = 0.0f;
 		performanceCounterLast = performanceCounterThis;
 
-		pSystem->Update(dt);
+		//pSystem->Update(dt);
 		CommandCenter::Instance()->Update();
 		
 		// start ImGui frame
@@ -316,7 +314,7 @@ int main(int argc, char* argv[])
 
 	ShutdownImGui();
 	
-	delete pMemory;
+//	delete pMemory;
 
 	LOGINFO("Exiting...\n");
 	

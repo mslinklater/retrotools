@@ -4,16 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "make vistella",
+            "label": "make retrotools",
             "type": "shell",
-            "command": "make vistella -j 4",
+            "command": "make retrotools -j4",
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
         },
         {
-            "label": "clean vistella",
+            "label": "clean",
             "type": "shell",
             "command": "make clean",
             "group": {
