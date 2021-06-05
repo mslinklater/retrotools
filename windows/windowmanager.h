@@ -14,7 +14,7 @@
 class WindowBase;
 class StateSerialiser;
 
-class WindowManager : public ICommandProcessor, public IStateSerialisation
+class WindowManager : public ICommandHandler, public IStateSerialisation
 {
 public:
 	WindowManager();
@@ -35,11 +35,10 @@ public:
 
 private:
 	
-	// ICommandProcessor
+	// ICommandHandler
 	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);
-	// ~ICommandProcessor
+	// ~ICommandHandler
 	
-
 	bool initialised;
 	std::map<std::string,WindowBase*> windows;
 	std::map<std::string,bool> windowActive;

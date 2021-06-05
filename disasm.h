@@ -16,7 +16,7 @@
 class IMemory;
 class SymbolStore;
 
-class Disassembler : public ICommandProcessor
+class Disassembler : public ICommandHandler
 {
 public:
 	

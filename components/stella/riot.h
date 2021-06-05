@@ -2,9 +2,9 @@
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "icommandprocessor.h"
+#include "icommandhandler.h"
 
-class Riot : public ITickable, public ICommandProcessor
+class Riot : public ITickable, public ICommandHandler
 {
 public:
 

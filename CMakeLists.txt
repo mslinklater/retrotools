@@ -51,7 +51,7 @@ include_directories("3rdparty")
 
 endif (UNIX)
 
-set(SOURCE_FILES command.cpp commands.cpp config.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp windowbase.cpp windowmanager.cpp)
+set(SOURCE_FILES command.cpp commands.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")

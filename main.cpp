@@ -29,35 +29,19 @@
 #include "symbolstore.h"
 #include "commands.h"
 #include "windows/logwindow.h"
-#include "windows/memory2600window.h"
+#include "components/stella/memory2600window.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
 #include "windows/symbolwindow.h"
-#include "windows/cpu6502window.h"
+#include "components/cpu6502/cpu6502window.h"
 #include "windows/tiawindow.h"
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
-#include "windows/perfect6502window.h"
+#include "components/cpu6502/perfect6502window.h"
 #include "command.h"
 #include "utils/memoryutils.h"
-#include "windowmanager.h"
+#include "windows/windowmanager.h"
 #include "stateserialiser.h"
-
-//static Config* pConfig = 0;
-
-#if 0
-void ProcessCommandLine(int argc, char* argv[])
-{
-	pConfig = new Config();
-	pConfig->Init();
-	
-	if(pConfig->ParseCommandLine(argc, argv) != kError_OK)
-	{
-		LOGINFO("Error parsing command line... aborting \n");
-		exit(1);
-	}
-}
-#endif
 
 // DearImGui stuff
 static uint64_t	performanceFrequency;

@@ -11,7 +11,7 @@
 
 class System;
 
-class SystemWindow : public WindowBase, public ICommandProcessor
+class SystemWindow : public WindowBase, public ICommandHandler
 {
 public:
 	

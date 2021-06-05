@@ -9,7 +9,6 @@
 #include <vector>
 #include "errorcodes.h"
 #include "symbol.h"
-#include "config.h"
 #include "istateserialisation.h"
 
 class SymbolStore : public IStateSerialisation

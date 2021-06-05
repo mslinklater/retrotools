@@ -9,7 +9,7 @@ public:
 	std::string	name;
 };
 
-class ICommandProcessor
+class ICommandHandler
 {
 public:
 	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command) = 0;

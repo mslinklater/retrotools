@@ -8,7 +8,7 @@
 #include <string>
 #include <map>
 #include <queue>
-#include "icommandprocessor.h"
+#include "icommandhandler.h"
 
 namespace SharedCommands
 {
@@ -35,8 +35,8 @@ public:
 	void QueueForBroadcast(std::shared_ptr<CommandBase> command);
 	void BroadcastNow(std::shared_ptr<CommandBase> command);
 	
-	void Subscribe(std::string commandName, ICommandProcessor* handler);
-	void Unsubscribe(std::string commandName, ICommandProcessor* handler);
+	void Subscribe(std::string commandName, ICommandHandler* handler);
+	void Unsubscribe(std::string commandName, ICommandHandler* handler);
 	
 private:
 	CommandCenter();
@@ -46,7 +46,7 @@ private:
 	uint32_t			readQueueIndex;
 	std::queue<std::shared_ptr<CommandBase>> commandList[2];	// double-buffered to stop infinite recursion
 	
-	std::map<std::string,std::vector<ICommandProcessor*>>	dispatchMap;
+	std::map<std::string,std::vector<ICommandHandler*>>	dispatchMap;
 	
 	static CommandCenter* pInstance;
 };

@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 #include "errorcodes.h"
-#include "../config.h"
 #include "../interfaces/imemory.h"
 #include "istateserialisation.h"
 
@@ -106,11 +105,8 @@ public:
 	Memory2600();
 	virtual ~Memory2600();
 	
-//	eErrorCode 	Init();
-//	void 		SetCPU(Cpu6502* cpu);
 	void 		SetRiot(Riot* riot);
 	void 		SetTia(Tia* tia);
-//	eErrorCode 	Destroy(void);
 
 	// IMemory
 	virtual uint8_t 	Read(uint16_t address);
@@ -139,7 +135,6 @@ private:
 	MemoryByte* pRam;
 	uint32_t	ramSize;
 
-//	Cpu6502*	pCpu;
 	Tia*		pTia;
 	Riot*		pRiot;
 

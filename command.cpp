@@ -37,8 +37,8 @@ void CommandCenter::Update()
 		
 		if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 		{
-			vector<ICommandProcessor*> handlers = dispatchMap[thisCommand->name];
-			for( ICommandProcessor* handler : handlers)
+			vector<ICommandHandler*> handlers = dispatchMap[thisCommand->name];
+			for( ICommandHandler* handler : handlers)
 			{
 				handler->HandleCommand(thisCommand);
 			}
@@ -61,8 +61,8 @@ void CommandCenter::BroadcastNow(shared_ptr<CommandBase> thisCommand)
 #endif
 	if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 	{
-		vector<ICommandProcessor*> handlers = dispatchMap[thisCommand->name];
-		for( ICommandProcessor* handler : handlers)
+		vector<ICommandHandler*> handlers = dispatchMap[thisCommand->name];
+		for( ICommandHandler* handler : handlers)
 		{
 			handler->HandleCommand(thisCommand);
 		}
@@ -78,9 +78,9 @@ CommandCenter * CommandCenter::Instance()
 	return pInstance;
 }
 
-void CommandCenter::Subscribe(string commandName, ICommandProcessor* handler)
+void CommandCenter::Subscribe(string commandName, ICommandHandler* handler)
 {
-	vector<ICommandProcessor*>& vec = dispatchMap[commandName];
+	vector<ICommandHandler*>& vec = dispatchMap[commandName];
 
 	if(find(vec.begin(), vec.end(), handler) == vec.end())
 	{
@@ -93,9 +93,9 @@ void CommandCenter::Subscribe(string commandName, ICommandProcessor* handler)
 	
 }
 
-void CommandCenter::Unsubscribe(string commandName, ICommandProcessor* handler)
+void CommandCenter::Unsubscribe(string commandName, ICommandHandler* handler)
 {
-	vector<ICommandProcessor*>& vec = dispatchMap[commandName];
+	vector<ICommandHandler*>& vec = dispatchMap[commandName];
 
 	auto ret = find(vec.begin(), vec.end(), handler);
 

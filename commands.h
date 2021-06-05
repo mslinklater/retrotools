@@ -6,7 +6,7 @@
 #pragma once
 
 #include <string>
-#include "icommandprocessor.h"
+#include "icommandhandler.h"
 
 namespace Commands
 {
@@ -33,13 +33,6 @@ namespace Commands
 	
 	static const std::string kHaltCommand("Halt");
 	
-//	static const std::string kHaltCommandTickTia("TickTia");
-//	static const std::string kHaltCommandHBlank("HBlank");
-//	static const std::string kHaltCommandVBlank("VBlank");
-//	static const std::string kHaltCommandTickCpu("TickCpu");
-//	static const std::string kHaltCommandCpuInstruction("CpuInstruction");
-//	static const std::string kHaltCommandRun("Run");
-
 	void VSync();
 	static const std::string kVSyncCommand("VSync");
 };

@@ -9,14 +9,14 @@
 
 #include "windowbase.h"
 #include "istateserialisation.h"
-#include "icommandprocessor.h"
+#include "icommandhandler.h"
 #include "components//stella/tia.h"
 
 class Tia;
 
 class TiaWindow : public WindowBase
 				, public IStateSerialisation
-				, public ICommandProcessor
+				, public ICommandHandler
 {
 public:
 	TiaWindow();

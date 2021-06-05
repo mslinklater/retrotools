@@ -2,7 +2,7 @@
 
 #include "command.h"
 
-class SessionManager : public ICommandProcessor
+class SessionManager : public ICommandHandler
 {
 public:
 	static SessionManager* Instance();

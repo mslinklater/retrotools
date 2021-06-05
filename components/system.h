@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <inttypes.h>
-#include "icommandprocessor.h"
+#include "icommandhandler.h"
 
 class ITickable;
 class IMemory;
@@ -15,7 +15,7 @@ class Tia;
 class Cpu6502Alpha;
 class Riot;
 
-class System : public ICommandProcessor
+class System : public ICommandHandler
 {
 public:
 
