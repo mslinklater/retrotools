@@ -1,8 +1,6 @@
 # retrotools
 
-This is really out of date... I'll get to sorting this out soon, honest 8). 
-
-Mainly 6502 stuff - 2600 emulation
+So WTF is this ? Well, it's just a bunch of 8bit code and stuff that I've lumped together into one application. It started out as an Atari 2600 emulator but it's morphing into a large pile of miscellaneous stuff to do with 8bit machines. Good luck getting it to do anything useful.
 
 ## Some videos
 
