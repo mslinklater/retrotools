@@ -5,9 +5,9 @@
 
 #include "common.h"
 #include "system.h"
-#include "tia.h"
-#include "cpu6502alpha.h"
-#include "riot.h"
+#include "stella/tia.h"
+#include "cpu6502/cpu6502alpha.h"
+#include "stella/riot.h"
 #include "../commands.h"
 
 System::System()

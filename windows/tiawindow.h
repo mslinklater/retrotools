@@ -10,7 +10,7 @@
 #include "windowbase.h"
 #include "istateserialisation.h"
 #include "icommandprocessor.h"
-#include "../components/tia.h"
+#include "components//stella/tia.h"
 
 class Tia;
 

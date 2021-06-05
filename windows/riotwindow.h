@@ -2,7 +2,7 @@
 
 #include "windowbase.h"
 #include "istateserialisation.h"
-#include "../components/riot.h"
+#include "../components/stella/riot.h"
 
 class RiotWindow : public WindowBase, public IStateSerialisation
 {

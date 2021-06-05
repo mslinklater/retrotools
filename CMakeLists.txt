@@ -55,6 +55,8 @@ set(SOURCE_FILES command.cpp commands.cpp config.cpp disasm.cpp errorcodes.cpp m
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")
+add_subdirectory("components/cpu6502")
+add_subdirectory("components/stella")
 add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
