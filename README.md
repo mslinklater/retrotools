@@ -14,7 +14,9 @@ So WTF is this ? Well, it's just a bunch of 8bit code and stuff that I've lumped
 
 ## To Build
 
-### Raspberry Pi
+### Linux
+
+(tested on Raspian, PopOS)
 
 $ sudo apt install cmake libsdl2-dev libopengl-dev
 

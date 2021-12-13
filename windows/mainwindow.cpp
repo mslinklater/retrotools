@@ -10,7 +10,7 @@
 #include "windowmanager.h"
 #include "filebrowser/ImGuiFileBrowser.h"
 
-imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
+//imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
 MainWindow::MainWindow()
 : open(true)
@@ -114,7 +114,8 @@ void MainWindow::DrawConsole()
 	// Command-Line
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-	if(ImGui::InputText("", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
+#if 1
+	if(ImGui::InputText("plap", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
 	{
 		// Exec the command
 
@@ -127,6 +128,7 @@ void MainWindow::DrawConsole()
 		strcpy(inputBuffer, "");
 		reclaimFocus = true;
 	}
+#endif
 	ImGui::SetItemDefaultFocus();
     if (reclaimFocus)
 	{
