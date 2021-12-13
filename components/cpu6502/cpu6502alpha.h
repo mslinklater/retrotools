@@ -20,19 +20,19 @@ class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSe
 		
 		// Register access
 		
-		uint16_t GetPC();
-		uint8_t	GetAcc();
-		uint8_t	GetX();
-		uint8_t	GetY();
-		uint8_t	GetStatus();
-		uint8_t	GetSP();
+		uint16_t GetPC() override;
+		uint8_t	GetAcc() override;
+		uint8_t	GetX() override;
+		uint8_t	GetY() override;
+		uint8_t	GetStatus() override;
+		uint8_t	GetSP() override;
 
-		void SetPC(uint16_t pc);
-		void SetAcc(uint8_t acc);
-		void SetX(uint8_t x);
-		void SetY(uint8_t y);
-		void SetStatus(uint8_t status);
-		void SetSP(uint8_t sp);
+		void SetPC(uint16_t pc) override;
+		void SetAcc(uint8_t acc) override;
+		void SetX(uint8_t x) override;
+		void SetY(uint8_t y) override;
+		void SetStatus(uint8_t status) override;
+		void SetSP(uint8_t sp) override;
 
 		// IStateSerialisation
 		void SerialiseState(json& object) override;
@@ -40,12 +40,12 @@ class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSe
 		// ~IStateSerialisation
 
 		// ITickable
-		void CommitInputs(){};			// commit state of input pins - so chip update order doesn't matter
-		void Tick(bool clockState);	// update the actual silicon state - based on the clockState
+		void CommitInputs() override {};			// commit state of input pins - so chip update order doesn't matter
+		void Tick(bool clockState)override ;	// update the actual silicon state - based on the clockState
 		// ~ITickable
 
-		const Opcode* GetFetchOpcode() const;
-		const Opcode* GetExecuteOpcode() const;
+		const Opcode* GetFetchOpcode() const override;
+		const Opcode* GetExecuteOpcode() const override;
 
 	private:
         
@@ -56,7 +56,7 @@ class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSe
 		// ~ICommandProcessor
 		
 		bool		bHaltOnInstruction;
-		bool		bHalted;
+//		bool		bHalted;
 		int32_t		ticksUntilExecution;
 		uint16_t	next_pc;	// what the PC will be at next instruction
 };

@@ -18,7 +18,11 @@ So WTF is this ? Well, it's just a bunch of 8bit code and stuff that I've lumped
 
 $ sudo apt install cmake libsdl2-dev libopengl-dev
 
-$ cmake .
+$ mkdir build
+
+$ cd build
+
+$ cmake ..
 
 $ make
 

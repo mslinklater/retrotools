@@ -48,6 +48,7 @@ find_package(OpenGL)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories("3rdparty")
+include_directories(".")
 
 endif (UNIX)
 

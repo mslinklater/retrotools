@@ -8,7 +8,7 @@
             "name": "(gdb) Launch...",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/retrotools",
+            "program": "${workspaceFolder}/build/retrotools",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
