@@ -114,8 +114,8 @@ void MainWindow::DrawConsole()
 	// Command-Line
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-#if 1
-	if(ImGui::InputText("plap", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
+
+	if(ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
 	{
 		// Exec the command
 
@@ -128,7 +128,7 @@ void MainWindow::DrawConsole()
 		strcpy(inputBuffer, "");
 		reclaimFocus = true;
 	}
-#endif
+	
 	ImGui::SetItemDefaultFocus();
     if (reclaimFocus)
 	{

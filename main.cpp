@@ -7,7 +7,6 @@
 #include <SDL_opengl.h>
 #include "globalconfig.h"
 
-
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
 #include "shared_cpp/catch.hpp"
