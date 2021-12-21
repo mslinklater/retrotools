@@ -1,3 +1,4 @@
+// [CopyrightNotice]
 // Copyright (c) 2019-2021, Martin Linklater
 // All rights reserved.
 //

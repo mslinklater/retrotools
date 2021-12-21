@@ -3,6 +3,7 @@
 import os
 
 filetypes = [".cpp", ".h"]
+ignore = ["3rdparty/", "asm/"]
 header = [  "// [CopyrightNotice]\n",
             "// Copyright (c) 2019-2021, Martin Linklater\n",
             "// All rights reserved.\n",
@@ -22,6 +23,9 @@ for root, dir, files in os.walk(current_directory):
         for t in filetypes:
             if full_filename.endswith(t):
                 match = True
+        for i in ignore:
+            if i in full_filename:
+                match = False
         if match:
             file = open(full_filename, "r")
             lines = file.readlines()
@@ -29,7 +33,7 @@ for root, dir, files in os.walk(current_directory):
 
             needsSave = False
 
-            if "[CopyrightNotice]" in lines[0]:
+            if len(lines) >= len(header) and "[CopyrightNotice]" in lines[0]:
                 # present - replace
                 for i in range(0, len(header)):
                     if lines[i] != header[i]:
@@ -45,5 +49,4 @@ for root, dir, files in os.walk(current_directory):
                 file = open(full_filename, "w")
                 lines = file.writelines(lines)
                 file.close()
-
-        print("done")
+                print("Updated " + full_filename)
