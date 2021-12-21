@@ -1,3 +1,4 @@
+// [CopyrightNotice]
 // Copyright (c) 2019-2021, Martin Linklater
 // All rights reserved.
 //
@@ -128,7 +129,7 @@ void MainWindow::DrawConsole()
 		strcpy(inputBuffer, "");
 		reclaimFocus = true;
 	}
-	
+
 	ImGui::SetItemDefaultFocus();
     if (reclaimFocus)
 	{
