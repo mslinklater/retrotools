@@ -11,6 +11,9 @@
 class CommandBase
 {
 public:
+	CommandBase(std::string _name)
+	: name (_name )
+	{}
 	virtual ~CommandBase(){}
 	std::string	name;
 };

@@ -20,7 +20,7 @@ SessionManager* SessionManager::Instance()
 
 SessionManager::SessionManager()
 {
-	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
+//	CommandCenter::Instance()->Subscribe(kHaltCommand, this);
 }
 
 SessionManager::~SessionManager()

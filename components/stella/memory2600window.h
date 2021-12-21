@@ -29,10 +29,7 @@ public:
 	
 	virtual void Draw(void);
 
-	// IStateSerialisation
-	void SerialiseState(json& object);
-	void DeserialiseState(json& object);
-	// ~IStateSerialisation
+	ISERIALISATION_API
 
 private:
 	void DrawLine(uint16_t startAddress);

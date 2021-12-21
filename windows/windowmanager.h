@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <map>
-#include "command.h"
+#include "commandcenter.h"
 #include "errorcodes.h"
 #include "istateserialisation.h"
 
@@ -29,10 +29,7 @@ public:
 	void Draw();
 	bool ReceivedQuit();
 
-	// IStateSerialisation
-	virtual void SerialiseState(json& object);
-	virtual void DeserialiseState(json& object);
-	// ~IStateSerialisation
+	ISERIALISATION_API
 
 private:
 	

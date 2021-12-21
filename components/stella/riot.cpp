@@ -31,7 +31,7 @@ uint8_t Riot::Read(uint16_t addr)
 {
 	if(breakpoints[addr])
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "RIOT read breakpoint");		
+//		Commands::Halt(true, HaltCommand::kHalt, "RIOT read breakpoint");		
 	}
 
 	uint8_t ret = 0;
@@ -97,7 +97,7 @@ void Riot::Write(uint16_t addr, uint8_t val)
 
 	if(breakpoints[addr])
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "RIOT write breakpoint");		
+		//Commands::Halt(true, HaltCommand::kHalt, "RIOT write breakpoint");		
 	}
 }
 

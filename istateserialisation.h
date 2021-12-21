@@ -15,3 +15,7 @@ public:
 	virtual void SerialiseState(json& object) = 0;
 	virtual void DeserialiseState(json& object) = 0;
 };
+
+#define ISERIALISATION_API                     \
+	virtual void SerialiseState(json &object); \
+	virtual void DeserialiseState(json &object);

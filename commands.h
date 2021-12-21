@@ -9,31 +9,46 @@
 #include <string>
 #include "icommandhandler.h"
 
-namespace Commands
-{
-	class HaltCommand : public CommandBase
-	{
-	public:
-		enum ERunType
-		{
-			kHalt,
-			kTickTia,
-			kHBlank,
-			kVBlank,
-			kTickCpu,
-			kCpuInstruction,
-			kRun
-		};
+// Toggle Window
 
-		bool		halt;
-		ERunType	runType;
-		std::string reason;
+class ToggleWindowCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	ToggleWindowCommand(std::string _windowName)
+	: CommandBase(kName)
+	, windowName(_windowName)
+	{}
+
+	virtual ~ToggleWindowCommand(){}
+	std::string windowName;
+};
+
+// Halt
+
+class HaltCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	HaltCommand()
+	: CommandBase(kName)
+	{}
+
+	enum ERunType
+	{
+		kHalt,
+		kTickTia,
+		kHBlank,
+		kVBlank,
+		kTickCpu,
+		kCpuInstruction,
+		kRun
 	};
 
-	void Halt(bool halt, HaltCommand::ERunType runType, std::string reason);
-	
-	static const std::string kHaltCommand("Halt");
-	
-	void VSync();
-	static const std::string kVSyncCommand("VSync");
+	bool		halt;
+	ERunType	runType;
+	std::string reason;
 };
+

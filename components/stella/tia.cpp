@@ -9,7 +9,7 @@
 #include "common.h"
 #include "tia.h"
 #include "../commands.h"
-#include "command.h"
+#include "commandcenter.h"
 
 #define HALT_ON_UNIMPLEMENTED 0
 
@@ -25,7 +25,7 @@ Tia::Tia()
 , bHaltOnVBlank(false)
 , ticksSinceBoot(0)
 {
-	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
+//	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 	for(int i=0 ; i<kNumReadRegisters ; i++)
 	{
 		readRegisters[i] = 0;
@@ -110,7 +110,7 @@ void Tia::Tick()
 		rasterCount++;
 		if(bHaltOnHBlank)
 		{
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA HBlank");
+//			Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA HBlank");
 			bHaltOnHBlank = false;
 		}
 		bCpuWaitingForHsync = false;
@@ -121,7 +121,7 @@ void Tia::Tick()
 
 	if(bHaltOnTick)
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA Tick");
+//		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA Tick");
 		bHaltOnTick = false;
 	}
 }
@@ -355,7 +355,7 @@ uint8_t Tia::Read(uint8_t address)
     }
 	if((address < kNumReadRegisters) && (bReadBreakpoints[address]))
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA read");		
+//		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA read");		
 	}
     return ret;
 }
@@ -501,7 +501,7 @@ void Tia::Write(uint8_t address, uint8_t value)
     }
 	if((address < kNumWriteRegisters) && (bWriteBreakpoints[address]))
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA write");		
+//		Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA write");		
 	}
 }
 
@@ -644,13 +644,13 @@ void Tia::SetVSYNC(uint8_t val)
     writeRegisters[kVSYNC] = val;
 	if(val & 0x02)
 	{
-		Commands::VSync();
+//		Commands::VSync();
 		
 		rasterY = 0;
 		frameNum++;
 		if(bHaltOnVBlank)
 		{
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA VSync");
+			//Commands::Halt(true, Commands::HaltCommand::kHalt, "TIA VSync");
 			bHaltOnVBlank = false;
 		}
 	}

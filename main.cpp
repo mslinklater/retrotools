@@ -29,6 +29,8 @@
 #include "symbolstore.h"
 #include "commands.h"
 #include "windows/logwindow.h"
+#include "windows/helpaboutwindow.h"
+#include "windows/helpcommandswindow.h"
 #include "components/stella/memory2600window.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
@@ -38,7 +40,7 @@
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "components/cpu6502/perfect6502window.h"
-#include "command.h"
+#include "commandcenter.h"
 #include "utils/memoryutils.h"
 #include "windows/windowmanager.h"
 #include "stateserialiser.h"
@@ -196,7 +198,13 @@ int main(int argc, char* argv[])
 	LogWindow* pLogWindow = new LogWindow();
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
-	
+
+	HelpAboutWindow* pHelpAboutWindow = new HelpAboutWindow();
+	pWindowManager->AddWindow(pHelpAboutWindow, "HelpAbout");
+
+	HelpCommandsWindow* pHelpCommandsWindow = new HelpCommandsWindow();
+	pWindowManager->AddWindow(pHelpCommandsWindow, "HelpCommands");
+
 //	Memory2600Window* pMemoryWindow = new Memory2600Window();
 //	pMemoryWindow->SetMemory(pMemory);
 //	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");

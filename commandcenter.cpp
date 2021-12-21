@@ -4,7 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
-#include "command.h"
+#include "commandcenter.h"
 #include "common.h"
 #include <algorithm>
 
@@ -110,18 +110,16 @@ void CommandCenter::Unsubscribe(string commandName, ICommandHandler* handler)
 	}
 }
 
+#if 0
 // Shared Commands
-
-void SharedCommands::ToggleWindow(string windowName)
+void ToggleWindow(string windowName)
 {
 #if LOGGING
 	LOGINFOF("Commands::ToggleWindow %s", windowName.c_str());
 #endif
 
-	ToggleWindowCommand cmd;
-	cmd.name = kToggleWindowCommand;
-	cmd.windowName = windowName;
-	CommandCenter::Instance()->QueueForBroadcast(dynamic_pointer_cast<CommandBase>(make_shared<ToggleWindowCommand>(cmd)));
+	ToggleWindowCommand cmd(windowName);
+	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<ToggleWindowCommand>(cmd));
 }
 
 void SharedCommands::Quit(void)
@@ -134,3 +132,4 @@ void SharedCommands::Quit(void)
 	cmd.name = kQuitCommand;
 	CommandCenter::Instance()->QueueForBroadcast(make_shared<CommandBase>(cmd));
 }
+#endif

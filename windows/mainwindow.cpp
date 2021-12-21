@@ -6,10 +6,11 @@
 
 #include "mainwindow.h"
 #include "common.h"
-#include "command.h"
+#include "commandcenter.h"
 #include "../commands.h"
 #include "windowmanager.h"
 #include "filebrowser/ImGuiFileBrowser.h"
+#include "../commandhelpers.h"
 
 //imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
@@ -52,7 +53,7 @@ void MainWindow::DrawMenuBar()
 			if(ImGui::MenuItem("Quit"))
 			{
 				// quit session
-				SharedCommands::Quit();
+//				SharedCommands::Quit();
 			}
 			ImGui::EndMenu();
 		}
@@ -66,26 +67,36 @@ void MainWindow::DrawMenuBar()
 			{
 				if(ImGui::MenuItem(name.c_str()))
 				{
-					SharedCommands::ToggleWindow(name);
-				}	   
+//					std::shared_ptr<CommandBase> cmd = std::make_shared<ToggleWindowCommand>(name);
+//					CommandCenter::Instance()->BroadcastNow(cmd);
+					CommandHelpers::ToggleWindow(name);
+				}
 			}
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Help"))
 		{
+			if(ImGui::MenuItem("Commands"))
+			{
+//				SharedCommands::ToggleWindow("HelpCommands");
+			}
+			if(ImGui::MenuItem("About"))
+			{
+//				SharedCommands::ToggleWindow("HelpAbout");
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
 	}	
 }
 
-static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
+static int CommandPromptCallbackStub(ImGuiInputTextCallbackData* data)
 {
 	MainWindow* window = (MainWindow*)data->UserData;
-	return window->TextEditCallback(data);
+	return window->CommandPromptCallback(data);
 }
 
-int MainWindow::TextEditCallback(ImGuiInputTextCallbackData* data)
+int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 {
 	return 0;
 }
@@ -116,7 +127,7 @@ void MainWindow::DrawConsole()
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 
-	if(ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &TextEditCallbackStub, (void*)this))
+	if(ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void*)this))
 	{
 		// Exec the command
 

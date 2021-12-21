@@ -38,10 +38,7 @@ public:
 
 	std::vector<Symbol> GetAll();
 
-	// IStateSerialisation	
-	void SerialiseState(json& object);
-	void DeserialiseState(json& object);
-	// ~IStateSerialisation	
+	ISERIALISATION_API
 
 private:
 	std::map<uint16_t,Symbol> symbolMap;

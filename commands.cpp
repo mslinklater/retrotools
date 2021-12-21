@@ -6,23 +6,8 @@
 
 #include "common.h"
 #include "commands.h"
-#include "command.h"
+#include "commandcenter.h"
 
-void Commands::Halt(bool halt, Commands::HaltCommand::ERunType runType, std::string reason)
-{
-	CommandBase cmd;
-	cmd.name = kHaltCommand;
-//	cmd.payload = halt ? "true" : "false";
-//	cmd.payload2 = runType;
-//	cmd.context = reason;
-	
-//	CommandCenter::Instance()->BroadcastNow(cmd);
-}
+const std::string ToggleWindowCommand::kName = "ToggleWindow";
+const std::string HaltCommand::kName = "Halt";
 
-void Commands::VSync()
-{
-	CommandBase cmd;
-	cmd.name = kVSyncCommand;
-	
-//	CommandCenter::Instance()->BroadcastNow(cmd);
-}

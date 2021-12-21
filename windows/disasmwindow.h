@@ -4,7 +4,6 @@
 //
 // See file 'LICENSE' for license details
 
-
 #pragma once
 
 #include "windowbase.h"
@@ -31,11 +30,8 @@ public:
 	void SetDisassembler(Disassembler* pDisasm);
 	void SetCPU(Cpu6502Base* pCpu);
 	void SetMemory(IMemory* pMemory);
-	
-	// IStateSerialisation
-	virtual void SerialiseState(json& object);
-	virtual void DeserialiseState(json& object);
-	// ~IStateSerialisation
+
+	ISERIALISATION_API
 private:
 	
 	void DrawHeader(void);

@@ -8,7 +8,7 @@
 #include "common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
-#include "command.h"
+#include "commands.h"
 #include "stateserialiser.h"
 
 
@@ -27,8 +27,8 @@ void WindowManager::Init(StateSerialiser* pStateSerialiser)
 	LOGINFO("WindowManager::Init");
 	
 	// Subscribe to all ToggleWindow commands
-	CommandCenter::Instance()->Subscribe(SharedCommands::kToggleWindowCommand, this);
-	CommandCenter::Instance()->Subscribe(SharedCommands::kQuitCommand, this);
+	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
+//	CommandCenter::Instance()->Subscribe(kQuitCommand, this);
 
 	pStateSerialiser->AddStateSerialiser(this);
 	initialised = true;
@@ -56,16 +56,25 @@ void WindowManager::Draw()
 
 bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
-	if(command->name == SharedCommands::kToggleWindowCommand)
+	if(command->name == ToggleWindowCommand::kName)
 	{
-		std::shared_ptr<SharedCommands::ToggleWindowCommand> cmd = std::dynamic_pointer_cast<SharedCommands::ToggleWindowCommand>(command);
-		windowActive[cmd->windowName] = !windowActive[cmd->windowName];
+		std::shared_ptr<ToggleWindowCommand> cmd = std::dynamic_pointer_cast<ToggleWindowCommand>(command);
+		if(windows.find(cmd->windowName) != windows.end())
+		{
+			windowActive[cmd->windowName] = !windowActive[cmd->windowName];
+		}
+		else
+		{
+			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
+		}
 	}
-	if(command->name == SharedCommands::kQuitCommand)
+#if 0
+	if(command->name == kQuitCommand)
 	{
 		// save the state of the windows
 		receivedQuit = true;
 	}
+#endif
 	return false;
 }
 

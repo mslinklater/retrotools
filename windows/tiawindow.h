@@ -27,10 +27,7 @@ public:
 
     void SetTia(Tia* tia);
 
-	// IStateSerialisation
-	virtual void SerialiseState(json& object);
-	virtual void DeserialiseState(json& object);
-	// ~IStateSerialisation
+	ISERIALISATION_API
 
 	// ICommandProcessor
 	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);

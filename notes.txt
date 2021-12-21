@@ -14,7 +14,7 @@ Stunt Car Racer
 Novagen
 -------
 Encounter (Paul Woakes, C64)
-Mercenary
+Mercenary (Plus 4 version best apparently)
 
 Lucasarts
 ---------
@@ -31,11 +31,17 @@ Castle Master
 Total Eclipse 2
 Castle Master 2
 
+other
+-----
+
+3D Combat Zone (Ritman)
+Way Out (Atari)
+Ballblazer
 Carrier Command
 Starglider
 Fat Worms Blows a Sparky
 UIM - Ultra Intelligent Machine
-Cholo
+Cholo (Beeb)
 Tau Ceti
 Academy (Tau Ceti 2)
 Micronaut One
@@ -56,10 +62,22 @@ Wayout (Atari)
 Chuck Yeager
 X (Gameboy)
 ATF Advanced Tactical Fighter (Spectrum)
-STar Wars
+Star Wars
 Battlezone
 3D Pool (Nick Pelling)
 Starion (Spectrum)
+Fat worm blows a sparky (Spectrum)
+3D Construction Kit
+I of the mask - Sandy White
+Space Rogue - Paul Neurath
+Castle Master
+Darkstar
+Rommels Revenge
+Vectron
+LHX Attack Chopper
+Stunt Island
+Trailblazer (Atari)
+Elektra Glide (Atari)
 
 Good 2600 ROMs
 https://twitter.com/JetSetIlly/status/1219887010145546245?s=20

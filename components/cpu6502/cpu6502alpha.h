@@ -9,7 +9,7 @@
 #include <string>
 #include <set>
 
-#include "command.h"
+#include "commandcenter.h"
 #include "cpu6502base.h"
 #include "istateserialisation.h"
 
@@ -36,10 +36,7 @@ class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSe
 		void SetStatus(uint8_t status) override;
 		void SetSP(uint8_t sp) override;
 
-		// IStateSerialisation
-		void SerialiseState(json& object) override;
-		void DeserialiseState(json& object) override;
-		// ~IStateSerialisation
+		ISERIALISATION_API
 
 		// ITickable
 		void CommitInputs() override {};			// commit state of input pins - so chip update order doesn't matter

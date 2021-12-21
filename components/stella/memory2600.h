@@ -124,10 +124,7 @@ public:
 	void	ClearReadBreakpoint(uint16_t address);
 	void	ClearWriteBreakpoint(uint16_t address);
 
-	// IStateSerialisation
-	void SerialiseState(json& object);
-	void DeserialiseState(json& object);
-	// ~IStateSerialisation
+	ISERIALISATION_API
 
 private:
 	MemoryByte* pRom;

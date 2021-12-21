@@ -25,13 +25,13 @@ Cpu6502Alpha::Cpu6502Alpha()
 , ticksUntilExecution(-1)
 {
 	LOGINFO("Cpu6502::Constructor");
-	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
+//	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 Cpu6502Alpha::~Cpu6502Alpha()
 {
 	LOGINFO("Cpu6502::Destructor");
-	CommandCenter::Instance()->Unsubscribe(Commands::kHaltCommand, this);
+//	CommandCenter::Instance()->Unsubscribe(Commands::kHaltCommand, this);
 }
 
 void Cpu6502Alpha::Tick(bool clockState)
@@ -45,7 +45,7 @@ void Cpu6502Alpha::Tick(bool clockState)
 
 		if(haltOnTick)
 		{
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU tick");
+//			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU tick");
 			haltOnTick = false;
 		}
 	}
@@ -131,7 +131,7 @@ void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 	ticksUntilExecution--;
 	if((ticksUntilExecution == 1) && (bHaltOnInstruction))
 	{
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU instruction");
+//		Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU instruction");
 		bHaltOnInstruction = false;
 	}
 	if(ticksUntilExecution > 0)
@@ -148,7 +148,7 @@ void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 	{
 		if(breakpoints.find(reg.pc) != breakpoints.end())
 		{
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU PC");
+//			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU PC");
 		}
 	}
 
@@ -233,7 +233,7 @@ void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 			break;
 		default:
 			LOGERRORF("Unemulated addressing mode %s", addrModeStrings[pOpcode->addrMode].c_str());
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
+//			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
 			return;
 			break;
 	}
@@ -439,7 +439,7 @@ void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 			break;
 		case kMnemonic_BRK:
 			ticksUntilExecution = 2;
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU BRK instruction");
+//			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU BRK instruction");
 			break;
 		case kMnemonic_BVC:
 			if(!GetOverflowFlag())
@@ -1001,13 +1001,13 @@ void Cpu6502Alpha::UpdateState(bool ignoreBreakpoints)
 			break;
 		default:
 			LOGERRORF("Unemulated mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
-			Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
+			//Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
 			break;
 	}
 	if(ticksUntilExecution == -1)
 	{
 		LOGERRORF("Untimed mnemonic %s", mnemonicStrings[pOpcode->mnemonic].c_str());
-		Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
+		//Commands::Halt(true, Commands::HaltCommand::kHalt, "CPU emu problem - see log");
 	}
 }
 

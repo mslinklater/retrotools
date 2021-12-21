@@ -7,7 +7,7 @@
 #include "tiawindow.h"
 #include "common.h"
 #include "commands.h"
-#include "command.h"
+#include "commandcenter.h"
 
 TiaWindow::TiaWindow()
 : bShowInfo(false)
@@ -32,7 +32,7 @@ TiaWindow::TiaWindow()
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Tia::kOutputHorizontalResolution, Tia::kOutputVerticalResolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&outputBuffer);
 
-	CommandCenter::Instance()->Subscribe(Commands::kVSyncCommand, this);
+//	CommandCenter::Instance()->Subscribe(Commands::kVSyncCommand, this);
 }
 
 TiaWindow::~TiaWindow()

@@ -18,10 +18,7 @@ public:
 
 	virtual void Draw();
 
-	// IStateSerialisation
-	virtual void SerialiseState(json& object);
-	virtual void DeserialiseState(json& object);
-	// ~IStateSerialisation
+	ISERIALISATION_API
 
 private:
 

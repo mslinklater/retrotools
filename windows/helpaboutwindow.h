@@ -4,26 +4,22 @@
 //
 // See file 'LICENSE' for license details
 
-
 #pragma once
 
 #include "windowmanager.h"
 #include "windowbase.h"
 
-class LogWindow : public WindowBase, public IStateSerialisation
+class HelpAboutWindow : public WindowBase, public IStateSerialisation
 {
 public:
-	LogWindow();
-	virtual ~LogWindow();
 	
-	// WindowBase
-	virtual void Draw();
-	// ~WindowBase
+	HelpAboutWindow();
+	virtual ~HelpAboutWindow();
+	
+	virtual void Draw(void);
 
 	ISERIALISATION_API
 
 private:
-	bool showInfo;
-	bool showWarnings;
-	bool showErrors;
+	
 };

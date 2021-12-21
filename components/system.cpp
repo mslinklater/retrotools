@@ -21,7 +21,7 @@ System::System()
 , deltaTPerTick(1.0 / tickFrequency)
 , cpuTickDelay(0)
 {
-	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
+//	CommandCenter::Instance()->Subscribe(Commands::kHaltCommand, this);
 }
 
 System::~System()

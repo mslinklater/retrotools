@@ -12,7 +12,7 @@
 
 #include "errorcodes.h"
 #include "components/cpu6502/cpu6502base.h"
-#include "command.h"
+#include "commandcenter.h"
 
 class IMemory;
 class SymbolStore;

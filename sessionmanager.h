@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "command.h"
+#include "commandcenter.h"
 
 class SessionManager : public ICommandHandler
 {

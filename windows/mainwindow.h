@@ -36,7 +36,7 @@ private:
 
 	// Console stuff
 public:
-    int TextEditCallback(ImGuiInputTextCallbackData* data);
+    int CommandPromptCallback(ImGuiInputTextCallbackData* data);
 
 private:
 	static const int kInputBufferSize = 256;

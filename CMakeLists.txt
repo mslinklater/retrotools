@@ -52,7 +52,7 @@ include_directories(".")
 
 endif (UNIX)
 
-set(SOURCE_FILES command.cpp commands.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
+set(SOURCE_FILES commandcenter.cpp commandhelpers.cpp commands.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")
