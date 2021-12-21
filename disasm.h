@@ -10,9 +10,9 @@
 #include <map>
 #include <vector>
 
-#include "errorcodes.h"
+#include "system/errorcodes.h"
 #include "components/cpu6502/cpu6502base.h"
-#include "commandcenter.h"
+#include "system/commandcenter.h"
 
 class IMemory;
 class SymbolStore;

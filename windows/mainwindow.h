@@ -42,9 +42,10 @@ private:
 	static const int kInputBufferSize = 256;
 	char inputBuffer[kInputBufferSize];
 
-	ImVector<char*> history;	// Command history
-	ImVector<char*> logItems;
+	std::vector<std::string> commandHistory;	// Command history
+	int commandHistoryPtr;
+	std::vector<std::string> logItems;
 
- 	void DrawConsole();
+	void DrawConsole();
 	void ClearLog();
 };

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "windowbase.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 #include "../components/stella/riot.h"
 
 class RiotWindow : public WindowBase, public IStateSerialisation

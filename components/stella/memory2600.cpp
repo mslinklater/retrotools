@@ -8,7 +8,7 @@
 #include <string.h>
 #include "common.h"
 #include "memory2600.h"
-#include "errorcodes.h"
+#include "system/errorcodes.h"
 #include "components/cpu6502/cpu6502alpha.h"
 #include "tia.h"
 #include "riot.h"

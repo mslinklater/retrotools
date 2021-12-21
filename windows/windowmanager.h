@@ -8,9 +8,9 @@
 
 #include <vector>
 #include <map>
-#include "commandcenter.h"
-#include "errorcodes.h"
-#include "istateserialisation.h"
+#include "system/commandcenter.h"
+#include "system/errorcodes.h"
+#include "system/istateserialisation.h"
 
 class WindowBase;
 class StateSerialiser;

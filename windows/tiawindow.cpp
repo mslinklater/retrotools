@@ -6,8 +6,8 @@
 
 #include "tiawindow.h"
 #include "common.h"
-#include "commands.h"
-#include "commandcenter.h"
+#include "system/commands.h"
+#include "system/commandcenter.h"
 
 TiaWindow::TiaWindow()
 : bShowInfo(false)

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "windowbase.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 
 class Disassembler;
 class Cpu6502Base;

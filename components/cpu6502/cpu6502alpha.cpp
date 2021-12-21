@@ -8,7 +8,7 @@
 #include "common.h"
 #include "cpu6502alpha.h"
 #include "../interfaces/imemory.h"
-#include "../commands.h"
+#include "system/commands.h"
 
 #define CPU_STATUS_MASK_CARRY		0x01
 #define CPU_STATUS_MASK_ZERO		0x02

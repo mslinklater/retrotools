@@ -11,7 +11,7 @@
 #include "../symbolstore.h"
 #include "../utils/imguihelpers.h"
 #include "../theme.h"
-#include "commandcenter.h"
+#include "system/commandcenter.h"
 
 SymbolWindow::SymbolWindow()
 : filterFlags(0)

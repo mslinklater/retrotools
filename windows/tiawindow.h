@@ -9,8 +9,8 @@
 #include <GL/gl.h>
 
 #include "windowbase.h"
-#include "istateserialisation.h"
-#include "icommandhandler.h"
+#include "system/istateserialisation.h"
+#include "system/icommandhandler.h"
 #include "components//stella/tia.h"
 
 class Tia;

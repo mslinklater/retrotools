@@ -52,7 +52,7 @@ include_directories(".")
 
 endif (UNIX)
 
-set(SOURCE_FILES commandcenter.cpp commandhelpers.cpp commands.cpp disasm.cpp errorcodes.cpp main.cpp sessionmanager.cpp stateserialiser.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
+set(SOURCE_FILES disasm.cpp main.cpp sessionmanager.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("components")
@@ -68,6 +68,6 @@ project (retrotools VERSION 0.1)
 configure_file(version.h.in version.h)
 
 add_executable(retrotools ${SOURCE_FILES})
-target_include_directories(retrotools PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(retrotools PUBLIC "${PROJECT_BINARY_DIR}" ".")
 target_link_libraries(retrotools ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(retrotools PRIVATE -Wall -Werror -Wno-psabi -g)

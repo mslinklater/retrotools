@@ -48,7 +48,7 @@ value	dec	2scomp adjust
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "../icommandhandler.h"
+#include "system/icommandhandler.h"
 
 class Tia : public ITickable, public ICommandHandler
 {

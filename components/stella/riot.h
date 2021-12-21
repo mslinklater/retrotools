@@ -8,7 +8,7 @@
 
 #include <inttypes.h>
 #include "../interfaces/itickable.h"
-#include "icommandhandler.h"
+#include "system/icommandhandler.h"
 
 class Riot : public ITickable, public ICommandHandler
 {

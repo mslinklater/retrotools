@@ -7,7 +7,7 @@
 #include "systemwindow.h"
 #include "../components/system.h"
 #include "common.h"
-#include "../commands.h"
+#include "system/commands.h"
 
 SystemWindow::SystemWindow()
 {

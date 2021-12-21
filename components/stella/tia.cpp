@@ -8,8 +8,8 @@
 
 #include "common.h"
 #include "tia.h"
-#include "../commands.h"
-#include "commandcenter.h"
+#include "system/commands.h"
+#include "system/commandcenter.h"
 
 #define HALT_ON_UNIMPLEMENTED 0
 

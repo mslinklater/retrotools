@@ -4,19 +4,23 @@
 //
 // See file 'LICENSE' for license details
 
+#include <algorithm>
+
 #include "mainwindow.h"
 #include "common.h"
-#include "commandcenter.h"
-#include "../commands.h"
+#include "system/commandcenter.h"
+#include "system/commands.h"
 #include "windowmanager.h"
 #include "filebrowser/ImGuiFileBrowser.h"
-#include "../commandhelpers.h"
+#include "system/commandhelpers.h"
+#include "system/usercommands.h"
 
 //imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
 MainWindow::MainWindow()
 : open(true)
 , bShowNewSession(false)
+, commandHistoryPtr(0)
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
 }
@@ -67,8 +71,6 @@ void MainWindow::DrawMenuBar()
 			{
 				if(ImGui::MenuItem(name.c_str()))
 				{
-//					std::shared_ptr<CommandBase> cmd = std::make_shared<ToggleWindowCommand>(name);
-//					CommandCenter::Instance()->BroadcastNow(cmd);
 					CommandHelpers::ToggleWindow(name);
 				}
 			}
@@ -78,11 +80,11 @@ void MainWindow::DrawMenuBar()
 		{
 			if(ImGui::MenuItem("Commands"))
 			{
-//				SharedCommands::ToggleWindow("HelpCommands");
+				CommandHelpers::ToggleWindow("HelpCommands");
 			}
 			if(ImGui::MenuItem("About"))
 			{
-//				SharedCommands::ToggleWindow("HelpAbout");
+				CommandHelpers::ToggleWindow("HelpAbout");
 			}
 			ImGui::EndMenu();
 		}
@@ -98,6 +100,20 @@ static int CommandPromptCallbackStub(ImGuiInputTextCallbackData* data)
 
 int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 {
+	if(data->EventFlag & ImGuiInputTextFlags_CallbackHistory)	// history
+	{
+		if(data->EventKey == ImGuiKey_UpArrow)
+		{
+			commandHistoryPtr = std::max(commandHistoryPtr - 1, 0);
+		}
+		if(data->EventKey == ImGuiKey_DownArrow)
+		{
+			commandHistoryPtr = std::min(commandHistoryPtr + 1, (int)commandHistory.size()-1);			
+		}
+		strncpy(data->Buf, commandHistory[commandHistoryPtr].c_str(), data->BufSize);
+		data->BufTextLen = commandHistory[commandHistoryPtr].length();
+		data->BufDirty = true;
+	}
 	return 0;
 }
 
@@ -114,9 +130,9 @@ void MainWindow::DrawConsole()
     const float footerHeightToReserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footerHeightToReserve), false, 0);
 	// the actual log
-	for(int i=0; i<logItems.size(); i++)
+	for(std::size_t i=0; i<logItems.size(); i++)
 	{
-		const char* item = logItems[i];
+		const char* item = logItems[i].c_str();
 		// TODO: Need to add some formatting here
 		ImGui::TextUnformatted(item);
 	}
@@ -129,16 +145,25 @@ void MainWindow::DrawConsole()
 
 	if(ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void*)this))
 	{
-		// Exec the command
+		// add to command history
+		std::string historyString(&inputBuffer[0]);
+		commandHistory.push_back(historyString);
 
-		// copy the inputBuffer and add to the items vector
+		// add to logItems
 		char* newBuffer = new char[strlen(inputBuffer) + 3];
 		sprintf(newBuffer, "> %s", inputBuffer);
-		logItems.push_back(newBuffer);
+		std::string newString(&newBuffer[0]);
+		logItems.push_back(newString);
+		delete newBuffer;
+
+		UserCommands::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
+//		CommandCenter::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
 
 		// clear the buffer
 		strcpy(inputBuffer, "");
 		reclaimFocus = true;
+
+		commandHistoryPtr = commandHistory.size();
 	}
 
 	ImGui::SetItemDefaultFocus();

@@ -8,8 +8,8 @@
 #include "common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
-#include "commands.h"
-#include "stateserialiser.h"
+#include "system/commands.h"
+#include "system/stateserialiser.h"
 
 
 WindowManager::WindowManager()

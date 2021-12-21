@@ -24,7 +24,7 @@ public:
 	
 	void Subscribe(std::string commandName, ICommandHandler* handler);
 	void Unsubscribe(std::string commandName, ICommandHandler* handler);
-	
+
 private:
 	CommandCenter();
 	virtual ~CommandCenter();

@@ -10,7 +10,7 @@
 #include "stella/tia.h"
 #include "cpu6502/cpu6502alpha.h"
 #include "stella/riot.h"
-#include "../commands.h"
+#include "system/commands.h"
 
 System::System()
 : running(false)

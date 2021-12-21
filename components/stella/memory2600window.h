@@ -8,7 +8,7 @@
 
 #include <inttypes.h>
 #include "windows/windowbase.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 
 class Memory2600;
 

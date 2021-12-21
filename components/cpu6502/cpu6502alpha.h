@@ -9,9 +9,9 @@
 #include <string>
 #include <set>
 
-#include "commandcenter.h"
+#include "system/commandcenter.h"
 #include "cpu6502base.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 
 class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSerialisation
 {

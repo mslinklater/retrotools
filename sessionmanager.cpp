@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "sessionmanager.h"
-#include "commands.h"
+#include "system/commands.h"
 
 SessionManager* SessionManager::pInstance = nullptr;
 

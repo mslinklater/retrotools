@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "riot.h"
-#include "../commands.h"
+#include "system/commands.h"
 
 Riot::Riot()
 : timerVal(1)

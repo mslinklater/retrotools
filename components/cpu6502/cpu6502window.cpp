@@ -10,7 +10,7 @@
 #include <inttypes.h>
 #include "cpu6502window.h"
 #include "common.h"
-#include "../commands.h"
+#include "system/commands.h"
 
 Cpu6502Window::Cpu6502Window()
 {

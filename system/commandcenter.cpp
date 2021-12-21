@@ -89,7 +89,7 @@ void CommandCenter::Subscribe(string commandName, ICommandHandler* handler)
 	}
 	else
 	{
-		LOGERRORF("Subscribing to the same command twice:%s", commandName.c_str());
+		LOGERRORF("CommandCenter::Subscribing to the same command twice:%s", commandName.c_str());
 	}
 	
 }
@@ -106,30 +106,6 @@ void CommandCenter::Unsubscribe(string commandName, ICommandHandler* handler)
 	}
 	else
 	{
-		LOGERRORF("Unsubscribing when not subscribed:%s", commandName.c_str());
+		LOGERRORF("CommandCenter::Unsubscribing when not subscribed:%s", commandName.c_str());
 	}
 }
-
-#if 0
-// Shared Commands
-void ToggleWindow(string windowName)
-{
-#if LOGGING
-	LOGINFOF("Commands::ToggleWindow %s", windowName.c_str());
-#endif
-
-	ToggleWindowCommand cmd(windowName);
-	CommandCenter::Instance()->QueueForBroadcast(std::make_shared<ToggleWindowCommand>(cmd));
-}
-
-void SharedCommands::Quit(void)
-{
-#if LOGGING
-	LOGINFO("Commands::Quit");
-#endif
-
-	CommandBase cmd;
-	cmd.name = kQuitCommand;
-	CommandCenter::Instance()->QueueForBroadcast(make_shared<CommandBase>(cmd));
-}
-#endif

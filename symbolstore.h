@@ -8,9 +8,9 @@
 
 #include <map>
 #include <vector>
-#include "errorcodes.h"
+#include "system/errorcodes.h"
 #include "symbol.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 
 class SymbolStore : public IStateSerialisation
 {

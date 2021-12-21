@@ -8,7 +8,7 @@
 
 #include <inttypes.h>
 #include "windowbase.h"
-#include "commandcenter.h"
+#include "system/commandcenter.h"
 
 class System;
 

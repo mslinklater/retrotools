@@ -9,9 +9,9 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "errorcodes.h"
+#include "system/errorcodes.h"
 #include "../interfaces/imemory.h"
-#include "istateserialisation.h"
+#include "system/istateserialisation.h"
 
 /*
 2600 memory layout

@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <inttypes.h>
-#include "icommandhandler.h"
+#include "system/icommandhandler.h"
 
 class ITickable;
 class IMemory;

@@ -27,7 +27,7 @@
 #include "disasm.h"
 #include "sessionmanager.h"
 #include "symbolstore.h"
-#include "commands.h"
+#include "system/commands.h"
 #include "windows/logwindow.h"
 #include "windows/helpaboutwindow.h"
 #include "windows/helpcommandswindow.h"
@@ -40,10 +40,10 @@
 #include "windows/riotwindow.h"
 #include "windows/systemwindow.h"
 #include "components/cpu6502/perfect6502window.h"
-#include "commandcenter.h"
+#include "system/commandcenter.h"
 #include "utils/memoryutils.h"
 #include "windows/windowmanager.h"
-#include "stateserialiser.h"
+#include "system/stateserialiser.h"
 
 // DearImGui stuff
 static uint64_t	performanceFrequency;
