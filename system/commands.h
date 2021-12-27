@@ -41,6 +41,20 @@ public:
 	std::string text;
 };
 
+// Scroll to bottom
+
+class ScrollToBottomCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	ScrollToBottomCommand()
+	: CommandBase(kName)
+	{}
+
+	virtual ~ScrollToBottomCommand(){}
+};
+
 // Quit
 
 class QuitCommand : public CommandBase

@@ -30,6 +30,14 @@ $ make
 
 You should now have the 'vistella' executable in the folder
 
+### Windows
+
+Needs someone to sort this out
+
+### MacOS
+
+Needs someone to sort this out
+
 ## Command Line Parameters
 
 TODO

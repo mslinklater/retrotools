@@ -13,5 +13,6 @@ namespace CommandHelpers
 {
     void ToggleWindow(std::string windowName);
     void TextOutput(std::string text);
+    void ScrollToBottom();
     void Quit();
 };

@@ -62,6 +62,7 @@ add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
 add_subdirectory("system")
+add_subdirectory("resources")
 add_subdirectory("3rdparty/perfect6502")
 
 project (retrotools VERSION 0.1)

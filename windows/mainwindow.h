@@ -27,6 +27,7 @@ private:
 	bool open;
 	WindowManager* pWindowManager;
 	bool bShowNewSession;
+	bool bScrollToBottom;
 
 	static const int kNewFilenameMaxLength = 256;
 	char newFilename[kNewFilenameMaxLength];

@@ -1,3 +1,9 @@
+// [CopyrightNotice]
+// Copyright (c) 2019-2021, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -45,6 +51,12 @@ UserCommands::UserCommands()
         commandInfo.func = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         commandHandlerMap[std::string("ls")] = commandInfo;
+    }
+    {
+        CommandInfo commandInfo;
+        commandInfo.func = &UserCommands::Command_Cd;
+        commandInfo.hint = "cd - change current directory";
+        commandHandlerMap[std::string("cd")] = commandInfo;
     }
 }
 
@@ -98,6 +110,7 @@ void UserCommands::OutputCompletions(const std::string& partialCommand)
             CommandHelpers::TextOutput(command);
         }
     }
+    CommandHelpers::ScrollToBottom();
 }
 
 void UserCommands::Command_Quit(const std::vector<std::string>& command)
@@ -112,16 +125,53 @@ void UserCommands::Command_Open(const std::vector<std::string>& command)
 void UserCommands::Command_Ls(const std::vector<std::string>& command)
 {
     std::string cwd = fs::current_path().string();
+    std::vector<std::string> folders;
+    std::vector<std::string> files;
     for(const auto& entry : fs::directory_iterator(cwd))
     {
-        CommandHelpers::TextOutput(entry.path().string());
+        if(fs::is_directory(entry.status()))
+        {
+            folders.push_back(entry.path().string() + "/");
+        }
+        else
+        {
+            files.push_back(entry.path().string());
+        }
+    }
+    for(auto& folder : folders)
+    {
+        CommandHelpers::TextOutput(folder);
+    }
+    for(auto& file : files)
+    {
+        CommandHelpers::TextOutput(file);
+    }
+    CommandHelpers::ScrollToBottom();
+}
+
+void UserCommands::Command_Cd(const std::vector<std::string>& command)
+{
+    if(command.size() == 2)
+    {
+        fs::path newPath = fs::current_path() /= command[1];
+        if(fs::exists(newPath))
+        {
+            fs::current_path(newPath);
+            CommandHelpers::TextOutput(std::string("OK: ") + fs::current_path().string());
+        }
+        else
+        {
+            CommandHelpers::TextOutput(std::string("Unknown path: ") + newPath.string());
+            CommandHelpers::TextOutput(fs::current_path().string());
+        }
+        CommandHelpers::ScrollToBottom();
     }
 }
 
 void UserCommands::Command_Pwd(const std::vector<std::string>& command)
 {
-    fs::path cwd = fs::current_path();
-    CommandHelpers::TextOutput(cwd.string());
+    CommandHelpers::TextOutput(fs::current_path().string());
+    CommandHelpers::ScrollToBottom();
 }
 
 void UserCommands::Command_Help(const std::vector<std::string>& command)
@@ -143,4 +193,5 @@ void UserCommands::Command_Help(const std::vector<std::string>& command)
             CommandHelpers::TextOutput("Unknown command");
         }
     }
+    CommandHelpers::ScrollToBottom();
 }

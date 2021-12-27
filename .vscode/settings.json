@@ -5,6 +5,7 @@
 		"**/CMakeFiles/": true,
 		"build/": true,
 		"CMakeCache.txt": true,
+		"imgui.ini": true,
 		"Testing/": true
 	},
 	"git.autofetch": true,
@@ -72,5 +73,6 @@
 		"typeinfo": "cpp",
 		"valarray": "cpp",
 		"variant": "cpp"
-	}
+	},
+	"editor.insertSpaces": false
 }

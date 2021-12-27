@@ -14,16 +14,19 @@
 #include "filebrowser/ImGuiFileBrowser.h"
 #include "system/commandhelpers.h"
 #include "system/usercommands.h"
+#include "settings.h"
 
 //imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
 MainWindow::MainWindow()
 : open(true)
 , bShowNewSession(false)
+, bScrollToBottom(false)
 , commandHistoryPtr(0)
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
 	CommandCenter::Instance()->Subscribe(TextOutputCommand::kName, this);
+	CommandCenter::Instance()->Subscribe(ScrollToBottomCommand::kName, this);
 }
 
 MainWindow::~MainWindow()
@@ -155,6 +158,11 @@ void MainWindow::DrawConsole()
 			ImGui::TextColored(ImVec4(0.6,0.6,0.6,1.0),"%s", item);
 		}
 	}
+	if(bScrollToBottom)
+	{
+		ImGui::SetScrollHereY(1.0f);
+		bScrollToBottom = false;
+	}
 	ImGui::EndChild();
 
 	ImGui::Separator();
@@ -166,18 +174,21 @@ void MainWindow::DrawConsole()
 	ImGui::SameLine();
 	if (ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
-		// add to command history
-		std::string historyString(&inputBuffer[0]);
-		commandHistory.push_back(historyString);
+		if(strlen(inputBuffer))
+		{
+			// add to command history
+			std::string historyString(&inputBuffer[0]);
+			commandHistory.push_back(historyString);
 
-		// add to logItems
-		char* newBuffer = new char[strlen(inputBuffer) + 3];
-		sprintf(newBuffer, "> %s", inputBuffer);
-		std::string newString(&newBuffer[0]);
-		outputItems.push_back(newString);
-		delete newBuffer;
+			// add to logItems
+			char* newBuffer = new char[strlen(inputBuffer) + 3];
+			sprintf(newBuffer, "> %s", inputBuffer);
+			std::string newString(&newBuffer[0]);
+			outputItems.push_back(newString);
+			delete newBuffer;
 
-		UserCommands::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
+			UserCommands::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
+		}
 
 		// clear the buffer
 		strcpy(inputBuffer, "");
@@ -253,6 +264,14 @@ bool MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
 	{
 		std::shared_ptr<TextOutputCommand> cmd = std::dynamic_pointer_cast<TextOutputCommand>(command);
 		outputItems.push_back(cmd->text);
+		while(outputItems.size() > Settings::kMaxOutputLines)
+		{
+			outputItems.erase(outputItems.begin());
+		}
+	}
+	if(command->name == ScrollToBottomCommand::kName)
+	{
+		bScrollToBottom = true;
 	}
 	return false;
 }

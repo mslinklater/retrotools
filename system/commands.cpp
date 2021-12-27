@@ -12,4 +12,5 @@ const std::string ToggleWindowCommand::kName = "ToggleWindow";
 const std::string HaltCommand::kName = "Halt";
 const std::string QuitCommand::kName = "Quit";
 const std::string TextOutputCommand::kName = "TextOutput";
+const std::string ScrollToBottomCommand::kName = "ScrollToBottom";
 
