@@ -23,6 +23,7 @@ MainWindow::MainWindow()
 , commandHistoryPtr(0)
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
+	CommandCenter::Instance()->Subscribe(TextOutputCommand::kName, this);
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +37,7 @@ void MainWindow::DrawMenuBar()
 	{
 		if(ImGui::BeginMenu("Session"))
 		{
+#if 0
 			if(ImGui::MenuItem("New..."))
 			{
 				bShowNewSession = true;
@@ -54,10 +56,11 @@ void MainWindow::DrawMenuBar()
 			{
 				// save & quit session
 			}
+#endif
 			if(ImGui::MenuItem("Quit"))
 			{
 				// quit session
-//				SharedCommands::Quit();
+				CommandHelpers::Quit();
 			}
 			ImGui::EndMenu();
 		}
@@ -102,22 +105,31 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 {
 	if(data->EventFlag & ImGuiInputTextFlags_CallbackHistory)	// history
 	{
-		if(data->EventKey == ImGuiKey_UpArrow)
+		// only if we actually have a history to go through
+		if(commandHistory.size() > 1)
 		{
-			commandHistoryPtr = std::max(commandHistoryPtr - 1, 0);
+			if(data->EventKey == ImGuiKey_UpArrow)
+			{
+				commandHistoryPtr = std::max(commandHistoryPtr - 1, 0);
+			}
+			if(data->EventKey == ImGuiKey_DownArrow)
+			{
+				commandHistoryPtr = std::min(commandHistoryPtr + 1, (int)commandHistory.size()-1);			
+			}
+			strncpy(data->Buf, commandHistory[commandHistoryPtr].c_str(), data->BufSize);
+			data->BufTextLen = commandHistory[commandHistoryPtr].length();
+			data->BufDirty = true;
 		}
-		if(data->EventKey == ImGuiKey_DownArrow)
-		{
-			commandHistoryPtr = std::min(commandHistoryPtr + 1, (int)commandHistory.size()-1);			
-		}
-		strncpy(data->Buf, commandHistory[commandHistoryPtr].c_str(), data->BufSize);
-		data->BufTextLen = commandHistory[commandHistoryPtr].length();
-		data->BufDirty = true;
+	}
+	if(data->EventFlag & ImGuiInputTextFlags_CallbackCompletion)	// completion
+	{
+		// completion - so ask the command system to output everything which matches
+		UserCommands::Instance()->OutputCompletions(std::string(data->Buf));
 	}
 	return 0;
 }
 
-void MainWindow::ClearLog()
+void MainWindow::ClearOutput()
 {
 
 }
@@ -130,11 +142,18 @@ void MainWindow::DrawConsole()
     const float footerHeightToReserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footerHeightToReserve), false, 0);
 	// the actual log
-	for(std::size_t i=0; i<logItems.size(); i++)
+	for(std::size_t i=0; i<outputItems.size(); i++)
 	{
-		const char* item = logItems[i].c_str();
+		const char* item = outputItems[i].c_str();
 		// TODO: Need to add some formatting here
-		ImGui::TextUnformatted(item);
+		if(item[0] == '>')
+		{
+			ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", item);
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(0.6,0.6,0.6,1.0),"%s", item);
+		}
 	}
 	ImGui::EndChild();
 
@@ -143,7 +162,9 @@ void MainWindow::DrawConsole()
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 
-	if(ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void*)this))
+	ImGui::Text(">");
+	ImGui::SameLine();
+	if (ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
 		// add to command history
 		std::string historyString(&inputBuffer[0]);
@@ -153,11 +174,10 @@ void MainWindow::DrawConsole()
 		char* newBuffer = new char[strlen(inputBuffer) + 3];
 		sprintf(newBuffer, "> %s", inputBuffer);
 		std::string newString(&newBuffer[0]);
-		logItems.push_back(newString);
+		outputItems.push_back(newString);
 		delete newBuffer;
 
 		UserCommands::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
-//		CommandCenter::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
 
 		// clear the buffer
 		strcpy(inputBuffer, "");
@@ -225,4 +245,14 @@ void MainWindow::Draw()
 //	}
 
 	ImGui::End(); 
+}
+
+bool MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
+{
+	if(command->name == TextOutputCommand::kName)
+	{
+		std::shared_ptr<TextOutputCommand> cmd = std::dynamic_pointer_cast<TextOutputCommand>(command);
+		outputItems.push_back(cmd->text);
+	}
+	return false;
 }

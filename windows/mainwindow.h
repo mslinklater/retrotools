@@ -8,10 +8,11 @@
 #pragma once
 
 #include "common.h"
+#include "system/icommandhandler.h"
 
 class WindowManager;
 
-class MainWindow
+class MainWindow : public ICommandHandler
 {
 public:
 	MainWindow();
@@ -19,6 +20,9 @@ public:
 	
 	void Draw();
 	void SetWindowManager(WindowManager* wm){ pWindowManager = wm; }
+
+	ICOMMANDHANDLER_API
+
 private:
 	bool open;
 	WindowManager* pWindowManager;
@@ -44,8 +48,8 @@ private:
 
 	std::vector<std::string> commandHistory;	// Command history
 	int commandHistoryPtr;
-	std::vector<std::string> logItems;
+	std::vector<std::string> outputItems;
 
 	void DrawConsole();
-	void ClearLog();
+	void ClearOutput();
 };

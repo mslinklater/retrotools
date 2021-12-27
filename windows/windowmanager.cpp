@@ -28,7 +28,7 @@ void WindowManager::Init(StateSerialiser* pStateSerialiser)
 	
 	// Subscribe to all ToggleWindow commands
 	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
-//	CommandCenter::Instance()->Subscribe(kQuitCommand, this);
+	CommandCenter::Instance()->Subscribe(QuitCommand::kName, this);
 
 	pStateSerialiser->AddStateSerialiser(this);
 	initialised = true;
@@ -68,13 +68,13 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
 		}
 	}
-#if 0
-	if(command->name == kQuitCommand)
+
+	if(command->name == QuitCommand::kName)
 	{
 		// save the state of the windows
 		receivedQuit = true;
 	}
-#endif
+
 	return false;
 }
 

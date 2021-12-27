@@ -23,3 +23,5 @@ class ICommandHandler
 public:
 	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command) = 0;
 };
+
+#define ICOMMANDHANDLER_API virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);

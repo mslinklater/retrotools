@@ -25,6 +25,34 @@ public:
 	std::string windowName;
 };
 
+// Text Output
+
+class TextOutputCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	TextOutputCommand(std::string _text)
+	: CommandBase(kName)
+	, text(_text)
+	{}
+
+	virtual ~TextOutputCommand(){}
+	std::string text;
+};
+
+// Quit
+
+class QuitCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	QuitCommand()
+	: CommandBase(kName)
+	{}
+};
+
 // Halt
 
 class HaltCommand : public CommandBase

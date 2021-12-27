@@ -11,3 +11,15 @@ void CommandHelpers::ToggleWindow(std::string windowName)
     std::shared_ptr<CommandBase> cmd = std::make_shared<ToggleWindowCommand>(windowName);
 	CommandCenter::Instance()->BroadcastNow(cmd);
 }
+
+void CommandHelpers::TextOutput(std::string text)
+{
+    std::shared_ptr<CommandBase> cmd = std::make_shared<TextOutputCommand>(text);
+	CommandCenter::Instance()->BroadcastNow(cmd);
+}
+
+void CommandHelpers::Quit()
+{
+    std::shared_ptr<CommandBase> cmd = std::make_shared<QuitCommand>();
+	CommandCenter::Instance()->BroadcastNow(cmd);
+}
