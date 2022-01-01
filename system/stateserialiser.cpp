@@ -7,7 +7,7 @@
 #include "common.h"
 #include "stateserialiser.h"
 
-void StateSerialiser::AddStateSerialiser(IStateSerialisation* serialiser)
+void StateSerialiser::AddStateSerialiser(std::shared_ptr<IStateSerialisation> serialiser)
 {
 	serialisers.push_back(serialiser);
 }

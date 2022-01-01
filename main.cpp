@@ -18,7 +18,6 @@
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
 
 #include "version.h"
-//#include "config.h"
 #include "components/stella/memory2600.h"
 #include "components/cpu6502/cpu6502alpha.h"
 #include "components/stella/tia.h"
@@ -136,9 +135,11 @@ int main(int argc, char* argv[])
 
 	// Initialise window manager
 
-	StateSerialiser* pStateSerialiser = new StateSerialiser();
-	WindowManager* pWindowManager = new WindowManager();
+	std::shared_ptr<StateSerialiser> pStateSerialiser(new StateSerialiser());
+	std::shared_ptr<WindowManager> pWindowManager(new WindowManager());
+
 	pWindowManager->Init(pStateSerialiser);
+	pStateSerialiser->AddStateSerialiser(pWindowManager);
 
 	// Session Manager
 //	SessionManager* pSessionManager = SessionManager::Instance();
@@ -195,14 +196,14 @@ int main(int argc, char* argv[])
 	// create windows
 
 	// Log Window
-	LogWindow* pLogWindow = new LogWindow();
+	std::shared_ptr<LogWindow> pLogWindow(new LogWindow());
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
 
-	HelpAboutWindow* pHelpAboutWindow = new HelpAboutWindow();
+	std::shared_ptr<HelpAboutWindow> pHelpAboutWindow(new HelpAboutWindow());
 	pWindowManager->AddWindow(pHelpAboutWindow, "HelpAbout");
 
-	HelpCommandsWindow* pHelpCommandsWindow = new HelpCommandsWindow();
+	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow(new HelpCommandsWindow());
 	pWindowManager->AddWindow(pHelpCommandsWindow, "HelpCommands");
 
 //	Memory2600Window* pMemoryWindow = new Memory2600Window();
@@ -217,8 +218,8 @@ int main(int argc, char* argv[])
 //	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
 //	pStateSerialiser->AddStateSerialiser(pDisasmWindow);
 
-	MainWindow* pMainWindow = new MainWindow();
-	pMainWindow->SetWindowManager(pWindowManager);
+	std::shared_ptr<MainWindow> pMainWindow(new MainWindow());
+	pMainWindow->SetWindowManager(pWindowManager.get());
 	
 //	SymbolWindow* pSymbolWindow = new SymbolWindow();
 //	pSymbolWindow->SetSymbolStore(pSymbolStore);
@@ -306,8 +307,6 @@ int main(int argc, char* argv[])
 
 	ShutdownImGui();
 	
-//	delete pMemory;
-
 	LOGINFO("Exiting...\n");
 	
 	return 0;

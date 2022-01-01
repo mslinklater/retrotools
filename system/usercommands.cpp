@@ -24,36 +24,43 @@ UserCommands::UserCommands()
 {
     {
         CommandInfo commandInfo;
+        commandInfo.command = "quit";
         commandInfo.func = &UserCommands::Command_Quit;
         commandInfo.hint = "quit [return] - quits the application";
         commandHandlerMap[std::string("quit")] = commandInfo;
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "help";
         commandInfo.func = &UserCommands::Command_Help;
+        commandInfo.completion = &UserCommands::Completion_Help;
         commandInfo.hint = "help <command> - prints help on specified command";
         commandHandlerMap[std::string("help")] = commandInfo;        
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "open";
         commandInfo.func = &UserCommands::Command_Open;
         commandInfo.hint = "open <filename> - opens file";
         commandHandlerMap[std::string("open")] = commandInfo;
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "pwd";
         commandInfo.func = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
         commandHandlerMap[std::string("pwd")] = commandInfo;
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "ls";
         commandInfo.func = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         commandHandlerMap[std::string("ls")] = commandInfo;
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "cd";
         commandInfo.func = &UserCommands::Command_Cd;
         commandInfo.hint = "cd - change current directory";
         commandHandlerMap[std::string("cd")] = commandInfo;
@@ -100,17 +107,20 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
     }
 }
 
-void UserCommands::OutputCompletions(const std::string& partialCommand)
+const std::vector<std::string> UserCommands::GetCompletions(const std::string& partialCommand)
 {
+    std::vector<std::string> completions;
+
     for (std::map<std::string, CommandInfo>::iterator iter = commandHandlerMap.begin(); iter != commandHandlerMap.end(); ++iter)
     {
         std::string command =  iter->first;
         if(command.find(partialCommand) == 0)
         {
-            CommandHelpers::TextOutput(command);
+            completions.push_back(command);
         }
     }
-    CommandHelpers::ScrollToBottom();
+
+    return completions;
 }
 
 void UserCommands::Command_Quit(const std::vector<std::string>& command)
@@ -120,6 +130,7 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
 
 void UserCommands::Command_Open(const std::vector<std::string>& command)
 {
+
 }
 
 void UserCommands::Command_Ls(const std::vector<std::string>& command)
@@ -194,4 +205,9 @@ void UserCommands::Command_Help(const std::vector<std::string>& command)
         }
     }
     CommandHelpers::ScrollToBottom();
+}
+
+void UserCommands::Completion_Help()
+{
+
 }

@@ -13,6 +13,31 @@
 class UserCommands
 {
 public:
+    typedef void (UserCommands::*HandlerFunction)(const std::vector<std::string> &);
+    typedef void (UserCommands::*CompletionFunction)();
+
+    enum Type
+    {
+        EGeneral,
+        EFileOperation
+    };
+
+    struct CommandInfo
+    {
+        CommandInfo()
+        : type(EGeneral)
+        , func(nullptr)
+        , completion(nullptr)
+        {}
+        
+        Type type;
+        HandlerFunction func;
+        CompletionFunction completion;
+        std::string command;
+        std::string hint;
+        std::vector<std::string> helpText;
+    };
+
     UserCommands();
     virtual ~UserCommands();
 
@@ -26,22 +51,18 @@ public:
     }
 
     void ParseAndProcessCommand(const std::string& command);
-    void OutputCompletions(const std::string& command);
+    const std::vector<std::string> GetCompletions(const std::string& command);
+
+    const std::vector<CommandInfo>& GetCommandInfo();
 
 private:
     static UserCommands *instance;
 
-    typedef void (UserCommands::*HandlerFunction)(const std::vector<std::string> &);
-
-    struct CommandInfo
-    {
-        HandlerFunction func;
-        std::string hint;
-    };
-
     std::map<std::string, CommandInfo> commandHandlerMap;
 
     void Command_Help(const std::vector<std::string>& command);
+    void Completion_Help();
+
     void Command_Open(const std::vector<std::string>& command);
     void Command_Quit(const std::vector<std::string>& command);
     void Command_Pwd(const std::vector<std::string>& command);

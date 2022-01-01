@@ -20,9 +20,10 @@ WindowManager::WindowManager()
 
 WindowManager::~WindowManager()
 {
+	LOGINFO("WindowManager::~WindowManager()");
 }
 
-void WindowManager::Init(StateSerialiser* pStateSerialiser)
+void WindowManager::Init(std::shared_ptr<StateSerialiser> pStateSerialiser)
 {
 	LOGINFO("WindowManager::Init");
 	
@@ -30,7 +31,6 @@ void WindowManager::Init(StateSerialiser* pStateSerialiser)
 	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
 	CommandCenter::Instance()->Subscribe(QuitCommand::kName, this);
 
-	pStateSerialiser->AddStateSerialiser(this);
 	initialised = true;
 }
 
@@ -46,7 +46,7 @@ void WindowManager::Draw()
 		{
 			const char* thisWindow = name.c_str();
 			ImGui::Begin(thisWindow, &active);
-			WindowBase* pWindow = window.second;
+			WindowBase* pWindow = window.second.get();
 			pWindow->Draw();
 			ImGui::End();
 			windowActive[name] = active;
@@ -83,7 +83,7 @@ bool WindowManager::ReceivedQuit()
 	return receivedQuit;
 }
 
-eErrorCode WindowManager::AddWindow(WindowBase* pWindow, std::string name)
+eErrorCode WindowManager::AddWindow(std::shared_ptr<WindowBase> pWindow, std::string name)
 {
 	assert(initialised == true);
 	

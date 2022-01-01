@@ -31,6 +31,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+	LOGINFO("MainWindow::~MainWindow()");
 }
 
 void MainWindow::DrawMenuBar()
@@ -126,8 +127,29 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 	}
 	if(data->EventFlag & ImGuiInputTextFlags_CallbackCompletion)	// completion
 	{
-		// completion - so ask the command system to output everything which matches
-		UserCommands::Instance()->OutputCompletions(std::string(data->Buf));
+		// find num matches - if one, call that completion handler... if many, display the options.
+		const std::vector<std::string> matches = UserCommands::Instance()->GetCompletions(std::string(data->Buf));
+		
+		if(matches.size() > 0)
+		{
+			if(matches.size() == 1)
+			{
+				// one match - so complete the prompt with the completion
+				strncpy(data->Buf, matches[0].c_str(), data->BufSize);
+				data->BufTextLen = matches[0].length();
+				data->CursorPos = data->BufTextLen;
+				data->BufDirty = true;
+			}
+			else
+			{
+				// multiple matches
+				LOGERROR("Issue #64 - Choose from multiple completions");
+			}
+		}
+		else
+		{
+			// no matches
+		}
 	}
 	return 0;
 }

@@ -12,9 +12,9 @@
 class StateSerialiser
 {
 public:
-	void AddStateSerialiser(IStateSerialisation* serialiser);
+	void AddStateSerialiser(std::shared_ptr<IStateSerialisation> serialiser);
 	void SerialiseAppConfig();
 	void DeserialiseAppConfig();
 private:
-	std::vector<IStateSerialisation*> serialisers;
+	std::vector<std::shared_ptr<IStateSerialisation>> serialisers;
 };
