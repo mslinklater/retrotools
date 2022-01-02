@@ -9,43 +9,40 @@
 #include "version.h"
 
 HelpCommandsWindow::HelpCommandsWindow()
+: userCommands(UserCommands::Instance()->GetCommandInfo())
 {
-
 }
 
 HelpCommandsWindow::~HelpCommandsWindow()
 {
 }
 
+void HelpCommandsWindow::DrawCommandsForType(UserCommands::Type t)
+{
+	for(auto command : userCommands)
+	{
+		if(command.type == t)
+		{
+			ImGui::Separator();
+			ImGui::Text(command.hint.c_str(), 0);
+			ImGui::Text(" ");
+			for(const std::string& line : command.helpText)
+			{
+				ImGui::Text(line.c_str(), 0);
+			}
+		}
+	}
+	ImGui::Separator();		
+}
+
 void HelpCommandsWindow::Draw(void)
 {
     if (ImGui::CollapsingHeader("General..."))
 	{
-		ImGui::Separator();
-		ImGui::Text("> help <command>");
-		ImGui::Text(" ");
-		ImGui::Text("Prints help about the specified command");
-
-		ImGui::Separator();
-		ImGui::Text("> quit");
-		ImGui::Text(" ");
-		ImGui::Text("Quit the application");
-
-		ImGui::Separator();
+		DrawCommandsForType(UserCommands::EGeneral);
 	}
     if (ImGui::CollapsingHeader("Files..."))
 	{
-		ImGui::Separator();
-		ImGui::Text("> open <filename>");
-		ImGui::Text(" ");
-		ImGui::Text("Open file");
-
-		ImGui::Separator();
-		ImGui::Text("> pwd");
-		ImGui::Text(" ");
-		ImGui::Text("Print current working directory");
-
-		ImGui::Separator();
+		DrawCommandsForType(UserCommands::EFileOperation);
 	}
-
 }

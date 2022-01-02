@@ -25,6 +25,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "quit";
+        commandInfo.type = EGeneral;
         commandInfo.func = &UserCommands::Command_Quit;
         commandInfo.hint = "quit [return] - quits the application";
         commandHandlerMap[std::string("quit")] = commandInfo;
@@ -32,6 +33,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "help";
+        commandInfo.type = EGeneral;
         commandInfo.func = &UserCommands::Command_Help;
         commandInfo.completion = &UserCommands::Completion_Help;
         commandInfo.hint = "help <command> - prints help on specified command";
@@ -40,6 +42,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "open";
+        commandInfo.type = EFileOperation;
         commandInfo.func = &UserCommands::Command_Open;
         commandInfo.hint = "open <filename> - opens file";
         commandHandlerMap[std::string("open")] = commandInfo;
@@ -47,6 +50,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "pwd";
+        commandInfo.type = EFileOperation;
         commandInfo.func = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
         commandHandlerMap[std::string("pwd")] = commandInfo;
@@ -54,6 +58,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "ls";
+        commandInfo.type = EFileOperation;
         commandInfo.func = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         commandHandlerMap[std::string("ls")] = commandInfo;
@@ -61,6 +66,7 @@ UserCommands::UserCommands()
     {
         CommandInfo commandInfo;
         commandInfo.command = "cd";
+        commandInfo.type = EFileOperation;
         commandInfo.func = &UserCommands::Command_Cd;
         commandInfo.hint = "cd - change current directory";
         commandHandlerMap[std::string("cd")] = commandInfo;
@@ -121,6 +127,16 @@ const std::vector<std::string> UserCommands::GetCompletions(const std::string& p
     }
 
     return completions;
+}
+
+const std::vector<UserCommands::CommandInfo> UserCommands::GetCommandInfo()
+{   
+    std::vector<CommandInfo> ret;
+    for(auto iter : commandHandlerMap)
+    {
+        ret.push_back(iter.second);
+    }
+    return ret;
 }
 
 void UserCommands::Command_Quit(const std::vector<std::string>& command)

@@ -53,7 +53,7 @@ public:
     void ParseAndProcessCommand(const std::string& command);
     const std::vector<std::string> GetCompletions(const std::string& command);
 
-    const std::vector<CommandInfo>& GetCommandInfo();
+    const std::vector<CommandInfo> GetCommandInfo();
 
 private:
     static UserCommands *instance;
