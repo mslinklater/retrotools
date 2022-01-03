@@ -25,10 +25,13 @@ void HelpCommandsWindow::DrawCommandsForType(UserCommands::Type t)
 		{
 			ImGui::Separator();
 			ImGui::Text(command.hint.c_str(), 0);
-			ImGui::Text(" ");
-			for(const std::string& line : command.helpText)
+			if(command.helpText.size() > 0)
 			{
-				ImGui::Text(line.c_str(), 0);
+				ImGui::Text(" ");
+				for(const std::string& line : command.helpText)
+				{
+					ImGui::TextColored(ImVec4(0.75f, 0.75f, 0.75f, 1.0f), line.c_str(), 0);
+				}
 			}
 		}
 	}
@@ -39,10 +42,10 @@ void HelpCommandsWindow::Draw(void)
 {
     if (ImGui::CollapsingHeader("General..."))
 	{
-		DrawCommandsForType(UserCommands::EGeneral);
+		DrawCommandsForType(UserCommands::Type::EGeneral);
 	}
-    if (ImGui::CollapsingHeader("Files..."))
+    if (ImGui::CollapsingHeader("Files & File System..."))
 	{
-		DrawCommandsForType(UserCommands::EFileOperation);
+		DrawCommandsForType(UserCommands::Type::EFileOperation);
 	}
 }

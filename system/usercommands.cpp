@@ -22,60 +22,77 @@ UserCommands *UserCommands::instance = nullptr;
 
 UserCommands::UserCommands()
 {
+    // General commands
     {
         CommandInfo commandInfo;
         commandInfo.command = "quit";
-        commandInfo.type = EGeneral;
+        commandInfo.type = Type::EGeneral;
         commandInfo.func = &UserCommands::Command_Quit;
         commandInfo.hint = "quit [return] - quits the application";
-        commandHandlerMap[std::string("quit")] = commandInfo;
+        AddToCommandHandlerMap(commandInfo);
     }
     {
         CommandInfo commandInfo;
         commandInfo.command = "help";
-        commandInfo.type = EGeneral;
+        commandInfo.type = Type::EGeneral;
         commandInfo.func = &UserCommands::Command_Help;
         commandInfo.completion = &UserCommands::Completion_Help;
         commandInfo.hint = "help <command> - prints help on specified command";
-        commandHandlerMap[std::string("help")] = commandInfo;        
+        AddToCommandHandlerMap(commandInfo);
     }
     {
         CommandInfo commandInfo;
+        commandInfo.command = "history";
+        commandInfo.type = Type::EGeneral;
+        commandInfo.func = &UserCommands::Command_History;
+        commandInfo.hint = "history [num] - display command history";
+        commandInfo.helpText.push_back("[num] - optionally specify max number of entries to show");
+        AddToCommandHandlerMap(commandInfo);
+    }
+
+    // File operations commands
+    {
+        CommandInfo commandInfo;
         commandInfo.command = "open";
-        commandInfo.type = EFileOperation;
+        commandInfo.type = Type::EFileOperation;
         commandInfo.func = &UserCommands::Command_Open;
         commandInfo.hint = "open <filename> - opens file";
-        commandHandlerMap[std::string("open")] = commandInfo;
+        AddToCommandHandlerMap(commandInfo);
     }
     {
         CommandInfo commandInfo;
         commandInfo.command = "pwd";
-        commandInfo.type = EFileOperation;
+        commandInfo.type = Type::EFileOperation;
         commandInfo.func = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
-        commandHandlerMap[std::string("pwd")] = commandInfo;
+        AddToCommandHandlerMap(commandInfo);
     }
     {
         CommandInfo commandInfo;
         commandInfo.command = "ls";
-        commandInfo.type = EFileOperation;
+        commandInfo.type = Type::EFileOperation;
         commandInfo.func = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
-        commandHandlerMap[std::string("ls")] = commandInfo;
+        AddToCommandHandlerMap(commandInfo);
     }
     {
         CommandInfo commandInfo;
         commandInfo.command = "cd";
-        commandInfo.type = EFileOperation;
+        commandInfo.type = Type::EFileOperation;
         commandInfo.func = &UserCommands::Command_Cd;
         commandInfo.hint = "cd - change current directory";
-        commandHandlerMap[std::string("cd")] = commandInfo;
+        AddToCommandHandlerMap(commandInfo);
     }
 }
 
 UserCommands::~UserCommands()
 {
 
+}
+
+void UserCommands::AddToCommandHandlerMap(const CommandInfo &info)
+{
+    commandHandlerMap[info.command] = info;
 }
 
 void UserCommands::ParseAndProcessCommand(const std::string& command)
@@ -145,6 +162,11 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
 }
 
 void UserCommands::Command_Open(const std::vector<std::string>& command)
+{
+
+}
+
+void UserCommands::Command_History(const std::vector<std::string>& command)
 {
 
 }

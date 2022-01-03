@@ -16,7 +16,7 @@ public:
     typedef void (UserCommands::*HandlerFunction)(const std::vector<std::string> &);
     typedef void (UserCommands::*CompletionFunction)();
 
-    enum Type
+    enum class Type
     {
         EGeneral,
         EFileOperation
@@ -25,7 +25,7 @@ public:
     struct CommandInfo
     {
         CommandInfo()
-        : type(EGeneral)
+        : type(Type::EGeneral)
         , func(nullptr)
         , completion(nullptr)
         {}
@@ -59,9 +59,11 @@ private:
     static UserCommands *instance;
 
     std::map<std::string, CommandInfo> commandHandlerMap;
+    void AddToCommandHandlerMap(const CommandInfo &info);
 
     void Command_Help(const std::vector<std::string>& command);
     void Completion_Help();
+    void Command_History(const std::vector<std::string>& command);
 
     void Command_Open(const std::vector<std::string>& command);
     void Command_Quit(const std::vector<std::string>& command);
