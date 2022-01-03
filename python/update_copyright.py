@@ -5,7 +5,7 @@ import os
 filetypes = [".cpp", ".h"]
 ignore = ["3rdparty/", "asm/"]
 header = [  "// [CopyrightNotice]\n",
-            "// Copyright (c) 2019-2021, Martin Linklater\n",
+            "// Copyright (c) 2019-2022, Martin Linklater\n",
             "// All rights reserved.\n",
             "//\n",
             "// See file 'LICENSE' for license details\n",
