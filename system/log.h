@@ -24,16 +24,16 @@
 class Log
 {
 public:
-	enum eLogType
+	enum class LogType
 	{
-		kInfo,
-		kWarning,
-		kError
+		EInfo,
+		EWarning,
+		EError
 	};
 	
 	struct LogLine
 	{
-		eLogType 	type;
+		LogType 	type;
 		std::string category;
 		std::string content;
 	};

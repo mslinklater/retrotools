@@ -13,6 +13,8 @@
 #include "shared_cpp/catch.hpp"
 #endif
 
+#include <iostream>
+
 #include "common.h"
 #include "3rdparty/imgui/imgui_impl_sdl.h"
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
@@ -110,8 +112,15 @@ void ShutdownImGui()
 	SDL_Quit();
 }
 
+void OutOfMemoryHandler()
+{
+	std::cerr << "Out of memory!";
+}
+
 int main(int argc, char* argv[])
 {
+	std::set_new_handler(OutOfMemoryHandler);
+
 	// TODO: Output the command line to stdout
 
 #if RUN_TESTS

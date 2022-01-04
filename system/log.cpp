@@ -10,6 +10,7 @@
 // See file 'LICENSE' for license details
 
 #include "common.h"
+#include <iostream>
 
 static Log* pInstance = nullptr;
 
@@ -89,10 +90,10 @@ void Log::Info(std::string line)
 	LogLine newLine;
 	
 	SplitCategory(line, newLine.category, newLine.content);	
-	newLine.type = kInfo;
+	newLine.type = LogType::EInfo;
 
 	AddLine(newLine);
-	printf("Info:%s\n", line.c_str());
+	std::cout << "Info:" << line << std::endl;
 }
 
 void Log::Test()
@@ -116,20 +117,20 @@ void Log::Infof(const char* fmt, ...)
 	
 	LogLine newLine;
 	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = kInfo;
+	newLine.type = LogType::EInfo;
 	
 	AddLine(newLine);
-	printf("Info:%s\n", newLine.content.c_str());
+	std::cout << "Info:" << newLine.content << std::endl;
 }
 
 void Log::Warning(std::string line)
 {
 	LogLine newLine;
 	SplitCategory(line, newLine.category, newLine.content);	
-	newLine.type = kWarning;
+	newLine.type = LogType::EWarning;
 	
 	AddLine(newLine);
-	printf("Warning:%s\n", line.c_str());
+	std::cout << "Warning:" << line << std::endl;
 }
 
 void Log::Warningf(const char* fmt, ...)
@@ -141,20 +142,20 @@ void Log::Warningf(const char* fmt, ...)
 	
 	LogLine newLine;
 	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = kWarning;
+	newLine.type = LogType::EWarning;
 	
 	AddLine(newLine);
-	printf("Warning:%s\n", newLine.content.c_str());
+	std::cout << "Warning:" << newLine.content << std::endl;
 }
 
 void Log::Error(std::string line)
 {
 	LogLine newLine;
 	SplitCategory(line, newLine.category, newLine.content);	
-	newLine.type = kError;
+	newLine.type = LogType::EError;
 	
 	AddLine(newLine);
-	printf("Error:%s\n", line.c_str());
+	std::cerr << "Error:" << line << std::endl;
 }
 
 void Log::Errorf(const char* fmt, ...)
@@ -166,10 +167,10 @@ void Log::Errorf(const char* fmt, ...)
 	
 	LogLine newLine;
 	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = kError;
+	newLine.type = LogType::EError;
 	
 	AddLine(newLine);
-	printf("Error:%s\n", newLine.content.c_str());
+	std::cerr << "Error:" << newLine.content << std::endl;
 }
 
 void Log::AddLine(Log::LogLine line)

@@ -6,8 +6,14 @@
 
 #pragma once
 
+#include <string>
+
 class ResourceBase
 {
 public:
+	ResourceBase();
+	virtual ~ResourceBase();
+
+	virtual void InitFromFilename(std::string filename);
 private:
 };

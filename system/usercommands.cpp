@@ -13,6 +13,7 @@
 #include "usercommands.h"
 #include "system/log.h"
 #include "commandhelpers.h"
+#include "resources/resourcemanager.h"
 
 #define DEBUG 0
 
@@ -163,12 +164,12 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
 
 void UserCommands::Command_Open(const std::vector<std::string>& command)
 {
-
+    ResourceManager::Instance()->OpenResourceFromFile(command[1]);
 }
 
 void UserCommands::Command_History(const std::vector<std::string>& command)
 {
-
+    LOGERROR("UserCommands::Issue#65 - Command_History");
 }
 
 void UserCommands::Command_Ls(const std::vector<std::string>& command)

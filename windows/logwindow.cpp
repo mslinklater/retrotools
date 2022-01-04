@@ -51,15 +51,15 @@ void LogWindow::Draw(void)
 	for(int i=0 ; i<numLines ; i++)
 	{
 		Log::LogLine line = Log::Instance()->GetLine(i);
-		if(showInfo && line.type == Log::eLogType::kInfo)
+		if(showInfo && line.type == Log::LogType::EInfo)
 		{
 			lineNumbers.push_back(i);
 		}
-		if(showWarnings && line.type == Log::eLogType::kWarning)
+		if(showWarnings && line.type == Log::LogType::EWarning)
 		{
 			lineNumbers.push_back(i);
 		}
-		if(showErrors && line.type == Log::eLogType::kError)
+		if(showErrors && line.type == Log::LogType::EError)
 		{
 			lineNumbers.push_back(i);
 		}
@@ -81,19 +81,19 @@ void LogWindow::Draw(void)
 			
 			switch(line.type)
 			{
-				case Log::eLogType::kInfo:
+				case Log::LogType::EInfo:
 					if(showInfo)
 					{
 						ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", line.content.c_str());
 					}
 					break;
-				case Log::eLogType::kWarning:
+				case Log::LogType::EWarning:
 					if(showWarnings)
 					{
 						ImGui::TextColored(ImVec4(1.0,1.0,0.0,1.0),"%s", line.content.c_str());
 					}
 					break;
-				case Log::eLogType::kError:
+				case Log::LogType::EError:
 					if(showErrors)
 					{
 						ImGui::TextColored(ImVec4(1.0,0.0,0.0,1.0),"%s", line.content.c_str());
