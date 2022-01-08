@@ -131,9 +131,17 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
     }
 }
 
-const std::vector<std::string> UserCommands::GetCompletions(const std::string& partialCommand)
+const std::vector<std::string> UserCommands::GetCompletions(std::string partialCommand)
 {
     std::vector<std::string> completions;
+
+    // Need to strip anythig after a space, if there is one...
+
+    std::size_t spacePos = partialCommand.find(' ');
+    if(spacePos != std::string::npos)
+    {
+        partialCommand = partialCommand.substr(0, spacePos);
+    }
 
     for (std::map<std::string, CommandInfo>::iterator iter = commandHandlerMap.begin(); iter != commandHandlerMap.end(); ++iter)
     {
@@ -218,6 +226,11 @@ void UserCommands::Command_Cd(const std::vector<std::string>& command)
     }
 }
 
+std::string UserCommands::Completion_Cd(const std::vector<std::string>& command)
+{
+    return "";
+}
+
 void UserCommands::Command_Pwd(const std::vector<std::string>& command)
 {
     CommandHelpers::TextOutput(fs::current_path().string());
@@ -246,7 +259,7 @@ void UserCommands::Command_Help(const std::vector<std::string>& command)
     CommandHelpers::ScrollToBottom();
 }
 
-void UserCommands::Completion_Help()
+std::string UserCommands::Completion_Help()
 {
-
+    return "";
 }

@@ -14,7 +14,7 @@ class UserCommands
 {
 public:
     typedef void (UserCommands::*HandlerFunction)(const std::vector<std::string> &);
-    typedef void (UserCommands::*CompletionFunction)();
+    typedef std::string (UserCommands::*CompletionFunction)();
 
     enum class Type
     {
@@ -51,7 +51,7 @@ public:
     }
 
     void ParseAndProcessCommand(const std::string& command);
-    const std::vector<std::string> GetCompletions(const std::string& command);
+    const std::vector<std::string> GetCompletions(std::string command);
 
     const std::vector<CommandInfo> GetCommandInfo();
 
@@ -62,12 +62,15 @@ private:
     void AddToCommandHandlerMap(const CommandInfo &info);
 
     void Command_Help(const std::vector<std::string>& command);
-    void Completion_Help();
+    std::string Completion_Help();
+
     void Command_History(const std::vector<std::string>& command);
 
     void Command_Open(const std::vector<std::string>& command);
     void Command_Quit(const std::vector<std::string>& command);
     void Command_Pwd(const std::vector<std::string>& command);
     void Command_Ls(const std::vector<std::string>& command);
+
     void Command_Cd(const std::vector<std::string>& command);
+    std::string Completion_Cd(const std::vector<std::string> &command);
 };

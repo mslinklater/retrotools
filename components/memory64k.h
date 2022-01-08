@@ -22,20 +22,8 @@ public:
 	{
 		delete [] pRam;
 	}
-	
-	// IMemory
-	virtual uint8_t 	Read(uint16_t address)
-	{
-		return pRam[address];
-	}
-	virtual void 		Write(uint16_t address, uint8_t val)
-	{
-		pRam[address] = val;
-	}
-	virtual uint8_t 	DbgRead(uint16_t address){return 0;}
-	virtual void 		DbgWrite(uint16_t address, uint8_t val){}
-	virtual void		SetHasBeenExecuted(uint16_t address, uint16_t numBytes){}
-	// ~IMemory
+
+	IMEMORY_API;
 
 private:
 	uint8_t* pRam;

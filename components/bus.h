@@ -16,7 +16,7 @@ class Bus
 {
 public:
 	Bus(uint16_t size);
-	virtual ~Bus();
+	~Bus();
 
 	float Get(uint16_t line)
 	{

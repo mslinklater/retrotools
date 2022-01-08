@@ -15,10 +15,8 @@
 class SymbolStore : public IStateSerialisation
 {
 public:
-
-
 	SymbolStore();
-	virtual ~SymbolStore();
+	~SymbolStore();
 
 	bool HasReadSymbol(uint16_t address);
 	std::string GetReadSymbol(uint16_t address);

@@ -20,3 +20,10 @@ class IMemory
 
 		virtual void SetHasBeenExecuted(uint16_t address, uint16_t length) = 0;
 };
+
+#define IMEMORY_API \
+    virtual uint8_t Read(uint16_t address); \
+    virtual void Write(uint16_t address, uint8_t value);    \
+    virtual uint8_t DbgRead(uint16_t address);  \
+    virtual void DbgWrite(uint16_t address, uint8_t value); \
+    virtual void SetHasBeenExecuted(uint16_t address, uint16_t length);

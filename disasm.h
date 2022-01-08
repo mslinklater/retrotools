@@ -50,7 +50,7 @@ public:
 	};
 
 	Disassembler();
-	virtual ~Disassembler();
+	~Disassembler();
 	
 	void 		Init();
 	eErrorCode	Disassemble(uint16_t address, uint16_t size, uint16_t org);

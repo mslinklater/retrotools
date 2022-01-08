@@ -5,3 +5,22 @@
 // See file 'LICENSE' for license details
 
 #include "memory64k.h"
+
+uint8_t Memory64K::Read(uint16_t address)
+{
+	return pRam[address];
+}
+
+void Memory64K::Write(uint16_t address, uint8_t val)
+{
+	pRam[address] = val;
+}
+
+uint8_t Memory64K::DbgRead(uint16_t address)
+{
+	std::assert(0);
+	return 0;
+}
+
+	virtual void DbgWrite(uint16_t address, uint8_t value); \
+    virtual void SetHasBeenExecuted(uint16_t address, uint16_t length);
