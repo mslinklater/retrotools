@@ -58,7 +58,7 @@ public:
     }
 
     void ParseAndProcessCommand(const std::string& command);
-    const std::vector<std::string> GetCompletions(const std::string& command);
+    void GetCompletions(std::string& command, std::vector<std::string>& completions);
 
     const std::vector<CommandInfo> GetCommandInfo();
 

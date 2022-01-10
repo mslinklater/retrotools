@@ -128,7 +128,13 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 	if(data->EventFlag & ImGuiInputTextFlags_CallbackCompletion)	// completion
 	{
 		// find num matches - if one, call that completion handler... if many, display the options.
-		const std::vector<std::string> matches = UserCommands::Instance()->GetCompletions(std::string(data->Buf));
+		std::vector<std::string> matches;
+		std::string commandBuffer(data->Buf);
+		UserCommands::Instance()->GetCompletions(commandBuffer, matches);
+		strncpy(data->Buf, commandBuffer.c_str(), data->BufSize);
+		data->BufTextLen = commandBuffer.length();
+		data->CursorPos = data->BufTextLen;
+		data->BufDirty = true;
 		
 		if(matches.size() > 0)
 		{

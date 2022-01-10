@@ -133,10 +133,8 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
     }
 }
 
-const std::vector<std::string> UserCommands::GetCompletions(const std::string& partialCommand)
+void UserCommands::GetCompletions(std::string& partialCommand, std::vector<std::string>& completions)
 {
-    std::vector<std::string> completions;
-
     // Need to strip anythig after a space, if there is one...
 
     std::size_t spacePos = partialCommand.find(' ');
@@ -173,7 +171,7 @@ const std::vector<std::string> UserCommands::GetCompletions(const std::string& p
         }
     }
 
-    return completions;
+    return;
 }
 
 const std::vector<UserCommands::CommandInfo> UserCommands::GetCommandInfo()
