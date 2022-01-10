@@ -28,7 +28,7 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "quit";
         commandInfo.type = Type::EGeneral;
-        commandInfo.func = &UserCommands::Command_Quit;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Quit;
         commandInfo.hint = "quit [return] - quits the application";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -36,8 +36,8 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "help";
         commandInfo.type = Type::EGeneral;
-        commandInfo.func = &UserCommands::Command_Help;
-        commandInfo.completion = &UserCommands::Completion_Help;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Help;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_Help;
         commandInfo.hint = "help <command> - prints help on specified command";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -45,7 +45,7 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "history";
         commandInfo.type = Type::EGeneral;
-        commandInfo.func = &UserCommands::Command_History;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_History;
         commandInfo.hint = "history [num] - display command history";
         commandInfo.helpText.push_back("[num] - optionally specify max number of entries to show");
         AddToCommandHandlerMap(commandInfo);
@@ -56,7 +56,8 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "open";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.func = &UserCommands::Command_Open;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Open;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_Open;
         commandInfo.hint = "open <filename> - opens file";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -64,7 +65,7 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "pwd";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.func = &UserCommands::Command_Pwd;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -72,7 +73,7 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "ls";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.func = &UserCommands::Command_Ls;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -80,7 +81,8 @@ UserCommands::UserCommands()
         CommandInfo commandInfo;
         commandInfo.command = "cd";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.func = &UserCommands::Command_Cd;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_Cd;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_Cd;
         commandInfo.hint = "cd - change current directory";
         AddToCommandHandlerMap(commandInfo);
     }
@@ -118,8 +120,8 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
         std::string command =  iter->first;
         if(commandComponents[0] == command)
         {
-            UserCommands::CommandInfo handler = iter->second;
-            (this->*handler.func)(commandComponents);
+            UserCommands::CommandInfo commandInfo = iter->second;
+            (this->*commandInfo.handlerFunctionPtr)(commandComponents);
             consumed = true;
             break;
         }
@@ -131,7 +133,7 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
     }
 }
 
-const std::vector<std::string> UserCommands::GetCompletions(std::string partialCommand)
+const std::vector<std::string> UserCommands::GetCompletions(const std::string& partialCommand)
 {
     std::vector<std::string> completions;
 
@@ -140,15 +142,34 @@ const std::vector<std::string> UserCommands::GetCompletions(std::string partialC
     std::size_t spacePos = partialCommand.find(' ');
     if(spacePos != std::string::npos)
     {
-        partialCommand = partialCommand.substr(0, spacePos);
-    }
+        // user wants help with command parameters
+        std::string baseCommand = partialCommand.substr(0, spacePos);
 
-    for (std::map<std::string, CommandInfo>::iterator iter = commandHandlerMap.begin(); iter != commandHandlerMap.end(); ++iter)
-    {
-        std::string command =  iter->first;
-        if(command.find(partialCommand) == 0)
+        // check the base command is valid
+        for (const auto &iter : commandHandlerMap)
         {
-            completions.push_back(command);
+            std::string command =  iter.first;
+            if(command.find(baseCommand) == 0)
+            {
+                // if valid, ask the base command completion handler for valid completions
+                UserCommands::CommandInfo commandInfo = iter.second;
+                if(commandInfo.completionFunctionPtr != nullptr)
+                {
+                    (this->*commandInfo.completionFunctionPtr)(partialCommand, completions);
+                }
+            }
+        }
+
+    }
+    else
+    {
+        for (const auto &iter : commandHandlerMap)
+        {
+            std::string command =  iter.first;
+            if(command.find(partialCommand) == 0)
+            {
+                completions.push_back(command);
+            }
         }
     }
 
@@ -173,6 +194,37 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
 void UserCommands::Command_Open(const std::vector<std::string>& command)
 {
     ResourceManager::Instance()->OpenResourceFromFile(command[1]);
+}
+
+void UserCommands::Completion_Open(const std::string& parameters, std::vector<std::string>& completions)
+{
+    // grab the partial path and find the directory entries which pattern patch
+    std::size_t spacePos = parameters.find(' ');
+    std::string partialPath = parameters.substr(spacePos + 1);
+
+    std::string cwd = fs::current_path().string();
+    std::size_t cwdSize = cwd.size();
+    for(const auto& entry : fs::directory_iterator(cwd))
+    {
+        if(fs::is_regular_file(entry.status()))
+        {
+            std::string comp = entry.path().string().substr(cwdSize+1);
+            if(comp.find(partialPath) == 0)
+            {
+                completions.push_back(comp);
+            }
+        }
+    }
+    if(completions.size() == 1)
+    {
+        completions[0] = std::string("open ") + completions[0];
+    }
+    if(completions.size() > 1)
+    {
+        completions.push_back(" ");
+    }
+
+    return;
 }
 
 void UserCommands::Command_History(const std::vector<std::string>& command)
@@ -226,9 +278,35 @@ void UserCommands::Command_Cd(const std::vector<std::string>& command)
     }
 }
 
-std::string UserCommands::Completion_Cd(const std::vector<std::string>& command)
+void UserCommands::Completion_Cd(const std::string& parameters, std::vector<std::string>& completions)
 {
-    return "";
+    // grab the partial path and find the directory entries which pattern patch
+    std::size_t spacePos = parameters.find(' ');
+    std::string partialPath = parameters.substr(spacePos + 1);
+
+    std::string cwd = fs::current_path().string();
+    std::size_t cwdSize = cwd.size();
+    for(const auto& entry : fs::directory_iterator(cwd))
+    {
+        if(fs::is_directory(entry.status()))
+        {
+            std::string comp = entry.path().string().substr(cwdSize+1);
+            if(comp.find(partialPath) == 0)
+            {
+                completions.push_back(comp + "/");
+            }
+        }
+    }
+    if(completions.size() == 1)
+    {
+        completions[0] = std::string("cd ") + completions[0];
+    }
+    if(completions.size() > 1)
+    {
+        completions.push_back(" ");
+    }
+
+    return;
 }
 
 void UserCommands::Command_Pwd(const std::vector<std::string>& command)
@@ -259,7 +337,7 @@ void UserCommands::Command_Help(const std::vector<std::string>& command)
     CommandHelpers::ScrollToBottom();
 }
 
-std::string UserCommands::Completion_Help()
+void UserCommands::Completion_Help(const std::string& parameters, std::vector<std::string>& completions)
 {
-    return "";
+    return;
 }

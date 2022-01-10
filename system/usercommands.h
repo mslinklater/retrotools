@@ -13,8 +13,15 @@
 class UserCommands
 {
 public:
-    typedef void (UserCommands::*HandlerFunction)(const std::vector<std::string> &);
-    typedef std::string (UserCommands::*CompletionFunction)();
+    // Handler function ptr
+    // In - const vector of strings
+    // Out - void
+    typedef void (UserCommands::*HandlerFunctionPtr)(const std::vector<std::string> &);
+
+    // Completion function ptr
+    // In - const string - the user input
+    // In - (output)vector of strings ref to be filled with possible completions
+    typedef void (UserCommands::*CompletionFunctionPtr)(const std::string&, std::vector<std::string>&);
 
     enum class Type
     {
@@ -26,13 +33,13 @@ public:
     {
         CommandInfo()
         : type(Type::EGeneral)
-        , func(nullptr)
-        , completion(nullptr)
+        , handlerFunctionPtr(nullptr)
+        , completionFunctionPtr(nullptr)
         {}
         
         Type type;
-        HandlerFunction func;
-        CompletionFunction completion;
+        HandlerFunctionPtr handlerFunctionPtr;
+        CompletionFunctionPtr completionFunctionPtr;
         std::string command;
         std::string hint;
         std::vector<std::string> helpText;
@@ -51,7 +58,7 @@ public:
     }
 
     void ParseAndProcessCommand(const std::string& command);
-    const std::vector<std::string> GetCompletions(std::string command);
+    const std::vector<std::string> GetCompletions(const std::string& command);
 
     const std::vector<CommandInfo> GetCommandInfo();
 
@@ -62,15 +69,17 @@ private:
     void AddToCommandHandlerMap(const CommandInfo &info);
 
     void Command_Help(const std::vector<std::string>& command);
-    std::string Completion_Help();
+    void Completion_Help(const std::string& parameters, std::vector<std::string>& completions);
 
     void Command_History(const std::vector<std::string>& command);
 
     void Command_Open(const std::vector<std::string>& command);
+    void Completion_Open(const std::string& parameters, std::vector<std::string>& completions);
+
     void Command_Quit(const std::vector<std::string>& command);
     void Command_Pwd(const std::vector<std::string>& command);
     void Command_Ls(const std::vector<std::string>& command);
 
     void Command_Cd(const std::vector<std::string>& command);
-    std::string Completion_Cd(const std::vector<std::string> &command);
+    void Completion_Cd(const std::string& parameters, std::vector<std::string>& completions);
 };

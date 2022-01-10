@@ -143,7 +143,10 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 			else
 			{
 				// multiple matches
-				LOGERROR("Issue #64 - Choose from multiple completions");
+				for(const auto &item : matches)
+				{
+					CommandHelpers::TextOutput(item);
+				}
 			}
 		}
 		else
