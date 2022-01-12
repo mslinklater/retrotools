@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iostream>
 #include <filesystem>
+#include <algorithm>
 
 #include "usercommands.h"
 #include "system/log.h"
@@ -233,23 +234,28 @@ void UserCommands::Command_History(const std::vector<std::string>& command)
 void UserCommands::Command_Ls(const std::vector<std::string>& command)
 {
     std::string cwd = fs::current_path().string();
+    std::size_t cwdStripSize = cwd.size() + 1;
     std::vector<std::string> folders;
     std::vector<std::string> files;
     for(const auto& entry : fs::directory_iterator(cwd))
     {
         if(fs::is_directory(entry.status()))
         {
-            folders.push_back(entry.path().string() + "/");
+            std::string folderName = entry.path().string() + "/";
+            // strip the leading path to cwd and store
+            folders.push_back(folderName.substr(cwdStripSize));
         }
         else
         {
-            files.push_back(entry.path().string());
+            files.push_back(entry.path().string().substr(cwdStripSize));
         }
     }
+    std::sort(folders.begin(), folders.end());
     for(auto& folder : folders)
     {
         CommandHelpers::TextOutput(folder);
     }
+    std::sort(files.begin(), files.end());
     for(auto& file : files)
     {
         CommandHelpers::TextOutput(file);

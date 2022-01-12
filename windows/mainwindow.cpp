@@ -5,6 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include <algorithm>
+#include <filesystem>
 
 #include "mainwindow.h"
 #include "common.h"
@@ -201,9 +202,9 @@ void MainWindow::DrawConsole()
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 
-	ImGui::Text(">");
+	ImGui::Text("%s >", std::filesystem::current_path().string().c_str());
 	ImGui::SameLine();
-	if (ImGui::InputText("command", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
+	if (ImGui::InputText(" ", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
 		if(strlen(inputBuffer))
 		{
