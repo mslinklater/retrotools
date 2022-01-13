@@ -25,8 +25,6 @@ MainWindow::MainWindow()
 , bShowNewSession(false)
 , bScrollToBottom(false)
 , commandHistoryPtr(0)
-, boldTag("[bold]")
-, boldTagSize(boldTag.size())
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
 	CommandCenter::Instance()->Subscribe(TextOutputCommand::kName, this);
@@ -172,9 +170,13 @@ void MainWindow::DrawConsole()
 		if(item[0] == '[')
 		{
 			// some sort of formatting
-			if(outputItems[i].find(boldTag) == 0)
+			if(outputItems[i].find(TextFormat::kBoldTag) == 0)
 			{
-				ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", item + boldTagSize);
+				ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", item + TextFormat::kBoldTagSize);
+			}
+			else
+			{
+				ImGui::TextColored(ImVec4(0.6,0.6,0.6,1.0),"%s", item);
 			}
 		}
 		else

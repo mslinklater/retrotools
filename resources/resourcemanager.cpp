@@ -7,14 +7,21 @@
 #include "resourcemanager.h"
 #include "system/log.h"
 #include "resource_d64.h"
+#include "resource_t64.h"
 
 ResourceManager::ResourceManager()
 {
 	// register resource types
 	{
 		ResourceTypeInfo info;
-		info.resourceType = ResourceType::ED64File;
+		info.resourceType = EResourceType::D64File;
 		info.resourceDescriptorString = "d64";
+		resourceTypeInfo.push_back(info);
+	}
+	{
+		ResourceTypeInfo info;
+		info.resourceType = EResourceType::T64File;
+		info.resourceDescriptorString = "t64";
 		resourceTypeInfo.push_back(info);
 	}
 }
@@ -35,9 +42,9 @@ ResourceManager* ResourceManager::Instance()
 	return pInstance;
 }
 
-void ResourceManager::OpenResourceFromFile(std::string filename, ResourceType resourceType)
+void ResourceManager::OpenResourceFromFile(std::string filename, EResourceType resourceType)
 {
-	if(resourceType == ResourceType::EUnknown)
+	if(resourceType == EResourceType::Unknown)
 	{
 		// work out what sort of resource it is and instantiate a resource of that type
 
@@ -52,12 +59,15 @@ void ResourceManager::OpenResourceFromFile(std::string filename, ResourceType re
 
 	// now load the resource
 
-	if(resourceType != ResourceType::EUnknown)
+	if(resourceType != EResourceType::Unknown)
 	{
 		LOGINFOF("ResourceManager::Opening resource %s", filename.c_str());
 		switch(resourceType)
 		{
-			case ResourceType::ED64File:
+			case EResourceType::T64File:
+				OpenResource_T64(filename);
+				break;
+			case EResourceType::D64File:
 				OpenResource_D64(filename);
 				break;
 			default:
@@ -71,7 +81,7 @@ void ResourceManager::OpenResourceFromFile(std::string filename, ResourceType re
 	}
 }
 
-ResourceManager::ResourceType ResourceManager::ResourceTypeFromString(std::string stringDescriptor)
+ResourceManager::EResourceType ResourceManager::ResourceTypeFromString(std::string stringDescriptor)
 {
 	for(const auto& typeInfo : resourceTypeInfo)
 	{
@@ -80,7 +90,14 @@ ResourceManager::ResourceType ResourceManager::ResourceTypeFromString(std::strin
 			return typeInfo.resourceType;
 		}
 	}
-	return ResourceType::EUnknown;
+	return EResourceType::Unknown;
+}
+
+void ResourceManager::OpenResource_T64(std::string filename)
+{
+	std::shared_ptr<ResourceT64> newResource(new ResourceT64);
+	newResource->InitFromFilename(filename);
+	resources.push_back(newResource);
 }
 
 void ResourceManager::OpenResource_D64(std::string filename)

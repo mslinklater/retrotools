@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "logwindow.h"
+#include "system/formatting.h"
 
 LogWindow::LogWindow()
 : showInfo(true)
@@ -75,7 +76,7 @@ void LogWindow::Draw(void)
 			
 			if(!line.category.empty())
 			{
-				ImGui::TextColored(ImVec4(0.0,1.0,0.0,1.0),"%s:", line.category.c_str());
+				ImGui::TextColored(TextFormat::kColourGreen, "%s:", line.category.c_str());
 				ImGui::SameLine();
 			}
 			
@@ -84,19 +85,19 @@ void LogWindow::Draw(void)
 				case Log::LogType::EInfo:
 					if(showInfo)
 					{
-						ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", line.content.c_str());
+						ImGui::TextColored(TextFormat::kColourNormal,"%s", line.content.c_str());
 					}
 					break;
 				case Log::LogType::EWarning:
 					if(showWarnings)
 					{
-						ImGui::TextColored(ImVec4(1.0,1.0,0.0,1.0),"%s", line.content.c_str());
+						ImGui::TextColored(TextFormat::kColourWarning,"%s", line.content.c_str());
 					}
 					break;
 				case Log::LogType::EError:
 					if(showErrors)
 					{
-						ImGui::TextColored(ImVec4(1.0,0.0,0.0,1.0),"%s", line.content.c_str());
+						ImGui::TextColored(TextFormat::kColourError,"%s", line.content.c_str());
 					}
 					break;
 			}

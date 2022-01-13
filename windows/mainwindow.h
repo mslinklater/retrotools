@@ -53,7 +53,4 @@ private:
 
 	void DrawConsole();
 	void ClearOutput();
-
-	const std::string boldTag;
-	const std::size_t boldTagSize;
 };

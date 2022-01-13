@@ -15,6 +15,7 @@
 #include "system/log.h"
 #include "commandhelpers.h"
 #include "resources/resourcemanager.h"
+#include "system/formatting.h"
 
 #define DEBUG 0
 
@@ -170,6 +171,11 @@ void UserCommands::GetCompletions(std::string& partialCommand, std::vector<std::
                 completions.push_back(command);
             }
         }
+        if(completions.size() == 1)
+        {
+            partialCommand = completions[0];
+            completions.clear();
+        }
     }
 
     return;
@@ -244,7 +250,7 @@ void UserCommands::Command_Ls(const std::vector<std::string>& command)
         {
             std::string folderName = entry.path().string() + "/";
             // strip the leading path to cwd and store
-            folders.push_back(std::string("[bold]") + folderName.substr(cwdStripSize));
+            folders.push_back(TextFormat::kBoldTag + folderName.substr(cwdStripSize));
         }
         else
         {

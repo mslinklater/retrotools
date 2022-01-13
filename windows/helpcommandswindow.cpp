@@ -7,6 +7,7 @@
 #include "common.h"
 #include "helpcommandswindow.h"
 #include "version.h"
+#include "system/formatting.h"
 
 HelpCommandsWindow::HelpCommandsWindow()
 : userCommands(UserCommands::Instance()->GetCommandInfo())
@@ -30,7 +31,7 @@ void HelpCommandsWindow::DrawCommandsForType(UserCommands::Type t)
 				ImGui::Text(" ");
 				for(const std::string& line : command.helpText)
 				{
-					ImGui::TextColored(ImVec4(0.75f, 0.75f, 0.75f, 1.0f), line.c_str(), 0);
+					ImGui::TextColored(TextFormat::kColourNormal, line.c_str(), 0);
 				}
 			}
 		}
