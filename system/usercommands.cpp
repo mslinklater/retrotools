@@ -195,7 +195,7 @@ void UserCommands::Command_Open(const std::vector<std::string>& command)
     ResourceManager::Instance()->OpenResourceFromFile(command[1]);
 }
 
-void UserCommands::Completion_Open(const std::string& parameters, std::vector<std::string>& completions)
+void UserCommands::Completion_Open(std::string& parameters, std::vector<std::string>& completions)
 {
     // grab the partial path and find the directory entries which pattern patch
     std::size_t spacePos = parameters.find(' ');
@@ -216,7 +216,8 @@ void UserCommands::Completion_Open(const std::string& parameters, std::vector<st
     }
     if(completions.size() == 1)
     {
-        completions[0] = std::string("open ") + completions[0];
+        parameters = std::string("open ") + completions[0];
+        completions.clear();
     }
     if(completions.size() > 1)
     {
@@ -243,7 +244,7 @@ void UserCommands::Command_Ls(const std::vector<std::string>& command)
         {
             std::string folderName = entry.path().string() + "/";
             // strip the leading path to cwd and store
-            folders.push_back(folderName.substr(cwdStripSize));
+            folders.push_back(std::string("[bold]") + folderName.substr(cwdStripSize));
         }
         else
         {
@@ -282,7 +283,7 @@ void UserCommands::Command_Cd(const std::vector<std::string>& command)
     }
 }
 
-void UserCommands::Completion_Cd(const std::string& parameters, std::vector<std::string>& completions)
+void UserCommands::Completion_Cd(std::string& parameters, std::vector<std::string>& completions)
 {
     // grab the partial path and find the directory entries which pattern patch
     std::size_t spacePos = parameters.find(' ');
@@ -303,7 +304,8 @@ void UserCommands::Completion_Cd(const std::string& parameters, std::vector<std:
     }
     if(completions.size() == 1)
     {
-        completions[0] = std::string("cd ") + completions[0];
+        parameters = std::string("cd ") + completions[0];
+        completions.clear();
     }
     if(completions.size() > 1)
     {
@@ -341,7 +343,7 @@ void UserCommands::Command_Help(const std::vector<std::string>& command)
     CommandHelpers::ScrollToBottom();
 }
 
-void UserCommands::Completion_Help(const std::string& parameters, std::vector<std::string>& completions)
+void UserCommands::Completion_Help(std::string& parameters, std::vector<std::string>& completions)
 {
     return;
 }

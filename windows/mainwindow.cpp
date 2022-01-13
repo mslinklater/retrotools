@@ -16,6 +16,7 @@
 #include "system/commandhelpers.h"
 #include "system/usercommands.h"
 #include "settings.h"
+#include "system/formatting.h"
 
 //imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
 
@@ -24,6 +25,8 @@ MainWindow::MainWindow()
 , bShowNewSession(false)
 , bScrollToBottom(false)
 , commandHistoryPtr(0)
+, boldTag("[bold]")
+, boldTagSize(boldTag.size())
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
 	CommandCenter::Instance()->Subscribe(TextOutputCommand::kName, this);
@@ -132,33 +135,17 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 		std::vector<std::string> matches;
 		std::string commandBuffer(data->Buf);
 		UserCommands::Instance()->GetCompletions(commandBuffer, matches);
+
+		// update the command prompt
 		strncpy(data->Buf, commandBuffer.c_str(), data->BufSize);
 		data->BufTextLen = commandBuffer.length();
 		data->CursorPos = data->BufTextLen;
 		data->BufDirty = true;
-		
-		if(matches.size() > 0)
+
+		// display the matches
+		for(const auto &item : matches)
 		{
-			if(matches.size() == 1)
-			{
-				// one match - so complete the prompt with the completion
-				strncpy(data->Buf, matches[0].c_str(), data->BufSize);
-				data->BufTextLen = matches[0].length();
-				data->CursorPos = data->BufTextLen;
-				data->BufDirty = true;
-			}
-			else
-			{
-				// multiple matches
-				for(const auto &item : matches)
-				{
-					CommandHelpers::TextOutput(item);
-				}
-			}
-		}
-		else
-		{
-			// no matches
+			CommandHelpers::TextOutput(item);
 		}
 	}
 	return 0;
@@ -180,10 +167,15 @@ void MainWindow::DrawConsole()
 	for(std::size_t i=0; i<outputItems.size(); i++)
 	{
 		const char* item = outputItems[i].c_str();
+
 		// TODO: Need to add some formatting here
-		if(item[0] == '>')
+		if(item[0] == '[')
 		{
-			ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", item);
+			// some sort of formatting
+			if(outputItems[i].find(boldTag) == 0)
+			{
+				ImGui::TextColored(ImVec4(1.0,1.0,1.0,1.0),"%s", item + boldTagSize);
+			}
 		}
 		else
 		{
@@ -202,7 +194,7 @@ void MainWindow::DrawConsole()
 	bool reclaimFocus = false;
 	ImGuiInputTextFlags inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 
-	ImGui::Text("%s >", std::filesystem::current_path().string().c_str());
+	ImGui::Text("%s>", std::filesystem::current_path().string().c_str());
 	ImGui::SameLine();
 	if (ImGui::InputText(" ", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
