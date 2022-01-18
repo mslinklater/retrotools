@@ -7,7 +7,7 @@
 #pragma once
 
 #include <inttypes.h>
-#include "windows/windowbase.h"
+#include "system/window/windowbase.h"
 #include "system/istateserialisation.h"
 
 class Memory2600;

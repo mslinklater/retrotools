@@ -11,7 +11,7 @@
 #include "common.h"
 #include "system/commandcenter.h"
 #include "system/commands.h"
-#include "windowmanager.h"
+#include "system/window/windowmanager.h"
 #include "filebrowser/ImGuiFileBrowser.h"
 #include "system/commandhelpers.h"
 #include "system/usercommands.h"

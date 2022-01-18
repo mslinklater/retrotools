@@ -7,7 +7,7 @@
 #pragma once
 #include <string>
 #include "../symbolstore.h"
-#include "windowbase.h"
+#include "system/window/windowbase.h"
 
 class SymbolWindow : public WindowBase
 {

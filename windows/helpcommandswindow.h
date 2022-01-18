@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "windowmanager.h"
-#include "windowbase.h"
+#include "system/window/windowmanager.h"
+#include "system/window/windowbase.h"
 #include "system/usercommands.h"
 
 class HelpCommandsWindow : public WindowBase

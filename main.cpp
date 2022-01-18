@@ -43,7 +43,7 @@
 #include "components/cpu6502/perfect6502window.h"
 #include "system/commandcenter.h"
 #include "utils/memoryutils.h"
-#include "windows/windowmanager.h"
+#include "system/window/windowmanager.h"
 #include "system/stateserialiser.h"
 
 // DearImGui stuff

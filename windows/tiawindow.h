@@ -8,7 +8,7 @@
 
 #include <GL/gl.h>
 
-#include "windowbase.h"
+#include "system/window/windowbase.h"
 #include "system/istateserialisation.h"
 #include "system/icommandhandler.h"
 #include "components//stella/tia.h"

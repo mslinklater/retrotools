@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "windows/windowbase.h"
+#include "system/window/windowbase.h"
 #include "system/istateserialisation.h"
 #include "perfect6502/perfect6502.h"
 

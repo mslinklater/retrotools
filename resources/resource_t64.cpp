@@ -50,5 +50,19 @@ void ResourceT64::InitFromFilename(std::string filename)
 		// Now some debug text
 		LOGINFOF("T64::Descriptor:%s", pTapeRecord->GetDescriptor().c_str());
 		LOGINFOF("T64::Version:%04x", pTapeRecord->GetVersion());
+		LOGINFOF("T64::NumEntries:%d", pTapeRecord->GetNumEntries());
+		LOGINFOF("T64::NumUsedEntries:%d", pTapeRecord->GetNumUsedEntries());
+		LOGINFOF("T64::UserDescription:%s", pTapeRecord->GetUserDescription().c_str());
+
+		int i=1;
+		for(const auto& fileRecord : fileRecords)
+		{
+			LOGINFOF("T64::FileRecord %d", i++);
+			LOGINFOF("T64::Filename %s", fileRecord->GetFilename().c_str());
+			LOGINFOF("T64::EntryType %s", fileRecord->GetEntryTypeString().c_str());
+			LOGINFOF("T64::StartOffset %08x", fileRecord->GetStartOffset());
+			LOGINFOF("T64::StartAddress %04x", fileRecord->GetStartAddress());
+			LOGINFOF("T64::EndAddress %04x", fileRecord->GetEndAddress());
+		}
 	}
 }

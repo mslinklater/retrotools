@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "windows/windowbase.h"
+#include "system/window/windowbase.h"
 #include "components/cpu6502/cpu6502base.h"
 
 class Cpu6502Window : public WindowBase

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "windowbase.h"
+#include "system/window/windowbase.h"
 #include "system/istateserialisation.h"
 
 class Disassembler;

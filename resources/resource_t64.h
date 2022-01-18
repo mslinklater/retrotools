@@ -67,9 +67,27 @@ public:
 		char free2[4];
 		char filename[16];
 
+		std::string GetEntryTypeString()
+		{
+			switch(entryType)
+			{
+				case (char)EFileRecordEntryType::FreeEntry: return "FreeEntry";
+				case (char)EFileRecordEntryType::NormalTapeFile: return "NormalTapeFile";
+				case (char)EFileRecordEntryType::TapeFileWithHeader: return "TapeFileWithHeader";
+				case (char)EFileRecordEntryType::MemorySnapshot: return "MemorySnapshot";
+				case (char)EFileRecordEntryType::TapeBlock: return "TapeBlock";
+				case (char)EFileRecordEntryType::DigitizedStream: return "DigitizedStream";
+			}
+			return "Unknown";
+		}
+		EFileRecordEntryType GetEntryType()
+		{
+			return(EFileRecordEntryType)entryType;
+		}
 		unsigned short GetStartAddress(){return startAddress[0] | (startAddress[1] << 8);}
 		unsigned short GetEndAddress(){return endAddress[0] | (endAddress[1] << 8);}
 		unsigned int GetStartOffset(){return startOffset[0] | (startOffset[1] << 8) | (startOffset[2] << 16) | (startOffset[3] << 24);}
+		std::string GetFilename(){return std::string(&filename[0]);}
 	};
 
 	virtual void InitFromFilename(std::string filename);
