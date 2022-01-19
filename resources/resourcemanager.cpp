@@ -106,3 +106,8 @@ void ResourceManager::OpenResource_D64(std::string filename)
 	newResource->InitFromFilename(filename);
 	resources.push_back(newResource);
 }
+
+const std::vector<std::shared_ptr<ResourceBase>>& ResourceManager::GetResources()
+{
+	return resources;
+}

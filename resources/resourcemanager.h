@@ -29,6 +29,8 @@ public:
 	void OpenResourceFromFile(std::string filename, ResourceBase::EResourceType resourceType = ResourceBase::EResourceType::Unknown);
 	ResourceBase::EResourceType ResourceTypeFromString(std::string stringDescriptor);
 
+	const std::vector<std::shared_ptr<ResourceBase>>& GetResources();
+
 private:
 	std::vector<std::shared_ptr<ResourceBase>> resources;
 
