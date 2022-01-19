@@ -14,14 +14,14 @@ ResourceManager::ResourceManager()
 	// register resource types
 	{
 		ResourceTypeInfo info;
-		info.resourceType = EResourceType::D64File;
-		info.resourceDescriptorString = "d64";
+		info.resourceType = ResourceBase::EResourceType::D64File;
+		info.descriptorString = "d64";
 		resourceTypeInfo.push_back(info);
 	}
 	{
 		ResourceTypeInfo info;
-		info.resourceType = EResourceType::T64File;
-		info.resourceDescriptorString = "t64";
+		info.resourceType = ResourceBase::EResourceType::T64File;
+		info.descriptorString = "t64";
 		resourceTypeInfo.push_back(info);
 	}
 }
@@ -42,9 +42,9 @@ ResourceManager* ResourceManager::Instance()
 	return pInstance;
 }
 
-void ResourceManager::OpenResourceFromFile(std::string filename, EResourceType resourceType)
+void ResourceManager::OpenResourceFromFile(std::string filename, ResourceBase::EResourceType resourceType)
 {
-	if(resourceType == EResourceType::Unknown)
+	if(resourceType == ResourceBase::EResourceType::Unknown)
 	{
 		// work out what sort of resource it is and instantiate a resource of that type
 
@@ -59,15 +59,15 @@ void ResourceManager::OpenResourceFromFile(std::string filename, EResourceType r
 
 	// now load the resource
 
-	if(resourceType != EResourceType::Unknown)
+	if(resourceType != ResourceBase::EResourceType::Unknown)
 	{
 		LOGINFOF("ResourceManager::Opening resource %s", filename.c_str());
 		switch(resourceType)
 		{
-			case EResourceType::T64File:
+			case ResourceBase::EResourceType::T64File:
 				OpenResource_T64(filename);
 				break;
-			case EResourceType::D64File:
+			case ResourceBase::EResourceType::D64File:
 				OpenResource_D64(filename);
 				break;
 			default:
@@ -81,16 +81,16 @@ void ResourceManager::OpenResourceFromFile(std::string filename, EResourceType r
 	}
 }
 
-ResourceManager::EResourceType ResourceManager::ResourceTypeFromString(std::string stringDescriptor)
+ResourceBase::EResourceType ResourceManager::ResourceTypeFromString(std::string stringDescriptor)
 {
 	for(const auto& typeInfo : resourceTypeInfo)
 	{
-		if(typeInfo.resourceDescriptorString == stringDescriptor)
+		if(typeInfo.descriptorString == stringDescriptor)
 		{
 			return typeInfo.resourceType;
 		}
 	}
-	return EResourceType::Unknown;
+	return ResourceBase::EResourceType::Unknown;
 }
 
 void ResourceManager::OpenResource_T64(std::string filename)

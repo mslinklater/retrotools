@@ -32,6 +32,7 @@
 #include "windows/logwindow.h"
 #include "windows/helpaboutwindow.h"
 #include "windows/helpcommandswindow.h"
+#include "windows/resourceswindow.h"
 #include "components/stella/memory2600window.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
@@ -215,46 +216,12 @@ int main(int argc, char* argv[])
 	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow(new HelpCommandsWindow());
 	pWindowManager->AddWindow(pHelpCommandsWindow, "HelpCommands");
 
-//	Memory2600Window* pMemoryWindow = new Memory2600Window();
-//	pMemoryWindow->SetMemory(pMemory);
-//	pWindowManager->AddWindow(pMemoryWindow, "Memory2600");
-//	pStateSerialiser->AddStateSerialiser(pMemoryWindow);
-	
-//	DisassemblyWindow* pDisasmWindow = new DisassemblyWindow();
-//	pDisasmWindow->SetDisassembler(pDisassembler);
-//	pDisasmWindow->SetCPU(pCpu);
-//	pDisasmWindow->SetMemory(pMemory);
-//	pWindowManager->AddWindow(pDisasmWindow, "Disassembly");
-//	pStateSerialiser->AddStateSerialiser(pDisasmWindow);
+	std::shared_ptr<ResourcesWindow> pResourcesWindow(new ResourcesWindow());
+	pWindowManager->AddWindow(pResourcesWindow, "Resources");
 
 	std::shared_ptr<MainWindow> pMainWindow(new MainWindow());
 	pMainWindow->SetWindowManager(pWindowManager.get());
 	
-//	SymbolWindow* pSymbolWindow = new SymbolWindow();
-//	pSymbolWindow->SetSymbolStore(pSymbolStore);
-//	pWindowManager->AddWindow(pSymbolWindow, "Symbols");
-	
-//	Cpu6502Window* pCpu6502Window = new Cpu6502Window();
-//	pCpu6502Window->SetCpu(pCpu);
-//	pWindowManager->AddWindow(pCpu6502Window, "Cpu6502");
-
-//	TiaWindow* pTiaWindow = new TiaWindow();
-//	pTiaWindow->SetTia(pTia);
-//	pWindowManager->AddWindow(pTiaWindow, "Tia");
-//	pStateSerialiser->AddStateSerialiser(pTiaWindow);
-
-//	RiotWindow* pRiotWindow = new RiotWindow();
-//	pRiotWindow->SetRiot(pRiot);
-//	pWindowManager->AddWindow(pRiotWindow, "Riot");
-//	pStateSerialiser->AddStateSerialiser(pRiotWindow);
-
-//	SystemWindow* pSystemWindow = new SystemWindow();
-//	pSystemWindow->SetSystem(pSystem);
-//	pWindowManager->AddWindow(pSystemWindow, "System");
-
-//	Perfect6502Window* pPerfect6502Window = new Perfect6502Window();
-//	pWindowManager->AddWindow(pPerfect6502Window, "Perfect6502");
-
 	pStateSerialiser->DeserialiseAppConfig();
 
 	bool done = false;

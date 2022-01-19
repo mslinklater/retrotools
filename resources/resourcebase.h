@@ -14,6 +14,15 @@ public:
 	ResourceBase();
 	virtual ~ResourceBase();
 
+	enum class EResourceType
+	{
+		Unknown,
+		T64File,
+		D64File,
+	};
+
 	virtual void InitFromFilename(std::string filename);
-private:
+	
+protected:
+
 };
