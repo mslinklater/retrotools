@@ -22,7 +22,14 @@ public:
 	};
 
 	virtual void InitFromFilename(std::string filename);
-	
-protected:
 
+	EResourceType GetResourceType() { return resourceType; }
+	const std::string& GetFilename() { return filename; }
+	const std::string& GetId(){ return Id; }
+
+protected:
+	EResourceType resourceType;
+
+	std::string filename;
+	std::string Id;
 };

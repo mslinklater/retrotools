@@ -93,6 +93,18 @@ ResourceBase::EResourceType ResourceManager::ResourceTypeFromString(std::string 
 	return ResourceBase::EResourceType::Unknown;
 }
 
+std::string ResourceManager::ResourceTypeToString(ResourceBase::EResourceType type)
+{
+	for(const auto& typeInfo : resourceTypeInfo)
+	{
+		if(typeInfo.resourceType == type)
+		{
+			return typeInfo.descriptorString;
+		}
+	}
+	return "Unknown";
+}
+
 void ResourceManager::OpenResource_T64(std::string filename)
 {
 	std::shared_ptr<ResourceT64> newResource(new ResourceT64);

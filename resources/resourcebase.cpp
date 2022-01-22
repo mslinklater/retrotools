@@ -8,6 +8,7 @@
 #include "system/log.h"
 
 ResourceBase::ResourceBase()
+: resourceType(EResourceType::Unknown)
 {
 
 }
