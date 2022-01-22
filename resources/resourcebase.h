@@ -14,22 +14,16 @@ public:
 	ResourceBase();
 	virtual ~ResourceBase();
 
-	enum class EResourceType
-	{
-		Unknown,
-		T64File,
-		D64File,
-	};
 
-	virtual void InitFromFilename(std::string filename);
+	virtual bool InitFromFilename(const std::string& filename);
 
-	EResourceType GetResourceType() { return resourceType; }
-	const std::string& GetFilename() { return filename; }
-	const std::string& GetId(){ return Id; }
+//	EResourceType GetResourceType() { return resourceType; }
+//	const std::string& GetFilename() { return filename; }
+//	const std::string& GetId(){ return Id; }
 
 protected:
-	EResourceType resourceType;
+//	EResourceType resourceType;
 
-	std::string filename;
-	std::string Id;
+//	std::string filename;
+//	std::string Id;
 };

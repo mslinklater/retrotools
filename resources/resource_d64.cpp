@@ -16,7 +16,7 @@ ResourceD64::~ResourceD64()
 
 }
 
-void ResourceD64::InitFromFilename(std::string filename)
+bool ResourceD64::InitFromFilename(const std::string& filename)
 {
-
+	return false;
 }

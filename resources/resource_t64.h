@@ -90,7 +90,7 @@ public:
 		std::string GetFilename(){return std::string(&filename[0]);}
 	};
 
-	virtual void InitFromFilename(std::string filename);
+	virtual bool InitFromFilename(const std::string& filename);
 private:
 	char* 	pData;
 	std::streamsize	dataSize;

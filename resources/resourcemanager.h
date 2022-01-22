@@ -19,22 +19,39 @@ public:
 
 	static ResourceManager* Instance();
 
+	enum class EResourceType
+	{
+		Unknown,
+		T64File,
+		D64File,
+	};
+
 	// mapping from resource type enum to readable string
 	struct ResourceTypeInfo
 	{
-		ResourceBase::EResourceType resourceType;
+		EResourceType resourceType;
 		std::string descriptorString;
 	};
 
-	void OpenResourceFromFile(std::string filename, ResourceBase::EResourceType resourceType = ResourceBase::EResourceType::Unknown);
-	
-	ResourceBase::EResourceType ResourceTypeFromString(std::string stringDescriptor);
-	std::string ResourceTypeToString(ResourceBase::EResourceType type);
+	struct ResourceInfo
+	{
+		std::shared_ptr<ResourceBase> base;
+		EResourceType type;
+		std::string	filename;
+		std::string Id;
+	};
 
-	const std::vector<std::shared_ptr<ResourceBase>>& GetResources();
+	void OpenResourceFromFile(	const std::string& filename, 
+								const std::string& Id = "", 
+								EResourceType resourceType = EResourceType::Unknown);
+	
+	EResourceType ResourceTypeFromString(const std::string& stringDescriptor);
+	std::string ResourceTypeToString(EResourceType type);
+
+	const std::vector<ResourceInfo>& GetResources();
 
 private:
-	std::vector<std::shared_ptr<ResourceBase>> resources;
+	std::vector<ResourceInfo> resources;
 
 	std::vector<ResourceTypeInfo> resourceTypeInfo;	// should probably turn into a pair of maps
 

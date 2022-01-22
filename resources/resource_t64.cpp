@@ -15,7 +15,6 @@ ResourceT64::ResourceT64()
 , dataSize(0)
 , pTapeRecord(nullptr)
 {
-	resourceType = EResourceType::T64File;
 }
 
 ResourceT64::~ResourceT64()
@@ -26,9 +25,8 @@ ResourceT64::~ResourceT64()
 	}
 }
 
-void ResourceT64::InitFromFilename(std::string filenameIn)
+bool ResourceT64::InitFromFilename(const std::string& filename)
 {
-	filename = filenameIn;
 	std::ifstream file(filename, std::ios::binary | std::ios::ate);
 	if(file)
 	{
@@ -66,4 +64,5 @@ void ResourceT64::InitFromFilename(std::string filenameIn)
 			LOGINFOF("T64::EndAddress %04x", fileRecord->GetEndAddress());
 		}
 	}
+	return true;
 }

@@ -14,6 +14,6 @@ public:
 	ResourceD64();
 	virtual ~ResourceD64();
 
-	virtual void InitFromFilename(std::string filename);
+	virtual bool InitFromFilename(const std::string& filename);
 private:
 };
