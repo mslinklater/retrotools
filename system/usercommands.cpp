@@ -56,11 +56,13 @@ UserCommands::UserCommands()
     // File operations commands
     {
         CommandInfo commandInfo;
-        commandInfo.command = "open";
+        commandInfo.command = "openres";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.handlerFunctionPtr = &UserCommands::Command_Open;
-        commandInfo.completionFunctionPtr = &UserCommands::Completion_Open;
-        commandInfo.hint = "open <filename> - opens file";
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_OpenRes;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_OpenRes;
+        commandInfo.hint = "openres <filename> [ID]- opens a resource file";
+        commandInfo.helpText.push_back("[ID] - optionalal ID used to specify the resource.");
+        commandInfo.helpText.push_back("       if not provided one will be generated.");
         AddToCommandHandlerMap(commandInfo);
     }
     {
@@ -196,12 +198,19 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
     CommandHelpers::Quit();
 }
 
-void UserCommands::Command_Open(const std::vector<std::string>& command)
+void UserCommands::Command_OpenRes(const std::vector<std::string>& command)
 {
-    ResourceManager::Instance()->OpenResourceFromFile(command[1]);
+    if(command.size() > 2) // user provided an ID
+    {
+        ResourceManager::Instance()->OpenResourceFromFile(command[1], command[2]);
+    }
+    else
+    {
+        ResourceManager::Instance()->OpenResourceFromFile(command[1]);
+    }
 }
 
-void UserCommands::Completion_Open(std::string& parameters, std::vector<std::string>& completions)
+void UserCommands::Completion_OpenRes(std::string& parameters, std::vector<std::string>& completions)
 {
     // grab the partial path and find the directory entries which pattern patch
     std::size_t spacePos = parameters.find(' ');
@@ -222,7 +231,7 @@ void UserCommands::Completion_Open(std::string& parameters, std::vector<std::str
     }
     if(completions.size() == 1)
     {
-        parameters = std::string("open ") + completions[0];
+        parameters = std::string("openres ") + completions[0];
         completions.clear();
     }
     if(completions.size() > 1)

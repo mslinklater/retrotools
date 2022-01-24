@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <memory>
 #include "resourcebase.h"
 
@@ -36,25 +37,33 @@ public:
 	struct ResourceInfo
 	{
 		std::shared_ptr<ResourceBase> base;
+		//std::vector<std::weak_ptr<ResourceInfo>> dependsOn;
 		EResourceType type;
 		std::string	filename;
 		std::string Id;
+		//bool updateAvailable;
+		//bool needsRefresh;
 	};
 
-	void OpenResourceFromFile(	const std::string& filename, 
+	bool OpenResourceFromFile(	const std::string& filename, 
 								const std::string& Id = "", 
 								EResourceType resourceType = EResourceType::Unknown);
+	bool DeleteResource(const std::string& Id);
 	
 	EResourceType ResourceTypeFromString(const std::string& stringDescriptor);
 	std::string ResourceTypeToString(EResourceType type);
 
-	const std::vector<ResourceInfo>& GetResources();
+//	const std::vector<ResourceInfo>& GetResources();
+	const std::map<std::string, ResourceInfo>& GetResources();
+	EResourceType GetResourceType(const std::string& resourceId);
 
 private:
-	std::vector<ResourceInfo> resources;
+
+//	std::vector<ResourceInfo> resources;
+	std::map<std::string, ResourceInfo> resourcesMap;
 
 	std::vector<ResourceTypeInfo> resourceTypeInfo;	// should probably turn into a pair of maps
 
-	void OpenResource_T64(std::string filename);
-	void OpenResource_D64(std::string filename);
+	bool OpenResource_T64(std::string filename, const std::string& Id);
+	bool OpenResource_D64(std::string filename, const std::string& Id);
 };

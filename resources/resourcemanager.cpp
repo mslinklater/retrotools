@@ -42,8 +42,10 @@ ResourceManager* ResourceManager::Instance()
 	return pInstance;
 }
 
-void ResourceManager::OpenResourceFromFile(const std::string& filename, const std::string& Id, EResourceType resourceType)
+bool ResourceManager::OpenResourceFromFile(const std::string& filename, const std::string& _Id, EResourceType resourceType)
 {
+	std::string Id(_Id);
+
 	if(resourceType == EResourceType::Unknown)
 	{
 		// work out what sort of resource it is and instantiate a resource of that type
@@ -57,6 +59,14 @@ void ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 		}
 	}
 
+	// build a valid Id if one not given
+	if(Id.size() == 0)
+	{
+		Id = filename;
+	}
+
+	// check for Id clashes and extend the Id to make it unique
+
 	// now load the resource
 
 	if(resourceType != EResourceType::Unknown)
@@ -65,20 +75,33 @@ void ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 		switch(resourceType)
 		{
 			case EResourceType::T64File:
-				OpenResource_T64(filename);
+				OpenResource_T64(filename, Id);
 				break;
 			case EResourceType::D64File:
-				OpenResource_D64(filename);
+				OpenResource_D64(filename, Id);
 				break;
 			default:
-				LOGERRORF("ResourceManager::OPenResourceFromFile not implemented for known type %s", filename.c_str());
+				LOGERRORF("ResourceManager::OpenResourceFromFile not implemented for known type %s", filename.c_str());
+				return false;
 				break;
 		}
 	}
 	else
 	{
 		LOGERRORF("ResourceManager::Unknown resource type %s", filename.c_str());
+		return false;
 	}
+	return true;
+}
+
+bool ResourceManager::DeleteResource(const std::string& Id)
+{
+	return true;
+}
+
+ResourceManager::EResourceType ResourceManager::GetResourceType(const std::string& resourceId)
+{
+	return EResourceType::Unknown;
 }
 
 ResourceManager::EResourceType ResourceManager::ResourceTypeFromString(const std::string& stringDescriptor)
@@ -105,29 +128,44 @@ std::string ResourceManager::ResourceTypeToString(EResourceType type)
 	return "Unknown";
 }
 
-void ResourceManager::OpenResource_T64(std::string filename)
+bool ResourceManager::OpenResource_T64(std::string filename, const std::string& Id)
 {
 	std::shared_ptr<ResourceT64> newResource(new ResourceT64);
 	newResource->InitFromFilename(filename);
 
 	ResourceInfo info;
+	info.Id = Id;
+	info.type = EResourceType::T64File;
+	info.filename = filename;
 	info.base = newResource;
 
-	resources.push_back(info);
+	resourcesMap.emplace(Id, info);
+//	resources.push_back(info);
+	return true;
 }
 
-void ResourceManager::OpenResource_D64(std::string filename)
+bool ResourceManager::OpenResource_D64(std::string filename, const std::string& Id)
 {
 	std::shared_ptr<ResourceD64> newResource(new ResourceD64);
 	newResource->InitFromFilename(filename);
 
 	ResourceInfo info;
+	info.Id = Id;
+	info.type = EResourceType::D64File;
+	info.filename = filename;
 	info.base = newResource;
 
-	resources.push_back(info);
+	resourcesMap.emplace(Id, info);
+//	resources.push_back(info);
+	return true;
 }
 
-const std::vector<ResourceManager::ResourceInfo>& ResourceManager::GetResources()
+//const std::vector<ResourceManager::ResourceInfo>& ResourceManager::GetResources()
+//{
+//	return resources;
+//}
+
+const std::map<std::string, ResourceManager::ResourceInfo>& ResourceManager::GetResources()
 {
-	return resources;
+	return resourcesMap;
 }

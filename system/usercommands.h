@@ -73,8 +73,8 @@ private:
 
     void Command_History(const std::vector<std::string>& command);
 
-    void Command_Open(const std::vector<std::string>& command);
-    void Completion_Open(std::string& parameters, std::vector<std::string>& completions);
+    void Command_OpenRes(const std::vector<std::string>& command);
+    void Completion_OpenRes(std::string& parameters, std::vector<std::string>& completions);
 
     void Command_Quit(const std::vector<std::string>& command);
     void Command_Pwd(const std::vector<std::string>& command);

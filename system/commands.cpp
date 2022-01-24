@@ -13,4 +13,4 @@ const std::string HaltCommand::kName = "Halt";
 const std::string QuitCommand::kName = "Quit";
 const std::string TextOutputCommand::kName = "TextOutput";
 const std::string ScrollToBottomCommand::kName = "ScrollToBottom";
-
+const std::string OpenResourceWindowCommand::kName = "OpenResourceWindow";

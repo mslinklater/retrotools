@@ -67,6 +67,21 @@ public:
 	{}
 };
 
+// Open Resource Window
+
+class OpenResourceWindowCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	OpenResourceWindowCommand(std::string _resourceId)
+	: CommandBase(kName)
+	, resourceId(_resourceId)
+	{}
+
+	std::string resourceId;
+};
+
 // Halt
 
 class HaltCommand : public CommandBase

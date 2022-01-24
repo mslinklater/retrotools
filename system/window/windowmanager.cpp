@@ -30,6 +30,7 @@ void WindowManager::Init(std::shared_ptr<StateSerialiser> pStateSerialiser)
 	// Subscribe to all ToggleWindow commands
 	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
 	CommandCenter::Instance()->Subscribe(QuitCommand::kName, this);
+	CommandCenter::Instance()->Subscribe(OpenResourceWindowCommand::kName, this);
 
 	initialised = true;
 }
@@ -67,6 +68,13 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		{
 			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
 		}
+	}
+
+	if(command->name == OpenResourceWindowCommand::kName)
+	{
+		std::shared_ptr<OpenResourceWindowCommand> cmd = std::dynamic_pointer_cast<OpenResourceWindowCommand>(command);
+		std::string windowName = std::string("Resource-") + cmd->resourceId;
+		
 	}
 
 	if(command->name == QuitCommand::kName)

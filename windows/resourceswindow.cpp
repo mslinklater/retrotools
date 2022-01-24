@@ -1,5 +1,6 @@
 #include "resourceswindow.h"
 #include "common.h"
+#include "system/commandhelpers.h"
 
 ResourcesWindow::ResourcesWindow()
 {
@@ -29,22 +30,24 @@ void ResourcesWindow::Draw(void)
 			ImGui::TableNextRow();
 
 			ImGui::TableSetColumnIndex(0);
-			if (ImGui::SmallButton("Info")) 
+			if (ImGui::SmallButton("Del")) 
 			{ 
 				// open up details window for resource
 			}
+			ImGui::SameLine();
+			if (ImGui::SmallButton("Info")) 
+			{ 
+				CommandHelpers::OpenResourceWindow(resource.second.Id);
+			}
 
 			ImGui::TableSetColumnIndex(1);
-			ImGui::Text("%s", "Id");
-//			ImGui::Text("%s", resource->GetId().c_str());
+			ImGui::Text("%s", resource.second.Id.c_str());
 
 			ImGui::TableSetColumnIndex(2);
-			ImGui::Text("%s", "TYPE");
-//			ImGui::Text("%s", ResourceManager::Instance()->ResourceTypeToString(resource->GetResourceType()).c_str());
+			ImGui::Text("%s", ResourceManager::Instance()->ResourceTypeToString(resource.second.type).c_str());
 
 			ImGui::TableSetColumnIndex(3);
-//			ImGui::Text("%s", resource->GetFilename().c_str());
-			ImGui::Text("%s", "FILENAME");
+			ImGui::Text("%s", resource.second.filename.c_str());
 		}
 		ImGui::EndTable();
 	}
