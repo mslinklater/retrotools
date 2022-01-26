@@ -53,7 +53,6 @@ public:
 	EResourceType ResourceTypeFromString(const std::string& stringDescriptor);
 	std::string ResourceTypeToString(EResourceType type);
 
-//	const std::vector<ResourceInfo>& GetResources();
 	const std::map<std::string, ResourceInfo>& GetResources();
 	EResourceType GetResourceType(const std::string& resourceId);
 

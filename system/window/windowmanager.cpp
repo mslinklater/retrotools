@@ -10,7 +10,7 @@
 #include "windowbase.h"
 #include "system/commands.h"
 #include "system/stateserialiser.h"
-
+#include "resources/resourcemanager.h"
 
 WindowManager::WindowManager()
 : initialised(false)
@@ -74,7 +74,18 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 	{
 		std::shared_ptr<OpenResourceWindowCommand> cmd = std::dynamic_pointer_cast<OpenResourceWindowCommand>(command);
 		std::string windowName = std::string("Resource-") + cmd->resourceId;
-		
+		ResourceManager::EResourceType resourceType = ResourceManager::Instance()->GetResourceType(cmd->resourceId);
+		switch(resourceType)
+		{
+			case ResourceManager::EResourceType::T64File:
+				break;
+			case ResourceManager::EResourceType::D64File:
+				break;
+			case ResourceManager::EResourceType::Unknown:
+			default:
+				LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
+				return false;
+		}
 	}
 
 	if(command->name == QuitCommand::kName)
