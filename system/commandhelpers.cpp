@@ -30,9 +30,9 @@ void CommandHelpers::Quit()
 	CommandCenter::Instance()->BroadcastNow(cmd);
 }
 
-void CommandHelpers::OpenResourceWindow(const std::string& _resourceId)
+void CommandHelpers::OpenResourceWindow(const std::string& resourceId)
 {
-    std::shared_ptr<CommandBase> cmd = std::make_shared<OpenResourceWindowCommand>(_resourceId);
+    std::shared_ptr<CommandBase> cmd = std::make_shared<OpenResourceWindowCommand>(resourceId);
 	CommandCenter::Instance()->BroadcastNow(cmd);
 }
 

@@ -76,12 +76,14 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		std::shared_ptr<OpenResourceWindowCommand> cmd = std::dynamic_pointer_cast<OpenResourceWindowCommand>(command);
 		std::string windowName = std::string("Resource-") + cmd->resourceId;
 		ResourceManager::EResourceType resourceType = ResourceManager::Instance()->GetResourceType(cmd->resourceId);
+
+		std::shared_ptr<WindowBase> newWindow(nullptr);
+
 		switch(resourceType)
 		{
 			case ResourceManager::EResourceType::T64File:
 			{
-				std::shared_ptr<T64Window> pT64Window(new T64Window());
-				AddWindow(pT64Window, windowName);
+				newWindow = new T64Window());
 				break;				
 			}
 			case ResourceManager::EResourceType::D64File:
@@ -90,6 +92,11 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 			default:
 				LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
 				return false;
+		}
+
+		if(newWindow != nullptr)
+		{
+			AddWindow(newWindow, windowName);
 		}
 	}
 

@@ -101,6 +101,11 @@ bool ResourceManager::DeleteResource(const std::string& Id)
 
 ResourceManager::EResourceType ResourceManager::GetResourceType(const std::string& resourceId)
 {
+	auto t = resourcesMap.find(resourceId);
+	if(t != resourcesMap.end())
+	{
+		return t->second.type;
+	}
 	return EResourceType::Unknown;
 }
 
