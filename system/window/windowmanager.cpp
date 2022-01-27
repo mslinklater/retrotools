@@ -11,6 +11,7 @@
 #include "system/commands.h"
 #include "system/stateserialiser.h"
 #include "resources/resourcemanager.h"
+#include "windows/resources/t64window.h"
 
 WindowManager::WindowManager()
 : initialised(false)
@@ -78,7 +79,11 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		switch(resourceType)
 		{
 			case ResourceManager::EResourceType::T64File:
-				break;
+			{
+				std::shared_ptr<T64Window> pT64Window(new T64Window());
+				AddWindow(pT64Window, windowName);
+				break;				
+			}
 			case ResourceManager::EResourceType::D64File:
 				break;
 			case ResourceManager::EResourceType::Unknown:
