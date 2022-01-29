@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include "system/window/windowbase.h"
+#include "resourcewindowbase.h"
 
-class ResourceT64;
+//class ResourceT64;
 
-class T64Window : public WindowBase
+class T64Window : public ResourceWindowBase
 {
 public:
 	T64Window();
@@ -19,5 +19,5 @@ public:
 	virtual void Draw(void);
 	
 private:
-	ResourceT64* pResource;
+//	ResourceT64* pResource;
 };

@@ -24,7 +24,7 @@ public:
 		char free[2];
 		char userDescription[24];
 
-		std::string GetDescriptor()
+		std::string GetDescriptor() const
 		{
 			return std::string(&descriptor[0]);
 		}
@@ -91,6 +91,9 @@ public:
 	};
 
 	virtual bool InitFromFilename(const std::string& filename);
+
+	const TapeRecord *GetTapeRecord() const { return pTapeRecord; }
+
 private:
 	char* 	pData;
 	std::streamsize	dataSize;

@@ -109,6 +109,25 @@ ResourceManager::EResourceType ResourceManager::GetResourceType(const std::strin
 	return EResourceType::Unknown;
 }
 
+std::shared_ptr<ResourceBase> ResourceManager::GetResourcePtr(const std::string &Id)
+{
+	auto t = resourcesMap.find(Id);
+	if(t != resourcesMap.end())
+	{
+		return t->second.base;
+	}
+	return nullptr;
+}
+
+void ResourceManager::SetResourceWindow(const std::string &Id, const std::string windowName)
+{
+	auto t = resourcesMap.find(Id);
+	if(t != resourcesMap.end())
+	{
+		t->second.windowName = windowName;
+	}
+}
+
 ResourceManager::EResourceType ResourceManager::ResourceTypeFromString(const std::string& stringDescriptor)
 {
 	for(const auto& typeInfo : resourceTypeInfo)

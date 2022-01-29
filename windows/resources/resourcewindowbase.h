@@ -6,15 +6,13 @@
 
 #pragma once
 
-#include <string>
+#include <memory>
+#include "system/window/windowbase.h"
 
-class ResourceBase
+class ResourceBase;
+
+class ResourceWindowBase : public WindowBase
 {
 public:
-	ResourceBase();
-	virtual ~ResourceBase();
-
-	virtual bool InitFromFilename(const std::string& filename);
-
-protected:
+	std::shared_ptr<ResourceBase> pResource;
 };

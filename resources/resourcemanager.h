@@ -41,6 +41,7 @@ public:
 		EResourceType type;
 		std::string	filename;
 		std::string Id;
+		std::string windowName;
 		//bool updateAvailable;
 		//bool needsRefresh;
 	};
@@ -49,7 +50,11 @@ public:
 								const std::string& Id = "", 
 								EResourceType resourceType = EResourceType::Unknown);
 	bool DeleteResource(const std::string& Id);
-	
+
+	void SetResourceWindow(const std::string &Id, const std::string windowName);
+
+	std::shared_ptr<ResourceBase> GetResourcePtr(const std::string &Id);
+
 	EResourceType ResourceTypeFromString(const std::string& stringDescriptor);
 	std::string ResourceTypeToString(EResourceType type);
 

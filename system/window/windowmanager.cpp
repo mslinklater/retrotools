@@ -75,28 +75,43 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 	{
 		std::shared_ptr<OpenResourceWindowCommand> cmd = std::dynamic_pointer_cast<OpenResourceWindowCommand>(command);
 		std::string windowName = std::string("Resource-") + cmd->resourceId;
-		ResourceManager::EResourceType resourceType = ResourceManager::Instance()->GetResourceType(cmd->resourceId);
 
-		std::shared_ptr<WindowBase> newWindow(nullptr);
+		// check for window already existing
 
-		switch(resourceType)
+		if(windows.find(windowName) != windows.end())
 		{
-			case ResourceManager::EResourceType::T64File:
-			{
-				newWindow = new T64Window());
-				break;				
-			}
-			case ResourceManager::EResourceType::D64File:
-				break;
-			case ResourceManager::EResourceType::Unknown:
-			default:
-				LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
-				return false;
+			ShowWindow(windowName, true);
 		}
-
-		if(newWindow != nullptr)
+		else
 		{
-			AddWindow(newWindow, windowName);
+			ResourceManager::EResourceType resourceType = ResourceManager::Instance()->GetResourceType(cmd->resourceId);
+
+			std::shared_ptr<WindowBase> newWindow(nullptr);
+
+			switch(resourceType)
+			{
+				case ResourceManager::EResourceType::T64File:
+				{
+					std::shared_ptr<ResourceBase> res = ResourceManager::Instance()->GetResourcePtr(cmd->resourceId);
+					T64Window *pWindow = new T64Window();
+					pWindow->pResource = res;
+					newWindow = std::shared_ptr<WindowBase>(pWindow);
+					break;				
+				}
+				case ResourceManager::EResourceType::D64File:
+					break;
+				case ResourceManager::EResourceType::Unknown:
+				default:
+					LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
+					return false;
+			}
+
+			if(newWindow != nullptr)
+			{
+				AddWindow(newWindow, windowName);
+				ShowWindow(windowName, true);
+				ResourceManager::Instance()->SetResourceWindow(cmd->resourceId, windowName);
+			}
 		}
 	}
 
@@ -127,6 +142,16 @@ eErrorCode WindowManager::AddWindow(std::shared_ptr<WindowBase> pWindow, std::st
 	}
 	
 	return kError_OK;
+}
+
+eErrorCode WindowManager::ShowWindow(std::string name, bool bShow)
+{
+	if(windowActive.find(name) != windowActive.end())
+	{
+		windowActive[name] = bShow;
+		return kError_OK;
+	}
+	return kError_WindowNotFound;
 }
 
 const std::vector<std::string> WindowManager::GetWindows()

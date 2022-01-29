@@ -14,9 +14,14 @@
 enum eErrorCode {
 	kError_OK = 0,
 	kError_CommandLineParsing,
+
 	kError_MemoryAlreadyInitialised,
 	kError_MemoryNotInitialised,
+
+	kError_WindowNotFound,
+
 	kError_FileNotFound,
+
 	kError_JSONParse,
 
 	// this last one shoud be the first index in project-specific error conditions

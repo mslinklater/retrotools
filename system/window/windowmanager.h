@@ -22,7 +22,8 @@ public:
 	virtual ~WindowManager();
 
 	eErrorCode AddWindow(std::shared_ptr<WindowBase> pWindow, std::string name);
-	
+	eErrorCode ShowWindow(std::string name, bool bShow);
+
 	const std::vector<std::string> GetWindows();
 	
 	void Init(std::shared_ptr<StateSerialiser> pStateSerialiser);
