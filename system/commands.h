@@ -82,6 +82,20 @@ public:
 	std::string resourceId;
 };
 
+// Close resource window
+class CloseResourceWindowCommand : public CommandBase
+{
+public:
+	static const std::string kName;
+
+	CloseResourceWindowCommand(std::string _resourceId)
+	: CommandBase(kName)
+	, resourceId(_resourceId)
+	{}
+
+	std::string resourceId;
+};
+
 // Halt
 
 class HaltCommand : public CommandBase

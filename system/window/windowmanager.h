@@ -23,6 +23,7 @@ public:
 
 	eErrorCode AddWindow(std::shared_ptr<WindowBase> pWindow, std::string name);
 	eErrorCode ShowWindow(std::string name, bool bShow);
+	eErrorCode RemoveWindow(std::string name);
 
 	const std::vector<std::string> GetWindows();
 	
@@ -39,8 +40,11 @@ private:
 	// ~ICommandHandler
 	
 	bool initialised;
+
+	// TODO: Combine these two into a struct
 	std::map<std::string,std::shared_ptr<WindowBase>> windows;
 	std::map<std::string,bool> windowActive;
-	std::vector<std::string> windowNames;
+
+	std::vector<std::string> windowNames;	// TODO: Can we get rid of this and just use the map keys ?
 	bool receivedQuit;
 };

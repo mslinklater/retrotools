@@ -32,6 +32,7 @@ void WindowManager::Init(std::shared_ptr<StateSerialiser> pStateSerialiser)
 	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
 	CommandCenter::Instance()->Subscribe(QuitCommand::kName, this);
 	CommandCenter::Instance()->Subscribe(OpenResourceWindowCommand::kName, this);
+	CommandCenter::Instance()->Subscribe(CloseResourceWindowCommand::kName, this);
 
 	initialised = true;
 }
@@ -68,6 +69,18 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		else
 		{
 			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
+		}
+	}
+
+	if(command->name == CloseResourceWindowCommand::kName)
+	{
+		std::shared_ptr<CloseResourceWindowCommand> cmd = std::dynamic_pointer_cast<CloseResourceWindowCommand>(command);
+		std::string windowName = std::string("Resource-") + cmd->resourceId;
+
+		auto res = windows.find(windowName);
+		if (res != windows.end())
+		{
+			RemoveWindow(windowName);
 		}
 	}
 
@@ -141,6 +154,25 @@ eErrorCode WindowManager::AddWindow(std::shared_ptr<WindowBase> pWindow, std::st
 		windowNames.push_back(name);
 	}
 	
+	return kError_OK;
+}
+
+eErrorCode WindowManager::RemoveWindow(std::string name)
+{
+	if(windowActive.find(name) != windowActive.end())
+	{
+		windowActive.erase(name);
+		windows.erase(name);
+
+		for(std::vector<std::string>::iterator i = windowNames.begin() ; i != windowNames.end() ; i++)
+		{
+			if(*i == name)
+			{
+				windowNames.erase(i);
+				break;
+			}
+		}
+	}
 	return kError_OK;
 }
 

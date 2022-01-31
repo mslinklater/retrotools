@@ -94,9 +94,15 @@ bool ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 	return true;
 }
 
-bool ResourceManager::DeleteResource(const std::string& Id)
+bool ResourceManager::CloseResource(const std::string& Id)
 {
-	return true;
+	auto t = resourcesMap.find(Id);
+	if(t != resourcesMap.end())
+	{
+		resourcesMap.erase(Id);
+		return true;
+	}
+	return false;
 }
 
 ResourceManager::EResourceType ResourceManager::GetResourceType(const std::string& resourceId)

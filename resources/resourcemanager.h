@@ -49,7 +49,7 @@ public:
 	bool OpenResourceFromFile(	const std::string& filename, 
 								const std::string& Id = "", 
 								EResourceType resourceType = EResourceType::Unknown);
-	bool DeleteResource(const std::string& Id);
+	bool CloseResource(const std::string& Id);
 
 	void SetResourceWindow(const std::string &Id, const std::string windowName);
 

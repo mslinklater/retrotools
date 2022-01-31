@@ -30,9 +30,12 @@ void ResourcesWindow::Draw(void)
 			ImGui::TableNextRow();
 
 			ImGui::TableSetColumnIndex(0);
-			if (ImGui::SmallButton("Del")) 
+			if (ImGui::SmallButton("Close")) 
 			{ 
-				// open up details window for resource
+				// close window
+				CommandHelpers::CloseResourceWindow(resource.second.Id);
+				// close resource
+				ResourceManager::Instance()->CloseResource(resource.second.Id);
 			}
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Info")) 

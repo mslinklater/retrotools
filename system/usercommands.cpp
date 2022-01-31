@@ -53,18 +53,27 @@ UserCommands::UserCommands()
         AddToCommandHandlerMap(commandInfo);
     }
 
-    // File operations commands
     {
         CommandInfo commandInfo;
-        commandInfo.command = "openres";
+        commandInfo.command = "resopen";
         commandInfo.type = Type::EFileOperation;
-        commandInfo.handlerFunctionPtr = &UserCommands::Command_OpenRes;
-        commandInfo.completionFunctionPtr = &UserCommands::Completion_OpenRes;
-        commandInfo.hint = "openres <filename> [ID]- opens a resource file";
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_ResOpen;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_ResOpen;
+        commandInfo.hint = "resopen <filename> [ID]- opens a resource file";
         commandInfo.helpText.push_back("[ID] - optionalal ID used to specify the resource.");
         commandInfo.helpText.push_back("       if not provided one will be generated.");
         AddToCommandHandlerMap(commandInfo);
     }
+    {
+        CommandInfo commandInfo;
+        commandInfo.command = "resclose";
+        commandInfo.type = Type::EFileOperation;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_ResClose;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_ResClose;
+        commandInfo.hint = "resclose <ID>- closes a resource";
+        AddToCommandHandlerMap(commandInfo);
+    }
+    // File operations commands
     {
         CommandInfo commandInfo;
         commandInfo.command = "pwd";
@@ -198,7 +207,7 @@ void UserCommands::Command_Quit(const std::vector<std::string>& command)
     CommandHelpers::Quit();
 }
 
-void UserCommands::Command_OpenRes(const std::vector<std::string>& command)
+void UserCommands::Command_ResOpen(const std::vector<std::string>& command)
 {
     if(command.size() > 2) // user provided an ID
     {
@@ -210,7 +219,7 @@ void UserCommands::Command_OpenRes(const std::vector<std::string>& command)
     }
 }
 
-void UserCommands::Completion_OpenRes(std::string& parameters, std::vector<std::string>& completions)
+void UserCommands::Completion_ResOpen(std::string& parameters, std::vector<std::string>& completions)
 {
     // grab the partial path and find the directory entries which pattern patch
     std::size_t spacePos = parameters.find(' ');
@@ -231,7 +240,7 @@ void UserCommands::Completion_OpenRes(std::string& parameters, std::vector<std::
     }
     if(completions.size() == 1)
     {
-        parameters = std::string("openres ") + completions[0];
+        parameters = std::string("resopen ") + completions[0];
         completions.clear();
     }
     if(completions.size() > 1)
@@ -240,6 +249,14 @@ void UserCommands::Completion_OpenRes(std::string& parameters, std::vector<std::
     }
 
     return;
+}
+
+void UserCommands::Command_ResClose(const std::vector<std::string>& command)
+{
+}
+
+void UserCommands::Completion_ResClose(std::string& parameters, std::vector<std::string>& completions)
+{
 }
 
 void UserCommands::Command_History(const std::vector<std::string>& command)

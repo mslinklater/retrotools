@@ -16,4 +16,5 @@ namespace CommandHelpers
     void ScrollToBottom();
     void Quit();
     void OpenResourceWindow(const std::string& resourceId);
+    void CloseResourceWindow(const std::string& resourceId);
 };
