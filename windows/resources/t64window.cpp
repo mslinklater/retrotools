@@ -1,3 +1,9 @@
+// [CopyrightNotice]
+// Copyright (c) 2019-2022, Martin Linklater
+// All rights reserved.
+//
+// See file 'LICENSE' for license details
+
 #include "t64window.h"
 #include "resources/resource_t64.h"
 #include "common.h"
