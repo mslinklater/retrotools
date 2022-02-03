@@ -55,6 +55,7 @@ endif (UNIX)
 set(SOURCE_FILES disasm.cpp main.cpp sessionmanager.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
+add_subdirectory("3rdparty/lua-5.4.4/src")
 add_subdirectory("components")
 add_subdirectory("components/cpu6502")
 add_subdirectory("components/stella")
