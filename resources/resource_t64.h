@@ -28,19 +28,19 @@ public:
 		{
 			return std::string(&descriptor[0]);
 		}
-		unsigned short GetVersion()
+		unsigned short GetVersion() const
 		{
 			return version[0] | (version[1] << 8);
 		}
-		unsigned short GetNumEntries()
+		unsigned short GetNumEntries() const
 		{
 			return numEntries[0] | (numEntries[1] << 8);
 		}
-		unsigned short GetNumUsedEntries()
+		unsigned short GetNumUsedEntries() const
 		{
 			return numUsedEntries[0] | (numUsedEntries[1] << 8);
 		}
-		std::string GetUserDescription()
+		std::string GetUserDescription() const
 		{
 			return std::string(&userDescription[0]);
 		}
@@ -67,7 +67,7 @@ public:
 		char free2[4];
 		char filename[16];
 
-		std::string GetEntryTypeString()
+		std::string GetEntryTypeString() const
 		{
 			switch(entryType)
 			{
@@ -80,19 +80,21 @@ public:
 			}
 			return "Unknown";
 		}
-		EFileRecordEntryType GetEntryType()
+		EFileRecordEntryType GetEntryType() const
 		{
 			return(EFileRecordEntryType)entryType;
 		}
-		unsigned short GetStartAddress(){return startAddress[0] | (startAddress[1] << 8);}
-		unsigned short GetEndAddress(){return endAddress[0] | (endAddress[1] << 8);}
-		unsigned int GetStartOffset(){return startOffset[0] | (startOffset[1] << 8) | (startOffset[2] << 16) | (startOffset[3] << 24);}
-		std::string GetFilename(){return std::string(&filename[0]);}
+		unsigned short GetStartAddress() const {return startAddress[0] | (startAddress[1] << 8);}
+		unsigned short GetEndAddress() const {return endAddress[0] | (endAddress[1] << 8);}
+		unsigned int GetStartOffset() const {return startOffset[0] | (startOffset[1] << 8) | (startOffset[2] << 16) | (startOffset[3] << 24);}
+		std::string GetFilename() const {return std::string(&filename[0]);}
 	};
 
 	virtual bool InitFromFilename(const std::string& filename);
 
 	const TapeRecord *GetTapeRecord() const { return pTapeRecord; }
+	int GetNumFileRecords() const { return fileRecords.size(); }
+	const FileRecord *GetFileRecord(int num) const { return fileRecords[num]; }
 
 private:
 	char* 	pData;

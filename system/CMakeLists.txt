@@ -1,4 +1,5 @@
 add_subdirectory("window")
+add_subdirectory("lua")
 
 set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/log.cpp 

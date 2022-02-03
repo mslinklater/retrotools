@@ -19,6 +19,8 @@
 #include "3rdparty/imgui/imgui_impl_sdl.h"
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
 
+#include "system/lua/luavm.h"
+
 #include "version.h"
 #include "components/stella/memory2600.h"
 #include "components/cpu6502/cpu6502alpha.h"
@@ -140,6 +142,11 @@ int main(int argc, char* argv[])
 	{
 		return -1;
 	}
+
+	// Init Lua VM
+
+	LuaVM *pLua = new LuaVM();
+	delete pLua;
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 
