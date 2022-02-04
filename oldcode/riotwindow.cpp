@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #include "riotwindow.h"
 #include "common.h"
 
@@ -90,3 +92,4 @@ void RiotWindow::DeserialiseState(json& object)
 	
 }
 
+#endif

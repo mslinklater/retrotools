@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #pragma once
 
 #include "system/window/windowbase.h"
@@ -27,3 +29,5 @@ private:
 
 	void DrawRegister(uint32_t reg, const char* text, uint8_t val);
 };
+
+#endif

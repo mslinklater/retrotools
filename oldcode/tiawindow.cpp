@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #include "tiawindow.h"
 #include "common.h"
 #include "system/commands.h"
@@ -544,3 +546,5 @@ void TiaWindow::DeserialiseState(json& object)
 		}
 	}
 }
+
+#endif

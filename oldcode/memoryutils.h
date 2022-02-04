@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 
 #pragma once
 #include <string>
@@ -24,3 +25,5 @@ public:
 	
 	static eErrorCode LoadFileToMemory(IMemory* pMemory, std::string filename, uint16_t location, uint16_t* bytesRead);
 };
+
+#endif

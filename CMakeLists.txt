@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_C_FLAGS "-DDEBUG")
+set(CMAKE_C_FLAGS "-DDEBUG -DLUA_USE_POSIX")
 set(CMAKE_BUILD_TYPE Debug)
 
 enable_testing()
@@ -52,7 +52,7 @@ include_directories(".")
 
 endif (UNIX)
 
-set(SOURCE_FILES disasm.cpp main.cpp sessionmanager.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
+set(SOURCE_FILES disasm.cpp application.cpp main.cpp sessionmanager.cpp symbol.cpp symbolstore.cpp sessionmanager.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("3rdparty/lua-5.4.4/src")
@@ -64,6 +64,7 @@ add_subdirectory("windows")
 add_subdirectory("test")
 add_subdirectory("system")
 add_subdirectory("resources")
+add_subdirectory("machines")
 add_subdirectory("3rdparty/perfect6502")
 
 project (retrotools VERSION 0.1)

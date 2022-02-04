@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 // See file 'LICENSE' for license details
-
+#if 0
 #pragma once
 
 #include "system/commandcenter.h"
@@ -23,3 +23,4 @@ private:
 	bool HandleCommand(const std::shared_ptr<CommandBase> command) override;
 	// ~ICommandProcessor
 };
+#endif

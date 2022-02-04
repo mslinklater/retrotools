@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #pragma once
 #include <string>
 #include <map>
@@ -54,3 +56,5 @@ private:
 
 	std::map<std::string, Symbol> symbolMap;
 };
+
+#endif

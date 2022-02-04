@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -83,3 +85,5 @@ eErrorCode MemoryUtils::LoadFileToMemory(IMemory* pMemory, std::string filename,
 	
 	return kError_OK;
 }
+
+#endif

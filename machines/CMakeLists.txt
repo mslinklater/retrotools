@@ -1,0 +1,4 @@
+set(SOURCE_FILES ${SOURCE_FILES}
+	${CMAKE_CURRENT_LIST_DIR}/machinebase.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/machine_simple6502.cpp 
+	PARENT_SCOPE)

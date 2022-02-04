@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 // See file 'LICENSE' for license details
-
+#if 0
 #pragma once
 
 #include <GL/gl.h>
@@ -64,3 +64,4 @@ private:
 	static const int kOutputBufferSize = Tia::kOutputHorizontalResolution * Tia::kOutputVerticalResolution * 4;
 	uint8_t outputBuffer[kOutputBufferSize];
 };
+#endif

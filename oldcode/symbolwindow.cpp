@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 
 #include <vector>
 #include "symbolwindow.h"
@@ -130,3 +131,5 @@ void SymbolWindow::SetSymbolStore(SymbolStore* p)
 {
 	pStore = p;
 }
+
+#endif

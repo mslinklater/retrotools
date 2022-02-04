@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #include "romfilebundle.h"
 
 #include <fstream>
@@ -180,3 +182,4 @@ void RomFileBundle::SetLoadAddress(uint16_t addr)
 	hasLoadAddressBeenSet = true;
 }
 
+#endif

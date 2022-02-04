@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include "globalconfig.h"
+#include "buildconfig.h"
 
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
@@ -38,16 +38,12 @@
 #include "components/stella/memory2600window.h"
 #include "windows/disasmwindow.h"
 #include "windows/mainwindow.h"
-#include "windows/symbolwindow.h"
 #include "components/cpu6502/cpu6502window.h"
-#include "windows/tiawindow.h"
-#include "windows/riotwindow.h"
-#include "windows/systemwindow.h"
 #include "components/cpu6502/perfect6502window.h"
 #include "system/commandcenter.h"
-#include "utils/memoryutils.h"
 #include "system/window/windowmanager.h"
 #include "system/stateserialiser.h"
+#include "machines/machinebase.h"
 
 // DearImGui stuff
 static uint64_t	performanceFrequency;
@@ -118,6 +114,7 @@ void ShutdownImGui()
 void OutOfMemoryHandler()
 {
 	std::cerr << "Out of memory!";
+	exit(-1);
 }
 
 int main(int argc, char* argv[])
@@ -158,58 +155,6 @@ int main(int argc, char* argv[])
 	pWindowManager->Init(pStateSerialiser);
 	pStateSerialiser->AddStateSerialiser(pWindowManager);
 
-	// Session Manager
-//	SessionManager* pSessionManager = SessionManager::Instance();
-//	pSessionManager = nullptr;	// TEMP
-
-	// Do some 6502 stuff
-	// initialise components
-	
-//	Memory2600* pMemory = new Memory2600();
-//	Cpu6502Alpha* pCpu = new Cpu6502Alpha();
-//	Tia* pTia = new Tia();
-//	Riot* pRiot = new Riot();
-
-//	System* pSystem = new System();
-//	pSystem->SetTia(pTia);
-//	pSystem->SetCpu6502Alpha(pCpu);
-//	pSystem->SetRiot(pRiot);
-//	pSystem->SetMemory(pMemory);
-
-//	pStateSerialiser->AddStateSerialiser(pMemory);
-//	pStateSerialiser->AddStateSerialiser(pCpu);
-
-//	Disassembler* pDisassembler = new Disassembler();
-//	SymbolStore* pSymbolStore = new SymbolStore();
-//	pStateSerialiser->AddStateSerialiser(pSymbolStore);
-	
-//	if(pSymbolStore->LoadHardwareFromJSON("vcs_symbols.json") != kError_OK)
-//	{
-//		return -1;
-//	}
-	
-//	pDisassembler->Init();
-//	pDisassembler->SetMemory(pMemory);
-//	pDisassembler->SetCpu(pCpu);
-//	pDisassembler->SetSymbolStore(pSymbolStore);
-
-#if 0
-	uint16_t bytesLoaded = 0;
-	uint16_t loadAddress = pConfig->GetLoadAddress();
-
-	// need to grab the ROM filename from the config settings
-	if(!pConfig->GetLoadFilename().empty())
-	{
-		if (MemoryUtils::LoadFileToMemory(pMemory, pConfig->GetLoadFilename(), loadAddress, &bytesLoaded) != kError_OK)
-		{
-			return -1;
-		}
-	}
-#endif
-
-	// TODO: Handle loaded address better
-//	pDisassembler->Disassemble(0xf000, bytesLoaded, loadAddress);
-	
 	// create windows
 
 	// Log Window

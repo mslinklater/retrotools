@@ -4,6 +4,8 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
+
 #include "systemwindow.h"
 #include "../components/system.h"
 #include "common.h"
@@ -153,3 +155,4 @@ void SystemWindow::Draw(void)
 	}
 }
 
+#endif

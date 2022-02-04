@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 // See file 'LICENSE' for license details
-
+#if 0
 #include "sessionmanager.h"
 #include "system/commands.h"
 
@@ -32,3 +32,4 @@ bool SessionManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 	return false;
 }
+#endif
