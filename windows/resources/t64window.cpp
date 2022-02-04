@@ -34,5 +34,21 @@ void T64Window::Draw()
 		ImGui::Separator();
 		ImGui::Text("Filename:%s", pFile->GetFilename().c_str());
 		ImGui::Text("Addr:0x%04x-0x%04x", pFile->GetStartAddress(), pFile->GetEndAddress());
+
+		// window of binary contents
+	    if (ImGui::CollapsingHeader("Contents"))
+		{
+			ImGui::BeginChild("Contents", ImVec2(400, 200), true, 0);
+
+			// display the contents
+			int startAddr = pFile->GetStartAddress();
+			int endAddr = pFile->GetEndAddress();
+			for (int addr = startAddr; addr < endAddr; addr += 16)
+			{
+//				char byte = pFile->GetByte(addr);
+			}
+
+			ImGui::EndChild();
+		}
 	}
 }

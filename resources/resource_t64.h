@@ -88,6 +88,7 @@ public:
 		unsigned short GetEndAddress() const {return endAddress[0] | (endAddress[1] << 8);}
 		unsigned int GetStartOffset() const {return startOffset[0] | (startOffset[1] << 8) | (startOffset[2] << 16) | (startOffset[3] << 24);}
 		std::string GetFilename() const {return std::string(&filename[0]);}
+		char GetByte(unsigned short addr) const { return 0; }
 	};
 
 	virtual bool InitFromFilename(const std::string& filename);
