@@ -6,6 +6,19 @@
 
 #pragma once
 
+#include <memory>
+
+#include <SDL.h>
+#include <SDL_opengl.h>
+
+class LuaVM;
+class LogWindow;
+class StateSerialiser;
+class WindowManager;
+class HelpAboutWindow;
+class HelpCommandsWindow;
+class ResourcesWindow;
+class MainWindow;
 class Application
 {
 public:
@@ -18,4 +31,24 @@ public:
 private:
 	Application();
 	~Application();
+
+	void InitImGui();
+	void ShutdownImGui();
+
+	uint64_t	performanceFrequency;
+	uint64_t	performanceCounterLast;
+	SDL_GLContext gl_context;
+	SDL_Window* window;
+	int displayWidth;
+	int displayHeight;
+
+	LuaVM *pLua;
+
+	std::shared_ptr<LogWindow> pLogWindow;
+	std::shared_ptr<StateSerialiser> pStateSerialiser;
+	std::shared_ptr<WindowManager> pWindowManager;
+	std::shared_ptr<HelpAboutWindow> pHelpAboutWindow;
+	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow;
+	std::shared_ptr<ResourcesWindow> pResourcesWindow;
+	std::shared_ptr<MainWindow> pMainWindow;
 };

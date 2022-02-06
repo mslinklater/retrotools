@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../interfaces/imemory.h"
+#include "imemory.h"
 
 // NOTE: This is a simple flat 64K address space used to test chips
 

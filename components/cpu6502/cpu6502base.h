@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <set>
-#include "../interfaces/imemory.h"
+#include "components/imemory.h"
 #include "../interfaces/itickable.h"
 #include "../interfaces/icpu.h"
 

@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include "system/errorcodes.h"
-#include "../interfaces/imemory.h"
+#include "components/imemory.h"
 #include "system/istateserialisation.h"
 
 /*

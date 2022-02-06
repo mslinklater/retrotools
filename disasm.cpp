@@ -11,9 +11,7 @@
 #include "system/common.h"
 #include "symbolstore.h"
 #include "components/cpu6502/cpu6502alpha.h"
-#include "interfaces/imemory.h"
-
-//static const uint32_t kMaxDisasmLines = 4096;
+#include "components/imemory.h"
 
 Disassembler::Disassembler()
 {
