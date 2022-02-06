@@ -4,7 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
-#include "common.h"
+#include "system/common.h"
 #include "cpu6502base.h"
 
 Cpu6502Base::Cpu6502Base()

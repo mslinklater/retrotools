@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include "buildconfig.h"
+#include "system/buildconfig.h"
 
 #if RUN_TESTS
 #define CATCH_CONFIG_RUNNER
@@ -15,7 +15,9 @@
 
 #include <iostream>
 
-#include "common.h"
+#include "system/common.h"
+#include "system/application.h"
+
 #include "3rdparty/imgui/imgui_impl_sdl.h"
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
 
@@ -26,9 +28,7 @@
 #include "components/cpu6502/cpu6502alpha.h"
 #include "components/stella/tia.h"
 #include "components/stella/riot.h"
-#include "components/system.h"
 #include "disasm.h"
-#include "sessionmanager.h"
 #include "symbolstore.h"
 #include "system/commands.h"
 #include "windows/logwindow.h"
@@ -119,6 +119,8 @@ void OutOfMemoryHandler()
 
 int main(int argc, char* argv[])
 {
+	Application::Instance()->Init(argc, argv);
+
 	std::set_new_handler(OutOfMemoryHandler);
 
 	// TODO: Output the command line to stdout
@@ -182,6 +184,8 @@ int main(int argc, char* argv[])
 	bool show_demo_window = false;
 #endif
 
+	Application::Instance()->UpdateLoop();
+
 	while(!done)
 	{
 		SDL_Event event;
@@ -235,7 +239,5 @@ int main(int argc, char* argv[])
 
 	ShutdownImGui();
 	
-	LOGINFO("Exiting...\n");
-	
-	return 0;
+	return Application::Instance()->Close();
 }

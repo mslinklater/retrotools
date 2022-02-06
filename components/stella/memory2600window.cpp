@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "memory2600window.h"
-#include "common.h"
+#include "system/common.h"
 #include "../components/stella/memory2600.h"
 
 Memory2600Window::Memory2600Window()

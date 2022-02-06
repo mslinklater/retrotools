@@ -6,7 +6,7 @@
 
 #include "t64window.h"
 #include "resources/resource_t64.h"
-#include "common.h"
+#include "system/common.h"
 
 T64Window::T64Window()
 {

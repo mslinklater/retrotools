@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "disasmwindow.h"
-#include "common.h"
+#include "system/common.h"
 #include "../disasm.h"
 #include "../components/cpu6502/cpu6502alpha.h"
 #include "../interfaces/imemory.h"

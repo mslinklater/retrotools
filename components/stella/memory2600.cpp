@@ -6,7 +6,7 @@
 
 
 #include <string.h>
-#include "common.h"
+#include "system/common.h"
 #include "memory2600.h"
 #include "system/errorcodes.h"
 #include "components/cpu6502/cpu6502alpha.h"

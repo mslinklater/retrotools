@@ -5,13 +5,14 @@
 // See file 'LICENSE' for license details
 
 #include "machinebase.h"
+#include "system/common.h"
 
 MachineBase::MachineBase()
 {
-
+	LOGINFO("MachineBase::MachineBase()");
 }
 
 MachineBase::~MachineBase()
 {
-	
+	LOGINFO("MachineBase::~MachineBase()");	
 }

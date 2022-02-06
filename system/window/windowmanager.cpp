@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include <cassert>
-#include "common.h"
+#include "system/common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
 #include "system/commands.h"

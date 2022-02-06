@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 
-#include "common.h"
+#include "system/common.h"
 #include "cpu6502alpha.h"
 #include "../interfaces/imemory.h"
 #include "system/commands.h"

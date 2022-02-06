@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 
 #pragma once
 
@@ -67,3 +68,6 @@ private:
 	double		deltaTPerTick;
 	uint32_t	cpuTickDelay;	
 };
+
+
+#endif

@@ -4,8 +4,9 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 
-#include "common.h"
+#include "system/common.h"
 #include "system.h"
 #include "stella/tia.h"
 #include "cpu6502/cpu6502alpha.h"
@@ -135,3 +136,5 @@ void System::SetMemory(IMemory* pMemoryIn)
 {
     pMemory = pMemoryIn;
 }
+
+#endif

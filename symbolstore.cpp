@@ -9,7 +9,7 @@
 #include <iomanip>
 #include <string.h>
 
-#include "common.h"
+#include "system/common.h"
 #include "symbolstore.h"
 #include "json.hpp"
 

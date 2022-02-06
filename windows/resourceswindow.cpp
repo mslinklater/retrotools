@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "resourceswindow.h"
-#include "common.h"
+#include "system/common.h"
 #include "system/commandhelpers.h"
 
 ResourcesWindow::ResourcesWindow()

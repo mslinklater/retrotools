@@ -8,6 +8,8 @@
 
 #include "machinebase.h"
 
-class MachineSimpla6502 : public MachineBase
+class MachineSimple6502 : public MachineBase
 {
+	MachineSimple6502();
+	~MachineSimple6502();
 };

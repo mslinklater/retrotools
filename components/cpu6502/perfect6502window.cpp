@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "perfect6502window.h"
-#include "common.h"
+#include "system/common.h"
 
 Perfect6502Window::Perfect6502Window()
 :bRunning(false)

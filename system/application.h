@@ -9,8 +9,13 @@
 class Application
 {
 public:
-	Application(){}
-	~Application(){}
+	static Application *Instance();
 
-//	Application *Instance();
+	void Init(int argc, char* argv[]);
+	void UpdateLoop();
+	int Close();
+
+private:
+	Application();
+	~Application();
 };

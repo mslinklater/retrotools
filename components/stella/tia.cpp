@@ -6,7 +6,7 @@
 
 #include <assert.h>
 
-#include "common.h"
+#include "system/common.h"
 #include "tia.h"
 #include "system/commands.h"
 #include "system/commandcenter.h"

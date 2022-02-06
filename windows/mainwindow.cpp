@@ -8,7 +8,7 @@
 #include <filesystem>
 
 #include "mainwindow.h"
-#include "common.h"
+#include "system/common.h"
 #include "system/commandcenter.h"
 #include "system/commands.h"
 #include "system/window/windowmanager.h"
