@@ -11,4 +11,6 @@ class MachineBase
 public:
 	MachineBase();
 	virtual ~MachineBase();
+
+	void SysWriteToMemory(unsigned int startAddress, const char* pMemory, unsigned int size);
 };

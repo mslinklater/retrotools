@@ -6,10 +6,16 @@
 
 #pragma once
 
+#include <memory>
+
 #include "machinebase.h"
+#include "components/imemory.h"
 
 class MachineSimple6502 : public MachineBase
 {
+public:
 	MachineSimple6502();
 	~MachineSimple6502();
+private:
+	std::shared_ptr<IMemory> pMemory;
 };

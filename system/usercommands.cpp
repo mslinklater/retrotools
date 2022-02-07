@@ -73,6 +73,15 @@ UserCommands::UserCommands()
         commandInfo.hint = "resclose <ID>- closes a resource";
         AddToCommandHandlerMap(commandInfo);
     }
+    {
+        CommandInfo commandInfo;
+        commandInfo.command = "resload";
+        commandInfo.type = Type::EFileOperation;
+        commandInfo.handlerFunctionPtr = &UserCommands::Command_ResLoad;
+        commandInfo.completionFunctionPtr = &UserCommands::Completion_ResLoad;
+        commandInfo.hint = "resload [ID].[subID]- load a resource payload to memory";
+        AddToCommandHandlerMap(commandInfo);
+    }
     // File operations commands
     {
         CommandInfo commandInfo;
@@ -177,8 +186,14 @@ void UserCommands::GetCompletions(std::string& partialCommand, std::vector<std::
         for (const auto &iter : commandHandlerMap)
         {
             std::string command =  iter.first;
-            if(command.find(partialCommand) == 0)
+            if(command == partialCommand)
             {
+                // if user has the complete command, add the space
+                completions.push_back(command + " ");
+            }
+            else if(command.find(partialCommand) == 0)
+            {
+                // if user has partial command fill in the whole command word
                 completions.push_back(command);
             }
         }
@@ -249,6 +264,16 @@ void UserCommands::Completion_ResOpen(std::string& parameters, std::vector<std::
     }
 
     return;
+}
+
+void UserCommands::Command_ResLoad(const std::vector<std::string>& command)
+{
+
+}
+
+void UserCommands::Completion_ResLoad(std::string& parameters, std::vector<std::string>& completions)
+{
+
 }
 
 void UserCommands::Command_ResClose(const std::vector<std::string>& command)

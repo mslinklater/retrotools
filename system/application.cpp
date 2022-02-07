@@ -21,6 +21,8 @@
 #include "windows/resourceswindow.h"
 #include "windows/mainwindow.h"
 
+#include "machines/machine_simple6502.h"
+
 #include <iostream>
 #include <memory>
 
@@ -57,10 +59,8 @@ void Application::Init(int argc, char* argv[])
 
 	InitImGui();
 
-	pLua = new LuaVM();
+	pLua = std::make_shared<LuaVM>();
 
-//	clear_color = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
-	
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();
 
@@ -83,6 +83,8 @@ void Application::Init(int argc, char* argv[])
 	pMainWindow = std::make_shared<MainWindow>();
 	pMainWindow->SetWindowManager(pWindowManager.get());
 	
+	pMachine = std::make_shared<MachineSimple6502>();
+
 	pStateSerialiser->DeserialiseAppConfig();
 }
 
@@ -144,13 +146,11 @@ void Application::ShutdownImGui()
 
 void Application::UpdateLoop()
 {
-
 	bool done = false;
 
 #if IMGUI_DEMO	
 	bool show_demo_window = false;
 #endif
-
 
 	while(!done)
 	{
@@ -182,8 +182,7 @@ void Application::UpdateLoop()
 		ImGui::ShowDemoWindow(&show_demo_window);
 #endif
 
-		pWindowManager->Draw();	// draw all managed windows
-		
+		pWindowManager->Draw();	// draw all managed windows		
 		pMainWindow->Draw();
 		
 		// rendering
@@ -199,14 +198,12 @@ void Application::UpdateLoop()
 			done = true;
 		}
 	}
-
-	// Save the state of the windows
-	pStateSerialiser->SerialiseAppConfig();
 }
 
 int Application::Close()
 {
-	delete pLua;
+	// Save the state of the windows
+	pStateSerialiser->SerialiseAppConfig();
 
 	return 0;
 }

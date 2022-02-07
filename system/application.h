@@ -19,6 +19,10 @@ class HelpAboutWindow;
 class HelpCommandsWindow;
 class ResourcesWindow;
 class MainWindow;
+class MachineSimple6502;
+
+
+
 class Application
 {
 public:
@@ -42,7 +46,7 @@ private:
 	int displayWidth;
 	int displayHeight;
 
-	LuaVM *pLua;
+	std::shared_ptr<LuaVM> pLua;
 
 	std::shared_ptr<LogWindow> pLogWindow;
 	std::shared_ptr<StateSerialiser> pStateSerialiser;
@@ -51,4 +55,6 @@ private:
 	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow;
 	std::shared_ptr<ResourcesWindow> pResourcesWindow;
 	std::shared_ptr<MainWindow> pMainWindow;
+
+	std::shared_ptr<MachineSimple6502> pMachine;
 };
