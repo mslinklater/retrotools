@@ -6,6 +6,7 @@
 
 #include "resource_d64.h"
 
+#if 0
 ResourceD64::ResourceD64()
 {
 
@@ -20,3 +21,4 @@ bool ResourceD64::InitFromFilename(const std::string& filename)
 {
 	return false;
 }
+#endif

@@ -11,9 +11,7 @@
 #include "system/log.h"
 
 ResourceT64::ResourceT64()
-: pData(nullptr)
-, dataSize(0)
-, pTapeRecord(nullptr)
+: pTapeRecord(nullptr)
 {
 }
 
@@ -65,4 +63,9 @@ bool ResourceT64::InitFromFilename(const std::string& filename)
 		}
 	}
 	return true;
+}
+
+const char* ResourceT64::GetPayload(const std::string& name, std::streamsize& dataSize)
+{
+	return nullptr;
 }

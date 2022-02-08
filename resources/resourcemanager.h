@@ -69,5 +69,5 @@ private:
 	std::vector<ResourceTypeInfo> resourceTypeInfo;	// should probably turn into a pair of maps
 
 	bool OpenResource_T64(std::string filename, const std::string& Id);
-	bool OpenResource_D64(std::string filename, const std::string& Id);
+//	bool OpenResource_D64(std::string filename, const std::string& Id);
 };

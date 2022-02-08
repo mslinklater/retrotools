@@ -78,7 +78,7 @@ bool ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 				OpenResource_T64(filename, Id);
 				break;
 			case EResourceType::D64File:
-				OpenResource_D64(filename, Id);
+//				OpenResource_D64(filename, Id);
 				break;
 			default:
 				LOGERRORF("ResourceManager::OpenResourceFromFile not implemented for known type %s", filename.c_str());
@@ -174,6 +174,7 @@ bool ResourceManager::OpenResource_T64(std::string filename, const std::string& 
 	return true;
 }
 
+#if 0
 bool ResourceManager::OpenResource_D64(std::string filename, const std::string& Id)
 {
 	std::shared_ptr<ResourceD64> newResource(new ResourceD64);
@@ -189,6 +190,7 @@ bool ResourceManager::OpenResource_D64(std::string filename, const std::string& 
 //	resources.push_back(info);
 	return true;
 }
+#endif
 
 //const std::vector<ResourceManager::ResourceInfo>& ResourceManager::GetResources()
 //{

@@ -91,15 +91,16 @@ public:
 		char GetByte(unsigned short addr) const { return 0; }
 	};
 
-	virtual bool InitFromFilename(const std::string& filename);
+//	virtual bool InitFromFilename(const std::string& filename);
+//	virtual const char* GetPayload(const std::string& name, std::streamsize& dataSize);
+
+	IRESOURCEBASE_API;
 
 	const TapeRecord *GetTapeRecord() const { return pTapeRecord; }
 	int GetNumFileRecords() const { return fileRecords.size(); }
 	const FileRecord *GetFileRecord(int num) const { return fileRecords[num]; }
 
 private:
-	char* 	pData;
-	std::streamsize	dataSize;
 	TapeRecord* pTapeRecord;
 	std::vector<FileRecord*> fileRecords;
 };

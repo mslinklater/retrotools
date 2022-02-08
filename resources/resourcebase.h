@@ -7,6 +7,23 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+class ResourcePayload
+{
+public:
+	ResourcePayload(const std::string& _name, unsigned int _offset, unsigned int _size)
+	: name(_name)
+	, offset(_offset)
+	, size(_size)
+	{}	
+	~ResourcePayload(){}
+
+private:
+	std::string name;
+	unsigned int offset;
+	unsigned int size;
+};
 
 class ResourceBase
 {
@@ -14,7 +31,15 @@ public:
 	ResourceBase();
 	virtual ~ResourceBase();
 
-	virtual bool InitFromFilename(const std::string& filename);
+	virtual bool InitFromFilename(const std::string& filename) = 0;
+	virtual const char* GetPayload(const std::string& name, std::streamsize& dataSize) = 0;
 
 protected:
+	char* 	pData;
+	std::streamsize	dataSize;
+	std::vector<ResourcePayload> payloads;
 };
+
+#define IRESOURCEBASE_API \
+	virtual bool InitFromFilename(const std::string& filename); \
+	virtual const char* GetPayload(const std::string& name, std::streamsize& dataSize);

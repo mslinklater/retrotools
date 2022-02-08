@@ -8,6 +8,7 @@
 
 #include "resourcebase.h"
 
+#if 0
 class ResourceD64 : public ResourceBase
 {
 public:
@@ -17,3 +18,4 @@ public:
 	virtual bool InitFromFilename(const std::string& filename);
 private:
 };
+#endif
