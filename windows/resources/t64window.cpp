@@ -28,6 +28,19 @@ void T64Window::Draw()
 	ImGui::Text("Entries:%d/%d", pTape->GetNumUsedEntries(), pTape->GetNumEntries());
 	ImGui::Text("User:%s", pTape->GetUserDescription().c_str());
 
+    if (ImGui::CollapsingHeader("Payloads"))
+	{
+		for(auto payload : pRes->GetPayloads())
+		{
+		    if (ImGui::CollapsingHeader(payload.name.c_str()))
+			{
+				ImGui::Text("Offset:%d", payload.offset);
+				ImGui::Text("Size:%d", payload.size);
+			}			
+		}
+	}
+
+
 	for (int i = 0; i < pRes->GetNumFileRecords(); i++)
 	{
 		const ResourceT64::FileRecord *pFile = pRes->GetFileRecord(i);

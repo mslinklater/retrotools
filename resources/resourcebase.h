@@ -12,6 +12,7 @@
 class ResourcePayload
 {
 public:
+	ResourcePayload(){}
 	ResourcePayload(const std::string& _name, unsigned int _offset, unsigned int _size)
 	: name(_name)
 	, offset(_offset)
@@ -19,7 +20,6 @@ public:
 	{}	
 	~ResourcePayload(){}
 
-private:
 	std::string name;
 	unsigned int offset;
 	unsigned int size;
@@ -32,7 +32,8 @@ public:
 	virtual ~ResourceBase();
 
 	virtual bool InitFromFilename(const std::string& filename) = 0;
-	virtual const char* GetPayload(const std::string& name, std::streamsize& dataSize) = 0;
+	const std::vector<ResourcePayload>& GetPayloads() const { return payloads; }
+	const char* GetPayload(const std::string& name, std::streamsize& dataSize);
 
 protected:
 	char* 	pData;
@@ -41,5 +42,4 @@ protected:
 };
 
 #define IRESOURCEBASE_API \
-	virtual bool InitFromFilename(const std::string& filename); \
-	virtual const char* GetPayload(const std::string& name, std::streamsize& dataSize);
+	virtual bool InitFromFilename(const std::string& filename);

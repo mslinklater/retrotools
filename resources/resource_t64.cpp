@@ -35,9 +35,12 @@ bool ResourceT64::InitFromFilename(const std::string& filename)
 		file.close();
 
 		// data is read in, now construct content structures
+
+		// Master tape record
 		pTapeRecord = reinterpret_cast<TapeRecord*>(pData);
 		int numFiles = pTapeRecord->GetNumUsedEntries();
 
+		// Now the file records themselves
 		for(auto i=0 ; i<numFiles ; i++)
 		{
 			FileRecord* pFileRecord = reinterpret_cast<FileRecord*>(pData + sizeof(TapeRecord) + i * sizeof(FileRecord));
@@ -61,11 +64,18 @@ bool ResourceT64::InitFromFilename(const std::string& filename)
 			LOGINFOF("T64::StartAddress %04x", fileRecord->GetStartAddress());
 			LOGINFOF("T64::EndAddress %04x", fileRecord->GetEndAddress());
 		}
+
+		// Now set up the payloads
+		for(const auto& fileRecord : fileRecords)
+		{
+			ResourcePayload payload;
+			payload.name = fileRecord->GetFilename();
+			payload.offset = fileRecord->GetStartOffset();
+			payload.size = fileRecord->GetEndAddress() - fileRecord->GetStartAddress() + 1;
+			payloads.push_back(payload);
+		}
+
+
 	}
 	return true;
-}
-
-const char* ResourceT64::GetPayload(const std::string& name, std::streamsize& dataSize)
-{
-	return nullptr;
 }
