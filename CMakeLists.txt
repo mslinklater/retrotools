@@ -52,7 +52,7 @@ include_directories(".")
 
 endif (UNIX)
 
-set(SOURCE_FILES disasm.cpp main.cpp symbol.cpp symbolstore.cpp)
+set(SOURCE_FILES main.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("3rdparty/lua-5.4.4/src")

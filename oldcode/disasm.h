@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #pragma once
 
 #include <cstdint>
@@ -78,3 +79,4 @@ private:
 	
 	std::vector<Line>	lines;
 };
+#endif

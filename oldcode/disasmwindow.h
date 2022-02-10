@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #pragma once
 
 #include "system/window/windowbase.h"
@@ -44,3 +45,4 @@ private:
 //	bool showTIAHints;
 	bool followPC;
 };
+#endif

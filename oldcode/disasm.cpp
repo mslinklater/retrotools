@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #include <string>
 #include <sstream>
 #include <cassert>
@@ -355,3 +356,4 @@ const Disassembler::Line & Disassembler::GetLine(int num)
 	return lines[num];
 }
 
+#endif

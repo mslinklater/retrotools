@@ -26,3 +26,4 @@ asm/davie/*.lst
 asm/davie/*.prg
 asm/davie/*.bin
 asm/davie/*.sym
+doxygen/
