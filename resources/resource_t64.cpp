@@ -17,10 +17,6 @@ ResourceT64::ResourceT64()
 
 ResourceT64::~ResourceT64()
 {
-	if(pData != nullptr)
-	{
-		delete [] pData;
-	}
 }
 
 bool ResourceT64::InitFromFilename(const std::string& filename)

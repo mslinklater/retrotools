@@ -63,6 +63,12 @@ bool ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 	if(Id.size() == 0)
 	{
 		Id = filename;
+		// make sure we replace '.' characters with '_'
+		std::size_t i;
+		while ((i = Id.find('.')) != std::string::npos)
+		{
+			Id.replace(i, 1, "_");
+		}
 	}
 
 	// check for Id clashes and extend the Id to make it unique

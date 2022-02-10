@@ -278,10 +278,12 @@ void UserCommands::Completion_ResLoad(std::string& parameters, std::vector<std::
 
 void UserCommands::Command_ResClose(const std::vector<std::string>& command)
 {
+    LOGINFO("UserCommands::Command_ResClose");
 }
 
 void UserCommands::Completion_ResClose(std::string& parameters, std::vector<std::string>& completions)
 {
+    LOGINFO("UserCommands::Completion_ResClose");
 }
 
 void UserCommands::Command_History(const std::vector<std::string>& command)
