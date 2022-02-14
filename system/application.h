@@ -15,6 +15,7 @@ class LuaVM;
 class LogWindow;
 class StateSerialiser;
 class WindowManager;
+class LuaWindow;
 class HelpAboutWindow;
 class HelpCommandsWindow;
 class ResourcesWindow;
@@ -51,6 +52,7 @@ private:
 	std::shared_ptr<LogWindow> pLogWindow;
 	std::shared_ptr<StateSerialiser> pStateSerialiser;
 	std::shared_ptr<WindowManager> pWindowManager;
+	std::shared_ptr<LuaWindow> pLuaWindow;
 	std::shared_ptr<HelpAboutWindow> pHelpAboutWindow;
 	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow;
 	std::shared_ptr<ResourcesWindow> pResourcesWindow;

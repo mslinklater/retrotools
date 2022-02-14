@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_FLAGS "-DDEBUG -DLUA_USE_POSIX")
 set(CMAKE_BUILD_TYPE Debug)
 
-enable_testing()
-add_test(cpu6502 build/vistella [cpu6502])
+#enable_testing()
+#add_test(cpu6502 build/vistella [cpu6502])
 
 if (UNIX)
 set(CMAKE_LIBRARY_PREFIXES lib)
@@ -67,7 +67,8 @@ add_subdirectory("resources")
 add_subdirectory("machines")
 add_subdirectory("3rdparty/perfect6502")
 
-project (retrotools VERSION 0.1)
+project (retrotools VERSION 0.1 HOMEPAGE_URL https://github.com/mslinklater)
+
 configure_file(version.h.in version.h)
 
 add_executable(retrotools ${SOURCE_FILES})

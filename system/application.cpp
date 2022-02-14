@@ -16,6 +16,7 @@
 #include "system/stateserialiser.h"
 #include "system/window/windowmanager.h"
 #include "windows/logwindow.h"
+#include "windows/luawindow.h"
 #include "windows/helpaboutwindow.h"
 #include "windows/helpcommandswindow.h"
 #include "windows/resourceswindow.h"
@@ -70,6 +71,9 @@ void Application::Init(int argc, char* argv[])
 	pLogWindow = std::make_shared<LogWindow>();
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
+
+	pLuaWindow = std::make_shared<LuaWindow>();
+	pWindowManager->AddWindow(pLuaWindow, "Lua");
 
 	pHelpAboutWindow = std::make_shared<HelpAboutWindow>();
 	pWindowManager->AddWindow(pHelpAboutWindow, "HelpAbout");
