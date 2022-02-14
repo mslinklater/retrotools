@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #include "symbol.h"
 
 bool Symbol::Serialise(json& object)
@@ -91,3 +92,4 @@ void Symbol::Deserialise(json& object)
         if(object["flag_branchlabel"].get<bool>()) flags |= kSymbolFlag_BranchLabel;
     }
 }
+#endif

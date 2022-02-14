@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -226,4 +227,4 @@ eErrorCode SymbolStore::LoadHardwareFromJSON(std::string filename)
 	return kError_OK;
 }
 
-
+#endif

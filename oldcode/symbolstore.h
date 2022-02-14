@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #pragma once
 
 #include <map>
@@ -42,3 +43,4 @@ private:
 	std::map<uint16_t,Symbol> symbolMap;
 	typedef std::map<uint16_t,Symbol>::iterator SymbolMapIterator;	// make this const ?
 };
+#endif

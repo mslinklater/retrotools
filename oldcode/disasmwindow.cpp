@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #include "disasmwindow.h"
 #include "system/common.h"
 #include "../disasm.h"
@@ -157,3 +158,4 @@ void DisassemblyWindow::DeserialiseState(json& object)
 {
 	LOGINFO("DisassemblyWindow::DeserialiseState");
 }
+#endif

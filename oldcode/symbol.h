@@ -4,6 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
+#if 0
 #pragma once
 
 #include <string>
@@ -42,3 +43,4 @@ public:
 	void Deserialise(json& object);
 };
 
+#endif
