@@ -72,6 +72,7 @@ void LuaWindow::Draw(void)
 
 	if (ImGui::InputText(" ", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
+		LOGINFOF("Lua::%s", &inputBuffer[0]);
 	}
 }
 

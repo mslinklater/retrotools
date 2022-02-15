@@ -33,6 +33,8 @@ public:
 	void UpdateLoop();
 	int Close();
 
+	std::shared_ptr<LuaVM> GetLua(){ return pLua; }
+
 private:
 	Application();
 	~Application();
