@@ -19,9 +19,15 @@ public:
 	LuaVM();
 	~LuaVM();
 
+	typedef int(*LuaCallableCFunction)(lua_State*);
+
 	eErrorCode Init();
 
 	eErrorCode ExecuteLine(const std::string& line);
+
+	void RegisterCFunction( LuaCallableCFunction func, const std::string& name );
+	void RemoveCFunction( const std::string& name );
+
 private:
 	lua_State* pState;
 };
