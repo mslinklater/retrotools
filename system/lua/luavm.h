@@ -28,6 +28,8 @@ public:
 	void RegisterCFunction( LuaCallableCFunction func, const std::string& name );
 	void RemoveCFunction( const std::string& name );
 
+	static void DumpStack(lua_State* pState);
+
 private:
 	lua_State* pState;
 };

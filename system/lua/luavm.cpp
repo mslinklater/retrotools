@@ -7,6 +7,34 @@
 #include "luavm.h"
 #include "system/common.h"
 #include <cassert>
+#include <sstream>
+
+#if 0
+static int lua_LoadScript( lua_State* _state )
+{
+//	FC_LUA_FUNCDEF("FCLoadScript()");
+//	FC_LUA_ASSERT_NUMPARAMS(1);
+//	FC_LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
+	std::string _desc = "LoadScript()";
+
+	// check there is one argument (the filename) is on the stack
+	if( lua_gettop( _state ) != 1 )
+	{
+		// report error
+		std::stringstream error;
+		lua_Debug ar;
+		lua_getstack(_state, 1, &ar);
+		lua_getinfo(_state, "nSl", &ar);
+		error << "ERROR: Lua (" << ar.short_src << ":" << ar.currentline << "-" << _desc << "): Wrong number of parameters. Expected " << 1 << " but received " << lua_gettop( _state );
+		LOGERROR(error.str());
+		LuaVM::DumpStack(_state);
+	}
+
+//	common_LoadScriptForState(lua_tostring(_state, -1), _state, false);
+	return 0;
+}
+#endif
 
 LuaVM::LuaVM()
 : pState(nullptr)
@@ -33,6 +61,7 @@ static int panic (lua_State* _state) {
 	(void)_state;  /* to avoid warnings */
 	const char* pString = lua_tostring(_state, -1);
 //	FCLua_DumpStack(_state);
+	LuaVM::DumpStack(_state);
 	LOGERROR( std::string("PANIC: unprotected error in call to Lua API: ") + pString );
 	return 0;
 }
@@ -48,6 +77,11 @@ eErrorCode LuaVM::Init()
 	// load in core systems
 
 	return kError_OK;
+}
+
+void LuaVM::DumpStack(lua_State* pState)
+{
+
 }
 
 void LuaVM::RegisterCFunction( LuaCallableCFunction func, const std::string& name )
