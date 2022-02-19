@@ -11,6 +11,8 @@
 
 extern "C" {
 #include "3rdparty/lua-5.4.4/src/lua.h"
+#include "3rdparty/lua-5.4.4/src/lauxlib.h"
+#include "3rdparty/lua-5.4.4/src/lualib.h"
 }
 
 class LuaVM

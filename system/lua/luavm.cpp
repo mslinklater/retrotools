@@ -60,7 +60,6 @@ eErrorCode LuaVM::ExecuteLine(const std::string& line)
 static int panic (lua_State* _state) {
 	(void)_state;  /* to avoid warnings */
 	const char* pString = lua_tostring(_state, -1);
-//	FCLua_DumpStack(_state);
 	LuaVM::DumpStack(_state);
 	LOGERROR( std::string("PANIC: unprotected error in call to Lua API: ") + pString );
 	return 0;
@@ -73,6 +72,9 @@ eErrorCode LuaVM::Init()
 	assert(pState != nullptr);
 
 	lua_atpanic(pState, &panic);
+
+	// add standard libraries
+	luaL_openlibs(pState);
 
 	// load in core systems
 
