@@ -60,7 +60,9 @@ void Application::Init(int argc, char* argv[])
 
 	InitImGui();
 
+	// Bring up the Lua system
 	pLua = std::make_shared<LuaVM>();
+	pLua->Init();
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();

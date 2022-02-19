@@ -61,13 +61,93 @@ static int panic (lua_State* _state) {
 	(void)_state;  /* to avoid warnings */
 	const char* pString = lua_tostring(_state, -1);
 	LuaVM::DumpStack(_state);
-	LOGERROR( std::string("PANIC: unprotected error in call to Lua API: ") + pString );
+	LOGERROR( std::string("Lua::PANIC: unprotected error in call to Lua API: ") + pString );
 	return 0;
+}
+
+eErrorCode LuaVM::LoadScript(const std::string& filename)
+{
+	int ret = luaL_loadfile(pState, filename.c_str());
+
+	switch (ret) {
+		case LUA_ERRSYNTAX:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::Syntax error on load of Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		case LUA_ERRMEM:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::Memory error on load of Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		case LUA_ERRFILE:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::File error on load of Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		case LUA_ERRERR:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::Error on load of Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		case LUA_ERRRUN:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::Run error on load of Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		default:
+			break;
+	}
+	
+	ret = lua_pcall(pState, 0, 0, 0);
+	
+	switch (ret) {
+		case LUA_ERRRUN:
+			DumpStack(pState);
+			LOGERROR( std::string("Lua::Runtime error in Lua file: ") + filename);
+			return kError_Lua;
+			break;
+		case LUA_ERRMEM:
+			LOGERROR( std::string("Lua::Memory error in Lua file: ") + filename);
+			return kError_Lua;
+			break;
+		case LUA_ERRERR:
+			LOGERROR( std::string("Lua::Error while running error handling function in Lua file: ") + filename);
+			return kError_Lua;
+			break;			
+		default:
+			break;
+	}
+
+	return kError_OK;
+}
+
+static void* LuaAlloc( void* ud, void* ptr, size_t osize, size_t nsize )
+{
+	if (nsize) 
+	{
+		if (osize) 
+		{
+			return realloc(ptr, nsize);
+		} 
+		else 
+		{
+			return malloc(nsize);
+		}
+	} 
+	else 
+	{
+		if (osize) 
+		{
+			free(ptr);
+		}
+		return nullptr;
+	}
 }
 
 eErrorCode LuaVM::Init()
 {
-	pState = lua_newstate( NULL, NULL );
+	pState = lua_newstate( LuaAlloc, NULL );
 
 	assert(pState != nullptr);
 
@@ -77,6 +157,7 @@ eErrorCode LuaVM::Init()
 	luaL_openlibs(pState);
 
 	// load in core systems
+	LoadScript("../lua/init.lua");
 
 	return kError_OK;
 }

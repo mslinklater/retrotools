@@ -26,11 +26,14 @@ public:
 	eErrorCode Init();
 
 	eErrorCode ExecuteLine(const std::string& line);
+	eErrorCode LoadScript(const std::string& filename);
 
 	void RegisterCFunction( LuaCallableCFunction func, const std::string& name );
 	void RemoveCFunction( const std::string& name );
 
 	static void DumpStack(lua_State* pState);
+
+//	static lua_LoadScript
 
 private:
 	lua_State* pState;
