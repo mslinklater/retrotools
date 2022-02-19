@@ -62,6 +62,8 @@ public:
 
     const std::vector<CommandInfo> GetCommandInfo();
 
+    void Command_Quit(const std::vector<std::string>& command);
+    
 private:
     static UserCommands *instance;
 
@@ -82,7 +84,6 @@ private:
     void Command_ResLoad(const std::vector<std::string>& command);
     void Completion_ResLoad(std::string& parameters, std::vector<std::string>& completions);
 
-    void Command_Quit(const std::vector<std::string>& command);
     void Command_Pwd(const std::vector<std::string>& command);
     void Command_Ls(const std::vector<std::string>& command);
 

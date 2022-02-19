@@ -13,12 +13,11 @@
 
 std::vector<std::string> LuaVM::printOutputBuffer;
 
-#if 0
-#endif
-
 static int lua_Print( lua_State* pState )
 {
-	// TODO: validate arguments
+	LUA_FUNCDEF("print");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
 
 	std::string output(lua_tostring(pState, -1));
 	LuaVM::printOutputBuffer.push_back(output);
@@ -32,6 +31,10 @@ static int lua_Print( lua_State* pState )
 
 static int lua_LogInfo( lua_State* pState )
 {
+	LUA_FUNCDEF("loginfo");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
 	std::string output(lua_tostring(pState, -1));
 	LOGINFOF("Lua::%s", output.c_str());
 	return 0;
@@ -39,6 +42,10 @@ static int lua_LogInfo( lua_State* pState )
 
 static int lua_LogWarning( lua_State* pState )
 {
+	LUA_FUNCDEF("logwarning");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
 	std::string output(lua_tostring(pState, -1));
 	LOGWARNINGF("Lua::%s", output.c_str());
 	return 0;
@@ -46,6 +53,10 @@ static int lua_LogWarning( lua_State* pState )
 
 static int lua_LogError( lua_State* pState )
 {
+	LUA_FUNCDEF("logerror");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
 	std::string output(lua_tostring(pState, -1));
 	LOGERRORF("Lua::%s", output.c_str());
 	return 0;
@@ -112,6 +123,22 @@ static int panic (lua_State* _state) {
 	LuaVM::DumpStack(_state);
 	LOGERROR( std::string("Lua::PANIC: unprotected error in call to Lua API: ") + pString );
 	return 0;
+}
+
+void LuaHookCall(lua_State* pState, lua_Debug* ar)
+{
+}
+
+void LuaHookRet(lua_State* pState, lua_Debug* ar)
+{
+}
+
+void LuaHookLine(lua_State* pState, lua_Debug* ar)
+{
+}
+
+void LuaHookCount(lua_State* pState, lua_Debug* ar)
+{
 }
 
 eErrorCode LuaVM::LoadScript(const std::string& filename)
@@ -209,6 +236,13 @@ eErrorCode LuaVM::Init()
 	RegisterCFunction(lua_LogInfo, "loginfo");
 	RegisterCFunction(lua_LogWarning, "logwarning");
 	RegisterCFunction(lua_LogError, "logerror");
+
+#if defined(DEBUG)
+	lua_sethook(pState, LuaHookCall, LUA_MASKCALL, 0);
+	lua_sethook(pState, LuaHookRet, LUA_MASKRET, 0);
+	lua_sethook(pState, LuaHookLine, LUA_MASKLINE, 0);
+	lua_sethook(pState, LuaHookCount, LUA_MASKCOUNT, 1);
+#endif
 
 	// load in core systems
 	LoadScript("../lua/init.lua");

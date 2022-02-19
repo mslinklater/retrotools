@@ -12,6 +12,7 @@
 #include "system/stateserialiser.h"
 #include "resources/resourcemanager.h"
 #include "windows/resources/t64window.h"
+#include "windows/resources/binarywindow.h"
 
 WindowManager::WindowManager()
 : initialised(false)
@@ -114,8 +115,14 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 				case ResourceManager::EResourceType::D64File:
 					break;
 				case ResourceManager::EResourceType::Binary:
-					break;
+				{
+					std::shared_ptr<ResourceBase> res = ResourceManager::Instance()->GetResourcePtr(cmd->resourceId);
+					BinaryWindow *pWindow = new BinaryWindow();
+					pWindow->pResource = res;
+					newWindow = std::shared_ptr<WindowBase>(pWindow);
+				}
 				case ResourceManager::EResourceType::Unknown:
+					break;
 				default:
 					LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
 					return false;
