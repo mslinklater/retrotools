@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "system/errorcodes.h"
 
 extern "C" {
@@ -33,8 +34,10 @@ public:
 
 	static void DumpStack(lua_State* pState);
 
-//	static lua_LoadScript
-
+	
 private:
 	lua_State* pState;
+
+public:
+	static std::vector<std::string> printOutputBuffer;
 };

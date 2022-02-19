@@ -109,9 +109,11 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 					T64Window *pWindow = new T64Window();
 					pWindow->pResource = res;
 					newWindow = std::shared_ptr<WindowBase>(pWindow);
-					break;				
+					break;
 				}
 				case ResourceManager::EResourceType::D64File:
+					break;
+				case ResourceManager::EResourceType::Binary:
 					break;
 				case ResourceManager::EResourceType::Unknown:
 				default:

@@ -1,0 +1,1 @@
+resopen("combat.bin", "ROM")

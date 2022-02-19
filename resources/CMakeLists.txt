@@ -3,5 +3,6 @@ set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/resourcebase.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/resource_d64.cpp 
 	${CMAKE_CURRENT_LIST_DIR}/resource_t64.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/resource_binary.cpp 
 	PARENT_SCOPE)
 	

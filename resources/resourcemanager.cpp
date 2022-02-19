@@ -8,6 +8,7 @@
 #include "system/log.h"
 #include "resource_d64.h"
 #include "resource_t64.h"
+#include "resource_binary.h"
 
 ResourceManager::ResourceManager()
 {
@@ -22,6 +23,12 @@ ResourceManager::ResourceManager()
 		ResourceTypeInfo info;
 		info.resourceType = EResourceType::T64File;
 		info.descriptorString = "t64";
+		resourceTypeInfo.push_back(info);
+	}
+	{
+		ResourceTypeInfo info;
+		info.resourceType = EResourceType::Binary;
+		info.descriptorString = "bin";
 		resourceTypeInfo.push_back(info);
 	}
 }
@@ -85,6 +92,9 @@ bool ResourceManager::OpenResourceFromFile(const std::string& filename, const st
 				break;
 			case EResourceType::D64File:
 //				OpenResource_D64(filename, Id);
+				break;
+			case EResourceType::Binary:
+				OpenResource_Binary(filename, Id);
 				break;
 			default:
 				LOGERRORF("ResourceManager::OpenResourceFromFile not implemented for known type %s", filename.c_str());
@@ -198,10 +208,20 @@ bool ResourceManager::OpenResource_D64(std::string filename, const std::string& 
 }
 #endif
 
-//const std::vector<ResourceManager::ResourceInfo>& ResourceManager::GetResources()
-//{
-//	return resources;
-//}
+bool ResourceManager::OpenResource_Binary(std::string filename, const std::string& Id)
+{
+	std::shared_ptr<ResourceBinary> newResource(new ResourceBinary);
+	newResource->InitFromFilename(filename);
+
+	ResourceInfo info;
+	info.Id = Id;
+	info.type = EResourceType::Binary;
+	info.filename = filename;
+	info.base = newResource;
+
+	resourcesMap.emplace(Id, info);
+	return true;
+}
 
 const std::map<std::string, ResourceManager::ResourceInfo>& ResourceManager::GetResources()
 {

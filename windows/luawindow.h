@@ -9,6 +9,8 @@
 #include "system/window/windowmanager.h"
 #include "system/window/windowbase.h"
 
+class LuaVM;
+
 class LuaWindow : public WindowBase
 {
 public:
@@ -18,10 +20,16 @@ public:
 	
 	virtual void Draw(void);
 
+	void Init(std::shared_ptr<LuaVM> _pLua)
+	{
+		pLua = _pLua;
+	}
+
     int CommandPromptCallback(ImGuiInputTextCallbackData* data);
 
 private:
 	static const int kInputBufferSize = 256;
 	char inputBuffer[kInputBufferSize];
 
+	std::shared_ptr<LuaVM> pLua;
 };

@@ -6,10 +6,11 @@
 
 #include "system/common.h"
 #include "luawindow.h"
+#include "system/lua/luavm.h"
 
 LuaWindow::LuaWindow()
 {
-
+	memset(&inputBuffer[0], 0, kInputBufferSize);
 }
 
 LuaWindow::~LuaWindow()
@@ -72,7 +73,13 @@ void LuaWindow::Draw(void)
 
 	if (ImGui::InputText(" ", inputBuffer, kInputBufferSize, inputTextFlags, &CommandPromptCallbackStub, (void *)this))
 	{
-		LOGINFOF("Lua::%s", &inputBuffer[0]);
+//		LOGINFOF("Lua::%s", &inputBuffer[0]);
+		pLua->ExecuteLine(&inputBuffer[0]);
+	}
+
+	for(auto s : LuaVM::printOutputBuffer)
+	{
+		ImGui::Text("%s", s.c_str());
 	}
 }
 

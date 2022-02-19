@@ -1,6 +1,6 @@
 #include "stringutils.h"
 
-void stringutils::splitByString( const std::string& source, const std::string& separator, std::vector<std::string> output)
+void Stringutils::SplitByString( const std::string& source, const std::string& separator, std::vector<std::string>& output)
 {
 	output.clear();
 

@@ -1,1 +1,5 @@
-print("init.lua working !")
+-- replace system print
+_print = print
+print = myprint
+
+loginfo("LuaVM initialised...")

@@ -25,6 +25,7 @@ public:
 		Unknown,
 		T64File,
 		D64File,
+		Binary,
 	};
 
 	// mapping from resource type enum to readable string
@@ -70,4 +71,5 @@ private:
 
 	bool OpenResource_T64(std::string filename, const std::string& Id);
 //	bool OpenResource_D64(std::string filename, const std::string& Id);
+	bool OpenResource_Binary(std::string filename, const std::string& Id);
 };

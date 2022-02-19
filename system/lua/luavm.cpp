@@ -6,35 +6,50 @@
 
 #include "luavm.h"
 #include "system/common.h"
+#include "utils/stringutils.h"
 #include <cassert>
 #include <sstream>
+#include <iostream>
+
+std::vector<std::string> LuaVM::printOutputBuffer;
 
 #if 0
-static int lua_LoadScript( lua_State* _state )
+#endif
+
+static int lua_Print( lua_State* pState )
 {
-//	FC_LUA_FUNCDEF("FCLoadScript()");
-//	FC_LUA_ASSERT_NUMPARAMS(1);
-//	FC_LUA_ASSERT_TYPE(1, LUA_TSTRING);
+	// TODO: validate arguments
 
-	std::string _desc = "LoadScript()";
+	std::string output(lua_tostring(pState, -1));
+	LuaVM::printOutputBuffer.push_back(output);
 
-	// check there is one argument (the filename) is on the stack
-	if( lua_gettop( _state ) != 1 )
+	while(LuaVM::printOutputBuffer.size() > 100)
 	{
-		// report error
-		std::stringstream error;
-		lua_Debug ar;
-		lua_getstack(_state, 1, &ar);
-		lua_getinfo(_state, "nSl", &ar);
-		error << "ERROR: Lua (" << ar.short_src << ":" << ar.currentline << "-" << _desc << "): Wrong number of parameters. Expected " << 1 << " but received " << lua_gettop( _state );
-		LOGERROR(error.str());
-		LuaVM::DumpStack(_state);
+		LuaVM::printOutputBuffer.erase(LuaVM::printOutputBuffer.begin());
 	}
-
-//	common_LoadScriptForState(lua_tostring(_state, -1), _state, false);
 	return 0;
 }
-#endif
+
+static int lua_LogInfo( lua_State* pState )
+{
+	std::string output(lua_tostring(pState, -1));
+	LOGINFOF("Lua::%s", output.c_str());
+	return 0;
+}
+
+static int lua_LogWarning( lua_State* pState )
+{
+	std::string output(lua_tostring(pState, -1));
+	LOGWARNINGF("Lua::%s", output.c_str());
+	return 0;
+}
+
+static int lua_LogError( lua_State* pState )
+{
+	std::string output(lua_tostring(pState, -1));
+	LOGERRORF("Lua::%s", output.c_str());
+	return 0;
+}
 
 LuaVM::LuaVM()
 : pState(nullptr)
@@ -53,6 +68,40 @@ LuaVM::~LuaVM()
 
 eErrorCode LuaVM::ExecuteLine(const std::string& line)
 {
+	int ret = luaL_loadbuffer(pState, line.c_str(), line.size(), "Injected");
+	
+	switch (ret) {
+		case LUA_ERRSYNTAX:
+			LOGERROR( std::string("Syntax error on load of Lua line: ") + line);
+			return kError_Lua;
+			break;			
+		case LUA_ERRMEM:
+			LOGERROR( std::string("Memory error on load of Lua line: ") + line);
+			return kError_Lua;
+			break;
+		default:
+			break;
+	}
+	
+	ret = lua_pcall(pState, 0, 0, 0);
+	
+	switch (ret) {
+		case LUA_ERRRUN:
+			DumpStack(pState);
+			LOGERROR( std::string("Runtime error in Lua line: ") + line);
+			return kError_Lua;
+			break;
+		case LUA_ERRMEM:
+			LOGERROR( std::string("Memory error in Lua line: ") + line);
+			return kError_Lua;
+			break;
+		case LUA_ERRERR:
+			LOGERROR( std::string("Error while running error handling function in Lua line: ") + line);
+			return kError_Lua;
+			break;
+		default:
+			break;
+	}	
 
 	return kError_OK;
 }
@@ -156,6 +205,11 @@ eErrorCode LuaVM::Init()
 	// add standard libraries
 	luaL_openlibs(pState);
 
+	RegisterCFunction(lua_Print, "myprint");
+	RegisterCFunction(lua_LogInfo, "loginfo");
+	RegisterCFunction(lua_LogWarning, "logwarning");
+	RegisterCFunction(lua_LogError, "logerror");
+
 	// load in core systems
 	LoadScript("../lua/init.lua");
 
@@ -169,29 +223,29 @@ void LuaVM::DumpStack(lua_State* pState)
 
 void LuaVM::RegisterCFunction( LuaCallableCFunction func, const std::string& name )
 {
-#if 0
-	FCStringVector	components = FCStringUtils_ComponentsSeparatedByString( name, "." );
-	
+	std::vector<std::string> components;
+
+	Stringutils::SplitByString(name, ",", components);
+
 	uint32_t numComponents = components.size();
 	
 	for (uint32_t i = 0; i < numComponents - 1; i++) {
 		if (i == 0) {
-			lua_getglobal(m_state, components[i].c_str());
+			lua_getglobal(pState, components[i].c_str());
 		} else {
-			lua_getfield(m_state, -1, components[i].c_str());
+			lua_getfield(pState, -1, components[i].c_str());
 		}
 	}
 	
-	lua_pushcfunction(m_state, func);
+	lua_pushcfunction(pState, func);
 	
 	if (numComponents == 1) {
-		lua_setglobal(m_state, components[numComponents - 1].c_str());
+		lua_setglobal(pState, components[numComponents - 1].c_str());
 	} else {
-		lua_setfield(m_state, -2, components[numComponents - 1].c_str());
+		lua_setfield(pState, -2, components[numComponents - 1].c_str());
 	}
 	
-	lua_pop(m_state, (int)(numComponents - 1));	
-#endif
+	lua_pop(pState, (int)(numComponents - 1));	
 }
 
 void LuaVM::RemoveCFunction( const std::string& name )

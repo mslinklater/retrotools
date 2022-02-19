@@ -75,6 +75,7 @@ void Application::Init(int argc, char* argv[])
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
 
 	pLuaWindow = std::make_shared<LuaWindow>();
+	pLuaWindow->Init(pLua);
 	pWindowManager->AddWindow(pLuaWindow, "Lua");
 
 	pHelpAboutWindow = std::make_shared<HelpAboutWindow>();

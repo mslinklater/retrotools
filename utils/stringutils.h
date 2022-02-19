@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-namespace stringutils
+namespace Stringutils
 {
-	void splitByString( const std::string& source, const std::string& separator, std::vector<std::string> output);
+	void SplitByString( const std::string& source, const std::string& separator, std::vector<std::string>& output);
 }
