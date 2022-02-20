@@ -16,12 +16,49 @@
 #include "commandhelpers.h"
 #include "resources/resourcemanager.h"
 #include "system/formatting.h"
-
-#define DEBUG 0
+#include "system/application.h"
+#include "system/lua/luavm.h"
 
 namespace fs = std::filesystem;
 
 UserCommands *UserCommands::instance = nullptr;
+
+static int lua_Quit( lua_State* pState )
+{
+    std::vector<std::string> command;
+    UserCommands::Instance()->Command_Quit(command);
+    return 0;
+}
+
+static int lua_ResOpen( lua_State* pState )
+{
+    return 0;
+}
+
+static int lua_ResClose( lua_State* pState )
+{
+    return 0;
+}
+
+static int lua_ResLoad( lua_State* pState )
+{
+    return 0;
+}
+
+static int lua_Ls( lua_State* pState )
+{
+    return 0;
+}
+
+static int lua_Pwd( lua_State* pState )
+{
+    return 0;
+}
+
+static int lua_Cd( lua_State* pState )
+{
+    return 0;
+}
 
 UserCommands::UserCommands()
 {
@@ -33,6 +70,7 @@ UserCommands::UserCommands()
         commandInfo.handlerFunctionPtr = &UserCommands::Command_Quit;
         commandInfo.hint = "quit [return] - quits the application";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_Quit, "quit");
     }
     {
         CommandInfo commandInfo;
@@ -63,6 +101,7 @@ UserCommands::UserCommands()
         commandInfo.helpText.push_back("[ID] - optionalal ID used to specify the resource.");
         commandInfo.helpText.push_back("       if not provided one will be generated.");
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_ResOpen, "resopen");
     }
     {
         CommandInfo commandInfo;
@@ -72,6 +111,7 @@ UserCommands::UserCommands()
         commandInfo.completionFunctionPtr = &UserCommands::Completion_ResClose;
         commandInfo.hint = "resclose <ID>- closes a resource";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_ResClose, "resclose");
     }
     {
         CommandInfo commandInfo;
@@ -81,6 +121,7 @@ UserCommands::UserCommands()
         commandInfo.completionFunctionPtr = &UserCommands::Completion_ResLoad;
         commandInfo.hint = "resload [ID].[subID]- load a resource payload to memory";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_ResLoad, "resload");
     }
     // File operations commands
     {
@@ -90,6 +131,7 @@ UserCommands::UserCommands()
         commandInfo.handlerFunctionPtr = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_Pwd, "pwd");
     }
     {
         CommandInfo commandInfo;
@@ -98,6 +140,7 @@ UserCommands::UserCommands()
         commandInfo.handlerFunctionPtr = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_Ls, "ls");
     }
     {
         CommandInfo commandInfo;
@@ -107,6 +150,7 @@ UserCommands::UserCommands()
         commandInfo.completionFunctionPtr = &UserCommands::Completion_Cd;
         commandInfo.hint = "cd - change current directory";
         AddToCommandHandlerMap(commandInfo);
+        Application::Instance()->GetLua()->RegisterCFunction(lua_Cd, "cd");
     }
 }
 
@@ -122,7 +166,7 @@ void UserCommands::AddToCommandHandlerMap(const CommandInfo &info)
 
 void UserCommands::ParseAndProcessCommand(const std::string& command)
 {
-#if DEBUG
+#if defined(DEBUG)
    	LOGINFOF("UserCommands::Processing command: '%s'", command.c_str());
 #endif
 

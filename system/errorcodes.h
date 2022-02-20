@@ -22,6 +22,8 @@ enum eErrorCode {
 
 	kError_FileNotFound,
 
+	kError_Lua,
+
 	kError_JSONParse,
 
 	// this last one shoud be the first index in project-specific error conditions

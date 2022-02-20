@@ -11,6 +11,12 @@
 #include <queue>
 #include "icommandhandler.h"
 
+/**
+ * @brief The command center is the backbone of the subscriber pattern used in retrotools.
+ * 
+ * Command center deals with internal commands. User commands, entered via the console, are
+ * handled by the UserCommands system.
+ */
 
 class CommandCenter
 {

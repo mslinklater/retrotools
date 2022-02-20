@@ -16,6 +16,7 @@
 #include "system/stateserialiser.h"
 #include "system/window/windowmanager.h"
 #include "windows/logwindow.h"
+#include "windows/luawindow.h"
 #include "windows/helpaboutwindow.h"
 #include "windows/helpcommandswindow.h"
 #include "windows/resourceswindow.h"
@@ -25,6 +26,7 @@
 
 #include <iostream>
 #include <memory>
+#include <sstream>
 
 Application* Application::Instance()
 {
@@ -47,6 +49,19 @@ Application::~Application()
 	
 }
 
+static int lua_LoadFile( lua_State* pState )
+{
+	LUA_FUNCDEF("loadfile");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
+	std::string filename(lua_tostring(pState, -1));
+	Application::Instance()->GetLua()->LoadScript(filename);
+
+	return 0;
+}
+
+
 void OutOfMemoryHandler()
 {
 	std::cerr << "Out of memory!";
@@ -59,7 +74,10 @@ void Application::Init(int argc, char* argv[])
 
 	InitImGui();
 
+	// Bring up the Lua system
 	pLua = std::make_shared<LuaVM>();
+	pLua->Init();
+	pLua->RegisterCFunction(lua_LoadFile, "loadfile");
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();
@@ -70,6 +88,10 @@ void Application::Init(int argc, char* argv[])
 	pLogWindow = std::make_shared<LogWindow>();
 	pWindowManager->AddWindow(pLogWindow, "Log");
 	pStateSerialiser->AddStateSerialiser(pLogWindow);
+
+	pLuaWindow = std::make_shared<LuaWindow>();
+	pLuaWindow->Init(pLua);
+	pWindowManager->AddWindow(pLuaWindow, "Lua");
 
 	pHelpAboutWindow = std::make_shared<HelpAboutWindow>();
 	pWindowManager->AddWindow(pHelpAboutWindow, "HelpAbout");
