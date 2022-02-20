@@ -195,6 +195,8 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 			break;
 	}
 
+	LOGINFOF("Lua::Loaded file %s OK", filename.c_str());
+
 	return kError_OK;
 }
 

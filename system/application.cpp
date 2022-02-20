@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <memory>
+#include <sstream>
 
 Application* Application::Instance()
 {
@@ -48,6 +49,19 @@ Application::~Application()
 	
 }
 
+static int lua_LoadFile( lua_State* pState )
+{
+	LUA_FUNCDEF("loadfile");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
+	std::string filename(lua_tostring(pState, -1));
+	Application::Instance()->GetLua()->LoadScript(filename);
+
+	return 0;
+}
+
+
 void OutOfMemoryHandler()
 {
 	std::cerr << "Out of memory!";
@@ -63,6 +77,7 @@ void Application::Init(int argc, char* argv[])
 	// Bring up the Lua system
 	pLua = std::make_shared<LuaVM>();
 	pLua->Init();
+	pLua->RegisterCFunction(lua_LoadFile, "loadfile");
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();
