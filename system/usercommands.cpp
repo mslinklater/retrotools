@@ -279,6 +279,25 @@ void UserCommands::Completion_ResLoad(std::string& parameters, std::vector<std::
 void UserCommands::Command_ResClose(const std::vector<std::string>& command)
 {
     LOGINFO("UserCommands::Command_ResClose");
+    if(command.size() > 1)
+    {
+        const std::string resourceId = command[1];
+        auto resourceMap = ResourceManager::Instance()->GetResources();
+        auto res = resourceMap.find(resourceId);
+        if(res != resourceMap.end())
+        {
+            // found the resource
+			// close window
+			CommandHelpers::CloseResourceWindow(resourceId);
+			// close resource
+			ResourceManager::Instance()->CloseResource(resourceId);
+        }
+        else
+        {
+            // cannot find requested resource
+            CommandHelpers::TextOutput("Unknown resource ID");
+        }
+    }
 }
 
 void UserCommands::Completion_ResClose(std::string& parameters, std::vector<std::string>& completions)

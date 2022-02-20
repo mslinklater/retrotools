@@ -21,15 +21,39 @@ class ResourcesWindow;
 class MainWindow;
 class MachineSimple6502;
 
-
-
+///
+/// Application is the main application object. This is the first point of call for main() and should be used for all core application init, update & close logic.
+///
 class Application
 {
 public:
+	/**
+	 * @brief Get the Application singleton instance
+	 * 
+	 * @return Application* 
+	 */
 	static Application *Instance();
 
+	/**
+	 * @brief Application init
+	 * 
+	 * @param argc Passed in from main()
+	 * @param argv Passed in from main()
+	 */
 	void Init(int argc, char* argv[]);
+
+	/**
+	 * @brief Handles the application update loop
+	 * 
+	 * You only call this once from main()
+	 */
 	void UpdateLoop();
+
+	/**
+	 * @brief Application clean-up on exit
+	 * 
+	 * @return int Non-zero indicates an error
+	 */
 	int Close();
 
 private:

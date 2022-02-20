@@ -15,4 +15,6 @@ class LuaVM
 public:
 	LuaVM();
 	~LuaVM();
+private:
+	lua_State *pState;
 };
