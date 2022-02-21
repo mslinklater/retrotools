@@ -53,9 +53,7 @@ public:
 
     void Tick();
 
-	// ICommandProcessor
-	bool HandleCommand(const std::shared_ptr<CommandBase> command);
-	// ~ICommandProcessor
+	ICOMMANDHANDLER_API;
 
 	uint8_t GetTimerVal(){return timerVal;}
 	uint16_t GetTimerInterval(){return timerInterval;}

@@ -127,9 +127,9 @@ void Riot::Tick()
 
 }
 
-bool Riot::HandleCommand(const std::shared_ptr<CommandBase> command)
+ICommandHandler::Return Riot::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
-	return false;
+	return ICommandHandler::kForward;
 }
 
 bool Riot::GetBreakpoint(uint16_t addr)

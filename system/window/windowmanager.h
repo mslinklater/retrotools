@@ -35,9 +35,7 @@ public:
 
 private:
 	
-	// ICommandHandler
-	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);
-	// ~ICommandHandler
+	ICOMMANDHANDLER_API;
 	
 	bool initialised;
 
