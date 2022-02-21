@@ -50,9 +50,7 @@ class Cpu6502Alpha : public Cpu6502Base, public ICommandHandler, public IStateSe
         
 		void UpdateState(bool ignoreBreakpoints = false);		// kind of debug
 
-		// ICommandProcessor
-		bool HandleCommand(const std::shared_ptr<CommandBase> command) override;
-		// ~ICommandProcessor
+		ICOMMANDHANDLER_API;
 		
 		bool		bHaltOnInstruction;
 //		bool		bHalted;

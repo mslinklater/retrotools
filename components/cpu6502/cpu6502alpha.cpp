@@ -1046,7 +1046,7 @@ void Cpu6502Alpha::DeserialiseState(json& object)
 	}
 }
 
-bool Cpu6502Alpha::HandleCommand(const std::shared_ptr<CommandBase> command)
+ICommandHandler::Return Cpu6502Alpha::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 #if 0
 	if(command.name == Commands::kHaltCommand)
@@ -1071,5 +1071,5 @@ bool Cpu6502Alpha::HandleCommand(const std::shared_ptr<CommandBase> command)
 		
 	}
 #endif
-	return false;
+	return ICommandHandler::kForward;
 }

@@ -284,7 +284,7 @@ void MainWindow::Draw()
 	ImGui::End(); 
 }
 
-bool MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
+ICommandHandler::Return MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 	if(command->name == TextOutputCommand::kName)
 	{
@@ -299,5 +299,5 @@ bool MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
 	{
 		bScrollToBottom = true;
 	}
-	return false;
+	return ICommandHandler::kForward;
 }

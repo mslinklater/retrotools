@@ -58,7 +58,7 @@ void WindowManager::Draw()
 	}
 }
 
-bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
+ICommandHandler::Return WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 {
 	if(command->name == ToggleWindowCommand::kName)
 	{
@@ -71,6 +71,7 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		{
 			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
 		}
+		return ICommandHandler::kConsumed;
 	}
 
 	if(command->name == CloseResourceWindowCommand::kName)
@@ -83,6 +84,7 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		{
 			RemoveWindow(windowName);
 		}
+		return ICommandHandler::kConsumed;
 	}
 
 	if(command->name == OpenResourceWindowCommand::kName)
@@ -125,7 +127,7 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 					break;
 				default:
 					LOGERRORF("Cannot open window for resource %s", cmd->resourceId.c_str());
-					return false;
+					break;
 			}
 
 			if(newWindow != nullptr)
@@ -135,6 +137,7 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 				ResourceManager::Instance()->SetResourceWindow(cmd->resourceId, windowName);
 			}
 		}
+		return ICommandHandler::kConsumed;
 	}
 
 	if(command->name == QuitCommand::kName)
@@ -143,7 +146,7 @@ bool WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
 		receivedQuit = true;
 	}
 
-	return false;
+	return ICommandHandler::kForward;
 }
 
 bool WindowManager::ReceivedQuit()

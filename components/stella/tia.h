@@ -264,9 +264,7 @@ public:
 
     void Tick();
 
-	// ICommandProcessor
-	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);
-	// ~ICommandProcessor
+    ICOMMANDHANDLER_API;
 
 	const uint8_t* 	GetPixels(){return &pixels[0];}
 	const bool* 	GetCpuActive(){return &cpuActive[0];}

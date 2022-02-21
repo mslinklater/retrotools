@@ -21,7 +21,12 @@ public:
 class ICommandHandler
 {
 public:
-	virtual bool HandleCommand(const std::shared_ptr<CommandBase> command) = 0;
+	enum Return {
+		kForward,
+		kConsumed
+	};
+
+	virtual Return HandleCommand(const std::shared_ptr<CommandBase> command) = 0;
 };
 
-#define ICOMMANDHANDLER_API virtual bool HandleCommand(const std::shared_ptr<CommandBase> command);
+#define ICOMMANDHANDLER_API virtual ICommandHandler::Return HandleCommand(const std::shared_ptr<CommandBase> command);
