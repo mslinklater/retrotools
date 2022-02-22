@@ -33,9 +33,12 @@ public:
 
 	virtual bool InitFromFilename(const std::string& filename) = 0;
 	const std::vector<ResourcePayload>& GetPayloads() const { return payloads; }
-	const char* GetPayload(const std::string& name, std::streamsize& dataSize);
+	const char* GetPayload(const std::string& name, std::streamsize& dataSize) const;
 
-protected:
+	const char *GetData() const { return pData; }
+	std::streamsize GetDataSize() const { return dataSize; }
+
+protected:  
 	char* 	pData;
 	std::streamsize	dataSize;
 	std::vector<ResourcePayload> payloads;

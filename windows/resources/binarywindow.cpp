@@ -20,7 +20,18 @@ BinaryWindow::~BinaryWindow()
 
 void BinaryWindow::Draw()
 {
-	//const ResourceBinary* pRes = (const ResourceBinary*)pResource.get();
+	const ResourceBinary* pRes = (const ResourceBinary*)pResource.get();
 
+//	int byteOffset = 0;
+	int dataSize = pRes->GetDataSize();
+	for (int address = 0; address < dataSize ; address += 16)
+	{
+		int rowOffset = 0;
+		// print address
+		while ((address + rowOffset < dataSize) && (rowOffset < 16))
+		{
 
+			rowOffset++;
+		}
+	}
 }
