@@ -27,6 +27,7 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <filesystem>
 
 Application* Application::Instance()
 {
@@ -61,6 +62,43 @@ static int lua_LoadFile( lua_State* pState )
 	return 0;
 }
 
+static int lua_Cwd( lua_State* pState )
+{
+	LUA_FUNCDEF("cwd");
+	LUA_ASSERT_NUMPARAMS(0);
+
+	lua_pushstring(pState, std::filesystem::current_path().string().c_str() );
+	return 1;
+}
+
+static int lua_Cd( lua_State* pState )
+{
+	LUA_FUNCDEF("cd");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
+	const char* path = lua_tostring(pState, 1);
+
+    std::filesystem::path newPath = std::filesystem::current_path() /= path;
+    if(std::filesystem::exists(newPath))
+    {
+        std::filesystem::current_path(newPath);
+	}
+
+	lua_pushstring(pState, std::filesystem::current_path().string().c_str() );
+	return 1;
+}
+
+static int lua_Ls( lua_State* pState )
+{
+	LUA_FUNCDEF("ls");
+	LUA_ASSERT_NUMPARAMS(0);
+
+	lua_newtable(pState);
+//	int table = lua_gettop(pState);
+//	lua_settable(pState, table);
+    return 1;
+}
 
 void OutOfMemoryHandler()
 {
@@ -78,6 +116,9 @@ void Application::Init(int argc, char* argv[])
 	pLua = std::make_shared<LuaVM>();
 	pLua->Init();
 	pLua->RegisterCFunction(lua_LoadFile, "loadfile");
+	pLua->RegisterCFunction(lua_Cwd, "cwd");
+	pLua->RegisterCFunction(lua_Cd, "cd");
+	pLua->RegisterCFunction(lua_Ls, "ls");
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();

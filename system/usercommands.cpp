@@ -45,20 +45,6 @@ static int lua_ResLoad( lua_State* pState )
     return 0;
 }
 
-static int lua_Ls( lua_State* pState )
-{
-    return 0;
-}
-
-static int lua_Pwd( lua_State* pState )
-{
-    return 0;
-}
-
-static int lua_Cd( lua_State* pState )
-{
-    return 0;
-}
 
 UserCommands::UserCommands()
 {
@@ -131,7 +117,7 @@ UserCommands::UserCommands()
         commandInfo.handlerFunctionPtr = &UserCommands::Command_Pwd;
         commandInfo.hint = "pwd - print current working directory";
         AddToCommandHandlerMap(commandInfo);
-        Application::Instance()->GetLua()->RegisterCFunction(lua_Pwd, "pwd");
+//        Application::Instance()->GetLua()->RegisterCFunction(lua_Pwd, "pwd");
     }
     {
         CommandInfo commandInfo;
@@ -140,7 +126,6 @@ UserCommands::UserCommands()
         commandInfo.handlerFunctionPtr = &UserCommands::Command_Ls;
         commandInfo.hint = "ls - print contents of current working directory";
         AddToCommandHandlerMap(commandInfo);
-        Application::Instance()->GetLua()->RegisterCFunction(lua_Ls, "ls");
     }
     {
         CommandInfo commandInfo;
@@ -150,7 +135,7 @@ UserCommands::UserCommands()
         commandInfo.completionFunctionPtr = &UserCommands::Completion_Cd;
         commandInfo.hint = "cd - change current directory";
         AddToCommandHandlerMap(commandInfo);
-        Application::Instance()->GetLua()->RegisterCFunction(lua_Cd, "cd");
+//        Application::Instance()->GetLua()->RegisterCFunction(lua_Cd, "cd");
     }
 }
 
