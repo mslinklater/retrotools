@@ -14,6 +14,7 @@
 
 class WindowBase;
 class StateSerialiser;
+class LuaVM;
 
 class WindowManager : public ICommandHandler, public IStateSerialisation
 {
@@ -28,6 +29,7 @@ public:
 	const std::vector<std::string> GetWindows();
 	
 	void Init(std::shared_ptr<StateSerialiser> pStateSerialiser);
+	void RegisterLuaInterface(std::shared_ptr<LuaVM> pLua);
 	void Draw();
 	bool ReceivedQuit();
 

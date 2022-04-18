@@ -19,13 +19,13 @@ public:
 	virtual ~MainWindow();
 	
 	void Draw();
-	void SetWindowManager(WindowManager* wm){ pWindowManager = wm; }
+	void SetWindowManager(std::shared_ptr<WindowManager> wm){ pWindowManager = wm; }
 
 	ICOMMANDHANDLER_API
 
 private:
 	bool open;
-	WindowManager* pWindowManager;
+	std::shared_ptr<WindowManager> pWindowManager;
 	bool bShowNewSession;
 	bool bScrollToBottom;
 

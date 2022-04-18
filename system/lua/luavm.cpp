@@ -182,15 +182,15 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 	switch (ret) {
 		case LUA_ERRRUN:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::Runtime error in Lua file: ") + filename);
+			LOGERRORF( "Lua::Runtime error: %s", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;
 		case LUA_ERRMEM:
-			LOGERROR( std::string("Lua::Memory error in Lua file: ") + filename);
+			LOGERRORF( "Lua::Memory error: %s", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;
 		case LUA_ERRERR:
-			LOGERROR( std::string("Lua::Error while running error handling function in Lua file: ") + filename);
+			LOGERRORF( "Lua::Error while running error handling function: ", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;			
 		default:

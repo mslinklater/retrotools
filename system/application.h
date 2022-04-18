@@ -80,12 +80,12 @@ private:
 
 	std::shared_ptr<LogWindow> pLogWindow;
 	std::shared_ptr<StateSerialiser> pStateSerialiser;
-	std::shared_ptr<WindowManager> pWindowManager;
 	std::shared_ptr<LuaWindow> pLuaWindow;
 	std::shared_ptr<HelpAboutWindow> pHelpAboutWindow;
 	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow;
 	std::shared_ptr<ResourcesWindow> pResourcesWindow;
 	std::shared_ptr<MainWindow> pMainWindow;
+	std::shared_ptr<WindowManager> pWindowManager;
 
 	std::shared_ptr<MachineBase> pMachine;
 };

@@ -152,9 +152,11 @@ void Application::Init(int argc, char* argv[])
 	pLua->RegisterCFunction(lua_MachineCreate, "machine_create");
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
-	pWindowManager = std::make_shared<WindowManager>();
 
+	pWindowManager = std::make_shared<WindowManager>();
+//	pWindowManager = WindowManager::Instance();
 	pWindowManager->Init(pStateSerialiser);
+	pWindowManager->RegisterLuaInterface(pLua);
 	pStateSerialiser->AddStateSerialiser(pWindowManager);
 
 	pLogWindow = std::make_shared<LogWindow>();
@@ -175,10 +177,8 @@ void Application::Init(int argc, char* argv[])
 	pWindowManager->AddWindow(pResourcesWindow, "Resources");
 
 	pMainWindow = std::make_shared<MainWindow>();
-	pMainWindow->SetWindowManager(pWindowManager.get());
+	pMainWindow->SetWindowManager(pWindowManager);
 	
-//	pMachine = std::make_shared<MachineSimple6502>();
-
 	pStateSerialiser->DeserialiseAppConfig();
 
 	pLua->LoadScript("../lua/postinit.lua");

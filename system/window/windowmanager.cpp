@@ -5,11 +5,14 @@
 // See file 'LICENSE' for license details
 
 #include <cassert>
+#include <sstream>
+
 #include "system/common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
 #include "system/commands.h"
 #include "system/stateserialiser.h"
+#include "system/lua/luavm.h"
 #include "resources/resourcemanager.h"
 #include "windows/resources/t64window.h"
 #include "windows/resources/binarywindow.h"
@@ -232,4 +235,19 @@ void WindowManager::DeserialiseState(json& object)
 			windowActive[windowName] = window["active"].get<bool>();
 		}
 	}
+}
+
+static int lua_WindowCreate( lua_State* pState )
+{
+	LUA_FUNCDEF("window_create");
+	LUA_ASSERT_NUMPARAMS(2);
+
+//	WindowManager* pWm = WindowManager::Instance();
+
+    return 0;
+}
+
+void WindowManager::RegisterLuaInterface(std::shared_ptr<LuaVM> pLua)
+{
+	pLua->RegisterCFunction(lua_WindowCreate, "window_create");
 }
