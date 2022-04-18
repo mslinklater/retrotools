@@ -104,22 +104,27 @@ static int lua_Ls( lua_State* pState )
 static int lua_MachineCreate( lua_State* pState )
 {
 	LUA_FUNCDEF("machine_create");
-	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_NUMPARAMS(2);
 	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+	LUA_ASSERT_TYPE(2, LUA_TSTRING);
 
 	std::shared_ptr<MachineBase> pMachine;
-	const std::string strMachine(lua_tostring(pState, 1));
+	const std::string machineType(lua_tostring(pState, 1));
+	const std::string machineName(lua_tostring(pState, 2));
 
-	if(strMachine == "simple6502")
+	if(machineType == "simple6502")
 	{
 		pMachine = std::make_shared<MachineSimple6502>();
 	}
 	else
 	{
-		LOGERRORF("Unable to create machine %s", strMachine.c_str());
+		LOGERRORF("Unable to create machine of type %s", machineType.c_str());
 		return 0;
 	}
 
+	pMachine->SetName(machineName);
+
+	// TODO - this will need work to support multiple machines
 	Application::Instance()->SetMachine(pMachine);
 
 	return 0;

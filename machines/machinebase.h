@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <string>
+
 class MachineBase
 {
 public:
@@ -13,4 +15,10 @@ public:
 	virtual ~MachineBase();
 
 	void SysWriteToMemory(unsigned int startAddress, const char* pMemory, unsigned int size);
+	
+	const std::string& GetName(){ return name; } 
+	void SetName(const std::string& _name){ name = _name; }
+
+private:
+	std::string name;
 };

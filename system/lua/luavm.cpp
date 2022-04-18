@@ -174,7 +174,9 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 		default:
 			break;
 	}
-	
+
+	LOGINFOF("Lua::Loaded file %s OK", filename.c_str());
+
 	ret = lua_pcall(pState, 0, 0, 0);
 	
 	switch (ret) {
@@ -195,7 +197,7 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 			break;
 	}
 
-	LOGINFOF("Lua::Loaded file %s OK", filename.c_str());
+	LOGINFOF("Lua::Executed file %s OK", filename.c_str());
 
 	return kError_OK;
 }

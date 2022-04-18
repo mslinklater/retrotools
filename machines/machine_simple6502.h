@@ -18,4 +18,6 @@ public:
 	~MachineSimple6502();
 private:
 	std::shared_ptr<IMemory> pMemory;
+
+	static uint32_t instanceCount;
 };
