@@ -20,7 +20,8 @@ class HelpAboutWindow;
 class HelpCommandsWindow;
 class ResourcesWindow;
 class MainWindow;
-class MachineSimple6502;
+class MachineBase;
+//class MachineSimple6502;
 
 ///
 /// Application is the main application object. This is the first point of call for main() and should be used for all core application init, update & close logic.
@@ -59,6 +60,8 @@ public:
 
 	std::shared_ptr<LuaVM> GetLua(){ return pLua; }
 
+	void SetMachine(std::shared_ptr<MachineBase> pMachine);
+
 private:
 	Application();
 	~Application();
@@ -84,5 +87,5 @@ private:
 	std::shared_ptr<ResourcesWindow> pResourcesWindow;
 	std::shared_ptr<MainWindow> pMainWindow;
 
-	std::shared_ptr<MachineSimple6502> pMachine;
+	std::shared_ptr<MachineBase> pMachine;
 };

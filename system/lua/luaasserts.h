@@ -13,6 +13,7 @@
 		error << "ERROR: Lua (" << ar.short_src << ":" << ar.currentline << "-" << _desc << "): Wrong type, wanted " << lua_typename( pState, type) << ", but found " << lua_typename( pState, lua_type( pState, stackpos));	\
 		LOGERROR(error.str());	\
 		LuaVM::DumpStack( pState );	\
+		return 0; \
 	}	\
 }
 
@@ -27,6 +28,7 @@
 		error << "ERROR: Lua (" << ar.short_src << ":" << ar.currentline << "-" << _desc << "): Wrong number of parameters. Expected " << n << " but received " << lua_gettop( pState );	\
 		LOGERROR(error.str());	\
 		LuaVM::DumpStack( pState );		\
+		return 0; \
 	}			\
 }
 

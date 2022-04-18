@@ -5,6 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "application.h"
+#include "buildconfig.h"
 
 #include "3rdparty/imgui/imgui_impl_sdl.h"
 #include "3rdparty/imgui/imgui_impl_opengl2.h"
@@ -100,6 +101,30 @@ static int lua_Ls( lua_State* pState )
     return 1;
 }
 
+static int lua_MachineCreate( lua_State* pState )
+{
+	LUA_FUNCDEF("machine_create");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+
+	std::shared_ptr<MachineBase> pMachine;
+	const std::string strMachine(lua_tostring(pState, 1));
+
+	if(strMachine == "simple6502")
+	{
+		pMachine = std::make_shared<MachineSimple6502>();
+	}
+	else
+	{
+		LOGERRORF("Unable to create machine %s", strMachine.c_str());
+		return 0;
+	}
+
+	Application::Instance()->SetMachine(pMachine);
+
+	return 0;
+}
+
 void OutOfMemoryHandler()
 {
 	std::cerr << "Out of memory!";
@@ -119,6 +144,7 @@ void Application::Init(int argc, char* argv[])
 	pLua->RegisterCFunction(lua_Cwd, "cwd");
 	pLua->RegisterCFunction(lua_Cd, "cd");
 	pLua->RegisterCFunction(lua_Ls, "ls");
+	pLua->RegisterCFunction(lua_MachineCreate, "machine_create");
 
 	pStateSerialiser = std::make_shared<StateSerialiser>();
 	pWindowManager = std::make_shared<WindowManager>();
@@ -149,6 +175,8 @@ void Application::Init(int argc, char* argv[])
 //	pMachine = std::make_shared<MachineSimple6502>();
 
 	pStateSerialiser->DeserialiseAppConfig();
+
+	pLua->LoadScript("../lua/postinit.lua");
 }
 
 void Application::InitImGui()
@@ -271,3 +299,7 @@ int Application::Close()
 	return 0;
 }
 
+void Application::SetMachine(std::shared_ptr<MachineBase> _pMachine)
+{
+	pMachine = _pMachine;
+}
