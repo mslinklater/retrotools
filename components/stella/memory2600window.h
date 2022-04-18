@@ -27,7 +27,7 @@ public:
 
 	void SetMemory(Memory2600* mem);
 	
-	virtual void Draw(void);
+	virtual void Draw(void) override;
 
 	ISERIALISATION_API
 

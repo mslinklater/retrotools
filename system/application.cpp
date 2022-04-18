@@ -146,7 +146,7 @@ void Application::Init(int argc, char* argv[])
 	pMainWindow = std::make_shared<MainWindow>();
 	pMainWindow->SetWindowManager(pWindowManager.get());
 	
-	pMachine = std::make_shared<MachineSimple6502>();
+//	pMachine = std::make_shared<MachineSimple6502>();
 
 	pStateSerialiser->DeserialiseAppConfig();
 }

@@ -16,7 +16,7 @@ public:
 	HelpAboutWindow();
 	virtual ~HelpAboutWindow();
 	
-	virtual void Draw(void);
+	virtual void Draw(void) override;
 
 	ISERIALISATION_API
 

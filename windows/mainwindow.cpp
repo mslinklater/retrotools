@@ -211,7 +211,7 @@ void MainWindow::DrawConsole()
 			sprintf(newBuffer, "> %s", inputBuffer);
 			std::string newString(&newBuffer[0]);
 			outputItems.push_back(newString);
-			delete newBuffer;
+			delete [] newBuffer;
 
 			UserCommands::Instance()->ParseAndProcessCommand(std::string(inputBuffer));
 		}

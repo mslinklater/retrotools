@@ -16,7 +16,7 @@ public:
 	Perfect6502Window();
 	virtual ~Perfect6502Window();
 
-	virtual void Draw();
+	virtual void Draw() override;
 
 	ISERIALISATION_API
 

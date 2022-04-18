@@ -67,6 +67,16 @@ Tia::~Tia()
 {
 }
 
+void Tia::CommitInputs()
+{
+
+}
+
+void Tia::Tick(bool clockState)
+{
+
+}
+
 void Tia::Tick()
 {
 	// do tick

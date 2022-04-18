@@ -257,10 +257,7 @@ public:
     uint8_t GetHMCLR(void){return writeRegisters[kHMCLR];}
     uint8_t GetCXCLR(void){return writeRegisters[kCXCLR];}
 
-    // ITickable
-	void CommitInputs(){}		// commit state of input pins - so chip update order doesn't matter
-	void Tick(bool clockState){}	// update the actual silicon state - based on the clockState
-    // ~ITickable
+    ITICKABLE_API;
 
     void Tick();
 

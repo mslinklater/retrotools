@@ -109,13 +109,7 @@ public:
 	void 		SetRiot(Riot* riot);
 	void 		SetTia(Tia* tia);
 
-	// IMemory
-	virtual uint8_t 	Read(uint16_t address);
-	virtual void 		Write(uint16_t address, uint8_t val);
-	virtual uint8_t 	DbgRead(uint16_t address);
-	virtual void 		DbgWrite(uint16_t address, uint8_t val);
-	virtual void		SetHasBeenExecuted(uint16_t address, uint16_t numBytes);
-	// ~IMemory
+	IMEMORY_API;
 
 	uint8_t		GetFlag(uint16_t address);
 

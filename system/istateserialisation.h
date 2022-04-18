@@ -17,5 +17,5 @@ public:
 };
 
 #define ISERIALISATION_API                     \
-	virtual void SerialiseState(json &object); \
-	virtual void DeserialiseState(json &object);
+	virtual void SerialiseState(json &object) override; \
+	virtual void DeserialiseState(json &object) override;

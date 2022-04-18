@@ -29,4 +29,4 @@ public:
 	virtual Return HandleCommand(const std::shared_ptr<CommandBase> command) = 0;
 };
 
-#define ICOMMANDHANDLER_API virtual ICommandHandler::Return HandleCommand(const std::shared_ptr<CommandBase> command);
+#define ICOMMANDHANDLER_API virtual ICommandHandler::Return HandleCommand(const std::shared_ptr<CommandBase> command) override;

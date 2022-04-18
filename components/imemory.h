@@ -22,8 +22,8 @@ class IMemory
 };
 
 #define IMEMORY_API \
-    virtual uint8_t Read(uint16_t address); \
-    virtual void Write(uint16_t address, uint8_t value);    \
-    virtual uint8_t DbgRead(uint16_t address);  \
-    virtual void DbgWrite(uint16_t address, uint8_t value); \
-    virtual void SetHasBeenExecuted(uint16_t address, uint16_t length);
+    virtual uint8_t Read(uint16_t address) override; \
+    virtual void Write(uint16_t address, uint8_t value) override;    \
+    virtual uint8_t DbgRead(uint16_t address) override;  \
+    virtual void DbgWrite(uint16_t address, uint8_t value) override; \
+    virtual void SetHasBeenExecuted(uint16_t address, uint16_t length) override;

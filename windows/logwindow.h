@@ -17,7 +17,7 @@ public:
 	virtual ~LogWindow();
 	
 	// WindowBase
-	virtual void Draw();
+	virtual void Draw() override;
 	// ~WindowBase
 
 	ISERIALISATION_API

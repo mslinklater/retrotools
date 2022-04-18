@@ -27,6 +27,16 @@ Riot::~Riot()
 
 }
 
+void Riot::CommitInputs()
+{
+
+}
+
+void Riot::Tick(bool clockState)
+{
+
+}
+
 uint8_t Riot::Read(uint16_t addr)
 {
 	if(breakpoints[addr])
