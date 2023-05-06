@@ -148,27 +148,27 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 	switch (ret) {
 		case LUA_ERRSYNTAX:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::Syntax error on load of Lua file: ") + filename);
+			LOGERROR( std::string("Lua::LUA_ERRSYNTAX Syntax error on load of Lua file: ") + filename);
 			return kError_Lua;
 			break;			
 		case LUA_ERRMEM:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::Memory error on load of Lua file: ") + filename);
+			LOGERROR( std::string("Lua::LUA_ERRMEM Memory error on load of Lua file: ") + filename);
 			return kError_Lua;
 			break;			
 		case LUA_ERRFILE:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::File error on load of Lua file: ") + filename);
+			LOGERROR( std::string("Lua::LUA_ERRFILE File error on load of Lua file: ") + filename);
 			return kError_Lua;
 			break;			
 		case LUA_ERRERR:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::Error on load of Lua file: ") + filename);
+			LOGERROR( std::string("Lua::LUA_ERRERR Error on load of Lua file: ") + filename);
 			return kError_Lua;
 			break;			
 		case LUA_ERRRUN:
 			DumpStack(pState);
-			LOGERROR( std::string("Lua::Run error on load of Lua file: ") + filename);
+			LOGERROR( std::string("Lua::LUA_ERRRUN Run error on load of Lua file: ") + filename);
 			return kError_Lua;
 			break;			
 		default:
@@ -182,15 +182,15 @@ eErrorCode LuaVM::LoadScript(const std::string& filename)
 	switch (ret) {
 		case LUA_ERRRUN:
 			DumpStack(pState);
-			LOGERRORF( "Lua::Runtime error: %s", lua_tostring(pState, -1));
+			LOGERRORF( "Lua::LUA_ERRRUN Runtime error: %s", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;
 		case LUA_ERRMEM:
-			LOGERRORF( "Lua::Memory error: %s", lua_tostring(pState, -1));
+			LOGERRORF( "Lua::LUA_ERRMEM Memory error: %s", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;
 		case LUA_ERRERR:
-			LOGERRORF( "Lua::Error while running error handling function: ", lua_tostring(pState, -1));
+			LOGERRORF( "Lua::LUA_ERRERR Error while running error handling function: ", lua_tostring(pState, -1));
 			return kError_Lua;
 			break;			
 		default:
@@ -249,7 +249,7 @@ eErrorCode LuaVM::Init()
 #endif
 
 	// load in core systems
-	LoadScript("../lua/init.lua");
+	LoadScript("lua/init.lua");
 
 	return kError_OK;
 }

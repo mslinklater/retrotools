@@ -181,7 +181,7 @@ void Application::Init(int argc, char* argv[])
 	
 	pStateSerialiser->DeserialiseAppConfig();
 
-	pLua->LoadScript("../lua/postinit.lua");
+	pLua->LoadScript("lua/postinit.lua");
 }
 
 void Application::InitImGui()

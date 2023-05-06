@@ -42,4 +42,8 @@ private:
 	std::map<std::string,std::vector<ICommandHandler*>>	dispatchMap;
 	
 	static CommandCenter* pInstance;
+
+	// debug
+
+	bool logging;
 };

@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <map>
-#include "system/commandcenter.h"
+#include "system/command/commandcenter.h"
 #include "system/errorcodes.h"
 #include "system/istateserialisation.h"
 

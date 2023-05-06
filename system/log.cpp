@@ -115,12 +115,15 @@ void Log::Infof(const char* fmt, ...)
 	vsnprintf(buffer, BUFFER_SIZE, fmt, args );
     va_end(args);
 	
-	LogLine newLine;
-	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = LogType::EInfo;
+	std::string line = buffer;
+	Info(line);
+
+//	LogLine newLine;
+//	SplitCategory(buffer, newLine.category, newLine.content);	
+//	newLine.type = LogType::EInfo;
 	
-	AddLine(newLine);
-	std::cout << "Info:" << newLine.content << std::endl;
+//	AddLine(newLine);
+//	std::cout << "Info:" << newLine.content << std::endl;
 }
 
 void Log::Warning(std::string line)
@@ -140,12 +143,15 @@ void Log::Warningf(const char* fmt, ...)
 	vsnprintf(buffer, BUFFER_SIZE, fmt, args );
     va_end(args);
 	
-	LogLine newLine;
-	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = LogType::EWarning;
+	std::string line = buffer;
+	Warning(line);
+
+//	LogLine newLine;
+//	SplitCategory(buffer, newLine.category, newLine.content);	
+//	newLine.type = LogType::EWarning;
 	
-	AddLine(newLine);
-	std::cout << "Warning:" << newLine.content << std::endl;
+//	AddLine(newLine);
+//	std::cout << "Warning:" << newLine.content << std::endl;
 }
 
 void Log::Error(std::string line)
@@ -165,12 +171,15 @@ void Log::Errorf(const char* fmt, ...)
 	vsnprintf(buffer, BUFFER_SIZE, fmt, args );
     va_end(args);
 	
-	LogLine newLine;
-	SplitCategory(buffer, newLine.category, newLine.content);	
-	newLine.type = LogType::EError;
+	std::string line = buffer;
+	Error(line);
+
+//	LogLine newLine;
+//	SplitCategory(buffer, newLine.category, newLine.content);	
+//	newLine.type = LogType::EError;
 	
-	AddLine(newLine);
-	std::cerr << "Error:" << newLine.content << std::endl;
+//	AddLine(newLine);
+//	std::cerr << "Error:" << newLine.content << std::endl;
 }
 
 void Log::AddLine(Log::LogLine line)

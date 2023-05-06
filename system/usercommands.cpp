@@ -13,7 +13,8 @@
 
 #include "usercommands.h"
 #include "system/log.h"
-#include "commandhelpers.h"
+#include "system/common.h"
+#include "command/commandhelpers.h"
 #include "resources/resourcemanager.h"
 #include "system/formatting.h"
 #include "system/application.h"
@@ -25,8 +26,21 @@ UserCommands *UserCommands::instance = nullptr;
 
 static int lua_Quit( lua_State* pState )
 {
-    std::vector<std::string> command;
-    UserCommands::Instance()->Command_Quit(command);
+	LUA_FUNCDEF("quit");
+	LUA_ASSERT_NUMPARAMS(0);
+
+    CommandHelpers::Quit();
+    return 0;
+}
+
+static int lua_LoadLua( lua_State* pState )
+{
+	LUA_FUNCDEF("loadlua");
+	LUA_ASSERT_NUMPARAMS(1);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);
+	std::string filename(lua_tostring(pState, -1));
+
+	Application::Instance()->GetLua()->LoadScript(filename);
     return 0;
 }
 
@@ -45,19 +59,11 @@ static int lua_ResLoad( lua_State* pState )
     return 0;
 }
 
-
 UserCommands::UserCommands()
 {
-    // General commands
-    {
-        CommandInfo commandInfo;
-        commandInfo.command = "quit";
-        commandInfo.type = Type::EGeneral;
-        commandInfo.handlerFunctionPtr = &UserCommands::Command_Quit;
-        commandInfo.hint = "quit [return] - quits the application";
-        AddToCommandHandlerMap(commandInfo);
-        Application::Instance()->GetLua()->RegisterCFunction(lua_Quit, "quit");
-    }
+    Application::Instance()->GetLua()->RegisterCFunction(lua_LoadLua, "loadlua");
+    Application::Instance()->GetLua()->RegisterCFunction(lua_Quit, "quit");
+
     {
         CommandInfo commandInfo;
         commandInfo.command = "help";
@@ -155,6 +161,12 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
    	LOGINFOF("UserCommands::Processing command: '%s'", command.c_str());
 #endif
 
+    if(Application::Instance()->GetLua()->ExecuteLine(command) == kError_OK)
+	{
+		// command has been serviced by Lua so no need to continue to the C++ handlers
+		return;
+	}
+
     // split the string
     std::stringstream ss(command);
     std::string item;
@@ -244,11 +256,6 @@ const std::vector<UserCommands::CommandInfo> UserCommands::GetCommandInfo()
         ret.push_back(iter.second);
     }
     return ret;
-}
-
-void UserCommands::Command_Quit(const std::vector<std::string>& command)
-{
-    CommandHelpers::Quit();
 }
 
 void UserCommands::Command_ResOpen(const std::vector<std::string>& command)

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "system/common.h"
-#include "system/icommandhandler.h"
+#include "system/command/icommandhandler.h"
 
 class WindowManager;
 

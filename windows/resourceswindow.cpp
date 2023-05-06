@@ -6,7 +6,7 @@
 
 #include "resourceswindow.h"
 #include "system/common.h"
-#include "system/commandhelpers.h"
+#include "system/command/commandhelpers.h"
 
 ResourcesWindow::ResourcesWindow()
 {

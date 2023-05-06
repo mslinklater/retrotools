@@ -1,11 +1,11 @@
 // [CopyrightNotice]
-// Copyright (c) 2019-2022, Martin Linklater
+// Copyright (c) Martin Linklater
 // All rights reserved.
 //
 // See file 'LICENSE' for license details
 
 #include "commandcenter.h"
-#include "common.h"
+#include "system/common.h"
 #include <algorithm>
 
 using namespace std;

@@ -10,7 +10,7 @@
 #include "system/common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
-#include "system/commands.h"
+#include "system/command/commands.h"
 #include "system/stateserialiser.h"
 #include "system/lua/luavm.h"
 #include "resources/resourcemanager.h"

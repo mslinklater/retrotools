@@ -62,8 +62,6 @@ public:
 
     const std::vector<CommandInfo> GetCommandInfo();
 
-    void Command_Quit(const std::vector<std::string>& command);
-    
 private:
     static UserCommands *instance;
 

@@ -4,7 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
-#include "common.h"
+#include "system/common.h"
 #include "commands.h"
 #include "commandcenter.h"
 
