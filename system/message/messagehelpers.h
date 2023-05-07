@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "commandcenter.h"
-#include "commands.h"
+#include "messagecenter.h"
+#include "messages.h"
 
-namespace CommandHelpers
+namespace MessageHelpers
 {
     void ToggleWindow(const std::string& windowName);
     void TextOutput(const std::string& text);

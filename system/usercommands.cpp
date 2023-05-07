@@ -14,7 +14,7 @@
 #include "usercommands.h"
 #include "system/log.h"
 #include "system/common.h"
-#include "command/commandhelpers.h"
+#include "message/messagehelpers.h"
 #include "resources/resourcemanager.h"
 #include "system/formatting.h"
 #include "system/application.h"
@@ -29,7 +29,7 @@ static int lua_Quit( lua_State* pState )
 	LUA_FUNCDEF("quit");
 	LUA_ASSERT_NUMPARAMS(0);
 
-    CommandHelpers::Quit();
+    MessageHelpers::Quit();
     return 0;
 }
 
@@ -192,7 +192,7 @@ void UserCommands::ParseAndProcessCommand(const std::string& command)
     // no match found so report error
     if(!consumed)
     {
-        CommandHelpers::TextOutput("ERROR - Unknown command...");
+        MessageHelpers::TextOutput("ERROR - Unknown command...");
     }
 }
 
@@ -324,14 +324,14 @@ void UserCommands::Command_ResClose(const std::vector<std::string>& command)
         {
             // found the resource
 			// close window
-			CommandHelpers::CloseResourceWindow(resourceId);
+			MessageHelpers::CloseResourceWindow(resourceId);
 			// close resource
 			ResourceManager::Instance()->CloseResource(resourceId);
         }
         else
         {
             // cannot find requested resource
-            CommandHelpers::TextOutput("Unknown resource ID");
+            MessageHelpers::TextOutput("Unknown resource ID");
         }
     }
 }
@@ -368,14 +368,14 @@ void UserCommands::Command_Ls(const std::vector<std::string>& command)
     std::sort(folders.begin(), folders.end());
     for(auto& folder : folders)
     {
-        CommandHelpers::TextOutput(folder);
+        MessageHelpers::TextOutput(folder);
     }
     std::sort(files.begin(), files.end());
     for(auto& file : files)
     {
-        CommandHelpers::TextOutput(file);
+        MessageHelpers::TextOutput(file);
     }
-    CommandHelpers::ScrollToBottom();
+    MessageHelpers::ScrollToBottom();
 }
 
 void UserCommands::Command_Cd(const std::vector<std::string>& command)
@@ -386,14 +386,14 @@ void UserCommands::Command_Cd(const std::vector<std::string>& command)
         if(fs::exists(newPath))
         {
             fs::current_path(newPath);
-            CommandHelpers::TextOutput(std::string("OK: ") + fs::current_path().string());
+            MessageHelpers::TextOutput(std::string("OK: ") + fs::current_path().string());
         }
         else
         {
-            CommandHelpers::TextOutput(std::string("Unknown path: ") + newPath.string());
-            CommandHelpers::TextOutput(fs::current_path().string());
+            MessageHelpers::TextOutput(std::string("Unknown path: ") + newPath.string());
+            MessageHelpers::TextOutput(fs::current_path().string());
         }
-        CommandHelpers::ScrollToBottom();
+        MessageHelpers::ScrollToBottom();
     }
 }
 
@@ -431,30 +431,30 @@ void UserCommands::Completion_Cd(std::string& parameters, std::vector<std::strin
 
 void UserCommands::Command_Pwd(const std::vector<std::string>& command)
 {
-    CommandHelpers::TextOutput(fs::current_path().string());
-    CommandHelpers::ScrollToBottom();
+    MessageHelpers::TextOutput(fs::current_path().string());
+    MessageHelpers::ScrollToBottom();
 }
 
 void UserCommands::Command_Help(const std::vector<std::string>& command)
 {
     if(command.size() < 2)
     {
-        CommandHelpers::TextOutput("Please specify a command you want help with... 'help [command]'");
+        MessageHelpers::TextOutput("Please specify a command you want help with... 'help [command]'");
     }
     else
     {
         std::string helpSubject = command[1];
         if(commandHandlerMap.find(helpSubject) != commandHandlerMap.end())
         {
-            CommandHelpers::TextOutput(commandHandlerMap[helpSubject].hint);
+            MessageHelpers::TextOutput(commandHandlerMap[helpSubject].hint);
         }
         else
         {
             // unknown command
-            CommandHelpers::TextOutput("Unknown command");
+            MessageHelpers::TextOutput("Unknown command");
         }
     }
-    CommandHelpers::ScrollToBottom();
+    MessageHelpers::ScrollToBottom();
 }
 
 void UserCommands::Completion_Help(std::string& parameters, std::vector<std::string>& completions)

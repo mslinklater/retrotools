@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <map>
-#include "system/command/commandcenter.h"
+#include "system/message/messagecenter.h"
 #include "system/errorcodes.h"
 #include "system/istateserialisation.h"
 
@@ -16,7 +16,7 @@ class WindowBase;
 class StateSerialiser;
 class LuaVM;
 
-class WindowManager : public ICommandHandler, public IStateSerialisation
+class WindowManager : public IMessageHandler, public IStateSerialisation
 {
 public:
 	WindowManager();
@@ -37,7 +37,7 @@ public:
 
 private:
 	
-	ICOMMANDHANDLER_API;
+	IMESSAGEHANDLER_API;
 	
 	bool initialised;
 

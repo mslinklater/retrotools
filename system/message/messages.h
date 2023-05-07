@@ -7,75 +7,75 @@
 #pragma once
 
 #include <string>
-#include "icommandhandler.h"
+#include "system/message/imessagehandler.h"
 
 // Toggle Window
 
-class ToggleWindowCommand : public CommandBase
+class ToggleWindowMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	ToggleWindowCommand(std::string _windowName)
-	: CommandBase(kName)
+	ToggleWindowMessage(std::string _windowName)
+	: MessageBase(kName)
 	, windowName(_windowName)
 	{}
 
-	virtual ~ToggleWindowCommand(){}
+	virtual ~ToggleWindowMessage(){}
 	std::string windowName;
 };
 
 // Text Output
 
-class TextOutputCommand : public CommandBase
+class TextOutputMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	TextOutputCommand(std::string _text)
-	: CommandBase(kName)
+	TextOutputMessage(std::string _text)
+	: MessageBase(kName)
 	, text(_text)
 	{}
 
-	virtual ~TextOutputCommand(){}
+	virtual ~TextOutputMessage(){}
 	std::string text;
 };
 
 // Scroll to bottom
 
-class ScrollToBottomCommand : public CommandBase
+class ScrollToBottomMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	ScrollToBottomCommand()
-	: CommandBase(kName)
+	ScrollToBottomMessage()
+	: MessageBase(kName)
 	{}
 
-	virtual ~ScrollToBottomCommand(){}
+	virtual ~ScrollToBottomMessage(){}
 };
 
 // Quit
 
-class QuitCommand : public CommandBase
+class QuitMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	QuitCommand()
-	: CommandBase(kName)
+	QuitMessage()
+	: MessageBase(kName)
 	{}
 };
 
 // Open Resource Window
 
-class OpenResourceWindowCommand : public CommandBase
+class OpenResourceWindowMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	OpenResourceWindowCommand(std::string _resourceId)
-	: CommandBase(kName)
+	OpenResourceWindowMessage(std::string _resourceId)
+	: MessageBase(kName)
 	, resourceId(_resourceId)
 	{}
 
@@ -83,13 +83,13 @@ public:
 };
 
 // Close resource window
-class CloseResourceWindowCommand : public CommandBase
+class CloseResourceWindowMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	CloseResourceWindowCommand(std::string _resourceId)
-	: CommandBase(kName)
+	CloseResourceWindowMessage(std::string _resourceId)
+	: MessageBase(kName)
 	, resourceId(_resourceId)
 	{}
 
@@ -98,13 +98,13 @@ public:
 
 // Halt
 
-class HaltCommand : public CommandBase
+class HaltMessage : public MessageBase
 {
 public:
 	static const std::string kName;
 
-	HaltCommand()
-	: CommandBase(kName)
+	HaltMessage()
+	: MessageBase(kName)
 	{}
 
 	enum ERunType

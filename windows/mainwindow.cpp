@@ -9,11 +9,11 @@
 
 #include "mainwindow.h"
 #include "system/common.h"
-#include "system/command/commandcenter.h"
-#include "system/command/commands.h"
+#include "system/message/messagecenter.h"
+#include "system/message/messages.h"
 #include "system/window/windowmanager.h"
 #include "filebrowser/ImGuiFileBrowser.h"
-#include "system/command/commandhelpers.h"
+#include "system/message/messagehelpers.h"
 #include "system/usercommands.h"
 #include "settings.h"
 #include "system/formatting.h"
@@ -27,8 +27,8 @@ MainWindow::MainWindow()
 , commandHistoryPtr(0)
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
-	CommandCenter::Instance()->Subscribe(TextOutputCommand::kName, this);
-	CommandCenter::Instance()->Subscribe(ScrollToBottomCommand::kName, this);
+	MessageCenter::Instance()->Subscribe(TextOutputMessage::kName, this);
+	MessageCenter::Instance()->Subscribe(ScrollToBottomMessage::kName, this);
 }
 
 MainWindow::~MainWindow()
@@ -66,7 +66,7 @@ void MainWindow::DrawMenuBar()
 			if(ImGui::MenuItem("Quit"))
 			{
 				// quit session
-				CommandHelpers::Quit();
+				MessageHelpers::Quit();
 			}
 			ImGui::EndMenu();
 		}
@@ -80,7 +80,7 @@ void MainWindow::DrawMenuBar()
 			{
 				if(ImGui::MenuItem(name.c_str()))
 				{
-					CommandHelpers::ToggleWindow(name);
+					MessageHelpers::ToggleWindow(name);
 				}
 			}
 			ImGui::EndMenu();
@@ -89,11 +89,11 @@ void MainWindow::DrawMenuBar()
 		{
 			if(ImGui::MenuItem("Commands"))
 			{
-				CommandHelpers::ToggleWindow("HelpCommands");
+				MessageHelpers::ToggleWindow("HelpCommands");
 			}
 			if(ImGui::MenuItem("About"))
 			{
-				CommandHelpers::ToggleWindow("HelpAbout");
+				MessageHelpers::ToggleWindow("HelpAbout");
 			}
 			ImGui::EndMenu();
 		}
@@ -143,7 +143,7 @@ int MainWindow::CommandPromptCallback(ImGuiInputTextCallbackData* data)
 		// display the matches
 		for(const auto &item : matches)
 		{
-			CommandHelpers::TextOutput(item);
+			MessageHelpers::TextOutput(item);
 		}
 	}
 	return 0;
@@ -284,20 +284,20 @@ void MainWindow::Draw()
 	ImGui::End(); 
 }
 
-ICommandHandler::Return MainWindow::HandleCommand(const std::shared_ptr<CommandBase> command)
+IMessageHandler::Return MainWindow::HandleMessage(const std::shared_ptr<MessageBase> command)
 {
-	if(command->name == TextOutputCommand::kName)
+	if(command->name == TextOutputMessage::kName)
 	{
-		std::shared_ptr<TextOutputCommand> cmd = std::dynamic_pointer_cast<TextOutputCommand>(command);
+		std::shared_ptr<TextOutputMessage> cmd = std::dynamic_pointer_cast<TextOutputMessage>(command);
 		outputItems.push_back(cmd->text);
 		while(outputItems.size() > Settings::kMaxOutputLines)
 		{
 			outputItems.erase(outputItems.begin());
 		}
 	}
-	if(command->name == ScrollToBottomCommand::kName)
+	if(command->name == ScrollToBottomMessage::kName)
 	{
 		bScrollToBottom = true;
 	}
-	return ICommandHandler::kForward;
+	return IMessageHandler::kForward;
 }

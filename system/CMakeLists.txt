@@ -3,9 +3,9 @@ add_subdirectory("lua")
 
 set(SOURCE_FILES ${SOURCE_FILES}
 	${CMAKE_CURRENT_LIST_DIR}/log.cpp 
-	${CMAKE_CURRENT_LIST_DIR}/command/commands.cpp 
-	${CMAKE_CURRENT_LIST_DIR}/command/commandhelpers.cpp 
-	${CMAKE_CURRENT_LIST_DIR}/command/commandcenter.cpp
+	${CMAKE_CURRENT_LIST_DIR}/message/messages.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/message/messagehelpers.cpp 
+	${CMAKE_CURRENT_LIST_DIR}/message/messagecenter.cpp
 	${CMAKE_CURRENT_LIST_DIR}/stateserialiser.cpp
 	${CMAKE_CURRENT_LIST_DIR}/errorcodes.cpp
 	${CMAKE_CURRENT_LIST_DIR}/usercommands.cpp

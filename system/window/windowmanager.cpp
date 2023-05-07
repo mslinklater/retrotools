@@ -10,7 +10,7 @@
 #include "system/common.h"
 #include "windowmanager.h"
 #include "windowbase.h"
-#include "system/command/commands.h"
+#include "system/message/messages.h"
 #include "system/stateserialiser.h"
 #include "system/lua/luavm.h"
 #include "resources/resourcemanager.h"
@@ -33,10 +33,10 @@ void WindowManager::Init(std::shared_ptr<StateSerialiser> pStateSerialiser)
 	LOGINFO("WindowManager::Init");
 	
 	// Subscribe to all ToggleWindow commands
-	CommandCenter::Instance()->Subscribe(ToggleWindowCommand::kName, this);
-	CommandCenter::Instance()->Subscribe(QuitCommand::kName, this);
-	CommandCenter::Instance()->Subscribe(OpenResourceWindowCommand::kName, this);
-	CommandCenter::Instance()->Subscribe(CloseResourceWindowCommand::kName, this);
+	MessageCenter::Instance()->Subscribe(ToggleWindowMessage::kName, this);
+	MessageCenter::Instance()->Subscribe(QuitMessage::kName, this);
+	MessageCenter::Instance()->Subscribe(OpenResourceWindowMessage::kName, this);
+	MessageCenter::Instance()->Subscribe(CloseResourceWindowMessage::kName, this);
 
 	initialised = true;
 }
@@ -61,11 +61,11 @@ void WindowManager::Draw()
 	}
 }
 
-ICommandHandler::Return WindowManager::HandleCommand(const std::shared_ptr<CommandBase> command)
+IMessageHandler::Return WindowManager::HandleMessage(const std::shared_ptr<MessageBase> command)
 {
-	if(command->name == ToggleWindowCommand::kName)
+	if(command->name == ToggleWindowMessage::kName)
 	{
-		std::shared_ptr<ToggleWindowCommand> cmd = std::dynamic_pointer_cast<ToggleWindowCommand>(command);
+		std::shared_ptr<ToggleWindowMessage> cmd = std::dynamic_pointer_cast<ToggleWindowMessage>(command);
 		if(windows.find(cmd->windowName) != windows.end())
 		{
 			windowActive[cmd->windowName] = !windowActive[cmd->windowName];
@@ -74,12 +74,12 @@ ICommandHandler::Return WindowManager::HandleCommand(const std::shared_ptr<Comma
 		{
 			LOGWARNINGF("WindowManager::ToggleWindow - cannot find window named '%s'", cmd->windowName.c_str());
 		}
-		return ICommandHandler::kConsumed;
+		return IMessageHandler::kConsumed;
 	}
 
-	if(command->name == CloseResourceWindowCommand::kName)
+	if(command->name == CloseResourceWindowMessage::kName)
 	{
-		std::shared_ptr<CloseResourceWindowCommand> cmd = std::dynamic_pointer_cast<CloseResourceWindowCommand>(command);
+		std::shared_ptr<CloseResourceWindowMessage> cmd = std::dynamic_pointer_cast<CloseResourceWindowMessage>(command);
 		std::string windowName = std::string("Resource-") + cmd->resourceId;
 
 		auto res = windows.find(windowName);
@@ -87,12 +87,12 @@ ICommandHandler::Return WindowManager::HandleCommand(const std::shared_ptr<Comma
 		{
 			RemoveWindow(windowName);
 		}
-		return ICommandHandler::kConsumed;
+		return IMessageHandler::kConsumed;
 	}
 
-	if(command->name == OpenResourceWindowCommand::kName)
+	if(command->name == OpenResourceWindowMessage::kName)
 	{
-		std::shared_ptr<OpenResourceWindowCommand> cmd = std::dynamic_pointer_cast<OpenResourceWindowCommand>(command);
+		std::shared_ptr<OpenResourceWindowMessage> cmd = std::dynamic_pointer_cast<OpenResourceWindowMessage>(command);
 		std::string windowName = std::string("Resource-") + cmd->resourceId;
 
 		// check for window already existing
@@ -140,16 +140,16 @@ ICommandHandler::Return WindowManager::HandleCommand(const std::shared_ptr<Comma
 				ResourceManager::Instance()->SetResourceWindow(cmd->resourceId, windowName);
 			}
 		}
-		return ICommandHandler::kConsumed;
+		return IMessageHandler::kConsumed;
 	}
 
-	if(command->name == QuitCommand::kName)
+	if(command->name == QuitMessage::kName)
 	{
 		// save the state of the windows
 		receivedQuit = true;
 	}
 
-	return ICommandHandler::kForward;
+	return IMessageHandler::kForward;
 }
 
 bool WindowManager::ReceivedQuit()

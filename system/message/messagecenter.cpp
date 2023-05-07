@@ -4,7 +4,7 @@
 //
 // See file 'LICENSE' for license details
 
-#include "commandcenter.h"
+#include "messagecenter.h"
 #include "system/common.h"
 #include <algorithm>
 
@@ -12,76 +12,76 @@ using namespace std;
 
 #define LOGGING 0
 
-CommandCenter* CommandCenter::pInstance = 0;
+MessageCenter* MessageCenter::pInstance = 0;
 
-CommandCenter::CommandCenter()
+MessageCenter::MessageCenter()
 	: writeQueueIndex(0)
 	, readQueueIndex(1)
 {
 }
 
-CommandCenter::~CommandCenter()
+MessageCenter::~MessageCenter()
 {
 }
 
-void CommandCenter::Update()
+void MessageCenter::Update()
 {
 	// toggle queue indexes
 	readQueueIndex = 1-readQueueIndex;
 	writeQueueIndex = 1-readQueueIndex;
 	// empty the read queue
 	
-	while(!commandList[readQueueIndex].empty())
+	while(!messageList[readQueueIndex].empty())
 	{
-		shared_ptr<CommandBase> thisCommand = commandList[readQueueIndex].front();
-		commandList[readQueueIndex].pop();
+		shared_ptr<MessageBase> thisCommand = messageList[readQueueIndex].front();
+		messageList[readQueueIndex].pop();
 		
 		if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 		{
-			vector<ICommandHandler*> handlers = dispatchMap[thisCommand->name];
-			for( ICommandHandler* handler : handlers)
+			vector<IMessageHandler*> handlers = dispatchMap[thisCommand->name];
+			for( IMessageHandler* handler : handlers)
 			{
-				handler->HandleCommand(thisCommand);
+				handler->HandleMessage(thisCommand);
 			}
 		}
 	}
 }
 
-void CommandCenter::QueueForBroadcast(shared_ptr<CommandBase> command)
+void MessageCenter::QueueForBroadcast(shared_ptr<MessageBase> command)
 {
 #if LOGGING
 	LOGINFOF("CommandCenter::QueueForBroadcast %s(%s,%s)", command.name.c_str(), command.payload.c_str(), command.payload2.c_str());
 #endif
-	commandList[writeQueueIndex].push(command);
+	messageList[writeQueueIndex].push(command);
 }
 
-void CommandCenter::BroadcastNow(shared_ptr<CommandBase> thisCommand)
+void MessageCenter::BroadcastNow(shared_ptr<MessageBase> thisCommand)
 {
 #if LOGGING
 	LOGINFOF("CommandCenter::BroadcastNow %s(%s,%s)", thisCommand.name.c_str(), thisCommand.payload.c_str(), thisCommand.payload2.c_str());
 #endif
 	if(dispatchMap.find(thisCommand->name) != dispatchMap.end())
 	{
-		vector<ICommandHandler*> handlers = dispatchMap[thisCommand->name];
-		for( ICommandHandler* handler : handlers)
+		vector<IMessageHandler*> handlers = dispatchMap[thisCommand->name];
+		for( IMessageHandler* handler : handlers)
 		{
-			handler->HandleCommand(thisCommand);
+			handler->HandleMessage(thisCommand);
 		}
 	}
 }
 
-CommandCenter * CommandCenter::Instance()
+MessageCenter * MessageCenter::Instance()
 {
 	if(pInstance == nullptr)
 	{
-		pInstance = new CommandCenter();
+		pInstance = new MessageCenter();
 	}
 	return pInstance;
 }
 
-void CommandCenter::Subscribe(string commandName, ICommandHandler* handler)
+void MessageCenter::Subscribe(string commandName, IMessageHandler* handler)
 {
-	vector<ICommandHandler*>& vec = dispatchMap[commandName];
+	vector<IMessageHandler*>& vec = dispatchMap[commandName];
 
 	if(find(vec.begin(), vec.end(), handler) == vec.end())
 	{
@@ -94,9 +94,9 @@ void CommandCenter::Subscribe(string commandName, ICommandHandler* handler)
 	
 }
 
-void CommandCenter::Unsubscribe(string commandName, ICommandHandler* handler)
+void MessageCenter::Unsubscribe(string commandName, IMessageHandler* handler)
 {
-	vector<ICommandHandler*>& vec = dispatchMap[commandName];
+	vector<IMessageHandler*>& vec = dispatchMap[commandName];
 
 	auto ret = find(vec.begin(), vec.end(), handler);
 

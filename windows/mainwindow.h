@@ -8,11 +8,11 @@
 #pragma once
 
 #include "system/common.h"
-#include "system/command/icommandhandler.h"
+#include "system/message/imessagehandler.h"
 
 class WindowManager;
 
-class MainWindow : public ICommandHandler
+class MainWindow : public IMessageHandler
 {
 public:
 	MainWindow();
@@ -21,7 +21,7 @@ public:
 	void Draw();
 	void SetWindowManager(std::shared_ptr<WindowManager> wm){ pWindowManager = wm; }
 
-	ICOMMANDHANDLER_API
+	IMESSAGEHANDLER_API
 
 private:
 	bool open;

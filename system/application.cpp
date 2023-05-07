@@ -266,7 +266,7 @@ void Application::UpdateLoop()
 		performanceCounterLast = performanceCounterThis;
 
 		//pSystem->Update(dt);
-		CommandCenter::Instance()->Update();
+		MessageCenter::Instance()->Update();
 		
 		// start ImGui frame
 		ImGui_ImplOpenGL2_NewFrame();

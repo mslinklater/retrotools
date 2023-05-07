@@ -6,7 +6,7 @@
 
 #include "resourceswindow.h"
 #include "system/common.h"
-#include "system/command/commandhelpers.h"
+#include "system/message/messagehelpers.h"
 
 ResourcesWindow::ResourcesWindow()
 {
@@ -39,14 +39,14 @@ void ResourcesWindow::Draw(void)
 			if (ImGui::SmallButton("Close")) 
 			{ 
 				// close window
-				CommandHelpers::CloseResourceWindow(resource.second.Id);
+				MessageHelpers::CloseResourceWindow(resource.second.Id);
 				// close resource
 				ResourceManager::Instance()->CloseResource(resource.second.Id);
 			}
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Info")) 
 			{ 
-				CommandHelpers::OpenResourceWindow(resource.second.Id);
+				MessageHelpers::OpenResourceWindow(resource.second.Id);
 			}
 
 			ImGui::TableSetColumnIndex(1);
