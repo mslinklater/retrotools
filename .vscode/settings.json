@@ -3,7 +3,6 @@
 	"files.exclude": {
 		"**/*.cmake": true,
 		"**/CMakeFiles/": true,
-		"build/": true,
 		"CMakeCache.txt": true,
 		"imgui.ini": true,
 		"Testing/": true

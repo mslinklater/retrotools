@@ -8,7 +8,7 @@ set(CMAKE_C_FLAGS "-DDEBUG -DLUA_USE_POSIX")
 set(CMAKE_CXX_FLAGS "-DDEBUG")
 set(CMAKE_BUILD_TYPE Debug)
 
-#enable_testing()
+enable_testing()
 #add_test(cpu6502 build/vistella [cpu6502])
 
 if (UNIX)
@@ -58,8 +58,6 @@ set(SOURCE_FILES main.cpp)
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("3rdparty/lua-5.4.4/src")
 add_subdirectory("components")
-#add_subdirectory("components/cpu6502")
-#add_subdirectory("components/stella")
 add_subdirectory("utils")
 add_subdirectory("windows")
 add_subdirectory("test")
@@ -70,9 +68,16 @@ add_subdirectory("3rdparty/perfect6502")
 
 project (retrotools VERSION 0.1 HOMEPAGE_URL https://github.com/mslinklater)
 
+#include(CTest)
+
 configure_file(version.h.in version.h)
 
 add_executable(retrotools ${SOURCE_FILES})
 target_include_directories(retrotools PUBLIC "${PROJECT_BINARY_DIR}" ".")
 target_link_libraries(retrotools ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(retrotools PRIVATE -Wall -Werror -Wno-psabi -g)
+
+add_executable(TestRunner test/testcommon.cpp)
+target_include_directories(TestRunner PUBLIC "${PROJECT_BINARY_DIR}" ".")
+target_link_libraries(TestRunner ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
+target_compile_options(TestRunner PRIVATE -Wall -Werror -Wno-psabi -g)
