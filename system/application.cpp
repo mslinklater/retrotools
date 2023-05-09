@@ -5,7 +5,7 @@
 // See file 'LICENSE' for license details
 
 #include "application.h"
-#include "buildconfig.h"
+#include "projectconfig.h"
 
 #include "3rdparty/imgui/imgui_impl_sdl.h"
 #include "3rdparty/imgui/imgui_impl_opengl2.h"

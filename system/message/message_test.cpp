@@ -4,7 +4,9 @@
 //
 // See file 'LICENSE' for license details
 
-#pragma once
+#include <gtest/gtest.h>
 
-#define RUN_TESTS 0
-#define IMGUI_DEMO 1
+TEST(MessageTests, SimpleTest_False)
+{
+	EXPECT_FALSE(false);
+}

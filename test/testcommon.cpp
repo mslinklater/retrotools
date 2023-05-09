@@ -4,9 +4,17 @@
 //
 // See file 'LICENSE' for license details
 
-#include "testcommon.h"
+#include <gtest/gtest.h>
 
-int main(int argc, char* argv[])
+TEST(SimpleTests, SimpleTest_False)
 {
-	return 0;
+	EXPECT_FALSE(false);
+}
+TEST(SimpleTests, SimpleTest_True)
+{
+	EXPECT_TRUE(true);
+}
+TEST(SimpleTests, SimpleTest_Equals)
+{
+	EXPECT_EQ(1, 1);
 }

@@ -17,6 +17,18 @@ set(CMAKE_LIBRARY_SUFFIXES a)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 set(CMAKE_FIND_LIBRARY_SUFFIXES a)
 
+#Start GoogleTest Section
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  # Specify the commit you depend on and update it regularly.
+  URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+# End GoogleTest Section
+
 #set(SDL2_DIR /usr/lib/x86_64-linux-gnu/cmake/SDL2/)
 #set(OPENGL_opengl_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenGL.so)
 #set(OPENGL_glx_LIBRARY /usr/lib/x86_64-linux-gnu/)
@@ -54,6 +66,7 @@ include_directories(".")
 endif (UNIX)
 
 set(SOURCE_FILES main.cpp)
+set(TESTRUNNER_FILES test/testcommon.cpp)
 
 add_subdirectory("3rdparty/imgui")
 add_subdirectory("3rdparty/lua-5.4.4/src")
@@ -68,8 +81,6 @@ add_subdirectory("3rdparty/perfect6502")
 
 project (retrotools VERSION 0.1 HOMEPAGE_URL https://github.com/mslinklater)
 
-#include(CTest)
-
 configure_file(version.h.in version.h)
 
 add_executable(retrotools ${SOURCE_FILES})
@@ -77,7 +88,7 @@ target_include_directories(retrotools PUBLIC "${PROJECT_BINARY_DIR}" ".")
 target_link_libraries(retrotools ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
 target_compile_options(retrotools PRIVATE -Wall -Werror -Wno-psabi -g)
 
-add_executable(TestRunner test/testcommon.cpp)
+add_executable(TestRunner ${TESTRUNNER_FILES})
 target_include_directories(TestRunner PUBLIC "${PROJECT_BINARY_DIR}" ".")
-target_link_libraries(TestRunner ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY})
+target_link_libraries(TestRunner ${SDL2_LIBRARIES} ${OPENGL_opengl_LIBRARY} gtest_main)
 target_compile_options(TestRunner PRIVATE -Wall -Werror -Wno-psabi -g)

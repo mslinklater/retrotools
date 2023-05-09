@@ -15,7 +15,7 @@
 #include "filebrowser/ImGuiFileBrowser.h"
 #include "system/message/messagehelpers.h"
 #include "system/usercommands.h"
-#include "settings.h"
+#include "projectconfig.h"
 #include "system/formatting.h"
 
 //imgui_addons::ImGuiFileBrowser file_dialog; // As a class member or globally
@@ -290,7 +290,7 @@ IMessageHandler::Return MainWindow::HandleMessage(const std::shared_ptr<MessageB
 	{
 		std::shared_ptr<TextOutputMessage> cmd = std::dynamic_pointer_cast<TextOutputMessage>(command);
 		outputItems.push_back(cmd->text);
-		while(outputItems.size() > Settings::kMaxOutputLines)
+		while(outputItems.size() > ProjectConfig::kMaxOutputLines)
 		{
 			outputItems.erase(outputItems.begin());
 		}

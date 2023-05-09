@@ -8,10 +8,17 @@
 //static float kLogicLow = 0.0f;
 //static float kLogicHigh = 5.0f;
 
-namespace Settings
+#define RUN_TESTS 0
+#define IMGUI_DEMO 0
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
+namespace ProjectConfig
 {
 	// main window
 	static size_t kMaxOutputLines = 500;
 
 };
 
+#pragma GCC diagnostic pop
