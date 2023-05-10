@@ -11,6 +11,8 @@
 
 namespace MessageHelpers
 {
+	extern std::shared_ptr<MessageCenter> messageCenter;
+
     void ToggleWindow(const std::string& windowName);
     void TextOutput(const std::string& text);
     void ScrollToBottom();

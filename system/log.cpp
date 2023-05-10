@@ -145,13 +145,6 @@ void Log::Warningf(const char* fmt, ...)
 	
 	std::string line = buffer;
 	Warning(line);
-
-//	LogLine newLine;
-//	SplitCategory(buffer, newLine.category, newLine.content);	
-//	newLine.type = LogType::EWarning;
-	
-//	AddLine(newLine);
-//	std::cout << "Warning:" << newLine.content << std::endl;
 }
 
 void Log::Error(std::string line)
@@ -173,13 +166,28 @@ void Log::Errorf(const char* fmt, ...)
 	
 	std::string line = buffer;
 	Error(line);
+}
 
-//	LogLine newLine;
-//	SplitCategory(buffer, newLine.category, newLine.content);	
-//	newLine.type = LogType::EError;
+void Log::Fatal(std::string line)
+{
+	LogLine newLine;
+	SplitCategory(line, newLine.category, newLine.content);	
+	newLine.type = LogType::EFatal;
 	
-//	AddLine(newLine);
-//	std::cerr << "Error:" << newLine.content << std::endl;
+	AddLine(newLine);
+	std::cerr << "FATAL:" << line << std::endl;
+	exit(1);	// BAIL !
+}
+
+void Log::Fatalf(const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+	vsnprintf(buffer, BUFFER_SIZE, fmt, args );
+    va_end(args);
+	
+	std::string line = buffer;
+	Fatal(line);
 }
 
 void Log::AddLine(Log::LogLine line)

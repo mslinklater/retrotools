@@ -16,6 +16,12 @@ class WindowBase;
 class StateSerialiser;
 class LuaVM;
 
+struct WindowManagerInit
+{
+	std::shared_ptr<LuaVM> lua;
+	std::shared_ptr<MessageCenter> messageCenter;
+};
+
 class WindowManager : public IMessageHandler, public IStateSerialisation
 {
 public:
@@ -28,7 +34,7 @@ public:
 
 	const std::vector<std::string> GetWindows();
 	
-	void Init(std::shared_ptr<StateSerialiser> pStateSerialiser);
+	void Init(const WindowManagerInit& init);
 	void RegisterLuaInterface(std::shared_ptr<LuaVM> pLua);
 	void Draw();
 	bool ReceivedQuit();
@@ -39,6 +45,8 @@ private:
 	
 	IMESSAGEHANDLER_API;
 	
+	std::shared_ptr<MessageCenter> messageCenter;
+
 	bool initialised;
 
 	// TODO: Combine these two into a struct

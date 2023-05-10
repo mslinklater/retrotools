@@ -21,8 +21,11 @@
 class MessageCenter
 {
 public:
+	MessageCenter();
+	virtual ~MessageCenter();
+
 	// Yes, singleton. Shoot me.
-	static MessageCenter* Instance();
+//	static MessageCenter* Instance();
 	void Update();
 	
 	void QueueForBroadcast(std::shared_ptr<MessageBase> message);
@@ -32,8 +35,6 @@ public:
 	void Unsubscribe(std::string messageName, IMessageHandler* handler);
 
 private:
-	MessageCenter();
-	virtual ~MessageCenter();
 	
 	uint32_t			writeQueueIndex;
 	uint32_t			readQueueIndex;

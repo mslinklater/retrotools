@@ -27,13 +27,17 @@ MainWindow::MainWindow()
 , commandHistoryPtr(0)
 {
 	memset(&inputBuffer[0], 0, kInputBufferSize);
-	MessageCenter::Instance()->Subscribe(TextOutputMessage::kName, this);
-	MessageCenter::Instance()->Subscribe(ScrollToBottomMessage::kName, this);
 }
 
 MainWindow::~MainWindow()
 {
 	LOGINFO("MainWindow::~MainWindow()");
+}
+
+void MainWindow::Init(const MainWindowInit& init)
+{
+	init.messageCenter->Subscribe(TextOutputMessage::kName, this);
+	init.messageCenter->Subscribe(ScrollToBottomMessage::kName, this);
 }
 
 void MainWindow::DrawMenuBar()

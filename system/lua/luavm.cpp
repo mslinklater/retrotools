@@ -12,6 +12,8 @@
 #include <iostream>
 
 std::vector<std::string> LuaVM::printOutputBuffer;
+uint32_t LuaVM::numMemoryBlocks = 0;
+uint32_t LuaVM::memorySize = 0;
 
 static int lua_Print( lua_State* pState )
 {
@@ -127,18 +129,22 @@ static int panic (lua_State* _state) {
 
 void LuaHookCall(lua_State* pState, lua_Debug* ar)
 {
+	LOGINFO("Lua::HookCall");
 }
 
 void LuaHookRet(lua_State* pState, lua_Debug* ar)
 {
+	LOGINFO("Lua::HookRet");
 }
 
 void LuaHookLine(lua_State* pState, lua_Debug* ar)
 {
+	LOGINFO("Lua::HookLine");
 }
 
 void LuaHookCount(lua_State* pState, lua_Debug* ar)
 {
+	LOGINFO("Lua::HookCount");
 }
 
 eErrorCode LuaVM::LoadScript(const std::string& filename)
@@ -206,12 +212,16 @@ static void* LuaAlloc( void* ud, void* ptr, size_t osize, size_t nsize )
 {
 	if (nsize) 
 	{
+
 		if (osize) 
 		{
+			LuaVM::memorySize += nsize - osize;
 			return realloc(ptr, nsize);
 		} 
 		else 
 		{
+			LuaVM::numMemoryBlocks++;
+			LuaVM::memorySize += nsize;
 			return malloc(nsize);
 		}
 	} 
@@ -219,6 +229,7 @@ static void* LuaAlloc( void* ud, void* ptr, size_t osize, size_t nsize )
 	{
 		if (osize) 
 		{
+			LuaVM::memorySize -= osize;
 			free(ptr);
 		}
 		return nullptr;
@@ -241,12 +252,12 @@ eErrorCode LuaVM::Init()
 	RegisterCFunction(lua_LogWarning, "logwarning");
 	RegisterCFunction(lua_LogError, "logerror");
 
-#if defined(DEBUG)
+//#if defined(DEBUG)
 	lua_sethook(pState, LuaHookCall, LUA_MASKCALL, 0);
 	lua_sethook(pState, LuaHookRet, LUA_MASKRET, 0);
 	lua_sethook(pState, LuaHookLine, LUA_MASKLINE, 0);
 	lua_sethook(pState, LuaHookCount, LUA_MASKCOUNT, 1);
-#endif
+//#endif
 
 	// load in core systems
 	LoadScript("lua/init.lua");
@@ -256,11 +267,32 @@ eErrorCode LuaVM::Init()
 
 void LuaVM::DumpStack(lua_State* pState)
 {
+	LOGINFO("Lua::DumpStack");
 
+	lua_Debug entry;
+	int depth = 0;
+	
+	while (lua_getstack(pState, depth, &entry)) {
+		int status = lua_getinfo(pState, "Sln", &entry);
+		if (!status) {
+			LOGFATAL("ERROR in dumpCallstack");
+		}
+		std::stringstream ss;
+		ss << entry.short_src;
+		ss << "(";
+		ss << entry.currentline;
+		ss << "): ";
+		ss << entry.name;
+
+		LOGINFO( ss.str() );
+		depth++;
+	}
 }
 
 void LuaVM::RegisterCFunction( LuaCallableCFunction func, const std::string& name )
 {
+	LOGINFOF("Lua::RegisterCFunction %s", name.c_str());
+	
 	std::vector<std::string> components;
 
 	Stringutils::SplitByString(name, ",", components);
@@ -288,5 +320,29 @@ void LuaVM::RegisterCFunction( LuaCallableCFunction func, const std::string& nam
 
 void LuaVM::RemoveCFunction( const std::string& name )
 {
+	LOGINFOF("Lua::RemoveCFunction %s", name.c_str());
 
+	std::vector<std::string> components;
+
+	Stringutils::SplitByString(name, ",", components);
+	
+	uint32_t numComponents = components.size();
+	
+	for (uint32_t i = 0; i < numComponents - 1; i++) {
+		if (i == 0) {
+			lua_getglobal(pState, components[i].c_str());
+		} else {
+			lua_getfield(pState, -1, components[i].c_str());
+		}
+	}
+	
+	lua_pushnil(pState);
+	
+	if (numComponents == 1) {
+		lua_setglobal(pState, components[numComponents - 1].c_str() );
+	} else {
+		lua_setfield(pState, -2, components[numComponents - 1].c_str() );
+	}
+	
+	lua_pop(pState, (int)(numComponents - 1));	
 }

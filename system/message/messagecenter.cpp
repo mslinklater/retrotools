@@ -70,15 +70,6 @@ void MessageCenter::BroadcastNow(shared_ptr<MessageBase> thisCommand)
 	}
 }
 
-MessageCenter * MessageCenter::Instance()
-{
-	if(pInstance == nullptr)
-	{
-		pInstance = new MessageCenter();
-	}
-	return pInstance;
-}
-
 void MessageCenter::Subscribe(string commandName, IMessageHandler* handler)
 {
 	vector<IMessageHandler*>& vec = dispatchMap[commandName];
@@ -90,8 +81,7 @@ void MessageCenter::Subscribe(string commandName, IMessageHandler* handler)
 	else
 	{
 		LOGERRORF("CommandCenter::Subscribing to the same command twice:%s", commandName.c_str());
-	}
-	
+	}	
 }
 
 void MessageCenter::Unsubscribe(string commandName, IMessageHandler* handler)

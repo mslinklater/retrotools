@@ -11,12 +11,19 @@
 #include "system/message/imessagehandler.h"
 
 class WindowManager;
+class MessageCenter;
+
+struct MainWindowInit
+{
+	std::shared_ptr<MessageCenter> messageCenter;
+};
 
 class MainWindow : public IMessageHandler
 {
 public:
 	MainWindow();
 	virtual ~MainWindow();
+	void Init(const MainWindowInit& init);
 	
 	void Draw();
 	void SetWindowManager(std::shared_ptr<WindowManager> wm){ pWindowManager = wm; }

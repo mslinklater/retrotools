@@ -17,6 +17,8 @@
 #include "windows/resources/t64window.h"
 #include "windows/resources/binarywindow.h"
 
+static WindowManager* luaContext_WindowManager = nullptr;
+
 WindowManager::WindowManager()
 : initialised(false)
 , receivedQuit(false)
@@ -28,15 +30,40 @@ WindowManager::~WindowManager()
 	LOGINFO("WindowManager::~WindowManager()");
 }
 
-void WindowManager::Init(std::shared_ptr<StateSerialiser> pStateSerialiser)
+static int lua_WindowCreate( lua_State* pState )
+{
+	LUA_FUNCDEF("window_create");
+	LUA_ASSERT_NUMPARAMS(2);
+	LUA_ASSERT_TYPE(1, LUA_TSTRING);	// type
+	LUA_ASSERT_TYPE(2, LUA_TSTRING);	// identifier
+
+	if(luaContext_WindowManager->ShowWindow(lua_tostring(pState, 1), true) == kError_OK)
+	{
+		lua_pushboolean(pState, true);
+	}
+	else
+	{
+		lua_pushboolean(pState, false);
+	}
+	return 1;
+}
+
+void WindowManager::Init(const WindowManagerInit& init)
 {
 	LOGINFO("WindowManager::Init");
 	
+	messageCenter = init.messageCenter;
+
 	// Subscribe to all ToggleWindow commands
-	MessageCenter::Instance()->Subscribe(ToggleWindowMessage::kName, this);
-	MessageCenter::Instance()->Subscribe(QuitMessage::kName, this);
-	MessageCenter::Instance()->Subscribe(OpenResourceWindowMessage::kName, this);
-	MessageCenter::Instance()->Subscribe(CloseResourceWindowMessage::kName, this);
+	messageCenter->Subscribe(ToggleWindowMessage::kName, this);
+	messageCenter->Subscribe(QuitMessage::kName, this);
+	messageCenter->Subscribe(OpenResourceWindowMessage::kName, this);
+	messageCenter->Subscribe(CloseResourceWindowMessage::kName, this);
+
+	// Register Lua functions
+	luaContext_WindowManager = this;
+	init.lua->RegisterCFunction(lua_WindowCreate, "window_create");
+
 
 	initialised = true;
 }
@@ -198,6 +225,7 @@ eErrorCode WindowManager::ShowWindow(std::string name, bool bShow)
 		windowActive[name] = bShow;
 		return kError_OK;
 	}
+	LOGWARNINGF("WindowManager::ShowWindow Window not found %s", name.c_str());
 	return kError_WindowNotFound;
 }
 
@@ -237,17 +265,8 @@ void WindowManager::DeserialiseState(json& object)
 	}
 }
 
-static int lua_WindowCreate( lua_State* pState )
-{
-	LUA_FUNCDEF("window_create");
-	LUA_ASSERT_NUMPARAMS(2);
 
-//	WindowManager* pWm = WindowManager::Instance();
-
-    return 0;
-}
-
-void WindowManager::RegisterLuaInterface(std::shared_ptr<LuaVM> pLua)
-{
-	pLua->RegisterCFunction(lua_WindowCreate, "window_create");
-}
+//void WindowManager::RegisterLuaInterface(std::shared_ptr<LuaVM> pLua)
+//{
+//	pLua->RegisterCFunction(lua_WindowCreate, "window_create");
+//}

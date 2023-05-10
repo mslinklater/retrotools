@@ -21,7 +21,7 @@ class HelpCommandsWindow;
 class ResourcesWindow;
 class MainWindow;
 class MachineBase;
-//class MachineSimple6502;
+class MessageCenter;
 
 ///
 /// Application is the main application object. This is the first point of call for main() and should be used for all core application init, update & close logic.
@@ -58,7 +58,7 @@ public:
 	 */
 	int Close();
 
-	std::shared_ptr<LuaVM> GetLua(){ return pLua; }
+	std::shared_ptr<LuaVM> GetLua(){ return lua; }
 
 	void SetMachine(std::shared_ptr<MachineBase> pMachine);
 
@@ -76,16 +76,17 @@ private:
 	int displayWidth;
 	int displayHeight;
 
-	std::shared_ptr<LuaVM> pLua;
+	std::shared_ptr<LuaVM> lua;
 
-	std::shared_ptr<LogWindow> pLogWindow;
-	std::shared_ptr<StateSerialiser> pStateSerialiser;
-	std::shared_ptr<LuaWindow> pLuaWindow;
-	std::shared_ptr<HelpAboutWindow> pHelpAboutWindow;
-	std::shared_ptr<HelpCommandsWindow> pHelpCommandsWindow;
-	std::shared_ptr<ResourcesWindow> pResourcesWindow;
-	std::shared_ptr<MainWindow> pMainWindow;
-	std::shared_ptr<WindowManager> pWindowManager;
+	std::shared_ptr<MessageCenter> messageCenter;
+	std::shared_ptr<LogWindow> logWindow;
+	std::shared_ptr<StateSerialiser> stateSerialiser;
+	std::shared_ptr<LuaWindow> luaWindow;
+	std::shared_ptr<HelpAboutWindow> helpAboutWindow;
+	std::shared_ptr<HelpCommandsWindow> helpCommandsWindow;
+	std::shared_ptr<ResourcesWindow> resourcesWindow;
+	std::shared_ptr<MainWindow> mainWindow;
+	std::shared_ptr<WindowManager> windowManager;
 
 	std::shared_ptr<MachineBase> pMachine;
 };

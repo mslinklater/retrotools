@@ -38,6 +38,10 @@ public:
 private:
 	lua_State* pState;
 
+
 public:
+	static uint32_t numMemoryBlocks;
+	static uint32_t memorySize;
+	
 	static std::vector<std::string> printOutputBuffer;
 };

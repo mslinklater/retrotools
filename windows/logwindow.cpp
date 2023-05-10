@@ -95,6 +95,7 @@ void LogWindow::Draw(void)
 					}
 					break;
 				case Log::LogType::EError:
+				case Log::LogType::EFatal:
 					if(showErrors)
 					{
 						ImGui::TextColored(TextFormat::kColourError,"%s", line.content.c_str());

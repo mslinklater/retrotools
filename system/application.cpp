@@ -16,6 +16,7 @@
 #include "system/lua/luavm.h"
 #include "system/stateserialiser.h"
 #include "system/window/windowmanager.h"
+#include "system/message/messagehelpers.h"
 #include "windows/logwindow.h"
 #include "windows/luawindow.h"
 #include "windows/helpaboutwindow.h"
@@ -143,45 +144,55 @@ void Application::Init(int argc, char* argv[])
 	InitImGui();
 
 	// Bring up the Lua system
-	pLua = std::make_shared<LuaVM>();
-	pLua->Init();
-	pLua->RegisterCFunction(lua_LoadFile, "loadfile");
-	pLua->RegisterCFunction(lua_Cwd, "cwd");
-	pLua->RegisterCFunction(lua_Cd, "cd");
-	pLua->RegisterCFunction(lua_Ls, "ls");
-	pLua->RegisterCFunction(lua_MachineCreate, "machine_create");
+	lua = std::make_shared<LuaVM>();
+	lua->Init();
+	lua->RegisterCFunction(lua_LoadFile, "loadfile");
+	lua->RegisterCFunction(lua_Cwd, "cwd");
+	lua->RegisterCFunction(lua_Cd, "cd");
+	lua->RegisterCFunction(lua_Ls, "ls");
+	lua->RegisterCFunction(lua_MachineCreate, "machine_create");
 
-	pStateSerialiser = std::make_shared<StateSerialiser>();
+	// Bring up the message center
+	messageCenter = std::make_shared<MessageCenter>();
+	MessageHelpers::messageCenter = messageCenter;
 
-	pWindowManager = std::make_shared<WindowManager>();
-//	pWindowManager = WindowManager::Instance();
-	pWindowManager->Init(pStateSerialiser);
-	pWindowManager->RegisterLuaInterface(pLua);
-	pStateSerialiser->AddStateSerialiser(pWindowManager);
+	// Bring up the serialiser
+	stateSerialiser = std::make_shared<StateSerialiser>();
 
-	pLogWindow = std::make_shared<LogWindow>();
-	pWindowManager->AddWindow(pLogWindow, "Log");
-	pStateSerialiser->AddStateSerialiser(pLogWindow);
+	// Bring up the window manager
+	windowManager = std::make_shared<WindowManager>();
+	WindowManagerInit windowManagerInit;
+	windowManagerInit.lua = lua;
+	windowManagerInit.messageCenter = messageCenter;
+	windowManager->Init(windowManagerInit);
+	stateSerialiser->AddStateSerialiser(windowManager);
 
-	pLuaWindow = std::make_shared<LuaWindow>();
-	pLuaWindow->Init(pLua);
-	pWindowManager->AddWindow(pLuaWindow, "Lua");
+	logWindow = std::make_shared<LogWindow>();
+	windowManager->AddWindow(logWindow, "Log");
+	stateSerialiser->AddStateSerialiser(logWindow);
 
-	pHelpAboutWindow = std::make_shared<HelpAboutWindow>();
-	pWindowManager->AddWindow(pHelpAboutWindow, "HelpAbout");
+	luaWindow = std::make_shared<LuaWindow>();
+	luaWindow->Init(lua);
+	windowManager->AddWindow(luaWindow, "Lua");
 
-	pHelpCommandsWindow = std::make_shared<HelpCommandsWindow>();
-	pWindowManager->AddWindow(pHelpCommandsWindow, "HelpCommands");
+	helpAboutWindow = std::make_shared<HelpAboutWindow>();
+	windowManager->AddWindow(helpAboutWindow, "HelpAbout");
 
-	pResourcesWindow = std::make_shared<ResourcesWindow>();
-	pWindowManager->AddWindow(pResourcesWindow, "Resources");
+	helpCommandsWindow = std::make_shared<HelpCommandsWindow>();
+	windowManager->AddWindow(helpCommandsWindow, "HelpCommands");
 
-	pMainWindow = std::make_shared<MainWindow>();
-	pMainWindow->SetWindowManager(pWindowManager);
+	resourcesWindow = std::make_shared<ResourcesWindow>();
+	windowManager->AddWindow(resourcesWindow, "Resources");
+
+	mainWindow = std::make_shared<MainWindow>();
+	MainWindowInit mainWindowInit;
+	mainWindowInit.messageCenter = messageCenter;
+	mainWindow->Init(mainWindowInit);
+	mainWindow->SetWindowManager(windowManager);
 	
-	pStateSerialiser->DeserialiseAppConfig();
+	stateSerialiser->DeserialiseAppConfig();
 
-	pLua->LoadScript("lua/postinit.lua");
+	lua->LoadScript("lua/postinit.lua");
 }
 
 void Application::InitImGui()
@@ -266,7 +277,7 @@ void Application::UpdateLoop()
 		performanceCounterLast = performanceCounterThis;
 
 		//pSystem->Update(dt);
-		MessageCenter::Instance()->Update();
+		messageCenter->Update();
 		
 		// start ImGui frame
 		ImGui_ImplOpenGL2_NewFrame();
@@ -278,8 +289,8 @@ void Application::UpdateLoop()
 		ImGui::ShowDemoWindow(&show_demo_window);
 #endif
 
-		pWindowManager->Draw();	// draw all managed windows		
-		pMainWindow->Draw();
+		windowManager->Draw();	// draw all managed windows		
+		mainWindow->Draw();
 		
 		// rendering
 		ImGui::Render();
@@ -289,7 +300,7 @@ void Application::UpdateLoop()
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 		SDL_GL_SwapWindow(window);
 		
-		if(pWindowManager->ReceivedQuit())
+		if(windowManager->ReceivedQuit())
 		{
 			done = true;
 		}
@@ -299,8 +310,9 @@ void Application::UpdateLoop()
 int Application::Close()
 {
 	// Save the state of the windows
-	pStateSerialiser->SerialiseAppConfig();
+	stateSerialiser->SerialiseAppConfig();
 
+	MessageHelpers::messageCenter = nullptr;
 	return 0;
 }
 
